@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="ca.lakeeffect.scoutingapp.MainActivity">
+
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@android:color/darker_gray"
+    android:layout_below="@+id/robotNum"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:id="@+id/view" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="X:XX"
+    android:textSize="50dp"
+    android:textColor="#ffffffff"
+    android:textStyle="bold"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:id="@+id/timer" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Round: XX  Robot: XXXX"
+        android:id="@+id/robotNum"
+        android:layout_below="@+id/timer"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp"
+        android:textColor="@color/secondary_text_default_material_dark" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/submitButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp" />
+
+    <ca.lakeeffect.scoutingapp.Counter
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/goalsCounter"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/robotNum"
+        android:layout_alignTop="@+id/view"
+        android:layout_toLeftOf="@+id/robotNum" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Goals"
+        android:id="@+id/textView4"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/view"
+        android:layout_toRightOf="@+id/goalsCounter"
+        android:layout_toEndOf="@+id/goalsCounter" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scale"
+        android:id="@+id/scaleCheckBox"
+        android:checked="false"
+        android:layout_above="@+id/submitButton"
+        android:layout_centerHorizontal="true" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/scaleCheckBox"
+        android:layout_alignStart="@+id/scaleCheckBox"
+        android:layout_below="@+id/goalsCounter"
+        android:id="@+id/radioGroup">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New RadioButton"
+            android:id="@+id/radioButton"
+            />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New RadioButton"
+            android:id="@+id/radioButton2"
+            />
+    </RadioGroup>
+
+
+</RelativeLayout>
