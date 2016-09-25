@@ -6,7 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     static long start;
 
+    FragmentPagerAdapter viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +67,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
 
+        //setup scrolling viewpager
+        ViewPager vpPager = (ViewPager) findViewById(R.id.scrollingview);
+        viewPager = new InputPagerAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(viewPager);
+
 //        NumberPicker np = (NumberPicker) findViewById(R.id.numberPicker);
 //
 //        np.setMinValue(0);
@@ -74,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         submit.setOnClickListener(this);
 
+        //Ask for permissions
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
