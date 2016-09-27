@@ -56,13 +56,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //add all buttons and counters etc.
 
-        counters.add((Counter) findViewById(R.id.goalsCounter));
+//        counters.add((Counter) findViewById(R.id.goalsCounter));
 
         checkboxes.add((CheckBox) findViewById(R.id.scaleCheckBox));
 
         submit = (Button) findViewById(R.id.submitButton);
 
-        timer = (TextView) findViewById(R.id.timer);
+//        timer = (TextView) findViewById(R.id.timer);
         robotNumText = (TextView) findViewById(R.id.robotNum);
 
         robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
