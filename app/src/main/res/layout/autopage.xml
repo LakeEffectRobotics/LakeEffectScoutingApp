@@ -6,17 +6,67 @@
     android:layout_height="match_parent">
 
 
-
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
+
+            <TextView
+                android:text="Defense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/header0"
+                android:layout_weight="0.25"
+                android:layout_gravity="center_horizontal"
+                android:textSize="30dp" />
+            <TextView
+                android:text="Available"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/header1"
+                android:layout_weight="0.25"
+                android:layout_gravity="center_horizontal"
+                android:textSize="30dp" />
+            <TextView
+                android:text="Reach"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/header2"
+                android:layout_weight="0.25"
+                android:textSize="30dp" />
+            <TextView
+                android:text="Cross"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/header3"
+                android:layout_weight="0.25"
+                android:textSize="30dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
 
             <TextView
                 android:text="Low Bar: "
@@ -29,7 +79,8 @@
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal" 
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +90,8 @@
                 android:id="@+id/available0"
                 android:layout_weight="0.25" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,7 +101,8 @@
                 android:layout_weight="0.25"
                 android:id="@+id/reach0" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,10 +115,11 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Low Bar: "
+                android:text="Portcullis: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
@@ -75,7 +129,8 @@
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,7 +140,8 @@
                 android:id="@+id/available1"
                 android:layout_weight="0.25" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,7 +151,8 @@
                 android:layout_weight="0.25"
                 android:id="@+id/reach1" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -108,10 +165,11 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Low Bar: "
+                android:text="Cheval de Frise: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
@@ -121,7 +179,8 @@
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -131,7 +190,8 @@
                 android:id="@+id/available2"
                 android:layout_weight="0.25" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -141,7 +201,8 @@
                 android:layout_weight="0.25"
                 android:id="@+id/reach2" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -154,10 +215,11 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Low Bar: "
+                android:text="Moat: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
@@ -167,7 +229,8 @@
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -177,7 +240,8 @@
                 android:id="@+id/available3"
                 android:layout_weight="0.25" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -187,7 +251,8 @@
                 android:layout_weight="0.25"
                 android:id="@+id/reach3" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -200,10 +265,11 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Low Bar: "
+                android:text="Rampart: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
@@ -213,7 +279,8 @@
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -223,7 +290,8 @@
                 android:id="@+id/available4"
                 android:layout_weight="0.25" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -233,7 +301,8 @@
                 android:layout_weight="0.25"
                 android:id="@+id/reach4" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -246,10 +315,11 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Low Bar: "
+                android:text="Drawbridge: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
@@ -259,7 +329,8 @@
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -269,7 +340,8 @@
                 android:id="@+id/available5"
                 android:layout_weight="0.25" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -279,7 +351,8 @@
                 android:layout_weight="0.25"
                 android:id="@+id/reach5" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -292,10 +365,11 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Low Bar: "
+                android:text="Sally Port: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
@@ -305,7 +379,8 @@
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -315,7 +390,8 @@
                 android:id="@+id/available6"
                 android:layout_weight="0.25" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -325,7 +401,8 @@
                 android:layout_weight="0.25"
                 android:id="@+id/reach6" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -338,10 +415,11 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Low Bar: "
+                android:text="Rock Wall: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
@@ -351,7 +429,8 @@
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -361,7 +440,8 @@
                 android:id="@+id/available7"
                 android:layout_weight="0.25" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -371,7 +451,8 @@
                 android:layout_weight="0.25"
                 android:id="@+id/reach7" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -384,10 +465,11 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Low Bar: "
+                android:text="Rough Terrain: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
@@ -397,7 +479,8 @@
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -407,7 +490,8 @@
                 android:id="@+id/available8"
                 android:layout_weight="0.25" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -417,7 +501,8 @@
                 android:layout_weight="0.25"
                 android:id="@+id/reach8" />
 
-            <CheckBox
+            <CheckBox 
+				android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -430,6 +515,8 @@
 
 
     </TableLayout>
+
+
 
 
 </android.support.percent.PercentRelativeLayout>

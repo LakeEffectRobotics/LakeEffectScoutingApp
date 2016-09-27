@@ -58,15 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //        counters.add((Counter) findViewById(R.id.goalsCounter));
 
-        checkboxes.add((CheckBox) findViewById(R.id.scaleCheckBox));
-
-        submit = (Button) findViewById(R.id.submitButton);
-
-//        timer = (TextView) findViewById(R.id.timer);
-        robotNumText = (TextView) findViewById(R.id.robotNum);
-
-        robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
-
         //setup scrolling viewpager
         ViewPager vpPager = (ViewPager) findViewById(R.id.scrollingview);
         viewPager = new InputPagerAdapter(getSupportFragmentManager());
@@ -80,6 +71,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        np.setValue(0);
 
         //add onClickListeners
+
+        checkboxes.add((CheckBox) findViewById(R.id.scaleCheckBox));
+
+        submit = (Button) findViewById(R.id.submitButton);
+
+//        timer = (TextView) findViewById(R.id.timer);
+        robotNumText = (TextView) findViewById(R.id.robotNum);
+
+        robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
 
         submit.setOnClickListener(this);
 
