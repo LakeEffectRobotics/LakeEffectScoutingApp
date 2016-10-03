@@ -3,4 +3,407 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tableLayout2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
+
+            <TextView
+                android:text="Defense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/header0"
+                android:layout_weight="0.25"
+                android:layout_gravity="center_horizontal"
+                android:textSize="30dp" />
+            <TextView
+                android:text="Attempt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/header1"
+                android:layout_weight="0.25"
+                android:layout_gravity="center_horizontal"
+                android:textSize="30dp" />
+            <TextView
+                android:text="Cross"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/header2"
+                android:layout_weight="0.25"
+                android:textSize="30dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
+
+            <TextView
+                android:text="Low Bar: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/defensename0"
+                android:layout_weight="0.25"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/attempt0"
+                android:layout_weight="0.25" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.25"
+                android:id="@+id/cross0" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
+
+            <TextView
+                android:text="Portcullis: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/defensename1"
+                android:layout_weight="0.25"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/attempt1"
+                android:layout_weight="0.25" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.25"
+                android:id="@+id/cross1" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
+
+            <TextView
+                android:text="Cheval de Frise: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/defensename2"
+                android:layout_weight="0.25"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/attempt2"
+                android:layout_weight="0.25" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.25"
+                android:id="@+id/cross2" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
+
+            <TextView
+                android:text="Moat: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/defensename3"
+                android:layout_weight="0.25"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/attempt3"
+                android:layout_weight="0.25" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.25"
+                android:id="@+id/cross3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
+
+            <TextView
+                android:text="Rampart: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/defensename4"
+                android:layout_weight="0.25"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/attempt4"
+                android:layout_weight="0.25" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.25"
+                android:id="@+id/cross4" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
+
+            <TextView
+                android:text="Drawbridge: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/defensename5"
+                android:layout_weight="0.25"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/attempt5"
+                android:layout_weight="0.25" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.25"
+                android:id="@+id/cross5" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
+
+            <TextView
+                android:text="Sally Port: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/defensename6"
+                android:layout_weight="0.25"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/attempt6"
+                android:layout_weight="0.25" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.25"
+                android:id="@+id/cross6" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
+
+            <TextView
+                android:text="Rock Wall: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/defensename7"
+                android:layout_weight="0.25"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/attempt7"
+                android:layout_weight="0.25" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.25"
+                android:id="@+id/cross7" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp" >
+
+            <TextView
+                android:text="Rough Terrain: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/defensename8"
+                android:layout_weight="0.25"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/attempt8"
+                android:layout_weight="0.25" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.25"
+                android:id="@+id/cross8" />
+        </TableRow>
+
+
+    </TableLayout>
 </android.support.percent.PercentRelativeLayout>
