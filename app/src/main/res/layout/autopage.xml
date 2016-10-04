@@ -6,26 +6,7 @@
     android:layout_height="match_parent">
 
 
-    <CheckBox
-        android:text="Low Goal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tableLayout2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="243dp"
-        android:id="@+id/checkBox"
-        android:textSize="25dp"/>
 
-    <CheckBox
-        android:text="High Goal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/checkBox"
-        android:layout_alignLeft="@+id/checkBox"
-        android:layout_alignStart="@+id/checkBox"
-        android:layout_marginTop="69dp"
-        android:id="@+id/checkBox2"
-        android:textSize="25dp" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -69,6 +50,7 @@
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_gravity="center_horizontal"
                 android:id="@+id/header2"
                 android:layout_weight="0.25"
                 android:textSize="30dp" />
@@ -487,7 +469,7 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="25dp" >
+            android:layout_marginBottom="25dp">
 
             <TextView
                 android:text="Rough Terrain: "
@@ -527,11 +509,36 @@
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignTop="@+id/bottom"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_weight="0.25"
                 android:id="@+id/cross8" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp">
+            <TextView
+                />
+            <CheckBox
+                android:text="Low Goal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tableLayout2"
+                android:id="@+id/lowGoal"
+                android:textSize="25dp"
+                android:layout_weight="0.5"/>
+            <CheckBox
+                android:text="High Goal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tableLayout2"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center|center_horizontal"
+                android:id="@+id/highGoal"
+                android:textSize="25dp"
+                android:layout_weight="0.5"/>
         </TableRow>
 
 

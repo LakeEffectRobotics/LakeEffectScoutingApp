@@ -404,6 +404,84 @@
                 android:id="@+id/cross8" />
         </TableRow>
 
+        <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="25dp" >
+
+        <TextView
+            android:text="Low Goal: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tableLayout"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/lowGoal"
+            android:layout_weight="0.25"
+            android:textSize="25dp" />
+
+        <ca.lakeeffect.scoutingapp.Counter
+            android:layout_gravity="center_horizontal"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tableLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/attempt9"
+            android:layout_weight="0.25" />
+
+        <ca.lakeeffect.scoutingapp.Counter
+            android:layout_gravity="center_horizontal"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tableLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.25"
+            android:id="@+id/cross9" />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="25dp" >
+
+        <TextView
+            android:text="High Goal: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tableLayout"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/highGoal"
+            android:layout_weight="0.25"
+            android:textSize="25dp" />
+
+        <ca.lakeeffect.scoutingapp.Counter
+            android:layout_gravity="center_horizontal"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tableLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/attempt10"
+            android:layout_weight="0.25" />
+
+        <ca.lakeeffect.scoutingapp.Counter
+            android:layout_gravity="center_horizontal"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tableLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.25"
+            android:id="@+id/cross10" />
+    </TableRow>
+
 
     </TableLayout>
+
 </android.support.percent.PercentRelativeLayout>
