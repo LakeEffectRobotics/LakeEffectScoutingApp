@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="129dp"
-        android:id="@+id/button"
+        android:id="@+id/submit"
         android:textSize="50sp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
@@ -21,7 +21,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="101dp"
-        android:id="@+id/checkBox2"
+        android:id="@+id/challenge"
         android:textSize="35sp"
         android:checked="false" />
 
@@ -29,10 +29,10 @@
         android:text="Scale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/checkBox2"
+        android:layout_below="@+id/challenge"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="43dp"
-        android:id="@+id/checkBox3"
+        android:id="@+id/scale"
         android:textSize="35sp" />
 
 </android.support.percent.PercentRelativeLayout>

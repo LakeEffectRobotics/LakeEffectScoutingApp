@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView timer;
     TextView robotNumText;//robotnum and round
 
-    int robotNum = 0000;
-    int round = 1;
+    int robotNum = 2708;
+    int round = 2;
 
     static long start;
 

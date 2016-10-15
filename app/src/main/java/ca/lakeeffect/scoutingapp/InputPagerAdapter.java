@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class InputPagerAdapter extends FragmentPagerAdapter{
 
-    final int PAGENUM = 2;
+    final int PAGENUM = 3;
 
     public InputPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -24,6 +24,8 @@ public class InputPagerAdapter extends FragmentPagerAdapter{
                 return new AutoPage();
             case 1:
                 return new TeleopPage();
+            case 2:
+                return new EndgamePage();
         }
         return null;
     }
@@ -40,6 +42,8 @@ public class InputPagerAdapter extends FragmentPagerAdapter{
                 return "Autonomous Round";
             case 1:
                 return "TeleOp Round";
+            case 2:
+                return "Endgame";
         }
         return "";
     }
