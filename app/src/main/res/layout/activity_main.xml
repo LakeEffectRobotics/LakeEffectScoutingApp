@@ -33,8 +33,8 @@
         android:id="@+id/scrollingview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view"
-        android:layout_above="@+id/scaleCheckBox">
+        android:layout_below="@+id/view">
+        <!--android:layout_above="@+id/scaleCheckBox">-->
 
         <android.support.v4.view.PagerTabStrip
             android:id="@+id/pager_header"
@@ -46,23 +46,23 @@
 
     </android.support.v4.view.ViewPager>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:id="@+id/submitButton"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="20dp" />
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Submit"-->
+        <!--android:id="@+id/submitButton"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:textSize="20dp" />-->
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scale"
-        android:id="@+id/scaleCheckBox"
-        android:checked="false"
-        android:layout_above="@+id/submitButton"
-        android:layout_centerHorizontal="true" />
+    <!--<CheckBox-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Scale"-->
+        <!--android:id="@+id/scaleCheckBox"-->
+        <!--android:checked="false"-->
+        <!--android:layout_above="@+id/submitButton"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
 
 

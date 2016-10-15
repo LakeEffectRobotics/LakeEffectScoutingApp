@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     List<Button> buttons = new ArrayList<>();
     List<SeekBar> seekbars = new ArrayList<>();
 
-    Button submit;
+//    Button submit;
 
     TextView timer;
     TextView robotNumText;//robotnum and round
@@ -72,16 +72,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //add onClickListeners
 
-        checkboxes.add((CheckBox) findViewById(R.id.scaleCheckBox));
+//        checkboxes.add((CheckBox) findViewById(R.id.scaleCheckBox));
 
-        submit = (Button) findViewById(R.id.submitButton);
+//        submit = (Button) findViewById(R.id.submitButton);
 
 //        timer = (TextView) findViewById(R.id.timer);
         robotNumText = (TextView) findViewById(R.id.robotNum);
 
         robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
 
-        submit.setOnClickListener(this);
+//        submit.setOnClickListener(this);
 
         //Ask for permissions
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -95,9 +95,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v == submit){
-            saveData();
-        }
+//        if(v == submit){
+//            saveData();
+//        }
     }
 
     public void saveData(){

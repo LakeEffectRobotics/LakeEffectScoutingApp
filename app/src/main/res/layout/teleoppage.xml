@@ -39,7 +39,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="30dp" />
             <TextView
-                android:text="Cross"
+                android:text="Complete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"

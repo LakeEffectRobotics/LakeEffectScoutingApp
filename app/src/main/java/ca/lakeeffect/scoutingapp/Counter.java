@@ -41,6 +41,9 @@ public class Counter extends LinearLayout implements View.OnClickListener{
             count++;
         }else{
             count--;
+            if(count < 0){
+                count = 0;
+            }
         }
         counterText.setText(count+"");
     }
