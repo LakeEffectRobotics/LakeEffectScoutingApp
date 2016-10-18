@@ -18,7 +18,12 @@ public class AutoPage extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState){
-        return inflator.inflate(R.layout.autopage, container, false);
+
+        View view = inflator.inflate(R.layout.autopage, container, false);
+
+        view.setTag("page1");
+
+        return view;
 
     }
 }

@@ -18,7 +18,11 @@ public class TeleopPage extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState){
-        return inflator.inflate(R.layout.teleoppage, container, false);
 
+        View view = inflator.inflate(R.layout.teleoppage, container, false);
+
+        view.setTag("page2");
+
+        return view;
     }
 }
