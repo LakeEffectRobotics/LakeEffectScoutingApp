@@ -4,28 +4,40 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -136,46 +148,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void saveData(){
-        PercentRelativeLayout layout = (PercentRelativeLayout) viewPager.findViewWithTag("page1");
-        for(int i=0;i<layout.getChildCount();i++){
-            if(layout.getChildAt(i) instanceof CheckBox) {
-                try {
-                    out.write(Byte.valueOf("," + String.valueOf( ( (CheckBox) layout.getChildAt(i)).isChecked())));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return;
-
-//        File sdCard = Environment.getExternalStorageDirectory();
-////        File dir = new File (sdCard.getPath() + "/ScoutingData/");
-//
-//        File file = new File(sdCard.getPath() + "/ScoutingData/" + robotNum + ".txt");
-//
-//        try {
-//            file.getParentFile().mkdirs();
-//            if(!file.exists()){
-//                file.createNewFile();
-//            }
-//
-//            FileOutputStream f = new FileOutputStream(file, true);
-//
-//            OutputStreamWriter out = new OutputStreamWriter(f);
-//
-//            DateFormat dateFormat = new SimpleDateFormat("dd HH mm ss");
-//            Date date = new Date();
-//
-//            out.append("\n" + "start " + round + " " + dateFormat.format(date) + "\n");
-//
-//            PercentRelativeLayout layout1 = (PercentRelativeLayout) viewPager.findViewWithTag("page1");
-//            out.append("auto");
-//            for(int i=0;i<layout.getChildCount();i++){
-//                if(layout.getChildAt(i) instanceof CheckBox) {
-//                    out.append("," + String.valueOf( ( (CheckBox) layout.getChildAt(i)).isChecked()));
+//        PercentRelativeLayout layout = (PercentRelativeLayout) viewPager.findViewWithTag("page1");
+//        for(int i=0;i<layout.getChildCount();i++){
+//            if(layout.getChildAt(i) instanceof CheckBox) {
+//                try {
+//                    out.write(Byte.valueOf("," + String.valueOf( ( (CheckBox) layout.getChildAt(i)).isChecked())));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
 //                }
 //            }
+//        }
+//
+//        return;
+
+        File sdCard = Environment.getExternalStorageDirectory();
+//        File dir = new File (sdCard.getPath() + "/ScoutingData/");
+
+        File file = new File(sdCard.getPath() + "/ScoutingData/" + robotNum + ".txt");
+
+        try {
+            file.getParentFile().mkdirs();
+            if(!file.exists()){
+                file.createNewFile();
+            }
+
+            FileOutputStream f = new FileOutputStream(file, true);
+
+            OutputStreamWriter out = new OutputStreamWriter(f);
+
+            DateFormat dateFormat = new SimpleDateFormat("dd HH mm ss");
+            Date date = new Date();
+
+            out.append("\n" + "start " + round + " " + dateFormat.format(date) + "\n");
+
+            LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            TableLayout layout = (TableLayout) inflater.inflate(R.layout.autopage, null).findViewById(R.id.autopagetablelayout);
+//            PercentRelativeLayout layout = (PercentRelativeLayout) findViewById(R.layout.autopage);
+            Log.d("iodailjasdl",String.valueOf(layout==null));
+            out.append("auto");
+            for(int i=0;i<layout.getChildCount();i++){
+                for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
+                    Log.d("iodailjasdl", "loop working");
+                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof CheckBox) {
+                        out.append("," + String.valueOf(((CheckBox) ((TableRow) layout.getChildAt(i)).getChildAt(s)).isChecked()));
+                    }
+                }
+            }
 //
 ////            for(CheckBox checkbox: checkboxes){
 ////                out.append("checkbox " + getResources().getResourceEntryName(checkbox.getId()) + " " + checkbox.isChecked() + "\n");
@@ -196,12 +214,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 ////
 ////
 ////            out.append("end");
-//            out.close();
-//
-//            f.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+            out.close();
+
+            f.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
