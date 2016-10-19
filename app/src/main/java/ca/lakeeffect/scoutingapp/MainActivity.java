@@ -176,47 +176,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             OutputStreamWriter out = new OutputStreamWriter(f);
 
+            StringBuilder data = new StringBuilder();
+
             DateFormat dateFormat = new SimpleDateFormat("dd HH mm ss");
             Date date = new Date();
 
-            out.append("\n" + "start " + round + " " + dateFormat.format(date) + "\n");
+            data.append("\n" + "start " + round + " " + dateFormat.format(date) + "\n");
 
             LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             TableLayout layout = (TableLayout) inflater.inflate(R.layout.autopage, null).findViewById(R.id.autopagetablelayout);
 //            PercentRelativeLayout layout = (PercentRelativeLayout) findViewById(R.layout.autopage);
-            Log.d("iodailjasdl",String.valueOf(layout==null));
-            out.append("auto");
+            data.append("auto");
             for(int i=0;i<layout.getChildCount();i++){
                 for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
-                    Log.d("iodailjasdl", "loop working");
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof CheckBox) {
-                        out.append("," + String.valueOf(((CheckBox) ((TableRow) layout.getChildAt(i)).getChildAt(s)).isChecked()));
+                        data.append("," + String.valueOf(((CheckBox) ((TableRow) layout.getChildAt(i)).getChildAt(s)).isChecked()));
                     }
                 }
             }
-//
-////            for(CheckBox checkbox: checkboxes){
-////                out.append("checkbox " + getResources().getResourceEntryName(checkbox.getId()) + " " + checkbox.isChecked() + "\n");
-////            }
-////
-////            for(RadioGroup radiogroup: radiogroups){
-////                out.append("radiogroup " + getResources().getResourceEntryName(radiogroup.getId()) + " " + radiogroup.indexOfChild(findViewById(radiogroup.getCheckedRadioButtonId())) + "\n");
-////            }
-////
-//////            TODO: Write button data, might not be needed
-//////            for(Button button: buttons){
-//////                out.append("button " + getResources().getResourceEntryName(button.getId()) + " " + counter.count + "\n");
-//////            }
-////
-////            for(SeekBar seekbar: seekbars){
-////                out.append("seekbar " + getResources().getResourceEntryName(seekbar.getId()) + " " + seekbar.getProgress() + "\n");
-////            }
-////
-////
-////            out.append("end");
+
+            layout = (TableLayout) inflater.inflate(R.layout.teleoppage, null).findViewById(R.id.teleoptablelayout);
+            data.append("\nteleop");
+            for(int i=0;i<layout.getChildCount();i++){
+                for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
+                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
+                        data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
+                    }
+                }
+            }
+
+            layout = (TableLayout) inflater.inflate(R.layout.teleoppage, null).findViewById(R.id.teleoptablelayout);
+            data.append("\nendgame");
+            for(int i=0;i<layout.getChildCount();i++){
+                if ( layout.getChildAt(i) instanceof CheckBox) {
+                    data.append("," + String.valueOf(((CheckBox) layout.getChildAt(i)).isChecked()));
+                }
+            }
+
+            data.append("\nend");//make sure full message has been sent
+
+            out.append(data.toString());
             out.close();
 
             f.close();
+
+            if(out != null) out.write(robotNum + ":" + Byte.valueOf(data.toString()));
+//            else pendingout.append(data.toString()); //TODO MAKE THIS WORK
+
         } catch (IOException e) {
             e.printStackTrace();
         }
