@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -220,8 +222,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             f.close();
 
-            if(out != null) out.write(robotNum + ":" + Byte.valueOf(data.toString()));
+            if(out != null) this.out.write((robotNum + ":" + data.toString()).getBytes(Charset.forName("UTF-8")));
 //            else pendingout.append(data.toString()); //TODO MAKE THIS WORK
+
+            Thread thread = new Thread(){
+                public void run(){
+                    while(true) {
+                        byte[] bytes = new byte[1000];
+                        try {
+                            int amount = in.read(bytes);
+                            if (new String(bytes, Charset.forName("UTF-8")).equals("done")) {
+                                return;
+                            }
+                            if(!bluetoothsocket.isConnected()){
+                                //TODO MAKE THIS WORK PENDING STUFF HERE TOO
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            thread.start();
 
         } catch (IOException e) {
             e.printStackTrace();
