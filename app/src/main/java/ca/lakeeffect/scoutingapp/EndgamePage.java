@@ -3,26 +3,13 @@ package ca.lakeeffect.scoutingapp;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.RadioGroup;
-import android.widget.SeekBar;
 import android.widget.Toast;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class EndgamePage extends Fragment implements View.OnClickListener{
 
@@ -78,7 +65,7 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
                             e.printStackTrace();
                         }
                         ((MainActivity)getActivity()).saveData();
-                        Intent i = new Intent("ca.lakeeffect.scoutingapp.MainActivity");
+                        Intent i = new Intent(getContext(),MainActivity.class);
                         startActivity(i);
 
                     }
