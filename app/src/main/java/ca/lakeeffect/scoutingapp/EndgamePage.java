@@ -1,6 +1,7 @@
 package ca.lakeeffect.scoutingapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -77,6 +78,8 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
                             e.printStackTrace();
                         }
                         ((MainActivity)getActivity()).saveData();
+                        Intent i = new Intent("ca.lakeeffect.scoutingapp.MainActivity");
+                        startActivity(i);
 
                     }
                 })

@@ -313,8 +313,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             layout = (TableLayout) inflater.inflate(R.layout.teleoppage, null).findViewById(R.id.teleoptablelayout);
             data.append("\nendgame");
             for(int i=0;i<layout.getChildCount();i++){
-                if ( layout.getChildAt(i) instanceof CheckBox) {
-                    data.append("," + String.valueOf(((CheckBox) layout.getChildAt(i)).isChecked()));
+                for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
+                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof CheckBox) {
+                        data.append("," + String.valueOf(((CheckBox) ((TableRow) layout.getChildAt(i)).getChildAt(s)).isChecked()));
+                    }
                 }
             }
 
