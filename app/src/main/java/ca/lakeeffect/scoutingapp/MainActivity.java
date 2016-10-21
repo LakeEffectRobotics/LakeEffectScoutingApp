@@ -26,6 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
@@ -79,17 +81,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
 
         new AlertDialog.Builder(this)
+                .setView(R.layout.dialog)
                 .setTitle("Enter Info")
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
                 .setPositiveButton(android.R.string.yes,  new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO DO STUFF
+                        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
+                        EditText robotNumin = (EditText) layout.findViewById(R.id.editText);
+                        EditText roundin = (EditText) layout.findViewById(R.id.editText2);
+                        robotNum = Integer.parseInt(robotNumin.getText().toString());
+                        round = Integer.parseInt(roundin.getText().toString());
                     }
                 })
                 .create()
