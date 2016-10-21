@@ -9,17 +9,6 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="ca.lakeeffect.scoutingapp.MainActivity">
 
-<View
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@android:color/darker_gray"
-    android:layout_below="@+id/robotNum"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:id="@+id/view" />
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,11 +18,46 @@
         android:textSize="45dp"
         android:textColor="@color/secondary_text_default_material_dark" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Status: "
+        android:id="@+id/statustextView"
+        android:layout_below="@+id/robotNum"
+        android:layout_toLeftOf="@+id/status"
+        android:layout_toStartOf="@+id/status" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Disconnected"
+        android:id="@+id/status"
+        android:textColor="#ff0000"
+        android:textStyle="bold"
+        android:layout_below="@+id/robotNum"
+        android:layout_alignRight="@+id/robotNum"
+        android:layout_alignEnd="@+id/robotNum"
+        android:layout_marginRight="153dp"
+        android:layout_marginEnd="153dp" />
+
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@android:color/darker_gray"-->
+        <!--android:layout_below="@+id/status"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:paddingBottom="@dimen/activity_vertical_margin"-->
+        <!--android:id="@+id/view" />-->
+
+
     <android.support.v4.view.ViewPager
         android:id="@+id/scrollingview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view">
+        android:layout_below="@+id/status">
         <!--android:layout_above="@+id/scaleCheckBox">-->
 
         <android.support.v4.view.PagerTabStrip
@@ -45,6 +69,7 @@
             android:paddingTop="4dp" />
 
     </android.support.v4.view.ViewPager>
+
 
     <!--<Button-->
         <!--android:layout_width="wrap_content"-->

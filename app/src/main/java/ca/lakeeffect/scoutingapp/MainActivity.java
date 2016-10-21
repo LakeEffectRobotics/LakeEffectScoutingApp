@@ -2,11 +2,15 @@ package ca.lakeeffect.scoutingapp;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,6 +43,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     BluetoothSocket bluetoothsocket;
     OutputStream out;
     InputStream in;
-
+    ArrayList<String> pendingmessages = new ArrayList<>();
     boolean connected;
 
     @Override
@@ -116,28 +121,126 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(turnOn, 0);
 
         //bluetooth stuff
+        try {
+            final BluetoothServerSocket bss = ba.listenUsingRfcommWithServiceRecord("DialUpInternet", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
 
-        Thread thread = new Thread(){
-            public void run(){
-                try {
-                    BluetoothServerSocket bss = ba.listenUsingRfcommWithServiceRecord("DialUpInternet", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
-                    bluetoothsocket = bss.accept();
-                    out = bluetoothsocket.getOutputStream();
-                    in = bluetoothsocket.getInputStream();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(MainActivity.this, "connected!",
-                                    Toast.LENGTH_LONG).show();
+            final Thread thread = new Thread(){
+                public void run(){
+                    try {
+                        Log.d("Uh Oh", "CONNECTINGJADLKJASDKLJ");
+                        bluetoothsocket = bss.accept();
+                        out = bluetoothsocket.getOutputStream();
+                        in = bluetoothsocket.getInputStream();
+                        connected = true;
+                        Log.d("Uh Oh", "CONNECTED");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((TextView) findViewById(R.id.status)).setText("CONNECTED");
+                                ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,0,255,0));
+                                Toast.makeText(MainActivity.this, "connected!",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        while(!pendingmessages.isEmpty()){
+                            for(String message: pendingmessages){
+                                out.write(message.getBytes(Charset.forName("UTF-8")));
+                                byte[] bytes = new byte[1000000];
+                                int amount = in.read(bytes);
+                                if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
+                                else continue;
+                                if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
+                                    pendingmessages.remove(message);
+                                    break;
+                                }
+                            }//TODO TEST IF THIS WORKS
+                            Log.d("Uh Oh", "Uh oh sadjkhasdkjhasdkjhsadkadshkjsad");
                         }
-                    });
-                    connected = true;
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+    //                    while(bluetoothsocket.isConnected()){
+    //                        Log.d("SDsddsdssd","fasdfdfdfsdfsdfsdfsddfsfdsfd");
+    //                        try {
+    //                            Thread.sleep(200);
+    //                        } catch (InterruptedException e) {
+    //                            e.printStackTrace();
+    //                        }
+    //                    }
+    //                    runOnUiThread(new Runnable() {
+    //                        @Override
+    //                        public void run() {
+    //                            ((TextView) findViewById(R.id.status)).setText("DISCONNECTED");
+    //                            ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,255,0,0));
+    //                        }
+    //                    });
+    //                    run();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        };
-        thread.start();
+            };
+            thread.start();
+
+            BroadcastReceiver bState = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    Log.d("SDAsadsadsadsad","iouweroiurweoiurewoirweuoiweru");
+                    String action = intent.getAction();
+                    switch (action){
+                        case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+                            connected = false;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((TextView) findViewById(R.id.status)).setText("DISCONNECTED");
+                                    ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,255,0,0));
+                                }
+                            });
+                            Thread thread1 = new Thread(thread);
+                            thread1.start();
+                            break;
+//                    case BluetoothDevice.ACTION_ACL_CONNECTED:
+//                        try {
+//                            out = bluetoothsocket.getOutputStream();
+//                            in = bluetoothsocket.getInputStream();
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    ((TextView) findViewById(R.id.status)).setText("CONNECTED");
+//                                    ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,0,255,0));
+//                                    Toast.makeText(MainActivity.this, "connected!",
+//                                            Toast.LENGTH_LONG).show();
+//                                }
+//                            });
+//                            while(!pendingmessages.isEmpty()){
+//                                for(String message: pendingmessages){
+//                                    out.write(message.getBytes(Charset.forName("UTF-8")));
+//                                    byte[] bytes = new byte[1000000];
+//                                    int amount = in.read(bytes);
+//                                    if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
+//                                    else continue;
+//                                    if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
+//                                        pendingmessages.remove(message);
+//                                        break;
+//                                    }
+//                                }//TODO TEST IF THIS WORKS
+//                            }
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        break;
+                    }
+                }
+            };
+
+            IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+            filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+            filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+            registerReceiver(bState,filter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
         start = System.nanoTime();
     }
@@ -178,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             OutputStreamWriter out = new OutputStreamWriter(f);
 
-            StringBuilder data = new StringBuilder();
+            final StringBuilder data = new StringBuilder();
 
             DateFormat dateFormat = new SimpleDateFormat("dd HH mm ss");
             Date date = new Date();
@@ -222,20 +325,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             f.close();
 
-            if(out != null) this.out.write((robotNum + ":" + data.toString()).getBytes(Charset.forName("UTF-8")));
-//            else pendingout.append(data.toString()); //TODO MAKE THIS WORK
+            if(bluetoothsocket != null && bluetoothsocket.isConnected()) this.out.write((robotNum + ":" + data.toString()).getBytes(Charset.forName("UTF-8")));
+            else pendingmessages.add(robotNum + ":" + data.toString());
 
             Thread thread = new Thread(){
                 public void run(){
                     while(true) {
                         byte[] bytes = new byte[1000];
                         try {
+                            if(!connected){
+                                pendingmessages.add(robotNum + ":" + data.toString());
+                                return;
+                            }
                             int amount = in.read(bytes);
                             if (new String(bytes, Charset.forName("UTF-8")).equals("done")) {
                                 return;
                             }
-                            if(!bluetoothsocket.isConnected()){
-                                //TODO MAKE THIS WORK PENDING STUFF HERE TOO
+                            if(!connected){
+                                pendingmessages.add(robotNum + ":" + data.toString());
+                                return;
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
