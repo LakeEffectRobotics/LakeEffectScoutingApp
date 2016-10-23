@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -14,17 +15,19 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
@@ -39,7 +42,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,6 +79,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        new AlertDialog.Builder(this)
+                .setView(R.layout.dialog)
+                .setTitle("Enter Info")
+                .setPositiveButton(android.R.string.yes,  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
+                        EditText robotNumin = (EditText) layout.findViewById(R.id.editText);
+                        EditText roundin = (EditText) layout.findViewById(R.id.editText2);
+                        robotNum = Integer.parseInt(robotNumin.getText().toString());
+                        round = Integer.parseInt(roundin.getText().toString());
+                    }
+                })
+                .create()
+                .show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -313,8 +332,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             layout = (TableLayout) inflater.inflate(R.layout.teleoppage, null).findViewById(R.id.teleoptablelayout);
             data.append("\nendgame");
             for(int i=0;i<layout.getChildCount();i++){
-                if ( layout.getChildAt(i) instanceof CheckBox) {
-                    data.append("," + String.valueOf(((CheckBox) layout.getChildAt(i)).isChecked()));
+                for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
+                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof CheckBox) {
+                        data.append("," + String.valueOf(((CheckBox) ((TableRow) layout.getChildAt(i)).getChildAt(s)).isChecked()));
+                    }
                 }
             }
 
