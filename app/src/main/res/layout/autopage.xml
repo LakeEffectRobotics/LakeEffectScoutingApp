@@ -22,46 +22,36 @@
             android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Defense"
+                android:text="Task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/header0"
+                android:id="@+id/autoHeader0"
                 android:layout_weight="0.25"
                 android:layout_gravity="center_horizontal"
                 android:textSize="30dp" />
             <TextView
-                android:text="Available"
+                android:text="Completed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/header1"
+                android:id="@+id/autoHeader1"
                 android:layout_weight="0.25"
                 android:layout_gravity="center_horizontal"
                 android:textSize="30dp" />
             <TextView
-                android:text="Reach"
+                android:text="Failed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="center_horizontal"
-                android:id="@+id/header2"
-                android:layout_weight="0.25"
-                android:textSize="30dp" />
-            <TextView
-                android:text="Cross"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/header3"
+                android:id="@+id/autoHeader2"
                 android:layout_weight="0.25"
                 android:textSize="30dp" />
         </TableRow>
@@ -72,48 +62,41 @@
             android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Low Bar: "
+                android:text="Baseline: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/defensename0"
+                android:id="@+id/autoTask0"
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/available0"
-                android:layout_weight="0.25" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+            <RadioGroup android:orientation="horizontal"
                 android:layout_weight="0.25"
-                android:id="@+id/reach0" />
+                android:layout_width="match_parent">
+                <RadioButton
+                    android:layout_gravity="center_horizontal"
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/autoBaselineComplete"
+                    android:layout_weight="0.25" />
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/cross0" />
+                <RadioButton
+                    android:layout_gravity="center_horizontal"
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="0.25"
+                    android:id="@+id/autoBaselineFailed" />
+            </RadioGroup>
         </TableRow>
 
         <TableRow
@@ -122,48 +105,38 @@
             android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Portcullis: "
+                android:text="Low Goal:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/defensename1"
+                android:id="@+id/autoTask1"
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/lowComplete"
+                android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignTop="@+id/autoTableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:id="@+id/available1"
-                android:layout_weight="0.25" />
+                android:layout_weight="0.25"/>
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/lowMissed"
+                android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignTop="@+id/autoTableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/reach1" />
+                android:layout_weight="0.25"/>
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/cross1" />
         </TableRow>
 
         <TableRow
@@ -172,48 +145,38 @@
             android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Cheval de Frise: "
+                android:text="High Goal:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/defensename2"
+                android:id="@+id/autoTask2"
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/autoHighComplete"
+                android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:id="@+id/available2"
-                android:layout_weight="0.25" />
+                android:layout_weight="0.25"/>
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/autoHighMissed"
+                android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/reach2" />
+                android:layout_weight="0.25"/>
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/cross2" />
         </TableRow>
 
         <TableRow
@@ -222,48 +185,42 @@
             android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Moat: "
+                android:text="Gear Delivered:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/defensename3"
+                android:id="@+id/autoTask3"
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/available3"
-                android:layout_weight="0.25" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+            <RadioGroup android:orientation="horizontal"
                 android:layout_weight="0.25"
-                android:id="@+id/reach3" />
+                android:layout_width="match_parent">
+                <RadioButton
+                    android:layout_gravity="center_horizontal"
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/autoGearComplete"
+                    android:layout_weight="0.25" />
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/cross3" />
+                <RadioButton
+                    android:layout_gravity="center_horizontal"
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="0.25"
+                    android:id="@+id/autoGearMissed" />
+            </RadioGroup>
+
         </TableRow>
 
         <TableRow
@@ -272,275 +229,39 @@
             android:layout_marginBottom="25dp" >
 
             <TextView
-                android:text="Rampart: "
+                android:text="Hopper Hit:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/defensename4"
+                android:id="@+id/autoTask4"
                 android:layout_weight="0.25"
                 android:textSize="25dp" />
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/autoHopperComplete"
+                android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:id="@+id/available4"
-                android:layout_weight="0.25" />
+                android:layout_weight="0.25"/>
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/autoHopperMissed"
+                android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/reach4" />
+                android:layout_weight="0.25"/>
 
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/cross4" />
         </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="25dp" >
-
-            <TextView
-                android:text="Drawbridge: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/defensename5"
-                android:layout_weight="0.25"
-                android:textSize="25dp" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/available5"
-                android:layout_weight="0.25" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/reach5" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/cross5" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="25dp" >
-
-            <TextView
-                android:text="Sally Port: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/defensename6"
-                android:layout_weight="0.25"
-                android:textSize="25dp" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/available6"
-                android:layout_weight="0.25" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/reach6" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/cross6" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="25dp" >
-
-            <TextView
-                android:text="Rock Wall: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/defensename7"
-                android:layout_weight="0.25"
-                android:textSize="25dp" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/available7"
-                android:layout_weight="0.25" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/reach7" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/cross7" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="25dp">
-
-            <TextView
-                android:text="Rough Terrain: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/defensename8"
-                android:layout_weight="0.25"
-                android:textSize="25dp" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/available8"
-                android:layout_weight="0.25" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/reach8" />
-
-            <CheckBox
-				android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/bottom"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25"
-                android:id="@+id/cross8" />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="25dp">
-            <TextView
-                />
-            <CheckBox
-                android:text="Low Goal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tableLayout2"
-                android:id="@+id/lowGoal"
-                android:textSize="25dp"
-                android:layout_weight="0.5"/>
-            <CheckBox
-                android:text="High Goal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tableLayout2"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center|center_horizontal"
-                android:id="@+id/highGoal"
-                android:textSize="25dp"
-                android:layout_weight="0.5"/>
-        </TableRow>
-
 
     </TableLayout>
 
