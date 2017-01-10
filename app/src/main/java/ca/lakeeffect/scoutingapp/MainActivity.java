@@ -2,30 +2,51 @@ package ca.lakeeffect.scoutingapp;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.percent.PercentRelativeLayout;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,11 +74,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     BluetoothSocket bluetoothsocket;
     OutputStream out;
     InputStream in;
-
+    ArrayList<String> pendingmessages = new ArrayList<>();
     boolean connected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        new AlertDialog.Builder(this)
+                .setView(R.layout.dialog)
+                .setTitle("Enter Info")
+                .setPositiveButton(android.R.string.yes,  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
+                        EditText robotNumin = (EditText) layout.findViewById(R.id.editText);
+                        EditText roundin = (EditText) layout.findViewById(R.id.editText2);
+                        robotNum = Integer.parseInt(robotNumin.getText().toString());
+                        round = Integer.parseInt(roundin.getText().toString());
+                    }
+                })
+                .create()
+                .show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -102,28 +140,126 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(turnOn, 0);
 
         //bluetooth stuff
+        try {
+            final BluetoothServerSocket bss = ba.listenUsingRfcommWithServiceRecord("DialUpInternet", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
 
-        Thread thread = new Thread(){
-            public void run(){
-                try {
-                    BluetoothServerSocket bss = ba.listenUsingRfcommWithServiceRecord("DialUpInternet", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
-                    bluetoothsocket = bss.accept();
-                    out = bluetoothsocket.getOutputStream();
-                    in = bluetoothsocket.getInputStream();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(MainActivity.this, "connected!",
-                                    Toast.LENGTH_LONG).show();
+            final Thread thread = new Thread(){
+                public void run(){
+                    try {
+                        Log.d("Uh Oh", "CONNECTINGJADLKJASDKLJ");
+                        bluetoothsocket = bss.accept();
+                        out = bluetoothsocket.getOutputStream();
+                        in = bluetoothsocket.getInputStream();
+                        connected = true;
+                        Log.d("Uh Oh", "CONNECTED");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((TextView) findViewById(R.id.status)).setText("CONNECTED");
+                                ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,0,255,0));
+                                Toast.makeText(MainActivity.this, "connected!",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        while(!pendingmessages.isEmpty()){
+                            for(String message: pendingmessages){
+                                out.write(message.getBytes(Charset.forName("UTF-8")));
+                                byte[] bytes = new byte[1000000];
+                                int amount = in.read(bytes);
+                                if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
+                                else continue;
+                                if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
+                                    pendingmessages.remove(message);
+                                    break;
+                                }
+                            }//TODO TEST IF THIS WORKS
+                            Log.d("Uh Oh", "Uh oh sadjkhasdkjhasdkjhsadkadshkjsad");
                         }
-                    });
-                    connected = true;
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+    //                    while(bluetoothsocket.isConnected()){
+    //                        Log.d("SDsddsdssd","fasdfdfdfsdfsdfsdfsddfsfdsfd");
+    //                        try {
+    //                            Thread.sleep(200);
+    //                        } catch (InterruptedException e) {
+    //                            e.printStackTrace();
+    //                        }
+    //                    }
+    //                    runOnUiThread(new Runnable() {
+    //                        @Override
+    //                        public void run() {
+    //                            ((TextView) findViewById(R.id.status)).setText("DISCONNECTED");
+    //                            ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,255,0,0));
+    //                        }
+    //                    });
+    //                    run();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        };
-        thread.start();
+            };
+            thread.start();
+
+            BroadcastReceiver bState = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    Log.d("SDAsadsadsadsad","iouweroiurweoiurewoirweuoiweru");
+                    String action = intent.getAction();
+                    switch (action){
+                        case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+                            connected = false;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((TextView) findViewById(R.id.status)).setText("DISCONNECTED");
+                                    ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,255,0,0));
+                                }
+                            });
+                            Thread thread1 = new Thread(thread);
+                            thread1.start();
+                            break;
+//                    case BluetoothDevice.ACTION_ACL_CONNECTED:
+//                        try {
+//                            out = bluetoothsocket.getOutputStream();
+//                            in = bluetoothsocket.getInputStream();
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    ((TextView) findViewById(R.id.status)).setText("CONNECTED");
+//                                    ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,0,255,0));
+//                                    Toast.makeText(MainActivity.this, "connected!",
+//                                            Toast.LENGTH_LONG).show();
+//                                }
+//                            });
+//                            while(!pendingmessages.isEmpty()){
+//                                for(String message: pendingmessages){
+//                                    out.write(message.getBytes(Charset.forName("UTF-8")));
+//                                    byte[] bytes = new byte[1000000];
+//                                    int amount = in.read(bytes);
+//                                    if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
+//                                    else continue;
+//                                    if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
+//                                        pendingmessages.remove(message);
+//                                        break;
+//                                    }
+//                                }//TODO TEST IF THIS WORKS
+//                            }
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        break;
+                    }
+                }
+            };
+
+            IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+            filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+            filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+            registerReceiver(bState,filter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
         start = System.nanoTime();
     }
@@ -136,72 +272,111 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void saveData(){
-        PercentRelativeLayout layout = (PercentRelativeLayout) viewPager.findViewWithTag("page1");
-        for(int i=0;i<layout.getChildCount();i++){
-            if(layout.getChildAt(i) instanceof CheckBox) {
-                try {
-                    out.write(Byte.valueOf("," + String.valueOf( ( (CheckBox) layout.getChildAt(i)).isChecked())));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return;
-
-//        File sdCard = Environment.getExternalStorageDirectory();
-////        File dir = new File (sdCard.getPath() + "/ScoutingData/");
-//
-//        File file = new File(sdCard.getPath() + "/ScoutingData/" + robotNum + ".txt");
-//
-//        try {
-//            file.getParentFile().mkdirs();
-//            if(!file.exists()){
-//                file.createNewFile();
-//            }
-//
-//            FileOutputStream f = new FileOutputStream(file, true);
-//
-//            OutputStreamWriter out = new OutputStreamWriter(f);
-//
-//            DateFormat dateFormat = new SimpleDateFormat("dd HH mm ss");
-//            Date date = new Date();
-//
-//            out.append("\n" + "start " + round + " " + dateFormat.format(date) + "\n");
-//
-//            PercentRelativeLayout layout1 = (PercentRelativeLayout) viewPager.findViewWithTag("page1");
-//            out.append("auto");
-//            for(int i=0;i<layout.getChildCount();i++){
-//                if(layout.getChildAt(i) instanceof CheckBox) {
-//                    out.append("," + String.valueOf( ( (CheckBox) layout.getChildAt(i)).isChecked()));
+//        PercentRelativeLayout layout = (PercentRelativeLayout) viewPager.findViewWithTag("page1");
+//        for(int i=0;i<layout.getChildCount();i++){
+//            if(layout.getChildAt(i) instanceof CheckBox) {
+//                try {
+//                    out.write(Byte.valueOf("," + String.valueOf( ( (CheckBox) layout.getChildAt(i)).isChecked())));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
 //                }
 //            }
-//
-////            for(CheckBox checkbox: checkboxes){
-////                out.append("checkbox " + getResources().getResourceEntryName(checkbox.getId()) + " " + checkbox.isChecked() + "\n");
-////            }
-////
-////            for(RadioGroup radiogroup: radiogroups){
-////                out.append("radiogroup " + getResources().getResourceEntryName(radiogroup.getId()) + " " + radiogroup.indexOfChild(findViewById(radiogroup.getCheckedRadioButtonId())) + "\n");
-////            }
-////
-//////            TODO: Write button data, might not be needed
-//////            for(Button button: buttons){
-//////                out.append("button " + getResources().getResourceEntryName(button.getId()) + " " + counter.count + "\n");
-//////            }
-////
-////            for(SeekBar seekbar: seekbars){
-////                out.append("seekbar " + getResources().getResourceEntryName(seekbar.getId()) + " " + seekbar.getProgress() + "\n");
-////            }
-////
-////
-////            out.append("end");
-//            out.close();
-//
-//            f.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
 //        }
+//
+//        return;
+
+        File sdCard = Environment.getExternalStorageDirectory();
+//        File dir = new File (sdCard.getPath() + "/ScoutingData/");
+
+        File file = new File(sdCard.getPath() + "/ScoutingData/" + robotNum + ".txt");
+
+        try {
+            file.getParentFile().mkdirs();
+            if(!file.exists()){
+                file.createNewFile();
+            }
+
+            FileOutputStream f = new FileOutputStream(file, true);
+
+            OutputStreamWriter out = new OutputStreamWriter(f);
+
+            final StringBuilder data = new StringBuilder();
+
+            DateFormat dateFormat = new SimpleDateFormat("dd HH mm ss");
+            Date date = new Date();
+
+            data.append("\n" + "start " + round + " " + dateFormat.format(date) + "\n");
+
+            LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            TableLayout layout = (TableLayout) inflater.inflate(R.layout.autopage, null).findViewById(R.id.autopagetablelayout);
+//            PercentRelativeLayout layout = (PercentRelativeLayout) findViewById(R.layout.autopage);
+            data.append("auto");
+            for(int i=0;i<layout.getChildCount();i++){
+                for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
+                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof CheckBox) {
+                        data.append("," + String.valueOf(((CheckBox) ((TableRow) layout.getChildAt(i)).getChildAt(s)).isChecked()));
+                    }
+                }
+            }
+
+            layout = (TableLayout) inflater.inflate(R.layout.teleoppage, null).findViewById(R.id.teleoptablelayout);
+            data.append("\nteleop");
+            for(int i=0;i<layout.getChildCount();i++){
+                for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
+                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
+                        data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
+                    }
+                }
+            }
+
+            layout = (TableLayout) inflater.inflate(R.layout.teleoppage, null).findViewById(R.id.teleoptablelayout);
+            data.append("\nendgame");
+            for(int i=0;i<layout.getChildCount();i++){
+                for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
+                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof CheckBox) {
+                        data.append("," + String.valueOf(((CheckBox) ((TableRow) layout.getChildAt(i)).getChildAt(s)).isChecked()));
+                    }
+                }
+            }
+
+            data.append("\nend");//make sure full message has been sent
+
+            out.append(data.toString());
+            out.close();
+
+            f.close();
+
+            if(bluetoothsocket != null && bluetoothsocket.isConnected()) this.out.write((robotNum + ":" + data.toString()).getBytes(Charset.forName("UTF-8")));
+            else pendingmessages.add(robotNum + ":" + data.toString());
+
+            Thread thread = new Thread(){
+                public void run(){
+                    while(true) {
+                        byte[] bytes = new byte[1000];
+                        try {
+                            if(!connected){
+                                pendingmessages.add(robotNum + ":" + data.toString());
+                                return;
+                            }
+                            int amount = in.read(bytes);
+                            if (new String(bytes, Charset.forName("UTF-8")).equals("done")) {
+                                return;
+                            }
+                            if(!connected){
+                                pendingmessages.add(robotNum + ":" + data.toString());
+                                return;
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            thread.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
