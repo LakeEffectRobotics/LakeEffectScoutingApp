@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(true) return;
 
         //add all buttons and counters etc.
 
