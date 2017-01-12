@@ -6,13 +6,11 @@
     android:layout_height="match_parent">
 
 
-
-
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/autopagetablelayout"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
@@ -69,12 +67,15 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:id="@+id/autoTask0"
-                android:layout_weight="0.25"
+                android:layout_weight="0.3"
                 android:textSize="25dp" />
 
             <RadioGroup android:orientation="horizontal"
-                android:layout_weight="0.25"
-                android:layout_width="match_parent">
+                android:layout_weight="0.5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
                 <RadioButton
                     android:layout_gravity="center_horizontal"
                     android:text=""
@@ -84,7 +85,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:id="@+id/autoBaselineComplete"
-                    android:layout_weight="0.25" />
+                    android:layout_weight="0.5" />
+
 
                 <RadioButton
                     android:layout_gravity="center_horizontal"
@@ -94,7 +96,7 @@
                     android:layout_alignTop="@+id/tableLayout"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_weight="0.25"
+                    android:layout_weight="0.33333"
                     android:id="@+id/autoBaselineFailed" />
             </RadioGroup>
         </TableRow>
@@ -112,7 +114,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:id="@+id/autoTask1"
-                android:layout_weight="0.25"
+                android:layout_weight="0.3"
                 android:textSize="25dp" />
 
             <ca.lakeeffect.scoutingapp.Counter
@@ -124,7 +126,7 @@
                 android:layout_alignTop="@+id/autoTableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_weight="0.25"/>
+                android:layout_weight="0.3"/>
 
             <ca.lakeeffect.scoutingapp.Counter
                 android:id = "@+id/lowMissed"
@@ -135,7 +137,7 @@
                 android:layout_alignTop="@+id/autoTableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_weight="0.25"/>
+                android:layout_weight="0.3"/>
 
         </TableRow>
 
@@ -152,7 +154,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:id="@+id/autoTask2"
-                android:layout_weight="0.25"
+                android:layout_weight="0.3"
                 android:textSize="25dp" />
 
             <ca.lakeeffect.scoutingapp.Counter
@@ -164,7 +166,7 @@
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_weight="0.25"/>
+                android:layout_weight="0.3"/>
 
             <ca.lakeeffect.scoutingapp.Counter
                 android:id = "@+id/autoHighMissed"
@@ -175,7 +177,7 @@
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_weight="0.25"/>
+                android:layout_weight="0.3"/>
 
         </TableRow>
 
@@ -192,12 +194,11 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:id="@+id/autoTask3"
-                android:layout_weight="0.25"
+                android:layout_weight="0.3"
                 android:textSize="25dp" />
 
             <RadioGroup android:orientation="horizontal"
-                android:layout_weight="0.25"
-                android:layout_width="match_parent">
+                android:layout_weight="0.5">
                 <RadioButton
                     android:layout_gravity="center_horizontal"
                     android:text=""
@@ -207,7 +208,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:id="@+id/autoGearComplete"
-                    android:layout_weight="0.25" />
+                    android:layout_weight="0.5" />
 
                 <RadioButton
                     android:layout_gravity="center_horizontal"
@@ -217,7 +218,7 @@
                     android:layout_alignTop="@+id/tableLayout"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_weight="0.25"
+                    android:layout_weight="0.3"
                     android:id="@+id/autoGearMissed" />
             </RadioGroup>
 
@@ -236,7 +237,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:id="@+id/autoTask4"
-                android:layout_weight="0.25"
+                android:layout_weight="0.3"
                 android:textSize="25dp" />
 
             <ca.lakeeffect.scoutingapp.Counter
@@ -248,7 +249,7 @@
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_weight="0.25"/>
+                android:layout_weight="0.3"/>
 
             <ca.lakeeffect.scoutingapp.Counter
                 android:id = "@+id/autoHopperMissed"
@@ -259,7 +260,7 @@
                 android:layout_alignTop="@+id/tableLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_weight="0.25"/>
+                android:layout_weight="0.3"/>
 
         </TableRow>
 
