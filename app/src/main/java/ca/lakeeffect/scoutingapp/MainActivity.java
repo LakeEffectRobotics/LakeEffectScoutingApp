@@ -88,17 +88,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(DialogInterface dialog, int which) {
                         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
-                        EditText robotNumin = (EditText) layout.findViewById(R.id.editText);
-                        EditText roundin = (EditText) layout.findViewById(R.id.editText2);
+                        EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
+                        EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
                         robotNum = Integer.parseInt(robotNumin.getText().toString());
                         round = Integer.parseInt(roundin.getText().toString());
+                        robotNumText = (TextView) findViewById(R.id.robotNum);
+                        robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
                     }
                 })
                 .create()
                 .show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(true) return;
 
         //add all buttons and counters etc.
 
