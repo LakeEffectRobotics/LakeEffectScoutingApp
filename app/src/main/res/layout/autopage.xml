@@ -30,7 +30,8 @@
                 android:id="@+id/autoHeader0"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
-                android:textSize="30dp" />
+                android:textSize="30dp"
+                />
             <TextView
                 android:text="Completed"
                 android:layout_width="wrap_content"

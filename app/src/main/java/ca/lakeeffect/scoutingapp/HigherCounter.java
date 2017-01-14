@@ -14,6 +14,7 @@ public class HigherCounter extends Counter{
 
     Button plus5Button;
     Button minus5Button;
+
     public HigherCounter(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater inflater = LayoutInflater.from(context);
