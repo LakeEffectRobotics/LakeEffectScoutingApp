@@ -1,38 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <android.support.percent.PercentRelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--<RadioGroup>-->
+            <!--&lt;!&ndash;<RadioButton&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width=""&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="" />&ndash;&gt;-->
+        <!--</RadioGroup>-->
+
+        <Button
+            android:text="Submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="129dp"
+            android:id="@+id/submit"
+            android:textSize="50sp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+    </android.support.percent.PercentRelativeLayout>
 
 
-    <Button
-        android:text="Submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="129dp"
-        android:id="@+id/submit"
-        android:textSize="50sp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
 
-    <CheckBox
-        android:text="Challenge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="101dp"
-        android:id="@+id/challenge"
-        android:textSize="35sp"
-        android:checked="false" />
-
-    <CheckBox
-        android:text="Scale"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/challenge"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp"
-        android:id="@+id/scale"
-        android:textSize="35sp" />
-
-</android.support.percent.PercentRelativeLayout>
+</ScrollView>
