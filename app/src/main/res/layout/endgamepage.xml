@@ -7,11 +7,48 @@
     <android.support.percent.PercentRelativeLayout android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!--<RadioGroup>-->
-            <!--&lt;!&ndash;<RadioButton&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width=""&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="" />&ndash;&gt;-->
-        <!--</RadioGroup>-->
+        <RadioGroup
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+            <RadioButton
+                android:text="Successful Climb"
+                android:textSize="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.5"
+                android:id="@+id/ClimbSuccess" />
+
+            <RadioButton
+                android:text="Failed Climb"
+                android:textSize="30dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/ClimbFail"
+                android:layout_weight="0.5"
+            />
+            <RadioButton
+                android:text="Did Not Climb"
+                android:textSize="30dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/NoClimb"
+                android:layout_weight="0.5"
+            />
+        </RadioGroup>
 
         <Button
             android:text="Submit"
