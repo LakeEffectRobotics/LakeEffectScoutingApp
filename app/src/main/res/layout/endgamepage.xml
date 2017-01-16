@@ -12,7 +12,8 @@
             android:layout_width="wrap_content"
             android:gravity="center"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
+            android:paddingTop="50dp"
+            android:id="@+id/radioGroup">
             <RadioButton
                 android:text="Successful Climb"
                 android:textSize="30dp"
@@ -34,8 +35,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:id="@+id/ClimbFail"
-                android:layout_weight="0.5"
-            />
+                android:layout_weight="0.5"/>
             <RadioButton
                 android:text="Did Not Climb"
                 android:textSize="30dp"
@@ -46,9 +46,19 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:id="@+id/NoClimb"
-                android:layout_weight="0.5"
-            />
+                android:layout_weight="0.5"/>
         </RadioGroup>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:lines="8"
+            android:inputType="textMultiLine"
+            android:text="Comments"
+            android:id="@+id/editText4"
+            android:layout_below="@+id/radioGroup"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="234dp"
+            android:scrollbars="vertical"/>
 
         <Button
             android:text="Submit"
@@ -59,6 +69,7 @@
             android:textSize="50sp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
+
     </android.support.percent.PercentRelativeLayout>
 
 
