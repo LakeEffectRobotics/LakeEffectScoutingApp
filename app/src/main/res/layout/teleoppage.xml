@@ -109,7 +109,7 @@
                 android:layout_weight="1"
                 android:textSize="25dp" />
 
-            <ca.lakeeffect.scoutingapp.Counter
+            <ca.lakeeffect.scoutingapp.HigherCounter
                 android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
                 android:id="@+id/teleAttempt2"
                 android:layout_weight="1" />
 
-            <ca.lakeeffect.scoutingapp.Counter
+            <ca.lakeeffect.scoutingapp.HigherCounter
                 android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
@@ -139,7 +139,7 @@
             android:weightSum="3">
 
             <TextView
-                android:text="High Goal: "
+                android:text="Gears: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
