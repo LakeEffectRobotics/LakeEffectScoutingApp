@@ -21,7 +21,7 @@
         android:layout_height="60dp"
         android:id="@+id/minus5Button"
         android:layout_gravity="center_horizontal"
-        android:text="5"
+        android:text="3"
         android:textSize="25dp"
         android:textAlignment="center"
         android:layout_below="@+id/minusOneButton"
@@ -42,7 +42,7 @@
     <Button
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:text="5"
+        android:text="3"
         android:id="@+id/plus5Button"
         android:layout_gravity="center_horizontal"
         android:textSize="23sp"

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TableLayout
@@ -78,7 +80,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:id="@+id/teleAttempt0"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                app:bigButton="9"/>
 
             <ca.lakeeffect.scoutingapp.HigherCounter
                 android:layout_gravity="center_horizontal"

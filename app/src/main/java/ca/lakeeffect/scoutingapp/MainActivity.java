@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        //TODO prevent blank numbers
+
         new AlertDialog.Builder(this)
                 .setView(R.layout.dialog)
                 .setTitle("Enter Info")
