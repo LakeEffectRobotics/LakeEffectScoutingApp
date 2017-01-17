@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<String> pendingmessages = new ArrayList<>();
     boolean connected;
 
+    Button moreOptions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -93,9 +95,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         robotNum = Integer.parseInt(robotNumin.getText().toString());
                         round = Integer.parseInt(roundin.getText().toString());
                         robotNumText = (TextView) findViewById(R.id.robotNum);
-                        robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
+                        robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
                     }
                 })
+                .setCancelable(false)
                 .create()
                 .show();
         super.onCreate(savedInstanceState);
@@ -129,6 +132,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
 
 //        submit.setOnClickListener(this);
+
+        //OnClick Listeners
+        moreOptions = (Button) findViewById(R.id.moreOptions);
+        moreOptions.setOnClickListener(this);
 
         //Ask for permissions
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -271,6 +278,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        if(v == submit){
 //            saveData();
 //        }
+
+        if(v == moreOptions){
+            //TODO DO MORE OPTIONS
+        }
     }
 
     public void saveData(){
@@ -395,5 +406,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        return;
     }
 }

@@ -38,7 +38,7 @@ public class HigherCounter extends LinearLayout implements View.OnClickListener{
         minusOneButton = (Button) findViewById(R.id.minusOneButton);
         minusOneButton.setOnClickListener(this);
         minus5Button = (Button) findViewById(R.id.minus5Button);
-        minus5Button.setOnClickListener(this);
+        minus5Button.setOnClickListener(this);//TODO CHANGE TO 3 AND 9
 
 
         counterText = (TextView) findViewById(R.id.counterText);
