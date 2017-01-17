@@ -29,7 +29,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="30dp" />
             <TextView
-                android:text="Sucess"
+                android:text="Success"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
@@ -107,7 +107,8 @@
                 android:layout_alignParentEnd="true"
                 android:id="@+id/teleTask2"
                 android:layout_weight="1"
-                android:textSize="25dp" />
+                android:textSize="25dp"
+                />
 
             <ca.lakeeffect.scoutingapp.HigherCounter
                 android:layout_gravity="center_horizontal"

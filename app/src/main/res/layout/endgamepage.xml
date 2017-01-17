@@ -51,13 +51,9 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:lines="8"
-            android:inputType="textMultiLine"
+            android:layout_above="@+id/submit"
             android:text="Comments"
             android:id="@+id/editText4"
-            android:layout_below="@+id/radioGroup"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="234dp"
             android:scrollbars="vertical"/>
 
         <Button
