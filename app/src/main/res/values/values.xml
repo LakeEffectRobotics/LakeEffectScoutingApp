@@ -2,7 +2,4 @@
 <resources>
     <color name="primary_text_default_material_dark">#5d5d5d</color>
     <color name="secondary_text_default_material_dark">#b3d4d4d4</color>
-    <declare-styleable name="HigherCounter">
-        <attr name="bigButton" format ="integer"/>
-    </declare-styleable>
 </resources>

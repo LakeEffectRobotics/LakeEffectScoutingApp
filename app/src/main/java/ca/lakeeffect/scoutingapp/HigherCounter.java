@@ -2,6 +2,7 @@ package ca.lakeeffect.scoutingapp;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,15 @@ public class HigherCounter extends LinearLayout implements View.OnClickListener{
 
         inflater.inflate(R.layout.higher_counter, this);
 
+    for(int i = 0; i < attrs.getAttributeCount(); i++){
+        System.out.println(attrs.getAttributeName(i)+"\t"+attrs.getAttributeValue(i));
+        if(attrs.getAttributeName(i).equals("BigButtonValue")){
+            bigButton = Integer.parseInt(attrs.getAttributeValue(i));
+            break;
+        }
+    }
+
+
         plusBigButton = (Button) findViewById(R.id.plus5Button);
         plusBigButton.setOnClickListener(this);
         plusOneButton = (Button) findViewById(R.id.plusOneButton);
@@ -58,12 +68,5 @@ public class HigherCounter extends LinearLayout implements View.OnClickListener{
         counterText.setText(count+"");
     }
 
-    public void setBigButton(int bigButton){
-        this.bigButton = bigButton;
-    }
-
-    public int getBigButton(){
-        return(this.bigButton);
-    }
 
 }

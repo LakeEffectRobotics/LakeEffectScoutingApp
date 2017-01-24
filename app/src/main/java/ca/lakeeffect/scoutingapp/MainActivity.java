@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewPager = (ViewPager) findViewById(R.id.scrollingview);
         pagerAdapter = new InputPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setOffscreenPageLimit(3);
 
 //        NumberPicker np = (NumberPicker) findViewm counters
 //        np.setWrapSelectorWheel(false);ById(R.id.numberPicker);

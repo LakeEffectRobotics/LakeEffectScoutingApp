@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/teleoptablelayout"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
@@ -81,7 +81,7 @@
                 android:layout_alignParentStart="true"
                 android:id="@+id/teleAttempt0"
                 android:layout_weight="1"
-                app:bigButton="9"/>
+                app:BigButtonValue="9"/>
 
             <ca.lakeeffect.scoutingapp.HigherCounter
                 android:layout_gravity="center_horizontal"
@@ -92,7 +92,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_weight="1"
-                android:id="@+id/teleFailed0" />
+                android:id="@+id/teleFailed0"
+                app:BigButtonValue="9"/>
         </TableRow>
 
         <TableRow
@@ -122,7 +123,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:id="@+id/teleAttempt2"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                app:BigButtonValue="3"/>
 
             <ca.lakeeffect.scoutingapp.HigherCounter
                 android:layout_gravity="center_horizontal"
@@ -133,7 +135,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_weight="1"
-                android:id="@+id/teleFailed2" />
+                android:id="@+id/teleFailed2"
+                app:BigButtonValue="3"/>
     </TableRow>
 
         <TableRow
@@ -143,7 +146,7 @@
             android:weightSum="3">
 
             <TextView
-                android:text="Gears: "
+                android:text="Gears:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tableLayout"
