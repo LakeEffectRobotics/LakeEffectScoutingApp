@@ -17,15 +17,22 @@ public class InputPagerAdapter extends FragmentPagerAdapter{
         super(fm);
     }
 
+    public AutoPage autoPage;
+    public TeleopPage teleopPage;
+    public EndgamePage endgamePage;
+
     @Override
     public Fragment getItem(int position) {
         switch(position){
             case 0:
-                return new AutoPage();
+                autoPage = new AutoPage();
+                return autoPage;
             case 1:
-                return new TeleopPage();
+                teleopPage = new TeleopPage();
+                return teleopPage;
             case 2:
-                return new EndgamePage();
+                endgamePage = new EndgamePage();
+                return endgamePage;
         }
         return null;
     }

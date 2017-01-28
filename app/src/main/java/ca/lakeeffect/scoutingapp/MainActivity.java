@@ -15,9 +15,12 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ScrollingView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +31,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     static long start;
 
-    FragmentPagerAdapter pagerAdapter;
+    InputPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
     BluetoothSocket bluetoothsocket;
@@ -115,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         pagerAdapter = new InputPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(3);
+
 
 //        NumberPicker np = (NumberPicker) findViewm counters
 //        np.setWrapSelectorWheel(false);ById(R.id.numberPicker);
@@ -288,6 +294,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void saveData(){
+        //TODO: make radio button output legible
 //        PercentRelativeLayout layout = (PercentRelativeLayout) viewPager.findViewWithTag("page1");
 //        for(int i=0;i<layout.getChildCount();i++){
 //            if(layout.getChildAt(i) instanceof CheckBox) {
@@ -323,37 +330,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             data.append("\n" + "start " + round + " " + dateFormat.format(date) + "\n");
 
+
+
             LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            TableLayout layout = (TableLayout) inflater.inflate(R.layout.autopage, null).findViewById(R.id.autopagetablelayout);
+            TableLayout layout = (TableLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autopagetablelayout);
 //            PercentRelativeLayout layout = (PercentRelativeLayout) findViewById(R.layout.autopage);
             data.append("auto");
             for(int i=0;i<layout.getChildCount();i++){
                 for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
-                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof CheckBox) {
-                        data.append("," + String.valueOf(((CheckBox) ((TableRow) layout.getChildAt(i)).getChildAt(s)).isChecked()));
+                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof RadioGroup) {
+                        data.append("," + String.valueOf(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getCheckedRadioButtonId()));
+                    }
+                    else if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
+                        data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
                     }
                 }
             }
 
-            layout = (TableLayout) inflater.inflate(R.layout.teleoppage, null).findViewById(R.id.teleoptablelayout);
+            layout = (TableLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.teleoptablelayout);
             data.append("\nteleop");
             for(int i=0;i<layout.getChildCount();i++){
                 for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
                         data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
                     }
-                }
-            }
-
-            layout = (TableLayout) inflater.inflate(R.layout.teleoppage, null).findViewById(R.id.teleoptablelayout);
-            data.append("\nendgame");
-            for(int i=0;i<layout.getChildCount();i++){
-                for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
-                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof CheckBox) {
-                        data.append("," + String.valueOf(((CheckBox) ((TableRow) layout.getChildAt(i)).getChildAt(s)).isChecked()));
+                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof HigherCounter) {
+                        data.append("," + String.valueOf(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
                     }
                 }
             }
+            //TODO: NOT WORKING, TEST THIS CODE
+            ScrollView v = ((ScrollView) pagerAdapter.autoPage.getView());
+            PercentRelativeLayout percentLayout = ((PercentRelativeLayout) v.getChildAt(0));
+            data.append("\nendgame");
+            for(int i=0; i<percentLayout.getChildCount(); i++){
+                if(percentLayout.getChildAt(i) instanceof RadioGroup){
+                    data.append("," + String.valueOf(((RadioGroup) percentLayout.getChildAt(i)).getCheckedRadioButtonId()));
+                }
+                if(percentLayout.getChildAt(i) instanceof EditText){
+                    data.append("," + ((EditText) percentLayout.getChildAt(i)).getText().toString().replace(",", "."));
+                }
+            }
+
 
             data.append("\nend");//make sure full message has been sent
 
