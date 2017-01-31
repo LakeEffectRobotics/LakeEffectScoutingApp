@@ -3,24 +3,25 @@ package ca.lakeeffect.scoutingapp;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * Created by Ajay on 9/25/2016.
  *
  * Pager Adapter for the input pane
  */
-public class InputPagerAdapter extends FragmentPagerAdapter{
+public class InputPagerAdapter extends FragmentStatePagerAdapter {
 
     final int PAGENUM = 3;
-
-    public InputPagerAdapter(FragmentManager fm) {
-        super(fm);
-    }
 
     public AutoPage autoPage;
     public TeleopPage teleopPage;
     public EndgamePage endgamePage;
 
+
+    public InputPagerAdapter(FragmentManager fm) {
+        super(fm);
+    }
     @Override
     public Fragment getItem(int position) {
         switch(position){
@@ -53,5 +54,11 @@ public class InputPagerAdapter extends FragmentPagerAdapter{
                 return "Endgame";
         }
         return "";
+    }
+
+    @Override
+    public int getItemPosition(Object object){
+        //Ignore sketchyness
+        return POSITION_NONE;
     }
 }
