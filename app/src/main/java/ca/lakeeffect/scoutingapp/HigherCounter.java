@@ -2,6 +2,7 @@ package ca.lakeeffect.scoutingapp;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,10 @@ public class HigherCounter extends LinearLayout implements View.OnClickListener{
 
     Button plusOneButton;
     Button minusOneButton;
-    Button plus5Button;
-    Button minus5Button;
+    Button plusBigButton;
+    Button minusBigButton;
+
+    int bigButton = 1;
 
     public HigherCounter(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -31,15 +34,25 @@ public class HigherCounter extends LinearLayout implements View.OnClickListener{
 
         inflater.inflate(R.layout.higher_counter, this);
 
-        plus5Button = (Button) findViewById(R.id.plus5Button);
-        plus5Button.setOnClickListener(this);        
+    for(int i = 0; i < attrs.getAttributeCount(); i++){
+        System.out.println(attrs.getAttributeName(i)+"\t"+attrs.getAttributeValue(i));
+        if(attrs.getAttributeName(i).equals("BigButtonValue")){
+            bigButton = Integer.parseInt(attrs.getAttributeValue(i));
+            break;
+        }
+    }
+
+
+        plusBigButton = (Button) findViewById(R.id.plus5Button);
+        plusBigButton.setOnClickListener(this);
         plusOneButton = (Button) findViewById(R.id.plusOneButton);
         plusOneButton.setOnClickListener(this);
         minusOneButton = (Button) findViewById(R.id.minusOneButton);
         minusOneButton.setOnClickListener(this);
-        minus5Button = (Button) findViewById(R.id.minus5Button);
-        minus5Button.setOnClickListener(this);//TODO CHANGE TO 3 AND 9
-
+        minusBigButton = (Button) findViewById(R.id.minus5Button);
+        minusBigButton.setOnClickListener(this);//TODO CHANGE TO 3 AND 9
+        plusBigButton.setText(String.valueOf(bigButton));
+        minusBigButton.setText(String.valueOf(bigButton));
 
         counterText = (TextView) findViewById(R.id.counterText);
     }
@@ -48,11 +61,12 @@ public class HigherCounter extends LinearLayout implements View.OnClickListener{
     public void onClick(View view){
         times.add(new Long(System.nanoTime() - MainActivity.start));
         if(view == plusOneButton) count ++;
-        else if(view == plus5Button) count +=5;
+        else if(view == plusBigButton) count +=bigButton;
         if(view == minusOneButton) count --;
-        else if(view == minus5Button) count -=5;
+        else if(view == minusBigButton) count -=bigButton;
         if(count < 0) count = 0;
         counterText.setText(count+"");
     }
+
 
 }

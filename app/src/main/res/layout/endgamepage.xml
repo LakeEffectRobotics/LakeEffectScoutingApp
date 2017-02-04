@@ -13,7 +13,7 @@
             android:gravity="center"
             android:layout_centerHorizontal="true"
             android:paddingTop="50dp"
-            android:id="@+id/radioGroup">
+            android:id="@+id/endgameClimbGroup">
             <RadioButton
                 android:text="Successful Climb"
                 android:textSize="50dp"
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/submit"
             android:hint="Comments"
-            android:id="@+id/editText4"/>
+            android:id="@+id/endgameComments"/>
 
         <Button
             android:text="Submit"

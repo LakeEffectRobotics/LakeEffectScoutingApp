@@ -77,6 +77,7 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
                             e.printStackTrace();
                         }
                         ((MainActivity)getActivity()).saveData();
+                        ((MainActivity)getActivity()).reset();
 
                     }
                 })
@@ -92,7 +93,6 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
 //
 //        getView().findViewById(R.id.header0);
 //
-//        File file = new File(sdCard.getPath() + "/ScoutingData/" + robotNum + ".txt");
 //
 //        try {
 //            file.getParentFile().mkdirs();

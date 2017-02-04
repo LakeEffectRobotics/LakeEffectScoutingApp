@@ -15,20 +15,24 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -41,6 +45,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,7 +55,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity{
 
     List<Counter> counters = new ArrayList<>();
     List<CheckBox> checkboxes = new ArrayList<>();
@@ -61,14 +66,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    Button submit;
 
     TextView timer;
-    TextView robotNumText;//robotnum and round
+    TextView robotNumText; //robotnum and round
 
     int robotNum = 2708;
-    int round = 2;
+    int round = 0;
 
     static long start;
 
-    FragmentPagerAdapter pagerAdapter;
+    InputPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
     BluetoothSocket bluetoothsocket;
@@ -82,29 +87,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        new AlertDialog.Builder(this)
-                .setView(R.layout.dialog)
-                .setTitle("Enter Info")
-                .setPositiveButton(android.R.string.yes,  new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
-                        EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
-                        EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
-                        robotNum = Integer.parseInt(robotNumin.getText().toString());
-                        round = Integer.parseInt(roundin.getText().toString());
-                        robotNumText = (TextView) findViewById(R.id.robotNum);
-                        robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
-                    }
-                })
-                .setCancelable(false)
-                .create()
-                .show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        alert();
         //add all buttons and counters etc.
+
+        Button moreOptions = (Button) findViewById(R.id.moreOptions);
+        moreOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(MainActivity.this, v, Gravity.CENTER_HORIZONTAL);
+                menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if(item.getItemId() == R.id.reset){
+                           //TODO: ADD CONFIRM
+                            reset();
+                        }
+                        if(item.getItemId() == R.id.changeNum){
+                            alert();
+                        }
+                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+                menu.show();
+            }});
 
 //        counters.add((Counter) findViewById(R.id.goalsCounter));
 
@@ -112,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewPager = (ViewPager) findViewById(R.id.scrollingview);
         pagerAdapter = new InputPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setOffscreenPageLimit(3);
+
 
 //        NumberPicker np = (NumberPicker) findViewm counters
 //        np.setWrapSelectorWheel(false);ById(R.id.numberPicker);
@@ -132,10 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
 
 //        submit.setOnClickListener(this);
-
-        //OnClick Listeners
-        moreOptions = (Button) findViewById(R.id.moreOptions);
-        moreOptions.setOnClickListener(this);
 
         //Ask for permissions
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -273,18 +280,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         start = System.nanoTime();
     }
 
-    @Override
-    public void onClick(View v) {
-//        if(v == submit){
-//            saveData();
-//        }
 
-        if(v == moreOptions){
-            //TODO DO MORE OPTIONS
-        }
-    }
 
     public void saveData(){
+        //TODO: make radio button output legible
 //        PercentRelativeLayout layout = (PercentRelativeLayout) viewPager.findViewWithTag("page1");
 //        for(int i=0;i<layout.getChildCount();i++){
 //            if(layout.getChildAt(i) instanceof CheckBox) {
@@ -320,37 +319,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             data.append("\n" + "start " + round + " " + dateFormat.format(date) + "\n");
 
+
+
             LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            TableLayout layout = (TableLayout) inflater.inflate(R.layout.autopage, null).findViewById(R.id.autopagetablelayout);
+            TableLayout layout = (TableLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autopagetablelayout);
 //            PercentRelativeLayout layout = (PercentRelativeLayout) findViewById(R.layout.autopage);
             data.append("auto");
             for(int i=0;i<layout.getChildCount();i++){
                 for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
-                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof CheckBox) {
-                        data.append("," + String.valueOf(((CheckBox) ((TableRow) layout.getChildAt(i)).getChildAt(s)).isChecked()));
+                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof RadioGroup) {
+                        data.append("," + String.valueOf(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getCheckedRadioButtonId()));
+                    }
+                    else if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
+                        data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
                     }
                 }
             }
 
-            layout = (TableLayout) inflater.inflate(R.layout.teleoppage, null).findViewById(R.id.teleoptablelayout);
+            layout = (TableLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.teleoptablelayout);
             data.append("\nteleop");
             for(int i=0;i<layout.getChildCount();i++){
                 for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
                         data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
                     }
-                }
-            }
-
-            layout = (TableLayout) inflater.inflate(R.layout.teleoppage, null).findViewById(R.id.teleoptablelayout);
-            data.append("\nendgame");
-            for(int i=0;i<layout.getChildCount();i++){
-                for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
-                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof CheckBox) {
-                        data.append("," + String.valueOf(((CheckBox) ((TableRow) layout.getChildAt(i)).getChildAt(s)).isChecked()));
+                    if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof HigherCounter) {
+                        data.append("," + String.valueOf(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
                     }
                 }
             }
+            ScrollView v = ((ScrollView) pagerAdapter.endgamePage.getView());
+            PercentRelativeLayout percentLayout = ((PercentRelativeLayout) v.getChildAt(0));
+            data.append("\nendgame");
+            for(int i=0; i<percentLayout.getChildCount(); i++){
+                if(percentLayout.getChildAt(i) instanceof RadioGroup){
+                    data.append("," + String.valueOf(((RadioGroup) percentLayout.getChildAt(i)).getCheckedRadioButtonId()));
+                }
+                if(percentLayout.getChildAt(i) instanceof EditText){
+                    data.append("," + ((EditText) percentLayout.getChildAt(i)).getText().toString().replace(",", "."));
+                }
+            }
+
 
             data.append("\nend");//make sure full message has been sent
 
@@ -412,4 +421,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed(){
         return;
     }
+
+    public void reset(){
+        //setup scrolling viewpager
+        alert();
+
+//        viewPager = (ViewPager) findViewById(R.id.scrollingview);
+        viewPager.setAdapter(pagerAdapter);
+//        viewPager.setOffscreenPageLimit(3);
+//        viewPager.getAdapter().notifyDataSetChanged();
+
+        ((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).clearCheck();
+        ((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoGearGroup)).clearCheck();
+        ((RadioGroup) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimbGroup)).clearCheck();
+        ((EditText) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameComments)).setText("");
+    }
+
+    public void alert(){
+        //TODO prevent blank numbers
+
+        new AlertDialog.Builder(this)
+                .setView(R.layout.dialog)
+                .setTitle("Enter Info")
+                .setPositiveButton(android.R.string.yes,  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
+                        EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
+                        EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
+                        robotNum = Integer.parseInt(robotNumin.getText().toString());
+                        round = Integer.parseInt(roundin.getText().toString());
+                        robotNumText = (TextView) findViewById(R.id.robotNum);
+                        robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
+                    }
+                })
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
+
 }

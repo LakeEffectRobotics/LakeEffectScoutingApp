@@ -78,6 +78,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:id="@+id/autoBaselineGroup"
 
                 >
 
@@ -208,7 +209,8 @@
                 />
 
             <RadioGroup android:orientation="horizontal"
-                android:layout_weight="2">
+                android:layout_weight="2"
+                android:id="@+id/autoGearGroup">
                 <RadioButton
                     android:layout_gravity="center_horizontal"
                     android:text=""
