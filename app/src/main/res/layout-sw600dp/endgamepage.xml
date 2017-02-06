@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <android.support.percent.PercentRelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="50dp"
+            android:id="@+id/endgameClimbGroup">
+            <RadioButton
+                android:text="Successful Climb"
+                android:textSize="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.5"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/ClimbSuccess" />
+
+            <RadioButton
+                android:text="Failed Climb"
+                android:textSize="50dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/ClimbFail"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="0.5"/>
+            <RadioButton
+                android:text="Did Not Climb"
+                android:textSize="50dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/NoClimb"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="0.5"/>
+        </RadioGroup>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/submit"
+            android:hint="Comments"
+            android:id="@+id/endgameComments"/>
+
+        <Button
+            android:text="Submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="129dp"
+            android:id="@+id/submit"
+            android:textSize="50sp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+
+    </android.support.percent.PercentRelativeLayout>
+
+
+
+</ScrollView>

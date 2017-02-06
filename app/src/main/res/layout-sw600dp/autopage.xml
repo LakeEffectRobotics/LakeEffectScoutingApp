@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/autopagetablelayout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp"
+            android:weightSum="3">
+
+            <TextView
+                android:text="Task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/autoHeader0"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:textSize="30dp"
+                />
+            <TextView
+                android:text="Completed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/autoHeader1"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:textSize="30dp" />
+            <TextView
+                android:text="Failed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/autoHeader2"
+                android:layout_weight="1"
+                android:textSize="30dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp"
+            android:weightSum="3">
+
+            <TextView
+                android:text="Baseline: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/autoTask0"
+                android:layout_weight="1"
+                android:textSize="25dp" />
+
+            <RadioGroup android:orientation="horizontal"
+                android:layout_weight="2"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/autoBaselineGroup"
+
+                >
+
+                <RadioButton
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="0.5"
+                    android:id="@+id/autoBaselineFailed" />
+
+                <RadioButton
+                    android:text=""
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/autoBaselineComplete"
+                    android:layout_weight="0.5"
+                    />
+
+
+            </RadioGroup>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp"
+            android:weightSum="3">
+
+            <TextView
+                android:text="Low Goal:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/autoTask1"
+                android:layout_weight="1"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/lowComplete"
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/autoTableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"/>
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/lowMissed"
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/autoTableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp"
+            android:weightSum="3">
+
+            <TextView
+                android:text="High Goal:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/autoTask2"
+                android:layout_weight="1"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/autoHighComplete"
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"/>
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/autoHighMissed"
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp"
+            android:weightSum="3">
+
+            <TextView
+                android:text="Gear Delivered:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/autoTask3"
+                android:layout_weight="1"
+                android:textSize="25dp"
+                />
+
+            <RadioGroup android:orientation="horizontal"
+                android:layout_weight="2"
+                android:id="@+id/autoGearGroup">
+                <RadioButton
+                    android:layout_gravity="center_horizontal"
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/autoGearComplete"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:layout_gravity="center_horizontal"
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="1"
+                    android:id="@+id/autoGearMissed" />
+            </RadioGroup>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp"
+            android:weightSum="3">
+
+            <TextView
+                android:text="Hopper Hit:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/autoTask4"
+                android:layout_weight="1"
+                android:textSize="25dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/autoHopperComplete"
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"/>
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:id = "@+id/autoHopperMissed"
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"/>
+
+        </TableRow>
+
+    </TableLayout>
+
+
+</android.support.percent.PercentRelativeLayout>
