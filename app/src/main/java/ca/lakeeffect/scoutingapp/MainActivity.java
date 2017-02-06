@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -93,6 +94,12 @@ public class MainActivity extends AppCompatActivity{
         alert();
         //add all buttons and counters etc.
 
+        SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+        for(int i=0;i<prefs.getInt("messageAmount",0);i++){
+            pendingmessages.add(prefs.getString("message"+prefs.getInt("messageAmount",0),""));
+        }
+
+
         Button moreOptions = (Button) findViewById(R.id.moreOptions);
         moreOptions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +164,7 @@ public class MainActivity extends AppCompatActivity{
 
         //bluetooth stuff
         try {
-            final BluetoothServerSocket bss = ba.listenUsingRfcommWithServiceRecord("DialUpInternet", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
+            final BluetoothServerSocket bss = ba.listenUsingRfcommWithServiceRecord("SteamworksScoutingApp", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
 
             final Thread thread = new Thread(){
                 public void run(){
@@ -368,9 +375,6 @@ public class MainActivity extends AppCompatActivity{
 
             f.close();
 
-            if(bluetoothsocket != null && bluetoothsocket.isConnected()) this.out.write((robotNum + ":" + data.toString()).getBytes(Charset.forName("UTF-8")));
-            else pendingmessages.add(robotNum + ":" + data.toString());
-
             Thread thread = new Thread(){
                 public void run(){
                     while(true) {
@@ -378,6 +382,11 @@ public class MainActivity extends AppCompatActivity{
                         try {
                             if(!connected){
                                 pendingmessages.add(robotNum + ":" + data.toString());
+                                SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + data.toString());
+                                editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
+                                editor.apply();
                                 return;
                             }
                             int amount = in.read(bytes);
@@ -386,6 +395,11 @@ public class MainActivity extends AppCompatActivity{
                             }
                             if(!connected){
                                 pendingmessages.add(robotNum + ":" + data.toString());
+                                SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + data.toString());
+                                editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
+                                editor.apply();
                                 return;
                             }
                         } catch (IOException e) {
@@ -394,7 +408,18 @@ public class MainActivity extends AppCompatActivity{
                     }
                 }
             };
-            thread.start();
+
+            if(bluetoothsocket != null && bluetoothsocket.isConnected()){
+                this.out.write((robotNum + ":" + data.toString()).getBytes(Charset.forName("UTF-8")));
+                thread.start();
+            }else{
+                pendingmessages.add(robotNum + ":" + data.toString());
+                SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + data.toString());
+                editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
+                editor.apply();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
