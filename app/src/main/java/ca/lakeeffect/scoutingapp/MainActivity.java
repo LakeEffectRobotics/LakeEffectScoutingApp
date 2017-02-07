@@ -184,20 +184,20 @@ public class MainActivity extends AppCompatActivity{
                                         Toast.LENGTH_LONG).show();
                             }
                         });
-                        while(!pendingmessages.isEmpty()){
-                            for(String message: pendingmessages){
-                                out.write(message.getBytes(Charset.forName("UTF-8")));
-                                byte[] bytes = new byte[1000000];
-                                int amount = in.read(bytes);
-                                if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
-                                else continue;
-                                if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
-                                    pendingmessages.remove(message);
-                                    break;
-                                }
-                            }//TODO TEST IF THIS WORKS
-                            Log.d("Uh Oh", "Uh oh sadjkhasdkjhasdkjhsadkadshkjsad");
-                        }
+//                        while(!pendingmessages.isEmpty()){
+//                            for(String message: pendingmessages){
+//                                out.write(message.getBytes(Charset.forName("UTF-8")));
+//                                byte[] bytes = new byte[1000000];
+//                                int amount = in.read(bytes);
+//                                if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
+//                                else continue;
+//                                if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
+//                                    pendingmessages.remove(message);
+//                                    break;
+//                                }
+//                            }//TODO TEST IF THIS WORKS
+//                            Log.d("Uh Oh", "Uh oh sadjkhasdkjhasdkjhsadkadshkjsad");
+//                        }
 
     //                    while(bluetoothsocket.isConnected()){
     //                        Log.d("SDsddsdssd","fasdfdfdfsdfsdfsdfsddfsfdsfd");
@@ -240,36 +240,36 @@ public class MainActivity extends AppCompatActivity{
                             Thread thread1 = new Thread(thread);
                             thread1.start();
                             break;
-//                    case BluetoothDevice.ACTION_ACL_CONNECTED:
-//                        try {
-//                            out = bluetoothsocket.getOutputStream();
-//                            in = bluetoothsocket.getInputStream();
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    ((TextView) findViewById(R.id.status)).setText("CONNECTED");
-//                                    ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,0,255,0));
-//                                    Toast.makeText(MainActivity.this, "connected!",
-//                                            Toast.LENGTH_LONG).show();
-//                                }
-//                            });
-//                            while(!pendingmessages.isEmpty()){
-//                                for(String message: pendingmessages){
-//                                    out.write(message.getBytes(Charset.forName("UTF-8")));
-//                                    byte[] bytes = new byte[1000000];
-//                                    int amount = in.read(bytes);
-//                                    if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
-//                                    else continue;
-//                                    if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
-//                                        pendingmessages.remove(message);
-//                                        break;
-//                                    }
-//                                }//TODO TEST IF THIS WORKS
-//                            }
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                        break;
+                    case BluetoothDevice.ACTION_ACL_CONNECTED:
+                        try {
+                            out = bluetoothsocket.getOutputStream();
+                            in = bluetoothsocket.getInputStream();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((TextView) findViewById(R.id.status)).setText("CONNECTED");
+                                    ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,0,255,0));
+                                    Toast.makeText(MainActivity.this, "connected!",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            while(!pendingmessages.isEmpty()){
+                                for(String message: pendingmessages){
+                                    out.write(message.getBytes(Charset.forName("UTF-8")));
+                                    byte[] bytes = new byte[1000000];
+                                    int amount = in.read(bytes);
+                                    if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
+                                    else continue;
+                                    if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
+                                        pendingmessages.remove(message);
+                                        break;
+                                    }
+                                }//TODO TEST IF THIS WORKS
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        break;
                     }
                 }
             };
