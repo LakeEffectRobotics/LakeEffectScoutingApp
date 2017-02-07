@@ -12,11 +12,11 @@
             android:layout_width="wrap_content"
             android:gravity="center"
             android:layout_centerHorizontal="true"
-            android:paddingTop="50dp"
+            android:paddingTop="25dp"
             android:id="@+id/endgameClimbGroup">
             <RadioButton
                 android:text="Successful Climb"
-                android:textSize="50dp"
+                android:textSize="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignTop="@+id/tableLayout"
@@ -28,7 +28,7 @@
 
             <RadioButton
                 android:text="Failed Climb"
-                android:textSize="50dp"
+                android:textSize="25dp"
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -40,7 +40,7 @@
                 android:layout_weight="0.5"/>
             <RadioButton
                 android:text="Did Not Climb"
-                android:textSize="50dp"
+                android:textSize="25dp"
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
