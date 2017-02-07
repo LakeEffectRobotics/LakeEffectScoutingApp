@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity{
         SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
         for(int i=0;i<prefs.getInt("messageAmount",0);i++){
             pendingmessages.add(prefs.getString("message"+prefs.getInt("messageAmount",0),""));
+//            Log.d("KJHKJADSHKJASDHADSKJHASDKJHASDJKHADSKJASDHKJASD");
         }
 
 
