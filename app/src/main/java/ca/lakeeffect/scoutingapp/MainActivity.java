@@ -33,6 +33,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
@@ -57,6 +58,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity{
+
+    //TODO: Redo text sizes
 
     List<Counter> counters = new ArrayList<>();
     List<CheckBox> checkboxes = new ArrayList<>();
@@ -179,8 +182,8 @@ public class MainActivity extends AppCompatActivity{
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ((TextView) findViewById(R.id.status)).setText("CONNECTED");
-                                ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,0,255,0));
+                                ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setText("CONNECTED");
+                                ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setTextColor(Color.argb(255,0,255,0));
                                 Toast.makeText(MainActivity.this, "connected!",
                                         Toast.LENGTH_LONG).show();
                             }
@@ -243,8 +246,8 @@ public class MainActivity extends AppCompatActivity{
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ((TextView) findViewById(R.id.status)).setText("DISCONNECTED");
-                                    ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,255,0,0));
+                                    ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setText("DISCONNECTED");
+                                    ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setTextColor(Color.argb(255,255,0,0));
                                 }
                             });
                             Thread thread1 = new Thread(thread);

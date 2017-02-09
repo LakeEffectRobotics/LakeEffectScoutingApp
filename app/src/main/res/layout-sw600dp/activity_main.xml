@@ -18,29 +18,32 @@
         android:textSize="45dp"
         android:textColor="@color/secondary_text_default_material_dark" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Status: "
-        android:id="@+id/statustextView"
+        android:id = "@+id/statusLayout"
         android:layout_below="@+id/robotNum"
-        android:layout_toLeftOf="@+id/status"
-        android:layout_toStartOf="@+id/status" />
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Status: "
+            android:id="@+id/statustextView"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Disconnected"
-        android:id="@+id/status"
-        android:textColor="#ff0000"
-        android:textStyle="bold"
-        android:layout_below="@+id/robotNum"
-        android:layout_alignRight="@+id/robotNum"
-        android:layout_alignEnd="@+id/robotNum"
-        android:layout_marginRight="153dp"
-        android:layout_marginEnd="153dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Disconnected"
+            android:id="@+id/status"
+            android:textColor="#ff0000"
+            android:textStyle="bold"
+            android:layout_toRightOf="@+id/statustextView"
+            />
+    </RelativeLayout>
 
     <!--<View-->
         <!--android:layout_width="match_parent"-->
@@ -57,7 +60,7 @@
         android:id="@+id/scrollingview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/status">
+        android:layout_below="@+id/statusLayout">
         <!--android:layout_above="@+id/scaleCheckBox">-->
 
         <android.support.v4.view.PagerTabStrip
