@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity{
         SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
         for(int i=0;i<prefs.getInt("messageAmount",0);i++){
             pendingmessages.add(prefs.getString("message"+prefs.getInt("messageAmount",0),""));
-//            Log.d("KJHKJADSHKJASDHADSKJHASDKJHASDJKHADSKJASDHKJASD");
+            Toast.makeText(this, "This is my Toast message!"+prefs.getInt("messageAmount",0), Toast.LENGTH_LONG).show();
         }
 
 
@@ -185,23 +185,32 @@ public class MainActivity extends AppCompatActivity{
                                         Toast.LENGTH_LONG).show();
                             }
                         });
-                        while(!pendingmessages.isEmpty()){
+                        try {
+                            Thread.sleep(400);   //TODO DELET THIS IF NOT NESSECARY
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("Starting", "Starting pending messages..."+pendingmessages.size());
+                        while(pendingmessages.size()>0){
                             for(String message: pendingmessages){
+                                Log.d("Starting", "Startingasasas pending messages...");
                                 out.write(message.getBytes(Charset.forName("UTF-8")));
-                                byte[] bytes = new byte[1000000];
+                                byte[] bytes = new byte[1000];
                                 int amount = in.read(bytes);
+                                Log.d("Starting", "Passed in read");
                                 if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
-                                else continue;
+                                else break;
                                 if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
                                     pendingmessages.remove(message);
                                     break;
                                 }
                             }//TODO TEST IF THIS WORKS
                             Log.d("Uh Oh", "Uh oh sadjkhasdkjhasdkjhsadkadshkjsad");
+                            if(!connected) break;
                         }
 
-    //                    while(bluetoothsocket.isConnected()){
-    //                        Log.d("SDsddsdssd","fasdfdfdfsdfsdfsdfsddfsfdsfd");
+    //                    while(bluetoothsocket.isConnected(){
+                        //                        Log.d("SDsddsdssd","fasdfdfdfsd)fsdfsdfsddfsfdsfd");
     //                        try {
     //                            Thread.sleep(200);
     //                        } catch (InterruptedException e) {
