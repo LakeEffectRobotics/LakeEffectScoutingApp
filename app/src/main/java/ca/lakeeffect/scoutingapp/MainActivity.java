@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity{
 //                            });
 //                            while(!pendingmessages.isEmpty()){
 //                                for(String message: pendingmessages){
-//                                    out.write(message.getBytes(Charset.forName("UTF-8")));
+//
 //                                    byte[] bytes = new byte[1000000];
 //                                    int amount = in.read(bytes);
 //                                    if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
@@ -324,15 +324,19 @@ public class MainActivity extends AppCompatActivity{
 
         try {
             file.getParentFile().mkdirs();
-            if(!file.exists()){
+            if(!file.exists()) {
                 file.createNewFile();
             }
+
 
             FileOutputStream f = new FileOutputStream(file, true);
 
             OutputStreamWriter out = new OutputStreamWriter(f);
 
             final StringBuilder data = new StringBuilder();
+
+            //The Labels
+            data.append("Date and Time Of Match, Round, ");
 
             DateFormat dateFormat = new SimpleDateFormat("dd HH mm ss");
             Date date = new Date();
@@ -343,7 +347,7 @@ public class MainActivity extends AppCompatActivity{
 
             LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             TableLayout layout = (TableLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autopagetablelayout);
-//            PercentRelativeLayout layout = (PercentRelativeLayout) findViewById(R.layout.autopage);
+    //            PercentRelativeLayout layout = (PercentRelativeLayout) findViewById(R.layout.autopage);
             data.append("auto");
             for(int i=0;i<layout.getChildCount();i++){
                 for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
@@ -387,6 +391,7 @@ public class MainActivity extends AppCompatActivity{
             out.close();
 
             f.close();
+
 
             Thread thread = new Thread(){
                 public void run(){
@@ -433,8 +438,7 @@ public class MainActivity extends AppCompatActivity{
                 editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
                 editor.apply();
             }
-
-        } catch (IOException e) {
+        }catch (IOException e) {
             e.printStackTrace();
         }
 
