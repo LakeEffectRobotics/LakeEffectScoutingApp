@@ -99,8 +99,17 @@ public class MainActivity extends AppCompatActivity{
 
         SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
         for(int i=0;i<prefs.getInt("messageAmount",0);i++){
-            pendingmessages.add(prefs.getString("message"+prefs.getInt("messageAmount",0),""));
-            Toast.makeText(this, "This is my Toast message!"+prefs.getInt("messageAmount",0), Toast.LENGTH_LONG).show();
+            if(prefs.getString("message"+i,null) == null){
+                SharedPreferences.Editor editor = prefs.edit();
+                for(int s=i;s<prefs.getInt("messageAmount",0)-1;s++) {
+                    editor.putString("message" + s, prefs.getString("message" + (s+1), ""));
+                }
+                editor.putInt("messageAmount", prefs.getInt("messageAmount",0)-1);
+                editor.commit();
+            }else {
+                pendingmessages.add(prefs.getString("message" + i, ""));
+                Toast.makeText(this, "This is my Toast message!" + prefs.getInt("messageAmount", 0), Toast.LENGTH_LONG).show();
+            }
         }
 
 
@@ -189,7 +198,7 @@ public class MainActivity extends AppCompatActivity{
                             }
                         });
                         try {
-                            Thread.sleep(400);   //TODO DELET THIS IF NOT NESSECARY
+                            Thread.sleep(2400);   //TODO DELET THIS IF NOT NESSECARY
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -205,6 +214,13 @@ public class MainActivity extends AppCompatActivity{
                                 else break;
                                 if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
                                     pendingmessages.remove(message);
+                                    int loc = getLocationInSharedMessages(message);
+                                    if(loc != -1){
+                                        SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = prefs.edit();
+                                        editor.putString("message"+loc, null);
+                                        editor.apply();
+                                    }
                                     break;
                                 }
                             }//TODO TEST IF THIS WORKS
@@ -336,7 +352,7 @@ public class MainActivity extends AppCompatActivity{
             final StringBuilder data = new StringBuilder();
 
             //The Labels
-            data.append("Date and Time Of Match, Round, ");
+//            data.append("Date and Time Of Match, Round, ");
 
             DateFormat dateFormat = new SimpleDateFormat("dd HH mm ss");
             Date date = new Date();
@@ -396,6 +412,7 @@ public class MainActivity extends AppCompatActivity{
             Thread thread = new Thread(){
                 public void run(){
                     while(true) {
+                        System.out.println("aaaa");
                         byte[] bytes = new byte[1000];
                         try {
                             if(!connected){
@@ -428,6 +445,13 @@ public class MainActivity extends AppCompatActivity{
             };
 
             if(bluetoothsocket != null && bluetoothsocket.isConnected()){
+                System.out.println("aaaa");
+                System.out.println("aaaa");
+                System.out.println("aaaa");
+                System.out.println("aaaa");
+                System.out.println("aaaa");
+                System.out.println("aaaa");
+                System.out.println("aaaa");
                 this.out.write((robotNum + ":" + data.toString()).getBytes(Charset.forName("UTF-8")));
                 thread.start();
             }else{
@@ -442,6 +466,16 @@ public class MainActivity extends AppCompatActivity{
             e.printStackTrace();
         }
 
+    }
+
+    public int getLocationInSharedMessages(String message){
+        SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+        for(int i=0;i<prefs.getInt("messageAmount",0);i++) {
+            if(prefs.getString("message" + i, "").equals(message)){
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
