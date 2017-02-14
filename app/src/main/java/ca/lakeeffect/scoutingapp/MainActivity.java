@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity{
                 editor.commit();
             }else {
                 pendingmessages.add(prefs.getString("message" + i, ""));
-                Toast.makeText(this, "This is my Toast message!" + prefs.getInt("messageAmount", 0), Toast.LENGTH_LONG).show();
             }
         }
 
