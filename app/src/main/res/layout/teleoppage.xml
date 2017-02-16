@@ -29,7 +29,8 @@
                 android:id="@+id/teleHeader0"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
-                android:textSize="20dp" />
+                android:textSize="17dp"
+                android:textStyle="bold"/>
             <TextView
                 android:text="Success"
                 android:layout_width="wrap_content"
@@ -40,7 +41,8 @@
                 android:id="@+id/teleHeader1"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
-                android:textSize="20dp" />
+                android:textSize="17dp"
+                android:textStyle="bold"/>
             <TextView
                 android:text="Missed"
                 android:layout_width="wrap_content"
@@ -50,8 +52,9 @@
                 android:layout_alignParentEnd="true"
                 android:id="@+id/teleHeader2"
                 android:layout_weight="1"
-                android:textSize="20dp"
-                android:layout_gravity="center_horizontal"/>
+                android:textSize="17dp"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"/>
 
         </TableRow>
 
