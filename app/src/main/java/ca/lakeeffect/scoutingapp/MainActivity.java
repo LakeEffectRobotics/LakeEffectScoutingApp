@@ -90,6 +90,15 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences prefs1 = getSharedPreferences("theme", MODE_PRIVATE);
+        switch(prefs1.getInt("theme", 0)){
+            case 0:
+                setTheme(R.style.AppTheme);
+                break;
+            case 1:
+                setTheme(R.style.AppThemeLight);
+                break;
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

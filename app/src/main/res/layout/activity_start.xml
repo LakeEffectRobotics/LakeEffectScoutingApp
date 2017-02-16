@@ -9,4 +9,31 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ca.lakeeffect.scoutingapp.StartActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Scouting"
+        android:id="@+id/startScouting"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Theme"
+        android:id="@+id/changeTheme"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Welcome to the Scouting App!\n\nTo start scouting press the button\n\nScouting options are shown below"
+        android:id="@+id/textView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp"
+        android:textIsSelectable="true"
+        android:textColor="@color/primary_text_material_dark" />
 </RelativeLayout>
