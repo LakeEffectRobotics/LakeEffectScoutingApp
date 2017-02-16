@@ -122,13 +122,13 @@ public class MainActivity extends AppCompatActivity{
 
 
         Button moreOptions = (Button) findViewById(R.id.moreOptions);
-        moreOptions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu menu = new PopupMenu(MainActivity.this, v, Gravity.CENTER_HORIZONTAL);
-                menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
-                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
+                        moreOptions.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                PopupMenu menu = new PopupMenu(MainActivity.this, v, Gravity.CENTER_HORIZONTAL);
+                                menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
+                                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                    public boolean onMenuItemClick(MenuItem item) {
                         if(item.getItemId() == R.id.reset){
                            //TODO: ADD CONFIRM
                             reset();

@@ -38,7 +38,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if(v == startScouting){
-
+            Intent intent = new Intent(MainActivity.class);
+            startActivity(intent);
         }else if(v == changeTheme){
             String[] themes = {"Dark","Light"};
             new AlertDialog.Builder(this)
