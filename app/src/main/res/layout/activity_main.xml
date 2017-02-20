@@ -16,7 +16,7 @@
         android:id="@+id/robotNum"
         android:layout_centerHorizontal="true"
         android:textSize="30dp"
-        android:textColor="@color/secondary_text_default_material_dark" />
+        />
 
 
     <RelativeLayout

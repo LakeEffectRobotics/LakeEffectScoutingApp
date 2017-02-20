@@ -129,13 +129,38 @@ public class MainActivity extends AppCompatActivity{
                                 menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
                                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                     public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getItemId() == R.id.reset){
-                           //TODO: ADD CONFIRM
-                            reset();
-                        }
-                        if(item.getItemId() == R.id.changeNum){
-                            alert();
-                        }
+                                        if(item.getItemId() == R.id.reset){
+                                            new AlertDialog.Builder(MainActivity.this)
+                                                    .setTitle("Confirm")
+                                                    .setMessage("Continuing will reset current data.")
+                                                    .setPositiveButton("Continue", new DialogInterface.OnClickListener(){
+                                                        public void onClick(DialogInterface dialog, int which){
+                                                            reset();
+
+                                                        }
+                                                    })
+                                                    .setNegativeButton("Cancel", null)
+                                                    .create()
+                                                    .show();
+                                        }
+                                        if(item.getItemId() == R.id.changeNum){
+                                            alert();
+                                        }
+
+                                        if(item.getItemId() == R.id.changeTheme) {
+                                            new AlertDialog.Builder(MainActivity.this)
+                                                    .setTitle("Confirm")
+                                                    .setMessage("Continuing will reset current data.")
+                                                    .setPositiveButton("Continue", new DialogInterface.OnClickListener(){
+                                                        public void onClick(DialogInterface dialog, int which){
+                                                            Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                                                            startActivity(intent);
+                                                        }
+                                                    })
+                                                    .setNegativeButton("Cancel", null)
+                                                    .create()
+                                                    .show();
+                                        }
                         Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         return true;
                     }

@@ -7,6 +7,9 @@
     <item
         android:id="@+id/changeNum"
         android:title="Change robot/round number"/>
+    <item
+        android:id="@+id/changeTheme"
+        android:title="Change Theme"/>
 
 
 </menu>
