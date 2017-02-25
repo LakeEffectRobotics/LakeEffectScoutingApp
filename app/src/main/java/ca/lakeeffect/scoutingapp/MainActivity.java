@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -55,6 +56,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity{
@@ -207,16 +209,43 @@ public class MainActivity extends AppCompatActivity{
         final BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
         Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(turnOn, 0);
+        Set<BluetoothDevice> pairedDevices = ba.getBondedDevices();
+        final BluetoothDevice[] devices = pairedDevices.toArray(new BluetoothDevice[0]);
+        if (pairedDevices.size() <= 0) {
+            System.exit(1);
+        }
 
         //bluetooth stuff
         try {
-            final BluetoothServerSocket bss = ba.listenUsingRfcommWithServiceRecord("SteamworksScoutingApp", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
+            int which = 0;
+            for(int i=0;i<devices.length;i++){
+                if(devices[i].getName().equals("2708 Server")){
+                    which = i;
+                    break;
+                }
+            }
+            System.out.println("Starting rfcomm "+devices[which].getName());
+
+            bluetoothsocket = devices[which].createRfcommSocketToServiceRecord(UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
 
             final Thread thread = new Thread(){
                 public void run(){
                     try {
                         Log.d("Uh Oh", "CONNECTINGJADLKJASDKLJ");
-                        bluetoothsocket = bss.accept();
+                        try {
+                            System.out.println("Starting Connection ");
+                            bluetoothsocket.connect();
+                            System.out.println("Ended onnection");
+
+                        }catch(IOException e){
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e1) {
+                                e1.printStackTrace();
+                            }
+                            this.run();
+                            return;
+                        }
                         out = bluetoothsocket.getOutputStream();
                         in = bluetoothsocket.getInputStream();
                         connected = true;
@@ -401,7 +430,14 @@ public class MainActivity extends AppCompatActivity{
             for(int i=0;i<layout.getChildCount();i++){
                 for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof RadioGroup) {
-                        data.append("," + String.valueOf(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getCheckedRadioButtonId()));
+                        int pressed = -1;
+                        for(int r=0;r<((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getChildCount();r++){
+                            if(((RadioButton) ((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getChildAt(r)).isChecked()){
+                                pressed = 1-r;
+                            }
+                        }
+                        data.append("," + pressed);
+
                     }
                     else if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
                         data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
@@ -426,7 +462,13 @@ public class MainActivity extends AppCompatActivity{
             data.append("\nendgame");
             for(int i=0; i<percentLayout.getChildCount(); i++){
                 if(percentLayout.getChildAt(i) instanceof RadioGroup){
-                    data.append("," + String.valueOf(((RadioGroup) percentLayout.getChildAt(i)).getCheckedRadioButtonId()));
+                    int pressed = -1;
+                    for(int r=0;r<((RadioGroup) percentLayout.getChildAt(i)).getChildCount();r++){
+                        if(((RadioButton) ((RadioGroup) percentLayout.getChildAt(i)).getChildAt(r)).isChecked()){
+                            pressed = r;
+                        }
+                    }
+                    data.append("," + pressed);
                 }
                 if(percentLayout.getChildAt(i) instanceof EditText){
                     data.append("," + ((EditText) percentLayout.getChildAt(i)).getText().toString().replace(",", "."));
@@ -549,25 +591,44 @@ public class MainActivity extends AppCompatActivity{
     public void alert(){
         //TODO prevent blank numbers
 
-        new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(R.layout.dialog)
                 .setTitle("Enter Info")
-                .setPositiveButton(android.R.string.yes,  new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
-                        EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
-                        EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
-                        robotNum = Integer.parseInt(robotNumin.getText().toString());
-                        round = Integer.parseInt(roundin.getText().toString());
-                        robotNumText = (TextView) findViewById(R.id.robotNum);
-                        robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
-                    }
-                })
+                .setPositiveButton(android.R.string.yes,  null)
                 .setCancelable(false)
-                .create()
-                .show();
+                .create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+             @Override
+             public void onShow(final DialogInterface dialog) {
+                 ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
+                         EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
+                         EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
+                         try {
+                             robotNum = Integer.parseInt(robotNumin.getText().toString());
+                             round = Integer.parseInt(roundin.getText().toString());
+                         } catch (NumberFormatException e) {
+                             runOnUiThread(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     Toast.makeText(MainActivity.this, "Invalid Data! Only numbers please",
+                                             Toast.LENGTH_LONG).show();
+                                 }
+                             });
+                             return;
+                         }
+                         robotNumText = (TextView) findViewById(R.id.robotNum);
+                         robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
+                         dialog.dismiss();
+                     }
+                 });
+
+             }
+         });
+        dialog.show();
     }
 
 

@@ -54,23 +54,28 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else if(v == changeTheme){
-            String[] themes = {"Dark", "Light", "Unchanged"};
+            String[] themes = {"Dark", "Light"};
             new AlertDialog.Builder(this)
                     .setSingleChoiceItems(themes, 2, new DialogInterface.OnClickListener() {
                             @Override
                         public void onClick(DialogInterface dialog, final int which) {
+                                Intent intent = new Intent(StartActivity.this, StartActivity.class);
                             switch(which){
                                 case 0:
                                     SharedPreferences prefs = getSharedPreferences("theme", MODE_PRIVATE);
                                     SharedPreferences.Editor editor = prefs.edit();
                                     editor.putInt("theme", 0);
                                     editor.apply();
+                                    dialog.dismiss();
+                                    startActivity(intent);
                                     break;
                                 case 1:
                                     prefs = getSharedPreferences("theme", MODE_PRIVATE);
                                     editor = prefs.edit();
                                     editor.putInt("theme", 1);
                                     editor.apply();
+                                    dialog.dismiss();
+                                    startActivity(intent);
                                     break;
                             }
                         }
@@ -78,12 +83,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
                     .setTitle("Select Theme")
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener(){
-                        public void onClick(DialogInterface dialog, int which){
-                            Intent intent = new Intent(StartActivity.this, StartActivity.class);
-                            startActivity(intent);
-                        }
-                    })
                     .setNegativeButton("Cancel", null)
                     .setCancelable(false)
                     .create()
