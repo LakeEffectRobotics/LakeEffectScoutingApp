@@ -589,8 +589,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void alert(){
-        //TODO prevent blank numbers
-
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(R.layout.dialog)
                 .setTitle("Enter Info")
