@@ -1,10 +1,16 @@
 package ca.lakeeffect.scoutingapp;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.DataSetObserver;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +51,17 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         startScouting.setOnClickListener(this);
         changeTheme.setOnClickListener(this);
+
+        //Ask for permissions
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            }
+        }
+
+
+        Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(turnOn, 0);
 
     }
 

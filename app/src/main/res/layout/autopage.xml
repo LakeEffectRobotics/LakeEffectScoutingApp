@@ -30,7 +30,6 @@
                 android:id="@+id/autoHeader0"
                 android:layout_weight="1"
                 android:textSize="17dp"
-                android:layout_gravity="center_horizontal"
                 android:textStyle="bold"
                 />
             <TextView
@@ -43,7 +42,6 @@
                 android:id="@+id/autoHeader1"
                 android:layout_weight="1"
                 android:textSize="17dp"
-                android:layout_gravity="center_horizontal"
                 android:textStyle="bold"/>
             <TextView
                 android:text="Failed"
@@ -55,7 +53,6 @@
                 android:id="@+id/autoHeader2"
                 android:layout_weight="1"
                 android:textSize="17dp"
-                android:layout_gravity="center_horizontal"
                 android:textStyle="bold"/>
         </TableRow>
 

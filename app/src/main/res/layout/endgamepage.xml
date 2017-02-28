@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
-
-    <android.support.percent.PercentRelativeLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <RadioGroup
             android:layout_height="wrap_content"
@@ -69,8 +66,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
 
-    </android.support.percent.PercentRelativeLayout>
 
 
 
-</ScrollView>
+</android.support.percent.PercentRelativeLayout>

@@ -19,10 +19,12 @@ import android.os.Environment;
 import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ScrollingView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -199,16 +201,7 @@ public class MainActivity extends AppCompatActivity{
 
 //        submit.setOnClickListener(this);
 
-        //Ask for permissions
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-            }
-        }
-
         final BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
-        Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(turnOn, 0);
         Set<BluetoothDevice> pairedDevices = ba.getBondedDevices();
         final BluetoothDevice[] devices = pairedDevices.toArray(new BluetoothDevice[0]);
         if (pairedDevices.size() <= 0) {
@@ -379,7 +372,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-
     public void saveData(){
         //TODO: make radio button output legible
 //        PercentRelativeLayout layout = (PercentRelativeLayout) viewPager.findViewWithTag("page1");
@@ -457,21 +449,23 @@ public class MainActivity extends AppCompatActivity{
                     }
                 }
             }
-            ScrollView v = ((ScrollView) pagerAdapter.endgamePage.getView());
-            PercentRelativeLayout percentLayout = ((PercentRelativeLayout) v.getChildAt(0));
+            DisplayMetrics m = getResources().getDisplayMetrics();
+            PercentRelativeLayout v = null;
+            if(m.widthPixels/m.density >= 600) v = ((PercentRelativeLayout) ((ScrollView) pagerAdapter.endgamePage.getView()).getChildAt(0));
+            else v = ((PercentRelativeLayout) pagerAdapter.endgamePage.getView());
             data.append("\nendgame");
-            for(int i=0; i<percentLayout.getChildCount(); i++){
-                if(percentLayout.getChildAt(i) instanceof RadioGroup){
+            for(int i=0; i<v.getChildCount(); i++){
+                if(v.getChildAt(i) instanceof RadioGroup){
                     int pressed = -1;
-                    for(int r=0;r<((RadioGroup) percentLayout.getChildAt(i)).getChildCount();r++){
-                        if(((RadioButton) ((RadioGroup) percentLayout.getChildAt(i)).getChildAt(r)).isChecked()){
+                    for(int r=0;r<((RadioGroup) v.getChildAt(i)).getChildCount();r++){
+                        if(((RadioButton) ((RadioGroup) v.getChildAt(i)).getChildAt(r)).isChecked()){
                             pressed = r;
                         }
                     }
                     data.append("," + pressed);
                 }
-                if(percentLayout.getChildAt(i) instanceof EditText){
-                    data.append("," + ((EditText) percentLayout.getChildAt(i)).getText().toString().replace(",", "."));
+                if(v.getChildAt(i) instanceof EditText){
+                    data.append("," + ((EditText) v.getChildAt(i)).getText().toString().replace(",", "."));
                 }
             }
 
