@@ -409,9 +409,11 @@ public class MainActivity extends AppCompatActivity{
         File file = new File(sdCard.getPath() + "/ScoutingData/" + robotNum + ".txt");
 
         try {
+            boolean newfile = false;
             file.getParentFile().mkdirs();
             if(!file.exists()) {
                 file.createNewFile();
+                newfile = true;
             }
 
 
@@ -422,19 +424,22 @@ public class MainActivity extends AppCompatActivity{
             final StringBuilder data = new StringBuilder();
 
             //The Labels
-//            data.append("Date and Time Of Match, Round, ");
+            final StringBuilder labels = new StringBuilder();
+            if(newfile) {
+                out.append("Date and Time Of Match,Round,");
+            }
 
-            DateFormat dateFormat = new SimpleDateFormat("dd HH mm ss");
+            DateFormat dateFormat = new SimpleDateFormat("dd HH : mm : ss");
             Date date = new Date();
 
-            data.append("\n" + "start " + round + " " + dateFormat.format(date) + "\n");
+            data.append("\n" + dateFormat.format(date) + ",");
 
-
+            data.append(round+",");
 
             LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             TableLayout layout = (TableLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autopagetablelayout);
     //            PercentRelativeLayout layout = (PercentRelativeLayout) findViewById(R.layout.autopage);
-            data.append("auto");
+//            data.append("auto");
             for(int i=0;i<layout.getChildCount();i++){
                 for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof RadioGroup) {
@@ -445,23 +450,29 @@ public class MainActivity extends AppCompatActivity{
                             }
                         }
                         data.append("," + pressed);
+                        labels.append(getResources().getResourceEntryName(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getCheckedRadioButtonId()) + ",");
 
                     }
                     else if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
                         data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
+                        labels.append(getResources().getResourceEntryName(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
+
                     }
                 }
             }
 
             layout = (TableLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.teleoptablelayout);
-            data.append("\nteleop");
+//            data.append("\nteleop");
             for(int i=0;i<layout.getChildCount();i++){
                 for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
                         data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
+                        labels.append(getResources().getResourceEntryName(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
+
                     }
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof HigherCounter) {
                         data.append("," + String.valueOf(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
+                        labels.append(getResources().getResourceEntryName(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
                     }
                 }
             }
@@ -469,7 +480,7 @@ public class MainActivity extends AppCompatActivity{
             PercentRelativeLayout v = null;
             if(m.widthPixels/m.density >= 600) v = ((PercentRelativeLayout) ((ScrollView) pagerAdapter.endgamePage.getView()).getChildAt(0));
             else v = ((PercentRelativeLayout) pagerAdapter.endgamePage.getView());
-            data.append("\nendgame");
+//            data.append("\nendgame");
             for(int i=0; i<v.getChildCount(); i++){
                 if(v.getChildAt(i) instanceof RadioGroup){
                     int pressed = -1;
@@ -479,15 +490,19 @@ public class MainActivity extends AppCompatActivity{
                         }
                     }
                     data.append("," + pressed);
+                    labels.append(getResources().getResourceEntryName(((RadioGroup) v.getChildAt(i)).getCheckedRadioButtonId()) + ",");
                 }
                 if(v.getChildAt(i) instanceof EditText){
-                    data.append("," + ((EditText) v.getChildAt(i)).getText().toString().replace(",", "."));
+                    data.append(",\"" + ((EditText) v.getChildAt(i)).getText().toString().replace("\"", "\'")+"\"");
+                    labels.append(getResources().getResourceEntryName(((EditText) v.getChildAt(i)).getId()) + ",");
                 }
             }
 
 
-            data.append("\nend");//make sure full message has been sent
+            data.append("end");//make sure full message has been sent
+            labels.append("end");
 
+            if(newfile) out.append(labels);
             out.append(data.toString());
             out.close();
 
@@ -530,12 +545,6 @@ public class MainActivity extends AppCompatActivity{
             };
 
             if(bluetoothsocket != null && bluetoothsocket.isConnected()){
-                System.out.println("aaaa");
-                System.out.println("aaaa");
-                System.out.println("aaaa");
-                System.out.println("aaaa");
-                System.out.println("aaaa");
-                System.out.println("aaaa");
                 System.out.println("aaaa");
                 this.out.write((robotNum + ":" + data.toString()).getBytes(Charset.forName("UTF-8")));
                 thread.start();

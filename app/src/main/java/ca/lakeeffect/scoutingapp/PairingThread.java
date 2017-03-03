@@ -64,6 +64,7 @@ public class PairingThread implements Runnable {
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setCancelable(false)
                         .show();
             }
         });

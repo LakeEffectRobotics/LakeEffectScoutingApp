@@ -83,14 +83,14 @@
                 >
 
                 <RadioButton
-                    android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignTop="@+id/tableLayout"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_weight="0.5"
-                    android:id="@+id/autoBaselineFailed" />
+                    android:id="@+id/autoBaselineFailed"
+                    android:checked="false" />
 
                 <RadioButton
                     android:text=""
