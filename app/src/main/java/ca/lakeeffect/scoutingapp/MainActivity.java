@@ -406,7 +406,7 @@ public class MainActivity extends AppCompatActivity{
         File sdCard = Environment.getExternalStorageDirectory();
 //        File dir = new File (sdCard.getPath() + "/ScoutingData/");
 
-        File file = new File(sdCard.getPath() + "/ScoutingData/" + robotNum + ".txt");
+        File file = new File(sdCard.getPath() + "/ScoutingData/" + robotNum + ".csv");
 
         try {
             boolean newfile = false;
@@ -432,9 +432,9 @@ public class MainActivity extends AppCompatActivity{
             DateFormat dateFormat = new SimpleDateFormat("dd HH : mm : ss");
             Date date = new Date();
 
-            data.append("\n" + dateFormat.format(date) + ",");
+            data.append("\n" + dateFormat.format(date));
 
-            data.append(round+",");
+            data.append("," + round);
 
             LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             TableLayout layout = (TableLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autopagetablelayout);
@@ -450,7 +450,7 @@ public class MainActivity extends AppCompatActivity{
                             }
                         }
                         data.append("," + pressed);
-                        labels.append(getResources().getResourceEntryName(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getCheckedRadioButtonId()) + ",");
+                        labels.append(getResources().getResourceEntryName(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
 
                     }
                     else if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
@@ -490,7 +490,7 @@ public class MainActivity extends AppCompatActivity{
                         }
                     }
                     data.append("," + pressed);
-                    labels.append(getResources().getResourceEntryName(((RadioGroup) v.getChildAt(i)).getCheckedRadioButtonId()) + ",");
+                    labels.append(getResources().getResourceEntryName(((RadioGroup) v.getChildAt(i)).getId()) + ",");
                 }
                 if(v.getChildAt(i) instanceof EditText){
                     data.append(",\"" + ((EditText) v.getChildAt(i)).getText().toString().replace("\"", "\'")+"\"");
@@ -499,7 +499,7 @@ public class MainActivity extends AppCompatActivity{
             }
 
 
-            data.append("end");//make sure full message has been sent
+            data.append(",end");//make sure full message has been sent
             labels.append("end");
 
             if(newfile) out.append(labels);
@@ -516,10 +516,10 @@ public class MainActivity extends AppCompatActivity{
                         byte[] bytes = new byte[1000];
                         try {
                             if(!connected){
-                                pendingmessages.add(robotNum + ":" + data.toString());
+                                pendingmessages.add(robotNum + ":" + labels.toString() + ":"  + data.toString());
                                 SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + data.toString());
+                                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + labels.toString() + ":"  + data.toString());
                                 editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
                                 editor.apply();
                                 return;
@@ -529,10 +529,10 @@ public class MainActivity extends AppCompatActivity{
                                 return;
                             }
                             if(!connected){
-                                pendingmessages.add(robotNum + ":" + data.toString());
+                                pendingmessages.add(robotNum + ":" + labels.toString() + ":"  + data.toString());
                                 SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + data.toString());
+                                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + labels.toString() + ":"  + data.toString());
                                 editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
                                 editor.apply();
                                 return;
@@ -546,13 +546,13 @@ public class MainActivity extends AppCompatActivity{
 
             if(bluetoothsocket != null && bluetoothsocket.isConnected()){
                 System.out.println("aaaa");
-                this.out.write((robotNum + ":" + data.toString()).getBytes(Charset.forName("UTF-8")));
+                this.out.write((robotNum + ":" + labels.toString() + ":" + data.toString()).getBytes(Charset.forName("UTF-8")));
                 thread.start();
             }else{
-                pendingmessages.add(robotNum + ":" + data.toString());
+                pendingmessages.add(robotNum + ":" + labels.toString() + ":"  + data.toString());
                 SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + data.toString());
+                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + labels.toString() + ":"  + data.toString());
                 editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
                 editor.apply();
             }
@@ -608,44 +608,44 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void alert(){
-//        AlertDialog dialog = new AlertDialog.Builder(this)
-//                .setView(R.layout.dialog)
-//                .setTitle("Enter Info")
-//                .setPositiveButton(android.R.string.yes,  null)
-//                .setCancelable(false)
-//                .create();
-//        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-//             @Override
-//             public void onShow(final DialogInterface dialog) {
-//                 ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-//                     @Override
-//                     public void onClick(View v) {
-//                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
-//                         EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
-//                         EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
-//                         try {
-//                             robotNum = Integer.parseInt(robotNumin.getText().toString());
-//                             round = Integer.parseInt(roundin.getText().toString());
-//                         } catch (NumberFormatException e) {
-//                             runOnUiThread(new Runnable() {
-//                                 @Override
-//                                 public void run() {
-//                                     Toast.makeText(MainActivity.this, "Invalid Data! Only numbers please",
-//                                             Toast.LENGTH_LONG).show();
-//                                 }
-//                             });
-//                             return;
-//                         }
-//                         robotNumText = (TextView) findViewById(R.id.robotNum);
-//                         robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
-//                         dialog.dismiss();
-//                     }
-//                 });
-//
-//             }
-//         });
-//        dialog.show();
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(R.layout.dialog)
+                .setTitle("Enter Info")
+                .setPositiveButton(android.R.string.yes,  null)
+                .setCancelable(false)
+                .create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+             @Override
+             public void onShow(final DialogInterface dialog) {
+                 ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
+                         EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
+                         EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
+                         try {
+                             robotNum = Integer.parseInt(robotNumin.getText().toString());
+                             round = Integer.parseInt(roundin.getText().toString());
+                         } catch (NumberFormatException e) {
+                             runOnUiThread(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     Toast.makeText(MainActivity.this, "Invalid Data! Only numbers please",
+                                             Toast.LENGTH_LONG).show();
+                                 }
+                             });
+                             return;
+                         }
+                         robotNumText = (TextView) findViewById(R.id.robotNum);
+                         robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
+                         dialog.dismiss();
+                     }
+                 });
+
+             }
+         });
+        dialog.show();
     }
 
 
