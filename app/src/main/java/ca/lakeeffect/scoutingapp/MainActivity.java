@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity{
 
     Button moreOptions;
 
+    Thread bluetoothConnectionThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs1 = getSharedPreferences("theme", MODE_PRIVATE);
@@ -201,129 +203,148 @@ public class MainActivity extends AppCompatActivity{
 
 //        submit.setOnClickListener(this);
 
-        final BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
-        Set<BluetoothDevice> pairedDevices = ba.getBondedDevices();
-        final BluetoothDevice[] devices = pairedDevices.toArray(new BluetoothDevice[0]);
-        if (pairedDevices.size() <= 0) {
-            System.exit(1);
-        }
-
         //bluetooth stuff
+//        setupBluetoothConnections();
+//        registerBluetoothListeners();
+
+
+        start = System.nanoTime();
+    }
+
+    public void setupBluetoothConnections(String address){
+        final BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
+//        Set<BluetoothDevice> pairedDevices = ba.getBondedDevices();
+//        final BluetoothDevice[] devices = pairedDevices.toArray(new BluetoothDevice[0]);
         try {
-            int which = 0;
-            for(int i=0;i<devices.length;i++){
-                if(devices[i].getName().equals("2708 Server")){
-                    which = i;
-                    break;
-                }
-            }
-            System.out.println("Starting rfcomm "+devices[which].getName());
+//            int which = -1;
+//            for(int i=0;i<devices.length;i++){
+//                if(devices[i].getName().equals("2708 Server")){
+//                    which = i;
+//                    break;
+//                }
+//            }
 
-            bluetoothsocket = devices[which].createRfcommSocketToServiceRecord(UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
+            int which = 1;
+            if(which != -1){
+                System.out.println("Starting rfcomm ");
 
-            final Thread thread = new Thread(){
-                public void run(){
-                    try {
-                        Log.d("Uh Oh", "CONNECTINGJADLKJASDKLJ");
+
+//                bluetoothsocket = devices[which].createRfcommSocketToServiceRecord(UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
+                bluetoothsocket = ba.getRemoteDevice(address).createRfcommSocketToServiceRecord(UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
+
+
+                bluetoothConnectionThread = new Thread(){
+                    public void run(){
                         try {
-                            System.out.println("Starting Connection ");
-                            bluetoothsocket.connect();
-                            System.out.println("Ended onnection");
-
-                        }catch(IOException e){
+                            Log.d("Uh Oh", "CONNECTINGJADLKJASDKLJ");
                             try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e1) {
-                                e1.printStackTrace();
-                            }
-                            this.run();
-                            return;
-                        }
-                        out = bluetoothsocket.getOutputStream();
-                        in = bluetoothsocket.getInputStream();
-                        connected = true;
-                        Log.d("Uh Oh", "CONNECTED");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setText("CONNECTED");
-                                ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setTextColor(Color.argb(255,0,255,0));
-                                Toast.makeText(MainActivity.this, "connected!",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        try {
-                            Thread.sleep(2400);   //TODO DELET THIS IF NOT NESSECARY
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("Starting", "Starting pending messages..."+pendingmessages.size());
-                        while(pendingmessages.size()>0){
-                            for(String message: pendingmessages){
-                                Log.d("Starting", "Startingasasas pending messages...");
-                                out.write(message.getBytes(Charset.forName("UTF-8")));
-                                byte[] bytes = new byte[1000];
-                                int amount = in.read(bytes);
-                                Log.d("Starting", "Passed in read");
-                                if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
-                                else break;
-                                if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
-                                    pendingmessages.remove(message);
-                                    int loc = getLocationInSharedMessages(message);
-                                    if(loc != -1){
-                                        SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = prefs.edit();
-                                        editor.putString("message"+loc, null);
-                                        editor.apply();
-                                    }
-                                    break;
+                                System.out.println("Starting Connection ");
+                                bluetoothsocket.connect();
+                                System.out.println("Ended onnection");
+
+                            }catch(IOException e){
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e1) {
+                                    e1.printStackTrace();
                                 }
-                            }//TODO TEST IF THIS WORKS
-                            Log.d("Uh Oh", "Uh oh sadjkhasdkjhasdkjhsadkadshkjsad");
-                            if(!connected) break;
-                        }
-
-    //                    while(bluetoothsocket.isConnected(){
-                        //                        Log.d("SDsddsdssd","fasdfdfdfsd)fsdfsdfsddfsfdsfd");
-    //                        try {
-    //                            Thread.sleep(200);
-    //                        } catch (InterruptedException e) {
-    //                            e.printStackTrace();
-    //                        }
-    //                    }
-    //                    runOnUiThread(new Runnable() {
-    //                        @Override
-    //                        public void run() {
-    //                            ((TextView) findViewById(R.id.status)).setText("DISCONNECTED");
-    //                            ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,255,0,0));
-    //                        }
-    //                    });
-    //                    run();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            thread.start();
-
-            BroadcastReceiver bState = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    Log.d("SDAsadsadsadsad","iouweroiurweoiurewoirweuoiweru");
-                    String action = intent.getAction();
-                    switch (action){
-                        case BluetoothDevice.ACTION_ACL_DISCONNECTED:
-                            connected = false;
+                                this.run();
+                                return;
+                            }
+                            out = bluetoothsocket.getOutputStream();
+                            in = bluetoothsocket.getInputStream();
+                            connected = true;
+                            Log.d("Uh Oh", "CONNECTED");
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setText("DISCONNECTED");
-                                    ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setTextColor(Color.argb(255,255,0,0));
+                                    ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setText("CONNECTED");
+                                    ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setTextColor(Color.argb(255,0,255,0));
+                                    Toast.makeText(MainActivity.this, "connected!",
+                                            Toast.LENGTH_LONG).show();
                                 }
                             });
-                            Thread thread1 = new Thread(thread);
-                            thread1.start();
-                            break;
+                            try {
+                                Thread.sleep(2400);   //TODO DELET THIS IF NOT NESSECARY
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d("Starting", "Starting pending messages..."+pendingmessages.size());
+                            while(pendingmessages.size()>0){
+                                for(String message: pendingmessages){
+                                    Log.d("Starting", "Startingasasas pending messages...");
+                                    out.write(message.getBytes(Charset.forName("UTF-8")));
+                                    byte[] bytes = new byte[1000];
+                                    int amount = in.read(bytes);
+                                    Log.d("Starting", "Passed in read");
+                                    if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
+                                    else break;
+                                    if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
+                                        pendingmessages.remove(message);
+                                        int loc = getLocationInSharedMessages(message);
+                                        if(loc != -1){
+                                            SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = prefs.edit();
+                                            editor.putString("message"+loc, null);
+                                            editor.apply();
+                                        }
+                                        break;
+                                    }
+                                }//TODO TEST IF THIS WORKS
+                                Log.d("Uh Oh", "Uh oh sadjkhasdkjhasdkjhsadkadshkjsad");
+                                if(!connected) break;
+                            }
+
+                            //                    while(bluetoothsocket.isConnected(){
+                            //                        Log.d("SDsddsdssd","fasdfdfdfsd)fsdfsdfsddfsfdsfd");
+                            //                        try {
+                            //                            Thread.sleep(200);
+                            //                        } catch (InterruptedException e) {
+                            //                            e.printStackTrace();
+                            //                        }
+                            //                    }
+                            //                    runOnUiThread(new Runnable() {
+                            //                        @Override
+                            //                        public void run() {
+                            //                            ((TextView) findViewById(R.id.status)).setText("DISCONNECTED");
+                            //                            ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,255,0,0));
+                            //                        }
+                            //                    });
+                            //                    run();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                bluetoothConnectionThread.start();
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void registerBluetoothListeners(){
+        BroadcastReceiver bState = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("SDAsadsadsadsad","iouweroiurweoiurewoirweuoiweru");
+                String action = intent.getAction();
+                switch (action){
+                    case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+                        connected = false;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setText("DISCONNECTED");
+                                ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setTextColor(Color.argb(255,255,0,0));
+                            }
+                        });
+//                        if(bluetoothConnectionThread == null) setupBluetoothConnections();
+                        Thread thread1 = new Thread(bluetoothConnectionThread);
+                        thread1.start();
+                        break;
 //                    case BluetoothDevice.ACTION_ACL_CONNECTED:
 //                        try {
 //                            out = bluetoothsocket.getOutputStream();
@@ -354,23 +375,15 @@ public class MainActivity extends AppCompatActivity{
 //                            e.printStackTrace();
 //                        }
 //                        break;
-                    }
                 }
-            };
+            }
+        };
 
-            IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
-            filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-            filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-            registerReceiver(bState,filter);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-        start = System.nanoTime();
+        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        registerReceiver(bState,filter);
     }
-
 
     public void saveData(){
         //TODO: make radio button output legible

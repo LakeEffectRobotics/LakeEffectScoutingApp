@@ -59,6 +59,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             }
         }
 
+        //Send Alert Dialog if first open
+
+
 
         Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(turnOn, 0);
