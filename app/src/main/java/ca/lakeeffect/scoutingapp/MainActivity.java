@@ -3,7 +3,6 @@ package ca.lakeeffect.scoutingapp;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,8 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ScrollingView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -50,7 +47,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -126,53 +122,53 @@ public class MainActivity extends AppCompatActivity{
             }
         }
 
+        moreOptions = (Button) findViewById(R.id.moreOptions);
+        moreOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(MainActivity.this, v, Gravity.CENTER_HORIZONTAL);
+                menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if(item.getItemId() == R.id.reset){
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Confirm")
+                                    .setMessage("Continuing will reset current data.")
+                                    .setPositiveButton("Continue", new DialogInterface.OnClickListener(){
+                                        public void onClick(DialogInterface dialog, int which){
+                                            reset();
 
-        Button moreOptions = (Button) findViewById(R.id.moreOptions);
-                        moreOptions.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                PopupMenu menu = new PopupMenu(MainActivity.this, v, Gravity.CENTER_HORIZONTAL);
-                                menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
-                                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                    public boolean onMenuItemClick(MenuItem item) {
-                                        if(item.getItemId() == R.id.reset){
-                                            new AlertDialog.Builder(MainActivity.this)
-                                                    .setTitle("Confirm")
-                                                    .setMessage("Continuing will reset current data.")
-                                                    .setPositiveButton("Continue", new DialogInterface.OnClickListener(){
-                                                        public void onClick(DialogInterface dialog, int which){
-                                                            reset();
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", null)
+                                    .create()
+                                    .show();
+                        }
+                        if(item.getItemId() == R.id.changeNum){
+                            alert();
+                        }
 
-                                                        }
-                                                    })
-                                                    .setNegativeButton("Cancel", null)
-                                                    .create()
-                                                    .show();
+                        if(item.getItemId() == R.id.changeTheme) {
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Confirm")
+                                    .setMessage("Continuing will reset current data.")
+                                    .setPositiveButton("Continue", new DialogInterface.OnClickListener(){
+                                        public void onClick(DialogInterface dialog, int which){
+                                            Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                                            startActivity(intent);
                                         }
-                                        if(item.getItemId() == R.id.changeNum){
-                                            alert();
-                                        }
-
-                                        if(item.getItemId() == R.id.changeTheme) {
-                                            new AlertDialog.Builder(MainActivity.this)
-                                                    .setTitle("Confirm")
-                                                    .setMessage("Continuing will reset current data.")
-                                                    .setPositiveButton("Continue", new DialogInterface.OnClickListener(){
-                                                        public void onClick(DialogInterface dialog, int which){
-                                                            Intent intent = new Intent(MainActivity.this, StartActivity.class);
-                                                            startActivity(intent);
-                                                        }
-                                                    })
-                                                    .setNegativeButton("Cancel", null)
-                                                    .create()
-                                                    .show();
-                                        }
+                                    })
+                                    .setNegativeButton("Cancel", null)
+                                    .create()
+                                    .show();
+                        }
                         Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
                 menu.show();
-            }});
+            }
+        });
 
 //        counters.add((Counter) findViewById(R.id.goalsCounter));
 
@@ -432,9 +428,9 @@ public class MainActivity extends AppCompatActivity{
             DateFormat dateFormat = new SimpleDateFormat("dd HH : mm : ss");
             Date date = new Date();
 
-            data.append("\n" + dateFormat.format(date));
+            labels.append("\n" + dateFormat.format(date));
 
-            data.append("," + round);
+            labels.append("," + round);
 
             LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             TableLayout layout = (TableLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autopagetablelayout);
@@ -500,9 +496,9 @@ public class MainActivity extends AppCompatActivity{
 
 
             data.append(",end");//make sure full message has been sent
-            labels.append("end");
+            labels.append("placeholder finish");
 
-            if(newfile) out.append(labels);
+            if(newfile) out.append(labels.toString());
             out.append(data.toString());
             out.close();
 
@@ -589,6 +585,9 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public void onBackPressed(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            moreOptions.callOnClick();
+        }
         return;
     }
 
