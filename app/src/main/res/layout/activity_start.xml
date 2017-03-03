@@ -36,4 +36,13 @@
         android:textSize="25dp"
         android:textIsSelectable="true"
         android:textColor="@color/primary_text_material_dark" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Version: "
+        android:id="@+id/versionNum"
+        android:layout_above="@+id/changeTheme"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

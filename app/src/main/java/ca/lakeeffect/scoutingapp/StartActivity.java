@@ -59,9 +59,14 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             }
         }
 
-        //Send Alert Dialog if first open
-
-
+        //Set Version Text
+        TextView versionNum = (TextView) findViewById(R.id.versionNum);
+        try {
+            assert versionNum != null;
+            versionNum.setText("Version: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(turnOn, 0);

@@ -203,9 +203,9 @@ public class MainActivity extends AppCompatActivity{
 
 //        submit.setOnClickListener(this);
 
-        //bluetooth stuff
-//        setupBluetoothConnections();
-//        registerBluetoothListeners();
+        //start bluetooth stuff
+        Thread thread = new Thread(new PairingThread(this, true));
+        thread.start();
 
 
         start = System.nanoTime();
@@ -213,25 +213,28 @@ public class MainActivity extends AppCompatActivity{
 
     public void setupBluetoothConnections(String address){
         final BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
-//        Set<BluetoothDevice> pairedDevices = ba.getBondedDevices();
-//        final BluetoothDevice[] devices = pairedDevices.toArray(new BluetoothDevice[0]);
+        Set<BluetoothDevice> pairedDevices = ba.getBondedDevices();
+        final BluetoothDevice[] devices = pairedDevices.toArray(new BluetoothDevice[0]);
         try {
-//            int which = -1;
-//            for(int i=0;i<devices.length;i++){
-//                if(devices[i].getName().equals("2708 Server")){
-//                    which = i;
-//                    break;
-//                }
-//            }
-
-            int which = 1;
+            int which = -1;
+            if(address == null) {
+                for (int i = 0; i < devices.length; i++) {
+                    if (devices[i].getName().equals("2708 Server")) {
+                        which = i;
+                        break;
+                    }
+                }
+            }else {
+                which = 1;
+            }
             if(which != -1){
                 System.out.println("Starting rfcomm ");
 
-
-//                bluetoothsocket = devices[which].createRfcommSocketToServiceRecord(UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
-                bluetoothsocket = ba.getRemoteDevice(address).createRfcommSocketToServiceRecord(UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
-
+                if(address == null) {
+                    bluetoothsocket = devices[which].createRfcommSocketToServiceRecord(UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
+                }else {
+                    bluetoothsocket = ba.getRemoteDevice(address).createRfcommSocketToServiceRecord(UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
+                }
 
                 bluetoothConnectionThread = new Thread(){
                     public void run(){
@@ -596,44 +599,44 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void alert(){
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(R.layout.dialog)
-                .setTitle("Enter Info")
-                .setPositiveButton(android.R.string.yes,  null)
-                .setCancelable(false)
-                .create();
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-             @Override
-             public void onShow(final DialogInterface dialog) {
-                 ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                     @Override
-                     public void onClick(View v) {
-                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
-                         EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
-                         EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
-                         try {
-                             robotNum = Integer.parseInt(robotNumin.getText().toString());
-                             round = Integer.parseInt(roundin.getText().toString());
-                         } catch (NumberFormatException e) {
-                             runOnUiThread(new Runnable() {
-                                 @Override
-                                 public void run() {
-                                     Toast.makeText(MainActivity.this, "Invalid Data! Only numbers please",
-                                             Toast.LENGTH_LONG).show();
-                                 }
-                             });
-                             return;
-                         }
-                         robotNumText = (TextView) findViewById(R.id.robotNum);
-                         robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
-                         dialog.dismiss();
-                     }
-                 });
-
-             }
-         });
-        dialog.show();
+//        AlertDialog dialog = new AlertDialog.Builder(this)
+//                .setView(R.layout.dialog)
+//                .setTitle("Enter Info")
+//                .setPositiveButton(android.R.string.yes,  null)
+//                .setCancelable(false)
+//                .create();
+//        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+//             @Override
+//             public void onShow(final DialogInterface dialog) {
+//                 ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+//                     @Override
+//                     public void onClick(View v) {
+//                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
+//                         EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
+//                         EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
+//                         try {
+//                             robotNum = Integer.parseInt(robotNumin.getText().toString());
+//                             round = Integer.parseInt(roundin.getText().toString());
+//                         } catch (NumberFormatException e) {
+//                             runOnUiThread(new Runnable() {
+//                                 @Override
+//                                 public void run() {
+//                                     Toast.makeText(MainActivity.this, "Invalid Data! Only numbers please",
+//                                             Toast.LENGTH_LONG).show();
+//                                 }
+//                             });
+//                             return;
+//                         }
+//                         robotNumText = (TextView) findViewById(R.id.robotNum);
+//                         robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
+//                         dialog.dismiss();
+//                     }
+//                 });
+//
+//             }
+//         });
+//        dialog.show();
     }
 
 
