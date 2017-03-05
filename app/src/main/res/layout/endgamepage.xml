@@ -52,7 +52,8 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/submit"
+            android:layout_below="@+id/rotors"
+            android:layout_marginTop="75dp"
             android:hint="Comments"
             android:id="@+id/endgameComments"/>
 
@@ -60,13 +61,31 @@
             android:text="Submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="129dp"
+            android:layout_below="@id/endgameComments"
             android:id="@+id/submit"
             android:textSize="50sp"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
 
+    <SeekBar
+        style="@style/Widget.AppCompat.SeekBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:max="4"
+        android:progress="0"
+        android:id="@+id/rotors"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView3"/>
 
+    <TextView
+        android:text="Rotors Turning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/endgameClimbGroup"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView3"
+        android:textSize="17dp"/>
 
 
 </android.support.percent.PercentRelativeLayout>

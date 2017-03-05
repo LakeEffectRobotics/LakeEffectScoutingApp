@@ -76,8 +76,8 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        ((MainActivity)getActivity()).saveData();
-                        ((MainActivity)getActivity()).reset();
+                        if(((MainActivity)getActivity()).saveData())
+                            ((MainActivity)getActivity()).reset();
 
                     }
                 })

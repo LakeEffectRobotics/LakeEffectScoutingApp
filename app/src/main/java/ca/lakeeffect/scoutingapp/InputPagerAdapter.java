@@ -21,6 +21,9 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
 
     public InputPagerAdapter(FragmentManager fm) {
         super(fm);
+        autoPage = new AutoPage();
+        teleopPage = new TeleopPage();
+        endgamePage = new EndgamePage();
     }
     @Override
     public Fragment getItem(int position) {

@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -384,8 +385,16 @@ public class MainActivity extends AppCompatActivity{
         registerReceiver(bState,filter);
     }
 
-    public void saveData(){
-        //TODO: make radio button output legible
+    public boolean saveData(){
+
+        if(((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getNumStars() <= 0){
+            runOnUiThread(new Thread(){
+                public void run(){
+                    new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the drive ability!", Toast.LENGTH_LONG).show();
+                }
+            });
+            return false;
+        }
 //        PercentRelativeLayout layout = (PercentRelativeLayout) viewPager.findViewWithTag("page1");
 //        for(int i=0;i<layout.getChildCount();i++){
 //            if(layout.getChildAt(i) instanceof CheckBox) {
@@ -421,16 +430,14 @@ public class MainActivity extends AppCompatActivity{
 
             //The Labels
             final StringBuilder labels = new StringBuilder();
-            if(newfile) {
-                out.append("Date and Time Of Match,Round,");
-            }
+            labels.append("Date and Time Of Match,Round,");
 
-            DateFormat dateFormat = new SimpleDateFormat("dd HH : mm : ss");
+            DateFormat dateFormat = new SimpleDateFormat("dd HH:mm:ss");
             Date date = new Date();
 
-            labels.append("\n" + dateFormat.format(date));
+            data.append("\n" + dateFormat.format(date));
 
-            labels.append("," + round);
+            data.append("," + round);
 
             LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             TableLayout layout = (TableLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autopagetablelayout);
@@ -459,8 +466,8 @@ public class MainActivity extends AppCompatActivity{
 
             layout = (TableLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.teleoptablelayout);
 //            data.append("\nteleop");
-            for(int i=0;i<layout.getChildCount();i++){
-                for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
+            for(int i=0;i<layout.getChildCount();i++) {
+                for (int s = 0; s < ((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
                         data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
                         labels.append(getResources().getResourceEntryName(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
@@ -472,6 +479,9 @@ public class MainActivity extends AppCompatActivity{
                     }
                 }
             }
+            data.append(","+((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getNumStars());
+            labels.append("Drive Rating,");
+
             DisplayMetrics m = getResources().getDisplayMetrics();
             PercentRelativeLayout v = null;
             if(m.widthPixels/m.density >= 600) v = ((PercentRelativeLayout) ((ScrollView) pagerAdapter.endgamePage.getView()).getChildAt(0));
@@ -489,8 +499,12 @@ public class MainActivity extends AppCompatActivity{
                     labels.append(getResources().getResourceEntryName(((RadioGroup) v.getChildAt(i)).getId()) + ",");
                 }
                 if(v.getChildAt(i) instanceof EditText){
-                    data.append(",\"" + ((EditText) v.getChildAt(i)).getText().toString().replace("\"", "\'")+"\"");
+                    data.append(",\"" + ((EditText) v.getChildAt(i)).getText().toString().replace("\"", "\'").replace(":",";").replace("\n","\t")+"\"");
                     labels.append(getResources().getResourceEntryName(((EditText) v.getChildAt(i)).getId()) + ",");
+                }
+                if(v.getChildAt(i) instanceof SeekBar){
+                    data.append("," + ((SeekBar) v.getChildAt(i)).getProgress());
+                    labels.append(getResources().getResourceEntryName(((SeekBar) v.getChildAt(i)).getId()) + ",");
                 }
             }
 
@@ -555,7 +569,7 @@ public class MainActivity extends AppCompatActivity{
         }catch (IOException e) {
             e.printStackTrace();
         }
-
+        return true;
     }
 
     public int getLocationInSharedMessages(String message){
