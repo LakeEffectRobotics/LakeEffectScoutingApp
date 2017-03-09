@@ -52,6 +52,18 @@
                 android:layout_weight="0.5"/>
         </RadioGroup>
 
+        <SeekBar
+            style="@style/Widget.AppCompat.SeekBar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:max="4"
+            android:progress="0"
+            android:id="@+id/rotors"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView3"/>
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,18 +80,6 @@
             android:textSize="50sp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
-
-        <SeekBar
-            style="@style/Widget.AppCompat.SeekBar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:max="4"
-            android:progress="0"
-            android:id="@+id/rotors"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView3"/>
 
         <TextView
             android:text="Rotors Turning"

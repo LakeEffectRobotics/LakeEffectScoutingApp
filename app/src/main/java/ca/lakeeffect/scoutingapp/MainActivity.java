@@ -37,6 +37,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -387,7 +388,7 @@ public class MainActivity extends AppCompatActivity{
 
     public boolean saveData(){
 
-        if(((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getNumStars() <= 0){
+        if(((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getRating() <= 0){
             runOnUiThread(new Thread(){
                 public void run(){
                     new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the drive ability!", Toast.LENGTH_LONG).show();
@@ -411,7 +412,7 @@ public class MainActivity extends AppCompatActivity{
         File sdCard = Environment.getExternalStorageDirectory();
 //        File dir = new File (sdCard.getPath() + "/ScoutingData/");
 
-        File file = new File(sdCard.getPath() + "/ScoutingData/" + robotNum + ".csv");
+        File file = new File(sdCard.getPath() + "/#ScoutingData/" + robotNum + ".csv");
 
         try {
             boolean newfile = false;
@@ -463,6 +464,10 @@ public class MainActivity extends AppCompatActivity{
                     }
                 }
             }
+
+            labels.append("autoGear,");
+            data.append(","+(((Spinner)pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).getSelectedItemPosition()-1));
+
 
             layout = (TableLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.teleoptablelayout);
 //            data.append("\nteleop");
@@ -615,9 +620,12 @@ public class MainActivity extends AppCompatActivity{
 //        viewPager.getAdapter().notifyDataSetChanged();
 
         ((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).clearCheck();
-        ((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoGearGroup)).clearCheck();
+//        ((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoGearGroup)).clearCheck();
         ((RadioGroup) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimbGroup)).clearCheck();
         ((EditText) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameComments)).setText("");
+        ((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).setRating(0);
+        ((SeekBar) pagerAdapter.endgamePage.getView().findViewById(R.id.rotors)).setProgress(0);
+        ((Spinner) pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).setSelection(1);
     }
 
     public void alert(){
