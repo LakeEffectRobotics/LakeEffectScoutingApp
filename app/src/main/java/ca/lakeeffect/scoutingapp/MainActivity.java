@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity{
                     }
                 }
             }
-            data.append(","+((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getNumStars());
+            data.append(","+((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getRating());
             labels.append("Drive Rating,");
 
             DisplayMetrics m = getResources().getDisplayMetrics();

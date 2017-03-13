@@ -126,7 +126,7 @@
                 android:textSize="25dp" />
 
             <ca.lakeeffect.scoutingapp.Counter
-                android:id = "@+id/lowComplete"
+                android:id = "@+id/autoLowComplete"
                 android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
@@ -137,7 +137,7 @@
                 android:layout_weight="1"/>
 
             <ca.lakeeffect.scoutingapp.Counter
-                android:id = "@+id/lowMissed"
+                android:id = "@+id/autoLowMissed"
                 android:layout_gravity="center_horizontal"
                 android:text=""
                 android:layout_width="wrap_content"
