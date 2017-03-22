@@ -8,8 +8,8 @@ android {
         applicationId "ca.lakeeffect.scoutingapp"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 7
-        versionName "7"
+        versionCode 9
+        versionName "9"
     }
     buildTypes {
         release {

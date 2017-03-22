@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -180,10 +183,42 @@
                 android:id="@+id/teleGearFailed" />
         </TableRow>
 
+        <TableRow android:weightSum="2">
+            <TextView
+                android:text="Gears Dropped:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/teleTask3"
+                android:layout_weight="1"
+                android:textSize="17dp" />
+
+            <ca.lakeeffect.scoutingapp.Counter
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"
+                android:id="@+id/teleGearDropped" />
+        </TableRow>
 
 
 
     </TableLayout>
+
+    <TextView
+        android:text="Drive Ability"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:layout_below="@id/teleoptablelayout"
+        android:layout_centerHorizontal="true"
+        android:textSize="17dp" />
 
     <RatingBar
         android:layout_width="wrap_content"
@@ -193,15 +228,9 @@
         android:stepSize="1"
         android:isIndicator="false"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:text="Drive Ability"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_above="@+id/driveRating"
         android:layout_centerHorizontal="true"
-        android:textSize="17dp" />
+        android:layout_below="@id/textView2"/>
+
 
 </android.support.percent.PercentRelativeLayout>
+</ScrollView>

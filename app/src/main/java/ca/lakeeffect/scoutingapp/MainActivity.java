@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity{
 
     int robotNum = 2708;
     int round = 0;
+    String scoutName = "Scout";
 
     static long start;
 
@@ -440,7 +441,9 @@ public class MainActivity extends AppCompatActivity{
 
             data.append("," + round);
 
-            LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            labels.append("Scout,");
+            data.append(","+scoutName);
+
             TableLayout layout = (TableLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autopagetablelayout);
     //            PercentRelativeLayout layout = (PercentRelativeLayout) findViewById(R.layout.autopage);
 //            data.append("auto");
@@ -468,8 +471,12 @@ public class MainActivity extends AppCompatActivity{
             labels.append("autoGear,");
             data.append(","+(((Spinner)pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).getSelectedItemPosition()-1));
 
+            DisplayMetrics m = getResources().getDisplayMetrics();
+            PercentRelativeLayout v = null;
+            if(m.widthPixels/m.density < 600) v = ((PercentRelativeLayout) ((ScrollView) pagerAdapter.teleopPage.getView()).getChildAt(0));
+            else v = ((PercentRelativeLayout) pagerAdapter.teleopPage.getView());
 
-            layout = (TableLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.teleoptablelayout);
+            layout = (TableLayout) v.findViewById(R.id.teleoptablelayout);
 //            data.append("\nteleop");
             for(int i=0;i<layout.getChildCount();i++) {
                 for (int s = 0; s < ((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
@@ -487,9 +494,8 @@ public class MainActivity extends AppCompatActivity{
             data.append(","+((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getRating());
             labels.append("Drive Rating,");
 
-            DisplayMetrics m = getResources().getDisplayMetrics();
-            PercentRelativeLayout v = null;
-            if(m.widthPixels/m.density >= 600) v = ((PercentRelativeLayout) ((ScrollView) pagerAdapter.endgamePage.getView()).getChildAt(0));
+            v = null;
+            if(m.widthPixels/m.density >= 600*0) v = ((PercentRelativeLayout) ((ScrollView) pagerAdapter.endgamePage.getView()).getChildAt(0));
             else v = ((PercentRelativeLayout) pagerAdapter.endgamePage.getView());
 //            data.append("\nendgame");
             for(int i=0; i<v.getChildCount(); i++){
@@ -638,6 +644,8 @@ public class MainActivity extends AppCompatActivity{
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
              @Override
              public void onShow(final DialogInterface dialog) {
+                 SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
+                 ((EditText) ((AlertDialog) dialog).findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
                  ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
@@ -645,14 +653,44 @@ public class MainActivity extends AppCompatActivity{
                          LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
                          EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
                          EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
+                         EditText scoutNamein = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText3);
                          try {
                              robotNum = Integer.parseInt(robotNumin.getText().toString());
                              round = Integer.parseInt(roundin.getText().toString());
+                             scoutName = scoutNamein.getText().toString();
+
+                             SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
+                             SharedPreferences.Editor editor = prefs.edit();
+                             editor.putString("scoutName", scoutName);
+                             editor.apply();
+
+                             if(round > 99){
+                                 runOnUiThread(new Runnable() {
+                                     @Override
+                                     public void run() {
+                                         Toast.makeText(MainActivity.this, "Invalid Match Number",
+                                                 Toast.LENGTH_LONG).show();
+                                     }
+                                 });
+                                 return;
+                             }
+
+                             if(scoutName.equals("")){
+                                 runOnUiThread(new Runnable() {
+                                     @Override
+                                     public void run() {
+                                         Toast.makeText(MainActivity.this, "Invalid Scout Name",
+                                                 Toast.LENGTH_LONG).show();
+                                     }
+                                 });
+                                 return;
+                             }
+
                          } catch (NumberFormatException e) {
                              runOnUiThread(new Runnable() {
                                  @Override
                                  public void run() {
-                                     Toast.makeText(MainActivity.this, "Invalid Data! Only numbers please",
+                                     Toast.makeText(MainActivity.this, "Invalid Data! Are any fields blank?",
                                              Toast.LENGTH_LONG).show();
                                  }
                              });
