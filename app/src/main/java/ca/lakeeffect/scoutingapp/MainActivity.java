@@ -389,6 +389,7 @@ public class MainActivity extends AppCompatActivity{
 
     public boolean saveData(){
 
+
         if(((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getRating() <= 0){
             runOnUiThread(new Thread(){
                 public void run(){
@@ -423,7 +424,6 @@ public class MainActivity extends AppCompatActivity{
                 newfile = true;
             }
 
-
             FileOutputStream f = new FileOutputStream(file, true);
 
             OutputStreamWriter out = new OutputStreamWriter(f);
@@ -441,12 +441,15 @@ public class MainActivity extends AppCompatActivity{
 
             data.append("," + round);
 
-            labels.append("Scout,");
-            data.append(","+scoutName);
-
             TableLayout layout = (TableLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autopagetablelayout);
     //            PercentRelativeLayout layout = (PercentRelativeLayout) findViewById(R.layout.autopage);
 //            data.append("auto");
+
+            StringBuilder extradata = new StringBuilder();
+            StringBuilder extralabels = new StringBuilder();
+
+            String[] autodata = new String[6];
+            String[] autolabels = new String[6];
             for(int i=0;i<layout.getChildCount();i++){
                 for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof RadioGroup) {
@@ -456,20 +459,56 @@ public class MainActivity extends AppCompatActivity{
                                 pressed = 1-r;
                             }
                         }
-                        data.append("," + pressed);
-                        labels.append(getResources().getResourceEntryName(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
+                        autodata[4] = "," + pressed;
+                        autolabels[4] = getResources().getResourceEntryName(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",";
+//                        data.append("," + pressed);
+//                        labels.append(getResources().getResourceEntryName(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
 
                     }
                     else if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
-                        data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
-                        labels.append(getResources().getResourceEntryName(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
+                        String currentdata = "," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count);
+                        String currentlabel = getResources().getResourceEntryName(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",";
+                        switch(s) {
+                            case 1:
+                                autodata[2] = currentdata;
+                                autolabels[2] = currentlabel;
+                                break;
+                            case 2:
+                                autodata[3] = currentdata;
+                                autolabels[3] = currentlabel;
+                                break;
+                            case 3:
+                                autodata[0] = currentdata;
+                                autolabels[0] = currentlabel;
+                                break;
+                            case 4:
+                                autodata[1] = currentdata;
+                                autolabels[1] = currentlabel;
+                                break;
+
+                        }
+//                        data.append();
+//                        labels.append();
 
                     }
                 }
             }
+            //AUTO GEAR
+//            labels.append("autoGear,");
+//            data.append(","+(((Spinner)pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).getSelectedItemPosition()-1));
+            autolabels[5] = "autoGear,";
+            boolean autoGearSimpleData = (((Spinner)pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).getSelectedItemPosition()-1) >= 1;
+            autodata[5] = "," + (autoGearSimpleData ? 1 : 0);
 
-            labels.append("autoGear,");
-            data.append(","+(((Spinner)pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).getSelectedItemPosition()-1));
+            extralabels.append("autoGearPlacement,");
+            extradata.append(","+(((Spinner)pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).getSelectedItemPosition()-1));
+
+            for(int i=0;i<autodata.length;i++){
+                data.append(autodata[i]);
+            }
+            for(int i=0;i<autolabels.length;i++){
+                data.append(autolabels[i]);
+            }
 
             DisplayMetrics m = getResources().getDisplayMetrics();
             PercentRelativeLayout v = null;
@@ -478,21 +517,56 @@ public class MainActivity extends AppCompatActivity{
 
             layout = (TableLayout) v.findViewById(R.id.teleoptablelayout);
 //            data.append("\nteleop");
+            String[] teledata = new String[6];
+            String[] telelabels = new String[6];
+            int recordedData = 0;
             for(int i=0;i<layout.getChildCount();i++) {
                 for (int s = 0; s < ((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
-                        data.append("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
-                        labels.append(getResources().getResourceEntryName(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
+                        String currentdata = ("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
+                        String currentlabel = (getResources().getResourceEntryName(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
+                        switch(s) {
+                            case 0:
+                                autodata[2] = currentdata;
+                                autolabels[2] = currentlabel;
+                                break;
+                            case 1:
+                                autodata[3] = currentdata;
+                                autolabels[3] = currentlabel;
+                                break;
+                            case 2:
+                                autodata[0] = currentdata;
+                                autolabels[0] = currentlabel;
+                                break;
+                            case 3:
+                                autodata[1] = currentdata;
+                                autolabels[1] = currentlabel;
+                                break;
 
+                        }
                     }
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof HigherCounter) {
-                        data.append("," + String.valueOf(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
-                        labels.append(getResources().getResourceEntryName(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
+                        String currentdata = "," + String.valueOf(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count);
+                        String currentlabel = getResources().getResourceEntryName(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",";
+                        if(s == 6){
+                            extradata.append(currentdata);
+                            extralabels.append(currentlabel);
+                        }else {
+                            autodata[s] = (currentdata);
+                            autolabels[s] = (currentlabel);
+                        }
                     }
                 }
             }
-            data.append(","+((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getRating());
-            labels.append("Drive Rating,");
+            extradata.append(","+((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getRating());
+            extralabels.append("Drive Rating,");
+
+            for(int i=0;i<teledata.length;i++){
+                data.append(teledata[i]);
+            }
+            for(int i=0;i<autolabels.length;i++){
+                data.append(telelabels[i]);
+            }
 
             v = null;
             if(m.widthPixels/m.density >= 600*0) v = ((PercentRelativeLayout) ((ScrollView) pagerAdapter.endgamePage.getView()).getChildAt(0));
@@ -506,19 +580,37 @@ public class MainActivity extends AppCompatActivity{
                             pressed = r;
                         }
                     }
-                    data.append("," + pressed);
+                    data.append("," + (pressed == 0 ? 1: 0));
                     labels.append(getResources().getResourceEntryName(((RadioGroup) v.getChildAt(i)).getId()) + ",");
                 }
                 if(v.getChildAt(i) instanceof EditText){
-                    data.append(",\"" + ((EditText) v.getChildAt(i)).getText().toString().replace("\"", "\'").replace(":",";").replace("\n","\t")+"\"");
-                    labels.append(getResources().getResourceEntryName(((EditText) v.getChildAt(i)).getId()) + ",");
+                    extradata.append(",\"" + ((EditText) v.getChildAt(i)).getText().toString().replace("\"", "\'").replace(":", ";").replace("\n", "\t") + "\"");
+                    extralabels.append(getResources().getResourceEntryName(((EditText) v.getChildAt(i)).getId()) + ",");
                 }
-                if(v.getChildAt(i) instanceof SeekBar){
-                    data.append("," + ((SeekBar) v.getChildAt(i)).getProgress());
-                    labels.append(getResources().getResourceEntryName(((SeekBar) v.getChildAt(i)).getId()) + ",");
+                if(v.getChildAt(i) instanceof Counter){
+                    extradata.append("," + ((Counter) v.getChildAt(i)).count);
+                    extralabels.append(getResources().getResourceEntryName(((Counter) v.getChildAt(i)).getId()) + ",");
+                }
+
+                if(v.getChildAt(i) instanceof CheckBox){
+                    String currentlabel = getResources().getResourceEntryName(((CheckBox) v.getChildAt(i)).getId()) + ",";
+                    String currentdata = "," + (((CheckBox) v.getChildAt(i)).isChecked() ? 1 : 0);
+                    if((currentlabel).equals("died")){
+                        labels.append(currentlabel);
+                        data.append(currentdata);
+                    }else {
+                        extralabels.append(currentlabel);
+                        extradata.append(currentdata);
+                    }
                 }
             }
 
+            //add extra data and labels
+            labels.append(extralabels);
+            data.append(extradata);
+
+            labels.append("Scout,");
+            data.append(","+scoutName);
 
             data.append(",end");//make sure full message has been sent
             labels.append("placeholder finish");
@@ -528,7 +620,6 @@ public class MainActivity extends AppCompatActivity{
             out.close();
 
             f.close();
-
 
             Thread thread = new Thread(){
                 public void run(){

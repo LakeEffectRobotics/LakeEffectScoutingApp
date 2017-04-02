@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -52,22 +53,21 @@
                 android:layout_weight="0.5"/>
         </RadioGroup>
 
-        <SeekBar
-            style="@style/Widget.AppCompat.SeekBar"
-            android:layout_width="fill_parent"
+        <CheckBox
+            android:text="Defense"
+            android:textSize="40dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:max="4"
-            android:progress="0"
-            android:id="@+id/rotors"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView3"/>
+            android:layout_centerHorizontal="true"
+            android:id="@+id/defense"
+            android:layout_below="@id/endgameClimbGroup"/>
+
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/submit"
+            android:layout_below="@+id/rotors"
+            android:layout_marginTop="75dp"
             android:hint="Comments"
             android:id="@+id/endgameComments"/>
 
@@ -75,20 +75,39 @@
             android:text="Submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="129dp"
+            android:layout_below="@id/endgameComments"
             android:id="@+id/submit"
-            android:textSize="50sp"
-            android:layout_alignParentBottom="true"
+            android:textSize="75sp"
             android:layout_centerHorizontal="true"/>
+
+
 
         <TextView
             android:text="Rotors Turning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/endgameClimbGroup"
+            android:layout_below="@+id/defense"
             android:layout_centerHorizontal="true"
             android:id="@+id/textView3"
-            android:textSize="37dp"/>
+            android:textSize="35dp"/>
+
+        <ca.lakeeffect.scoutingapp.Counter
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text=""
+            android:id="@+id/rotors"
+            android:layout_below="@+id/textView3"
+            android:layout_centerHorizontal="true"
+            app:MaxValue="4"/>
+        <CheckBox
+            android:text="Died"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rotors"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/died"
+            android:textSize="40dp" />
 
 
     </android.support.percent.PercentRelativeLayout>
