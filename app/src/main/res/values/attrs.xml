@@ -3,4 +3,7 @@
     <declare-styleable name="HigherCounter">
         <attr name="BigButtonValue" format="string"/>
     </declare-styleable>
+    <declare-styleable name="Counter">
+        <attr name="MaxValue" format="string"/>
+    </declare-styleable>
 </resources>
