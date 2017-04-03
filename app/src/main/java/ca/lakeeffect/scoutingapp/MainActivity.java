@@ -398,6 +398,22 @@ public class MainActivity extends AppCompatActivity{
             });
             return false;
         }
+        if(((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() <= 0){
+            runOnUiThread(new Thread(){
+                public void run(){
+                    new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it crossed the baseline! Go back to the teleop page!", Toast.LENGTH_LONG).show();
+                }
+            });
+            return false;
+        }if(((RadioGroup) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimbGroup)).getCheckedRadioButtonId() <= 0){
+            runOnUiThread(new Thread(){
+                public void run(){
+                    new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it climbed!", Toast.LENGTH_LONG).show();
+                }
+            });
+            return false;
+        }
+
 //        PercentRelativeLayout layout = (PercentRelativeLayout) viewPager.findViewWithTag("page1");
 //        for(int i=0;i<layout.getChildCount();i++){
 //            if(layout.getChildAt(i) instanceof CheckBox) {
@@ -450,6 +466,7 @@ public class MainActivity extends AppCompatActivity{
 
             String[] autodata = new String[6];
             String[] autolabels = new String[6];
+            int recordedData = 0;
             for(int i=0;i<layout.getChildCount();i++){
                 for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof RadioGroup) {
@@ -463,12 +480,12 @@ public class MainActivity extends AppCompatActivity{
                         autolabels[4] = getResources().getResourceEntryName(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",";
 //                        data.append("," + pressed);
 //                        labels.append(getResources().getResourceEntryName(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
-
+                        recordedData++;
                     }
                     else if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
                         String currentdata = "," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count);
                         String currentlabel = getResources().getResourceEntryName(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",";
-                        switch(s) {
+                        switch(recordedData) {
                             case 1:
                                 autodata[2] = currentdata;
                                 autolabels[2] = currentlabel;
@@ -487,6 +504,7 @@ public class MainActivity extends AppCompatActivity{
                                 break;
 
                         }
+                        recordedData++;
 //                        data.append();
 //                        labels.append();
 
@@ -507,7 +525,7 @@ public class MainActivity extends AppCompatActivity{
                 data.append(autodata[i]);
             }
             for(int i=0;i<autolabels.length;i++){
-                data.append(autolabels[i]);
+                labels.append(autolabels[i]);
             }
 
             DisplayMetrics m = getResources().getDisplayMetrics();
@@ -519,42 +537,44 @@ public class MainActivity extends AppCompatActivity{
 //            data.append("\nteleop");
             String[] teledata = new String[6];
             String[] telelabels = new String[6];
-            int recordedData = 0;
+            recordedData = 0;
             for(int i=0;i<layout.getChildCount();i++) {
                 for (int s = 0; s < ((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
                         String currentdata = ("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
                         String currentlabel = (getResources().getResourceEntryName(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
-                        switch(s) {
-                            case 0:
-                                autodata[2] = currentdata;
-                                autolabels[2] = currentlabel;
-                                break;
-                            case 1:
-                                autodata[3] = currentdata;
-                                autolabels[3] = currentlabel;
-                                break;
-                            case 2:
-                                autodata[0] = currentdata;
-                                autolabels[0] = currentlabel;
-                                break;
-                            case 3:
-                                autodata[1] = currentdata;
-                                autolabels[1] = currentlabel;
-                                break;
-
+                        if(recordedData == 6){
+                            extradata.append(currentdata);
+                            extralabels.append(currentlabel);
+                        }else {
+                            teledata[recordedData] = (currentdata);
+                            telelabels[recordedData] = (currentlabel);
                         }
+                        recordedData++;
                     }
                     if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof HigherCounter) {
                         String currentdata = "," + String.valueOf(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count);
                         String currentlabel = getResources().getResourceEntryName(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",";
-                        if(s == 6){
-                            extradata.append(currentdata);
-                            extralabels.append(currentlabel);
-                        }else {
-                            autodata[s] = (currentdata);
-                            autolabels[s] = (currentlabel);
+                        switch(recordedData) {
+                            case 0:
+                                teledata[2] = currentdata;
+                                telelabels[2] = currentlabel;
+                                break;
+                            case 1:
+                                teledata[3] = currentdata;
+                                telelabels[3] = currentlabel;
+                                break;
+                            case 2:
+                                teledata[0] = currentdata;
+                                telelabels[0] = currentlabel;
+                                break;
+                            case 3:
+                                teledata[1] = currentdata;
+                                telelabels[1] = currentlabel;
+                                break;
+
                         }
+                        recordedData++;
                     }
                 }
             }
@@ -565,13 +585,10 @@ public class MainActivity extends AppCompatActivity{
                 data.append(teledata[i]);
             }
             for(int i=0;i<autolabels.length;i++){
-                data.append(telelabels[i]);
+                labels.append(telelabels[i]);
             }
 
-            v = null;
-            if(m.widthPixels/m.density >= 600*0) v = ((PercentRelativeLayout) ((ScrollView) pagerAdapter.endgamePage.getView()).getChildAt(0));
-            else v = ((PercentRelativeLayout) pagerAdapter.endgamePage.getView());
-//            data.append("\nendgame");
+            v = ((PercentRelativeLayout) ((ScrollView) pagerAdapter.endgamePage.getView()).getChildAt(0));
             for(int i=0; i<v.getChildCount(); i++){
                 if(v.getChildAt(i) instanceof RadioGroup){
                     int pressed = -1;
@@ -581,7 +598,9 @@ public class MainActivity extends AppCompatActivity{
                         }
                     }
                     data.append("," + (pressed == 0 ? 1: 0));
-                    labels.append(getResources().getResourceEntryName(((RadioGroup) v.getChildAt(i)).getId()) + ",");
+                    labels.append("Did Climb,");
+                    extradata.append("," + pressed);
+                    extralabels.append("ClimbExtraData (Includes no attempt),");
                 }
                 if(v.getChildAt(i) instanceof EditText){
                     extradata.append(",\"" + ((EditText) v.getChildAt(i)).getText().toString().replace("\"", "\'").replace(":", ";").replace("\n", "\t") + "\"");
@@ -595,7 +614,7 @@ public class MainActivity extends AppCompatActivity{
                 if(v.getChildAt(i) instanceof CheckBox){
                     String currentlabel = getResources().getResourceEntryName(((CheckBox) v.getChildAt(i)).getId()) + ",";
                     String currentdata = "," + (((CheckBox) v.getChildAt(i)).isChecked() ? 1 : 0);
-                    if((currentlabel).equals("died")){
+                    if((currentlabel).equals("died,")){
                         labels.append(currentlabel);
                         data.append(currentdata);
                     }else {
@@ -720,9 +739,12 @@ public class MainActivity extends AppCompatActivity{
 //        ((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoGearGroup)).clearCheck();
         ((RadioGroup) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimbGroup)).clearCheck();
         ((EditText) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameComments)).setText("");
+        ((CheckBox) pagerAdapter.endgamePage.getView().findViewById(R.id.defense)).setChecked(false);
+        ((CheckBox) pagerAdapter.endgamePage.getView().findViewById(R.id.died)).setChecked(false);
         ((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).setRating(0);
-        ((SeekBar) pagerAdapter.endgamePage.getView().findViewById(R.id.rotors)).setProgress(0);
+//        ((SeekBar) pagerAdapter.endgamePage.getView().findViewById(R.id.rotors)).setProgress(0);
         ((Spinner) pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).setSelection(1);
+
     }
 
     public void alert(){

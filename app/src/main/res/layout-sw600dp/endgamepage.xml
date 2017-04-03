@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/lib/ca.lakeeffect.scoutingapp"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
-
-    <android.support.percent.PercentRelativeLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+    <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <RadioGroup
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:gravity="center"
             android:layout_centerHorizontal="true"
-            android:paddingTop="50dp"
+            android:layout_below="@+id/rotors"
             android:id="@+id/endgameClimbGroup">
             <RadioButton
                 android:text="Successful Climb"
-                android:textSize="50dp"
+                android:textSize="40dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignTop="@+id/tableLayout"
@@ -29,7 +29,7 @@
 
             <RadioButton
                 android:text="Failed Climb"
-                android:textSize="50dp"
+                android:textSize="40dp"
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -41,7 +41,7 @@
                 android:layout_weight="0.5"/>
             <RadioButton
                 android:text="Did Not Climb"
-                android:textSize="50dp"
+                android:textSize="40dp"
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -62,11 +62,20 @@
             android:id="@+id/defense"
             android:layout_below="@id/endgameClimbGroup"/>
 
+        <ca.lakeeffect.scoutingapp.Counter
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text=""
+            android:id="@+id/rotors"
+            android:layout_below="@+id/textView3"
+            android:layout_centerHorizontal="true"
+            app:MaxValue="4"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rotors"
+            android:layout_below="@+id/died"
             android:layout_marginTop="75dp"
             android:hint="Comments"
             android:id="@+id/endgameComments"/>
@@ -86,32 +95,19 @@
             android:text="Rotors Turning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/defense"
             android:layout_centerHorizontal="true"
             android:id="@+id/textView3"
             android:textSize="35dp"/>
 
-        <ca.lakeeffect.scoutingapp.Counter
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text=""
-            android:id="@+id/rotors"
-            android:layout_below="@+id/textView3"
-            android:layout_centerHorizontal="true"
-            app:MaxValue="4"/>
         <CheckBox
             android:text="Died"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rotors"
+            android:layout_below="@+id/defense"
             android:layout_centerHorizontal="true"
             android:id="@+id/died"
             android:textSize="40dp" />
 
 
     </android.support.percent.PercentRelativeLayout>
-
-
-
 </ScrollView>

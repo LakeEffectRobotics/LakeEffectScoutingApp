@@ -43,16 +43,16 @@ def getdataforfile(filename, index, robotnumber):
                 continue
             except IndexError as verr:
                 continue
-            if i==7:
+            if i==16:
                 if roundnum == -1:
                     pegPlacedAmount += 1
             else:
                 totalsum += roundnum
         if i == 1:
             averages.append(len(data))
-        elif i == 7:
+        elif i == 16:
             averages.append(str((len(data)-pegPlacedAmount)/(len(data))))
-        elif i == 17:
+        elif i == 23:
             
             averages.append('"' + fullString.replace('"',"").replace(",",".") + '"')
         else:

@@ -7,6 +7,10 @@
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">#6b3ab7</item>
         <item name="android:colorBackground">@color/background_material_dark</item>
+
+        <item name="android:spinnerDropDownItemStyle">
+            @style/spinnerItemStyle
+        </item>
     </style>
 
     <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar" >
@@ -23,10 +27,18 @@
         </item>
         <item name="android:textColorSecondaryInverse">@color/abc_secondary_text_material_dark
         </item>
+
+        <item name="android:spinnerDropDownItemStyle">
+        @style/spinnerItemStyle
+        </item>
     </style>
 
     <style name="ButtonColor" parent="@android:style/Widget.Button">
         <item name="android:textColor">@color/primary_text_material_dark</item>
         <item name="android:background">@android:drawable/btn_default</item>
+    </style>
+    <style name="spinnerItemStyle">
+        <item name="android:textSize">25dp</item>
+        <item name="android:padding">30dp</item>
     </style>
 </resources>

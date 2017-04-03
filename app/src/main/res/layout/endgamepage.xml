@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:gravity="center"
             android:layout_centerHorizontal="true"
-            android:paddingTop="25dp"
+            android:layout_below="@+id/rotors"
             android:id="@+id/endgameClimbGroup">
             <RadioButton
                 android:text="Successful Climb"
@@ -75,7 +75,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rotors"
+            android:layout_below="@+id/died"
             android:layout_marginTop="75dp"
             android:hint="Comments"
             android:id="@+id/endgameComments"/>
@@ -95,7 +95,6 @@
         android:text="Rotors Turning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/defense"
         android:layout_centerHorizontal="true"
         android:id="@+id/textView3"
         android:textSize="20dp"/>
@@ -104,7 +103,7 @@
         android:text="Died"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rotors"
+        android:layout_below="@+id/defense"
         android:layout_centerHorizontal="true"
         android:id="@+id/died"
         android:textSize="25dp" />

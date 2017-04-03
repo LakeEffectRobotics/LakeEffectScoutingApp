@@ -69,13 +69,6 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
                 .setPositiveButton(android.R.string.yes,  new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO DO STUFF
-
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                         if(((MainActivity)getActivity()).saveData()) {
                             Toast.makeText(getActivity(),
                                     "Saving", Toast.LENGTH_LONG).show();

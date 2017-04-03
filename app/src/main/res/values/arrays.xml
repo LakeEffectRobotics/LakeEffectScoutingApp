@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pegs">
+        <item>Failed</item>
+        <item>No Gear</item>
+        <item>Left Peg</item>
+        <item>Center Peg</item>
+        <item>Right Peg</item>
+    </string-array>
+</resources>

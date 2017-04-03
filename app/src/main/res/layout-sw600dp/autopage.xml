@@ -281,7 +281,7 @@
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/autoPeg"
         android:spinnerMode="dropdown"
         android:layout_below="@id/autopagetablelayout"
