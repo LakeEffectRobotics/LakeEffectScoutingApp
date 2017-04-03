@@ -1,5 +1,7 @@
 import os
 foldername = input("folderpath: ")
+if not foldername.endswith("\\"):
+    foldername += "\\"
 
 alllines = []
 

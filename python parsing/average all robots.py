@@ -64,6 +64,8 @@ def getdataforfile(filename, index, robotnumber):
             
     
 foldername = input("folderpath: ")
+if not foldername.endswith("\\"):
+    foldername += "\\"
 
 if not os.path.exists(foldername + '\\results\\'):
     os.makedirs(foldername + '\\results\\')
