@@ -57,7 +57,7 @@ public class PairingThread implements Runnable {
             public void run() {
                 final AlertDialog dialog = new AlertDialog.Builder(activity)
                         .setTitle("It is your first time")
-                        .setMessage("The app is about to try to pair with the server through bluetooth. There might be some dialog popups, make sure to allow everything.")
+                        .setMessage("The app is about to try to pair with the server through bluetooth. There might be some dialog popups, make sure to allow everything.\n\nPairing can take up to 2 minutes")
                         .setPositiveButton("Ok, I'm ready to accept the popups", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 startPairing(ba);
