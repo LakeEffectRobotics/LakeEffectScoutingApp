@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity{
 
     Thread bluetoothConnectionThread;
 
+    ListenerThread listenerThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs1 = getSharedPreferences("theme", MODE_PRIVATE);
@@ -201,7 +203,11 @@ public class MainActivity extends AppCompatActivity{
 //        submit.setOnClickListener(this);
 
         //start bluetooth pairing/connection
-        Thread thread = new Thread(new PairingThread(this, true));
+//        Thread thread = new Thread(new PairingThread(this, true));
+//        thread.start();
+
+        //start listening
+        Thread thread = new Thread(new ListenerThread(bluetoothsocket));
         thread.start();
 
 
@@ -565,6 +571,43 @@ public class MainActivity extends AppCompatActivity{
             e.printStackTrace();
         }
         return true;
+    }
+
+    public void waitForConformation(final StringBuilder labels, final StringBuilder data){
+        Thread thread = new Thread(){
+            public void run(){
+                while(true) {
+                    System.out.println("aaaa");
+                    byte[] bytes = new byte[1000];
+                    try {
+                        if(!connected){
+                            pendingmessages.add(robotNum + ":" + labels.toString() + ":"  + data.toString());
+                            SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + labels.toString() + ":"  + data.toString());
+                            editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
+                            editor.apply();
+                            return;
+                        }
+                        int amount = listenerThread.in.read(bytes);
+                        if (new String(bytes, Charset.forName("UTF-8")).equals("done")) {
+                            return;
+                        }
+                        if(!connected){
+                            pendingmessages.add(robotNum + ":" + labels.toString() + ":"  + data.toString());
+                            SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + labels.toString() + ":"  + data.toString());
+                            editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
+                            editor.apply();
+                            return;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
     }
 
     public int getLocationInSharedMessages(String message){
