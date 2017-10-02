@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -24,6 +25,8 @@ public class ConnectionThread implements Runnable {
 
     OutputStream out = null;
     InputStream in = null;
+
+    ArrayList<String> sentPendingMessages = new ArrayList<>();
 
     public ConnectionThread(MainActivity mainActivity, BluetoothSocket bluetoothSocket, OutputStream out, InputStream in){
         this.mainActivity = mainActivity;
@@ -55,9 +58,9 @@ public class ConnectionThread implements Runnable {
                                     Toast.LENGTH_LONG).show();
                         }
                     });
-                    sendData();
+                    sendData(data);
                     data = "";
-                }else if (message.contains("REQUEST")) {
+                }else if (message.contains("RECEIVED")) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -69,7 +72,6 @@ public class ConnectionThread implements Runnable {
                 } else {
                     data += message;
                 }
-                final byte[] bytes2 = bytes;
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -86,7 +88,14 @@ public class ConnectionThread implements Runnable {
         }
     }
 
-    public void sendData(){
+    public void sendData(String data){
 
+    }
+
+    public void deleteData(){ //deleted items that are in sent pending messages (because they now have been sent
+        for(String message: new ArrayList<>(sentPendingMessages)){
+            mainActivity.pendingmessages.remove(message);
+            sentPendingMessages.remove(message);
+        }
     }
 }
