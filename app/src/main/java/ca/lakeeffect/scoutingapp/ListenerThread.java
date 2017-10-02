@@ -47,6 +47,8 @@ public class ListenerThread implements Runnable{
         }
             if (bluetoothSocket.isConnected()) {
 //                new BluetoothConnection(bluetoothSocket, out, in, MainActivity.this).start();
+
+                //call connection thread and break;
             }
         }
     }
