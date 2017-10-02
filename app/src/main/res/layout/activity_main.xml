@@ -44,7 +44,33 @@
             android:textStyle="bold"
             android:layout_toRightOf="@+id/statustextView"
             />
-        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/deviceNameLayout"
+        android:layout_below="@+id/statusLayout"
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Device Name: "
+            android:id="@+id/deviceNameTextView"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Place Holder"
+            android:id="@+id/deviceName"
+            android:textStyle="bold"
+            android:layout_toRightOf="@+id/deviceNameTextView"
+            />
+    </RelativeLayout>
 
     <!--<View-->
         <!--android:layout_width="match_parent"-->

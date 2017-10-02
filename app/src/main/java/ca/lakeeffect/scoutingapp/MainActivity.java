@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //check what theme is selected and set it as the theme
         SharedPreferences prefs1 = getSharedPreferences("theme", MODE_PRIVATE);
         switch(prefs1.getInt("theme", 0)){
             case 0:
@@ -108,9 +110,12 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //call alert (asking scout name and robot number)
         alert();
+
         //add all buttons and counters etc.
 
+        //go through all saved pending messages and add them to the variable
         SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
         for(int i=0;i<prefs.getInt("messageAmount",0);i++){
             if(prefs.getString("message"+i,null) == null){
@@ -125,6 +130,7 @@ public class MainActivity extends AppCompatActivity{
             }
         }
 
+        //set onclick listener for moreOptions
         moreOptions = (Button) findViewById(R.id.moreOptions);
         moreOptions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +178,10 @@ public class MainActivity extends AppCompatActivity{
                 menu.show();
             }
         });
+
+        //set device name
+        BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
+        ((TextView) ((RelativeLayout) findViewById(R.id.deviceNameLayout)).findViewById(R.id.deviceName)).setText(ba.getName()); //if this method ends up not working refer to https://stackoverflow.com/a/6662271/1985387
 
 //        counters.add((Counter) findViewById(R.id.goalsCounter));
 
