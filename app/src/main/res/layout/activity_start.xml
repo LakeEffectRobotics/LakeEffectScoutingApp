@@ -43,7 +43,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/Swirly"
+            app:srcCompat="@drawable/swirly"
             android:id="@+id/logo"
             android:layout_marginBottom="10dp"
             android:layout_centerHorizontal="true" />
