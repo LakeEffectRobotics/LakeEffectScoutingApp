@@ -65,10 +65,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Place Holder"
+            android:text="XXXXXXX"
             android:id="@+id/deviceName"
             android:textStyle="bold"
             android:layout_toRightOf="@+id/deviceNameTextView"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/numberOfPendingMessagesLayout"
+        android:layout_below="@+id/deviceNameLayout"
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Pending Messages: "
+            android:id="@+id/numberOfPendingMessagesTextView"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="X"
+            android:id="@+id/numberOfPendingMessages"
+            android:textStyle="bold"
+            android:layout_toRightOf="@+id/numberOfPendingMessagesTextView"
             />
     </RelativeLayout>
 
@@ -87,7 +113,7 @@
         android:id="@+id/scrollingview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/deviceNameLayout"
+        android:layout_below="@+id/numberOfPendingMessagesLayout"
         android:layout_above="@+id/moreOptions">
         <!--android:layout_above="@+id/scaleCheckBox">-->
 

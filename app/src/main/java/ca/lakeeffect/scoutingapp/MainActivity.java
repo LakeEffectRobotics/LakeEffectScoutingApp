@@ -183,6 +183,10 @@ public class MainActivity extends AppCompatActivity{
         BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
         ((TextView) ((RelativeLayout) findViewById(R.id.deviceNameLayout)).findViewById(R.id.deviceName)).setText(ba.getName()); //if this method ends up not working refer to https://stackoverflow.com/a/6662271/1985387
 
+        //set pending messages number on ui
+        ((TextView) ((RelativeLayout) findViewById(R.id.deviceNameLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingmessages.size() + "");
+
+
 //        counters.add((Counter) findViewById(R.id.goalsCounter));
 
         //setup scrolling viewpager
