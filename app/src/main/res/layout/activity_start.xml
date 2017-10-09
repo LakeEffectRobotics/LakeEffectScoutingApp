@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,21 +29,64 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Welcome to the Scouting App!\n\nTo start scouting press the button\n\nScouting options are shown below"
-        android:id="@+id/textView"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="25dp"
-        android:textIsSelectable="true"
-        android:textColor="@color/primary_text_material_dark" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Version: "
         android:id="@+id/versionNum"
         android:layout_above="@+id/changeTheme"
         android:layout_centerHorizontal="true" />
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/Swirly"
+            android:id="@+id/logo"
+            android:layout_marginBottom="10dp"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Welcome to the Scouting App!"
+            android:id="@+id/introTextView1"
+            android:textSize="25dp"
+            android:textIsSelectable="true"
+            android:textColor="@color/primary_text_material_dark"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/logo"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Scouting options are shown below"
+            android:id="@+id/introTextView3"
+            android:textSize="25dp"
+            android:textIsSelectable="true"
+            android:textColor="@color/primary_text_material_dark"
+            android:layout_below="@+id/introTextView2"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="To start scouting press the button"
+            android:id="@+id/introTextView2"
+            android:textSize="25dp"
+            android:textIsSelectable="true"
+            android:textColor="@color/primary_text_material_dark"
+            android:layout_below="@+id/introTextView1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </android.support.percent.PercentRelativeLayout>
+
 </RelativeLayout>
