@@ -52,7 +52,7 @@ public class ConnectionThread implements Runnable {
                 else continue;
 
                 String message = new String(bytes, Charset.forName("UTF-8"));
-                if (message.contains("REQUEST")){ //received request
+                if (message.contains("REQUESTDATA")){ //received request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -60,7 +60,7 @@ public class ConnectionThread implements Runnable {
                                     Toast.LENGTH_LONG).show();
                         }
                     });
-                    sendData(data);
+                    sendData();
                     data = "";
                 }else if (message.contains("RECEIVED")) {
                     try {
@@ -90,8 +90,28 @@ public class ConnectionThread implements Runnable {
         }
     }
 
-    public void sendData(String data){
+    public void sendLabels(){
+        try {
+            this.out.write((mainActivity.robotNum + ":" + mainActivity.getData()[1]).getBytes(Charset.forName("UTF-8")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void sendData(){
+        try {
+            String fullmessage = "";
+            for(String message : mainActivity.pendingmessages){
+//                this.out.write((mainActivity.robotNum + ":" + mainActivity.getData()[0]).getBytes(Charset.forName("UTF-8")));
+                if(!fullmessage.isEmpty()){
+                    fullmessage += "::";
+                }
+                fullmessage += message;
+            }
+            this.out.write(fullmessage.getBytes(Charset.forName("UTF-8")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteData(){ //deleted items that are in sent pending messages (because they now have been sent

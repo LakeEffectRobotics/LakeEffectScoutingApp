@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity{
 //        thread.start();
 
         //start listening
-        Thread thread = new Thread(new ListenerThread(bluetoothsocket));
+        Thread thread = new Thread(new ListenerThread(this, bluetoothsocket));
         thread.start();
 
 
