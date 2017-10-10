@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity{
     int round = 0;
     String scoutName = "Woodie Flowers";
 
-    static long start;
-
     InputPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
@@ -92,6 +90,8 @@ public class MainActivity extends AppCompatActivity{
     Thread bluetoothConnectionThread;
 
     ListenerThread listenerThread;
+
+    String labels; //generated at the beginning
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,7 +225,6 @@ public class MainActivity extends AppCompatActivity{
         thread.start();
 
 
-        start = System.nanoTime();
     }
 
 
