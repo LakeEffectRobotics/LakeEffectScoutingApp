@@ -20,13 +20,17 @@ import java.util.UUID;
 
 public class ListenerThread implements Runnable{
 
+    MainActivity mainActivity;
+
     BluetoothSocket bluetoothSocket;
     BluetoothAdapter ba;
 
     OutputStream out = null;
     InputStream in = null;
 
-    public ListenerThread(BluetoothSocket bluetoothSocket){
+    ConnectionThread connectionThread;
+
+    public ListenerThread(MainActivity mainActivity, BluetoothSocket bluetoothSocket){
         this.bluetoothSocket = bluetoothSocket;
     }
 
@@ -49,6 +53,10 @@ public class ListenerThread implements Runnable{
 //                new BluetoothConnection(bluetoothSocket, out, in, MainActivity.this).start();
 
                 //call connection thread and break;
+
+                connectionThread = new ConnectionThread(mainActivity, bluetoothSocket, out, in);
+                connectionThread.run();
+                break;
             }
         }
     }

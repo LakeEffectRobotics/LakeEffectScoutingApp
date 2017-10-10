@@ -1,7 +1,9 @@
 package ca.lakeeffect.scoutingapp;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.bluetooth.BluetoothSocket;
-import android.util.Log;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -96,6 +98,15 @@ public class ConnectionThread implements Runnable {
         for(String message: new ArrayList<>(sentPendingMessages)){
             mainActivity.pendingmessages.remove(message);
             sentPendingMessages.remove(message);
+
+            int loc = mainActivity.getLocationInSharedMessages(message);
+
+            if(loc != -1){
+                SharedPreferences prefs = mainActivity.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("message"+loc, null);
+                editor.apply();
+            }
         }
     }
 }
