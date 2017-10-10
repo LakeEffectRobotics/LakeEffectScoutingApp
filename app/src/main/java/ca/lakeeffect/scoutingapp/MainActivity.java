@@ -110,6 +110,9 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //get the labels and store them in a variable
+        labels = getData(true)[1];
+
         //call alert (asking scout name and robot number)
         alert();
 
@@ -288,29 +291,32 @@ public class MainActivity extends AppCompatActivity{
         registerReceiver(bState,filter);
     }
 
-    public String[] getData(){
-        if(((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getRating() <= 0){
-            runOnUiThread(new Thread(){
-                public void run(){
-                    new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the drive ability!", Toast.LENGTH_LONG).show();
-                }
-            });
-            return null;
-        }
-        if(((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() <= 0){
-            runOnUiThread(new Thread(){
-                public void run(){
-                    new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it crossed the baseline! Go back to the teleop page!", Toast.LENGTH_LONG).show();
-                }
-            });
-            return null;
-        }if(((RadioGroup) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimbGroup)).getCheckedRadioButtonId() <= 0){
-            runOnUiThread(new Thread(){
-                public void run(){
-                    new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it climbed!", Toast.LENGTH_LONG).show();
-                }
-            });
-            return null;
+    public String[] getData(boolean bypassChecks){
+        if(!bypassChecks) {
+            if (((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getRating() <= 0) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the drive ability!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+            if (((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() <= 0) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it crossed the baseline! Go back to the teleop page!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+            if (((RadioGroup) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimbGroup)).getCheckedRadioButtonId() <= 0) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it climbed!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
         }
 
         final StringBuilder data = new StringBuilder();
@@ -525,7 +531,10 @@ public class MainActivity extends AppCompatActivity{
 
             OutputStreamWriter out = new OutputStreamWriter(f);
 
-            String[] data = getData();
+            String[] data = getData(false);
+            if(data == null){
+                return false;
+            }
 
             if(newfile) out.append(data[1].toString());
             out.append(data[0].toString());
