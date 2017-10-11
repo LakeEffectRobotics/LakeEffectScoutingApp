@@ -509,6 +509,10 @@ public class MainActivity extends AppCompatActivity{
         labels.append("Scout,");
         data.append(","+scoutName);
 
+        //Add UUID
+        labels.append("UUID,");
+        data.append("," + UUID.randomUUID());
+
         data.append(",end");//make sure full message has been sent
         labels.append("placeholder finish");
 
