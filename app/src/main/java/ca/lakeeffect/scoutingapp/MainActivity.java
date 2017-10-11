@@ -110,9 +110,6 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //get the labels and store them in a variable
-        labels = getData(true)[1];
-
         //call alert (asking scout name and robot number)
         alert();
 
@@ -197,7 +194,6 @@ public class MainActivity extends AppCompatActivity{
         pagerAdapter = new InputPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(3);
-
 
 //        NumberPicker np = (NumberPicker) findViewm counters
 //        np.setWrapSelectorWheel(false);ById(R.id.numberPicker);
@@ -750,6 +746,10 @@ public class MainActivity extends AppCompatActivity{
                          }
                          robotNumText = (TextView) findViewById(R.id.robotNum);
                          robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
+
+                         //get the labels and store them in a variable
+                         labels = getData(true)[1];
+
                          dialog.dismiss();
                      }
                  });
