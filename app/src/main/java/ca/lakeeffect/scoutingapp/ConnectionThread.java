@@ -52,7 +52,7 @@ public class ConnectionThread implements Runnable {
                 else continue;
 
                 String message = new String(bytes, Charset.forName("UTF-8"));
-                if (message.contains("REQUESTDATA")){ //received request
+                if (message.contains("REQUEST DATA")){ //received request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -61,6 +61,16 @@ public class ConnectionThread implements Runnable {
                         }
                     });
                     sendData();
+                    data = "";
+                }else if (message.contains("REQUEST LABELS")){ //received request
+                    mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(mainActivity, "Sending Labels",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    sendLabels();
                     data = "";
                 }else if (message.contains("RECEIVED")) {
                     try {
