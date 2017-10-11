@@ -93,8 +93,17 @@ public class MainActivity extends AppCompatActivity{
 
     String labels; //generated at the beginning
 
+    int versionCode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //set version code
+        try {
+            versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         //check what theme is selected and set it as the theme
         SharedPreferences prefs1 = getSharedPreferences("theme", MODE_PRIVATE);

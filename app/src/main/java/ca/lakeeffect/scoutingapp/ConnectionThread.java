@@ -92,7 +92,7 @@ public class ConnectionThread implements Runnable {
 
     public void sendLabels(){
         try {
-            this.out.write((mainActivity.robotNum + ":" + mainActivity.getData(true)[1]).getBytes(Charset.forName("UTF-8")));
+            this.out.write((mainActivity.versionCode + ":::" + mainActivity.getData(true)[1]).getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,7 +100,7 @@ public class ConnectionThread implements Runnable {
 
     public void sendData(){
         try {
-            String fullmessage = "";
+            String fullmessage = mainActivity.versionCode + ":::";
             for(String message : mainActivity.pendingmessages){
 //                this.out.write((mainActivity.robotNum + ":" + mainActivity.getData()[0]).getBytes(Charset.forName("UTF-8")));
                 if(!fullmessage.isEmpty()){
