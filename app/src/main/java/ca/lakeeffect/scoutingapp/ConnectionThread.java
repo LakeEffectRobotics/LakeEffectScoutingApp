@@ -83,6 +83,7 @@ public class ConnectionThread implements Runnable {
                     in.close();
                     out.close();
                     bluetoothSocket.close();
+                    deleteData();
                 } else {
                     data += message;
                 }
