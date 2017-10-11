@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.bluetooth.BluetoothSocket;
 import android.content.SharedPreferences;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -138,5 +140,8 @@ public class ConnectionThread implements Runnable {
                 editor.apply();
             }
         }
+
+        //set pending messages number on ui
+        ((TextView) ((RelativeLayout) mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingmessages.size() + "");
     }
 }

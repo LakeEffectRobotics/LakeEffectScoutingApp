@@ -554,6 +554,9 @@ public class MainActivity extends AppCompatActivity{
             editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
             editor.apply();
 
+            //set pending messages number on ui
+            ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingmessages.size() + "");
+
             out.close();
 
             f.close();
