@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity{
     InputPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
-    BluetoothSocket bluetoothsocket;
     ArrayList<String> pendingmessages = new ArrayList<>();
     boolean connected;
 
@@ -229,9 +228,8 @@ public class MainActivity extends AppCompatActivity{
 //        thread.start();
 
         //start listening
-        Thread thread = new Thread(new ListenerThread(this, bluetoothsocket));
-        thread.start();
-
+        listenerThread = new ListenerThread(this);
+        new Thread(listenerThread).start();
 
     }
 

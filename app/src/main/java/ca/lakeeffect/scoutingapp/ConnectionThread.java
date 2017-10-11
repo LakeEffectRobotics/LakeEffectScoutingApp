@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -84,6 +85,7 @@ public class ConnectionThread implements Runnable {
                     out.close();
                     bluetoothSocket.close();
                     deleteData();
+                    mainActivity.listenerThread = new ListenerThread(mainActivity);
                 } else {
                     data += message;
                 }

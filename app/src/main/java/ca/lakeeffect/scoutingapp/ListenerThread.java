@@ -30,8 +30,8 @@ public class ListenerThread implements Runnable{
 
     ConnectionThread connectionThread;
 
-    public ListenerThread(MainActivity mainActivity, BluetoothSocket bluetoothSocket){
-        this.bluetoothSocket = bluetoothSocket;
+    public ListenerThread(MainActivity mainActivity){
+
     }
 
     @Override
