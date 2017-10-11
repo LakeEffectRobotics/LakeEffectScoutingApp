@@ -59,7 +59,7 @@ public class HigherCounter extends LinearLayout implements View.OnClickListener{
 
     @Override
     public void onClick(View view){
-        times.add(new Long(System.nanoTime() - MainActivity.start));
+//        times.add(new Long(System.nanoTime() - MainActivity.start));
         if(view == plusOneButton) count ++;
         else if(view == plusBigButton) count +=bigButton;
         if(view == minusOneButton) count --;

@@ -16,7 +16,7 @@ public class Counter extends LinearLayout implements View.OnClickListener{
 
     int count;
 
-    List<Long> times = new ArrayList<>();
+//    List<Long> times = new ArrayList<>();
 
     Button plusOneButton;
     Button minusOneButton;
@@ -46,7 +46,7 @@ public class Counter extends LinearLayout implements View.OnClickListener{
     }
 
     public void onClick(View view){
-        times.add(new Long(System.nanoTime() - MainActivity.start));
+//        times.add(new Long(System.nanoTime() - MainActivity.start));
         if(view == plusOneButton){
             count++;
             if(count > max){
