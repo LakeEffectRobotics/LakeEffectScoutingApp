@@ -541,8 +541,19 @@ public class MainActivity extends AppCompatActivity{
                 return false;
             }
 
-            if(newfile) out.append(data[1].toString());
-            out.append(data[0].toString());
+            //save to file
+            if(newfile) out.append(data[1]);
+            out.append(data[0]);
+
+            //add to pending messages
+            pendingmessages.add(robotNum + ":" + data[0]);
+            //add to sharedprefs
+            SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + data.toString());
+            editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
+            editor.apply();
+
             out.close();
 
             f.close();
