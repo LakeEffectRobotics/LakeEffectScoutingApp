@@ -31,7 +31,7 @@ public class ListenerThread implements Runnable{
     ConnectionThread connectionThread;
 
     public ListenerThread(MainActivity mainActivity){
-
+    this.mainActivity = mainActivity;
     }
 
     @Override
