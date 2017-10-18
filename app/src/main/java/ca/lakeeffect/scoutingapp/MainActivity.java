@@ -1,6 +1,7 @@
 package ca.lakeeffect.scoutingapp;
 
 import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -161,6 +162,28 @@ public class MainActivity extends AppCompatActivity{
                         }
                         if(item.getItemId() == R.id.changeNum){
                             alert();
+                        }
+                        if(item.getItemId() == R.id.resetPendingMessages){
+                            for(String message: pendingmessages){
+                                pendingmessages.remove(message);
+
+                                int loc = getLocationInSharedMessages(message);
+
+                                if(loc != -1){
+                                    SharedPreferences prefs = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putString("message"+loc, null);
+                                    editor.apply();
+                                }
+                            }
+
+                            //set pending messages number on ui
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingmessages.size() + "");
+                                }
+                            });
                         }
 
                         if(item.getItemId() == R.id.changeTheme) {

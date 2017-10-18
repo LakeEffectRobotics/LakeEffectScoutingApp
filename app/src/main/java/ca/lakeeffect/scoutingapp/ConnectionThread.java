@@ -127,6 +127,8 @@ public class ConnectionThread implements Runnable {
                     fullmessage += "::";
                 }
                 fullmessage += message;
+
+                sentPendingMessages.add(message);
             }
             this.out.write(fullmessage.getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
