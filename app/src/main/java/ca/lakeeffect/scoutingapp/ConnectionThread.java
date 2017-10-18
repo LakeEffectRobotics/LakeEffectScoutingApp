@@ -85,28 +85,33 @@ public class ConnectionThread implements Runnable {
                     out.close();
                     bluetoothSocket.close();
                     deleteData();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     mainActivity.listenerThread = new ListenerThread(mainActivity);
+                    new Thread(mainActivity.listenerThread).start();
+                    break;
                 } else {
                     data += message;
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-
-
-        }
-
-        while(true){
-
-            if(!bluetoothSocket.isConnected()){
+                mainActivity.listenerThread = new ListenerThread(mainActivity);
+                new Thread(mainActivity.listenerThread).start();
                 break;
             }
+
+
         }
+
     }
 
     public void sendLabels(){
         try {
+            System.out.println(mainActivity.labels + " sadsadsad");
             this.out.write((mainActivity.versionCode + ":::" + mainActivity.labels).getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
@@ -118,7 +123,7 @@ public class ConnectionThread implements Runnable {
             String fullmessage = mainActivity.versionCode + ":::";
             for(String message : mainActivity.pendingmessages){
 //                this.out.write((mainActivity.robotNum + ":" + mainActivity.getData()[0]).getBytes(Charset.forName("UTF-8")));
-                if(!fullmessage.isEmpty()){
+                if(!fullmessage.equals(mainActivity.versionCode + ":::")){
                     fullmessage += "::";
                 }
                 fullmessage += message;
@@ -145,6 +150,11 @@ public class ConnectionThread implements Runnable {
         }
 
         //set pending messages number on ui
-        ((TextView) ((RelativeLayout) mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingmessages.size() + "");
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView) ((RelativeLayout) mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingmessages.size() + "");
+            }
+        });
     }
 }

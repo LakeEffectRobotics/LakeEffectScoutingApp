@@ -86,11 +86,9 @@ public class MainActivity extends AppCompatActivity{
 
     Button moreOptions;
 
-    Thread bluetoothConnectionThread;
-
     ListenerThread listenerThread;
 
-    String labels; //generated at the beginning
+    String labels = null; //generated at the beginning
 
     int versionCode;
 
@@ -223,75 +221,17 @@ public class MainActivity extends AppCompatActivity{
 
 //        submit.setOnClickListener(this);
 
-        //start bluetooth pairing/connection
-//        Thread thread = new Thread(new PairingThread(this, true));
-//        thread.start();
-
-        //start listening
-        listenerThread = new ListenerThread(this);
-        new Thread(listenerThread).start();
-
     }
 
+    public void startListenerThread(){
+        if(labels == null) labels = getData(true)[1];
+        System.out.println(labels + " labels");
 
-    public void registerBluetoothListeners(){
-        BroadcastReceiver bState = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.d("SDAsadsadsadsad","iouweroiurweoiurewoirweuoiweru");
-                String action = intent.getAction();
-                switch (action){
-                    case BluetoothDevice.ACTION_ACL_DISCONNECTED:
-                        connected = false;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setText("DISCONNECTED");
-                                ((TextView) ((RelativeLayout) findViewById(R.id.statusLayout)).findViewById(R.id.status)).setTextColor(Color.argb(255,255,0,0));
-                            }
-                        });
-//                        if(bluetoothConnectionThread == null) setupBluetoothConnections();
-                        Thread thread1 = new Thread(bluetoothConnectionThread);
-                        thread1.start();
-                        break;
-//                    case BluetoothDevice.ACTION_ACL_CONNECTED:
-//                        try {
-//                            out = bluetoothsocket.getOutputStream();
-//                            in = bluetoothsocket.getInputStream();
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    ((TextView) findViewById(R.id.status)).setText("CONNECTED");
-//                                    ((TextView) findViewById(R.id.status)).setTextColor(Color.argb(255,0,255,0));
-//                                    Toast.makeText(MainActivity.this, "connected!",
-//                                            Toast.LENGTH_LONG).show();
-//                                }
-//                            });
-//                            while(!pendingmessages.isEmpty()){
-//                                for(String message: pendingmessages){
-//
-//                                    byte[] bytes = new byte[1000000];
-//                                    int amount = in.read(bytes);
-//                                    if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
-//                                    else continue;
-//                                    if(new String(bytes, Charset.forName("UTF-8")).equals("done")){
-//                                        pendingmessages.remove(message);
-//                                        break;
-//                                    }
-//                                }//TODO TEST IF THIS WORKS
-//                            }
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                        break;
-                }
-            }
-        };
-
-        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
-        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        registerReceiver(bState,filter);
+        //start listening
+        if(listenerThread == null) {
+            listenerThread = new ListenerThread(this);
+            new Thread(listenerThread).start();
+        }
     }
 
     public String[] getData(boolean bypassChecks){
@@ -514,7 +454,7 @@ public class MainActivity extends AppCompatActivity{
         data.append("," + UUID.randomUUID());
 
         data.append(",end");//make sure full message has been sent
-        labels.append("placeholder finish");
+        labels.append("end");
 
         return new String[]{data.toString(), labels.toString()};
     }
@@ -552,7 +492,7 @@ public class MainActivity extends AppCompatActivity{
             //add to sharedprefs
             SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + data.toString());
+            editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + data[0]);
             editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
             editor.apply();
 
@@ -717,6 +657,10 @@ public class MainActivity extends AppCompatActivity{
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
              @Override
              public void onShow(final DialogInterface dialog) {
+
+                 //start bluetooth, all views are probably ready now
+                 startListenerThread();
+
                  SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
                  ((EditText) ((AlertDialog) dialog).findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
                  ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -771,9 +715,6 @@ public class MainActivity extends AppCompatActivity{
                          }
                          robotNumText = (TextView) findViewById(R.id.robotNum);
                          robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
-
-                         //get the labels and store them in a variable
-                         labels = getData(true)[1];
 
                          dialog.dismiss();
                      }

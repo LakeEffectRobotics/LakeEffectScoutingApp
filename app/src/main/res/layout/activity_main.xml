@@ -22,35 +22,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id = "@+id/statusLayout"
-        android:layout_below="@+id/robotNum"
-        android:layout_centerHorizontal="true"
-        android:gravity="center">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Status: "
-            android:id="@+id/statustextView"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Disconnected"
-            android:id="@+id/status"
-            android:textColor="#ff0000"
-            android:textStyle="bold"
-            android:layout_toRightOf="@+id/statustextView"
-            />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id = "@+id/deviceNameLayout"
-        android:layout_below="@+id/statusLayout"
+        android:layout_below="@+id/robotNum"
         android:layout_centerHorizontal="true"
         android:gravity="center">
         <TextView
