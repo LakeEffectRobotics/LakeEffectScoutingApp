@@ -40,11 +40,12 @@ public class ListenerThread implements Runnable{
         ba = BluetoothAdapter.getDefaultAdapter();
 
         while(true) {
+            BluetoothServerSocket bss = null;
             try {
                 System.out.println("started search");
 //                ba.cancelDiscovery();
 //                ba.
-                final BluetoothServerSocket bss = ba.listenUsingRfcommWithServiceRecord("SteamworksScoutingApp", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
+                bss = ba.listenUsingRfcommWithServiceRecord("SteamworksScoutingApp", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
                 bluetoothSocket = bss.accept();
                 System.out.println("accepted");
                 out = bluetoothSocket.getOutputStream();
@@ -52,12 +53,13 @@ public class ListenerThread implements Runnable{
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             if (bluetoothSocket.isConnected()) {
 //                new BluetoothConnection(bluetoothSocket, out, in, MainActivity.this).start();
 
                 //call connection thread and break;
 
-                connectionThread = new ConnectionThread(mainActivity, bluetoothSocket, out, in);
+                connectionThread = new ConnectionThread(mainActivity, bluetoothSocket, out, in, bss);
                 new Thread(connectionThread).start();
                 break;
             }

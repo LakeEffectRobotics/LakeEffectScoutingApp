@@ -2,6 +2,7 @@ package ca.lakeeffect.scoutingapp;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.SharedPreferences;
 import android.widget.RelativeLayout;
@@ -27,17 +28,19 @@ public class ConnectionThread implements Runnable {
     MainActivity mainActivity;
 
     BluetoothSocket bluetoothSocket;
+    BluetoothServerSocket bss;
 
     OutputStream out = null;
     InputStream in = null;
 
     ArrayList<String> sentPendingMessages = new ArrayList<>();
 
-    public ConnectionThread(MainActivity mainActivity, BluetoothSocket bluetoothSocket, OutputStream out, InputStream in){
+    public ConnectionThread(MainActivity mainActivity, BluetoothSocket bluetoothSocket, OutputStream out, InputStream in, BluetoothServerSocket bss){
         this.mainActivity = mainActivity;
         this.bluetoothSocket = bluetoothSocket;
         this.out = out;
         this.in = in;
+        this.bss = bss;
     }
 
     @Override
@@ -84,13 +87,9 @@ public class ConnectionThread implements Runnable {
                     in.close();
                     out.close();
                     bluetoothSocket.close();
+                    bss.close();
                     deleteData();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    mainActivity.listenerThread = new ListenerThread(mainActivity);
+                    mainActivity.listenerThread.run();
                     new Thread(mainActivity.listenerThread).start();
                     break;
                 } else {
