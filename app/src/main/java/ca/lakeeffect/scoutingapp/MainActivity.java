@@ -444,7 +444,7 @@ public class MainActivity extends AppCompatActivity{
                 extralabels.append("ClimbExtraData (Includes no attempt),");
             }
             if(v.getChildAt(i) instanceof EditText){
-                extradata.append(",\"" + ((EditText) v.getChildAt(i)).getText().toString().replace("\"", "\'").replace(":", ";").replace("\n", "\t") + "\"");
+                extradata.append(",\"" + ((EditText) v.getChildAt(i)).getText().toString().replace("|","||").replace("\"", "|q").replace(":", ";").replace("\n", "|n").replace(",","|c") + "\"");
                 extralabels.append(getResources().getResourceEntryName(((EditText) v.getChildAt(i)).getId()) + ",");
             }
             if(v.getChildAt(i) instanceof Counter){
