@@ -129,6 +129,11 @@ public class ConnectionThread implements Runnable {
 
                 sentPendingMessages.add(message);
             }
+
+            if(mainActivity.pendingmessages.isEmpty()){
+                fullmessage += "nodata::end";
+            }
+
             this.out.write(fullmessage.getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
