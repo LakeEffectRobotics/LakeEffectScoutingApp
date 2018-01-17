@@ -28,6 +28,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity{
 
     ListenerThread listenerThread;
 
-    String labels = null; //generated at the beginning
+    String savedLabels = null; //generated at the beginning
 
     int versionCode;
 
@@ -247,8 +248,8 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void startListenerThread(){
-        if(labels == null) labels = getData(true)[1];
-        System.out.println(labels + " labels");
+        if(savedLabels == null) savedLabels = getData(true)[1];
+        System.out.println(savedLabels + " labels");
 
         //start listening
         if(listenerThread == null) {
@@ -256,6 +257,9 @@ public class MainActivity extends AppCompatActivity{
             new Thread(listenerThread).start();
         }
     }
+
+    StringBuilder data;
+    StringBuilder labels;
 
     public String[] getData(boolean bypassChecks){
         if(!bypassChecks) {
@@ -285,202 +289,101 @@ public class MainActivity extends AppCompatActivity{
             }
         }
 
-        final StringBuilder data = new StringBuilder();
+        data = new StringBuilder();
+        labels = new StringBuilder();
 
-        //The Labels
-        final StringBuilder labels = new StringBuilder();
-        labels.append("Date and Time Of Match,Round,");
+        //General Info
+        data.append(robotNum + ",");
+        labels.append("Robot,");
 
+        labels.append("Date and Time Of Match,");
         DateFormat dateFormat = new SimpleDateFormat("dd HH:mm:ss");
         Date date = new Date();
+        data.append(dateFormat.format(date) + ",");
 
-        data.append("\n" + dateFormat.format(date));
 
-        data.append("," + round);
+        PercentRelativeLayout layout;
 
-        TableLayout layout = (TableLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autopagetablelayout);
-        //            PercentRelativeLayout layout = (PercentRelativeLayout) findViewById(R.layout.autopage);
-//            data.append("auto");
+        //Auto page
+        layout = (PercentRelativeLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
+        enterLayout(layout);
 
-        StringBuilder extradata = new StringBuilder();
-        StringBuilder extralabels = new StringBuilder();
+        //Tele page
+        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
+        enterLayout(layout);
 
-        String[] autodata = new String[6];
-        String[] autolabels = new String[6];
-        int recordedData = 0;
-        for(int i=0;i<layout.getChildCount();i++){
-            for(int s = 0; s<((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
-                if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof RadioGroup) {
-                    int pressed = -1;
-                    for(int r=0;r<((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getChildCount();r++){
-                        if(((RadioButton) ((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getChildAt(r)).isChecked()){
-                            pressed = 1-r;
-                        }
-                    }
-                    autodata[4] = "," + pressed;
-                    autolabels[4] = getResources().getResourceEntryName(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",";
-//                        data.append("," + pressed);
-//                        labels.append(getResources().getResourceEntryName(((RadioGroup) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
-                    recordedData++;
-                }
-                else if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
-                    String currentdata = "," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count);
-                    String currentlabel = getResources().getResourceEntryName(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",";
-                    switch(recordedData) {
-                        case 1:
-                            autodata[2] = currentdata;
-                            autolabels[2] = currentlabel;
-                            break;
-                        case 2:
-                            autodata[3] = currentdata;
-                            autolabels[3] = currentlabel;
-                            break;
-                        case 3:
-                            autodata[0] = currentdata;
-                            autolabels[0] = currentlabel;
-                            break;
-                        case 4:
-                            autodata[1] = currentdata;
-                            autolabels[1] = currentlabel;
-                            break;
+        //Endgame page
+        layout = (PercentRelativeLayout) pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
+        enterLayout(layout);
 
-                    }
-                    recordedData++;
-//                        data.append();
-//                        labels.append();
+        labels.append("Scout,\n");
+        data.append(scoutName + ",\n");
 
-                }
-            }
-        }
-        //AUTO GEAR
-//            labels.append("autoGear,");
-//            data.append(","+(((Spinner)pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).getSelectedItemPosition()-1));
-        autolabels[5] = "autoGear,";
-        boolean autoGearSimpleData = (((Spinner)pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).getSelectedItemPosition()-1) >= 1;
-        autodata[5] = "," + (autoGearSimpleData ? 1 : 0);
-
-        extralabels.append("autoGearPlacement,");
-        extradata.append(","+(((Spinner)pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).getSelectedItemPosition()-1));
-
-        for(int i=0;i<autodata.length;i++){
-            data.append(autodata[i]);
-        }
-        for(int i=0;i<autolabels.length;i++){
-            labels.append(autolabels[i]);
-        }
-
-        DisplayMetrics m = getResources().getDisplayMetrics();
-        PercentRelativeLayout v = null;
-        if(m.widthPixels/m.density < 600) v = ((PercentRelativeLayout) ((ScrollView) pagerAdapter.teleopPage.getView()).getChildAt(0));
-        else v = ((PercentRelativeLayout) pagerAdapter.teleopPage.getView());
-
-        layout = (TableLayout) v.findViewById(R.id.teleoptablelayout);
-//            data.append("\nteleop");
-        String[] teledata = new String[6];
-        String[] telelabels = new String[6];
-        recordedData = 0;
-        for(int i=0;i<layout.getChildCount();i++) {
-            for (int s = 0; s < ((TableRow) layout.getChildAt(i)).getChildCount(); s++) {
-                if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof Counter) {
-                    String currentdata = ("," + String.valueOf(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count));
-                    String currentlabel = (getResources().getResourceEntryName(((Counter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",");
-                    if(recordedData == 6){
-                        extradata.append(currentdata);
-                        extralabels.append(currentlabel);
-                    }else {
-                        teledata[recordedData] = (currentdata);
-                        telelabels[recordedData] = (currentlabel);
-                    }
-                    recordedData++;
-                }
-                if (((TableRow) layout.getChildAt(i)).getChildAt(s) instanceof HigherCounter) {
-                    String currentdata = "," + String.valueOf(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).count);
-                    String currentlabel = getResources().getResourceEntryName(((HigherCounter) ((TableRow) layout.getChildAt(i)).getChildAt(s)).getId()) + ",";
-                    switch(recordedData) {
-                        case 0:
-                            teledata[2] = currentdata;
-                            telelabels[2] = currentlabel;
-                            break;
-                        case 1:
-                            teledata[3] = currentdata;
-                            telelabels[3] = currentlabel;
-                            break;
-                        case 2:
-                            teledata[0] = currentdata;
-                            telelabels[0] = currentlabel;
-                            break;
-                        case 3:
-                            teledata[1] = currentdata;
-                            telelabels[1] = currentlabel;
-                            break;
-
-                    }
-                    recordedData++;
-                }
-            }
-        }
-        extradata.append(","+((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getRating());
-        extralabels.append("Drive Rating,");
-
-        for(int i=0;i<teledata.length;i++){
-            data.append(teledata[i]);
-        }
-        for(int i=0;i<autolabels.length;i++){
-            labels.append(telelabels[i]);
-        }
-
-        v = ((PercentRelativeLayout) ((ScrollView) pagerAdapter.endgamePage.getView()).getChildAt(0));
-        for(int i=0; i<v.getChildCount(); i++){
-            if(v.getChildAt(i) instanceof RadioGroup){
-                int pressed = -1;
-                for(int r=0;r<((RadioGroup) v.getChildAt(i)).getChildCount();r++){
-                    if(((RadioButton) ((RadioGroup) v.getChildAt(i)).getChildAt(r)).isChecked()){
-                        pressed = r;
-                    }
-                }
-                data.append("," + (pressed == 0 ? 1: 0));
-                labels.append("Did Climb,");
-                extradata.append("," + pressed);
-                extralabels.append("ClimbExtraData (Includes no attempt),");
-            }
-            if(v.getChildAt(i) instanceof EditText){
-                extradata.append(",\"" + ((EditText) v.getChildAt(i)).getText().toString().replace("|","||").replace("\"", "|q").replace(":", ";").replace("\n", "|n").replace(",","|c") + "\"");
-                extralabels.append(getResources().getResourceEntryName(((EditText) v.getChildAt(i)).getId()) + ",");
-            }
-            if(v.getChildAt(i) instanceof Counter){
-                extradata.append("," + ((Counter) v.getChildAt(i)).count);
-                extralabels.append(getResources().getResourceEntryName(((Counter) v.getChildAt(i)).getId()) + ",");
-            }
-
-            if(v.getChildAt(i) instanceof CheckBox){
-                String currentlabel = getResources().getResourceEntryName(((CheckBox) v.getChildAt(i)).getId()) + ",";
-                String currentdata = "," + (((CheckBox) v.getChildAt(i)).isChecked() ? 1 : 0);
-                if((currentlabel).equals("died,")){
-                    labels.append(currentlabel);
-                    data.append(currentdata);
-                }else {
-                    extralabels.append(currentlabel);
-                    extradata.append(currentdata);
-                }
-            }
-        }
-
-        //add extra data and labels
-        labels.append(extralabels);
-        data.append(extradata);
-
-        labels.append("Scout,");
-        data.append(","+scoutName);
-
-        //Add UUID
-        labels.append("UUID,");
-        data.append("," + UUID.randomUUID());
-
-        data.append(",end");//make sure full message has been sent
-        labels.append("end");
-
-        return new String[]{data.toString(), labels.toString()};
+        System.out.println(labels.toString());
+        System.out.println(data.toString());
+        String[] out = {labels.toString(), data.toString()};
+        return out;
     }
+    void enterLayout(ViewGroup top) {
+        //Iterate over all child layouts
+        for (int i = 0; i < top.getChildCount(); i++) {
+            View v = top.getChildAt(i);
+            //If the layout has a valid ID
+            if (v.getId() > 0) {
+                if (v instanceof EditText) {
+                    data.append(((EditText) v).getText().toString().replace("|", "||").replace(",", "|c").replace("\n", "|n").replace("\"", "|q").replace(":", ";") + ",");
+                    labels.append(getName(v) + ",");
+                }
+                if (v instanceof CheckBox) {
+                    data.append(((CheckBox) v).isChecked() + ",");
+                    labels.append(getName(v) + ",");
+                }
+                if (v instanceof Counter) {
+                    data.append(((Counter) v).count + ",");
+                    labels.append(getName(v) + ",");
+                }
+                if (v instanceof HigherCounter) {
+                    data.append(((HigherCounter) v).count + ",");
+                    labels.append(getName(v) + ",");
+                }
+                if(v instanceof RatingBar){
+                    data.append(((RatingBar) v).getRating() + ",");
+                    labels.append(getName(v) + ",");
+                }
+                if(v instanceof Spinner){
+                    //TODO
+                    data.append(((Spinner) v).getSelectedItem().toString() + ",");
+                    System.out.println(((Spinner) v).getSelectedItem().toString() + ",");
+                    labels.append(getName(v) + ",");
+                }
+            }
+            if(v instanceof RadioGroup) {
+                data.append(((RadioGroup) v).getCheckedRadioButtonId() + ",");
+                labels.append(getName(v) + ",");
+            }
+            //If the child is a layout, enter it
+            else if (v instanceof ViewGroup) {
+                enterLayout((ViewGroup) v);
+            }
+        }
+    }
+
+    //Caps => spaces then letter
+    //First letter capital
+
+    String getName(View v) {
+        String id = getResources().getResourceEntryName(v.getId());
+        String out = id.substring(0,1).toUpperCase()+id.substring(1);
+        for (int i = 1; i < out.length(); i ++) {
+            if(Character.isUpperCase(out.charAt(i))){
+                System.out.println("TEST");
+                out = out.substring(0,i)+" "+out.substring(i);
+                i++;
+            }
+        }
+        return out;
+    }
+
 
     public boolean saveData(){
         File sdCard = Environment.getExternalStorageDirectory();
@@ -658,17 +561,47 @@ public class MainActivity extends AppCompatActivity{
 //        viewPager.setOffscreenPageLimit(3);
 //        viewPager.getAdapter().notifyDataSetChanged();
 
-        ((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).clearCheck();
-//        ((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoGearGroup)).clearCheck();
-        ((RadioGroup) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimbGroup)).clearCheck();
-        ((EditText) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameComments)).setText("");
-        ((CheckBox) pagerAdapter.endgamePage.getView().findViewById(R.id.defense)).setChecked(false);
-        ((CheckBox) pagerAdapter.endgamePage.getView().findViewById(R.id.died)).setChecked(false);
-        ((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).setRating(0);
-//        ((SeekBar) pagerAdapter.endgamePage.getView().findViewById(R.id.rotors)).setProgress(0);
-        ((Spinner) pagerAdapter.autoPage.getView().findViewById(R.id.autoPeg)).setSelection(1);
+        PercentRelativeLayout layout;
 
+        //Auto page
+        layout = (PercentRelativeLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
+        clearData(layout);
+
+        //Tele page
+        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
+        clearData(layout);
+
+        //Endgame page
+        layout = (PercentRelativeLayout) pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
+        clearData(layout);
     }
+
+    public void clearData(ViewGroup top) {
+        for (int i = 0; i < top.getChildCount(); i++) {
+            View v = top.getChildAt(i);
+            if (v.getId() > 0) {
+                if (v instanceof EditText) {
+                    ((EditText) v).setText("");
+                }
+                if (v instanceof CheckBox) {
+                    ((CheckBox) v).setChecked(false);
+                }
+                if (v instanceof RadioGroup){
+                    ((RadioGroup) v).clearCheck();
+                }
+                if (v instanceof RatingBar){
+                    ((RatingBar) v).setRating(0);
+                }
+                if (v instanceof Spinner){
+                    ((Spinner) v).setSelection(0);
+                }
+            }
+            if (v instanceof ViewGroup) {
+                clearData((ViewGroup) v);
+            }
+        }
+    }
+
 
     public void alert(){
         AlertDialog dialog = new AlertDialog.Builder(this)
