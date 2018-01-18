@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
@@ -358,7 +359,9 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
             if(v instanceof RadioGroup) {
-                data.append(((RadioGroup) v).getCheckedRadioButtonId() + ",");
+                //Radio button ID will be result output in data
+                data.append(getName(v.findViewById(((RadioGroup) v).getCheckedRadioButtonId()))+",");
+//                data.append(((RadioGroup) v).getCheckedRadioButtonId() + ",");
                 labels.append(getName(v) + ",");
             }
             //If the child is a layout, enter it
@@ -372,6 +375,7 @@ public class MainActivity extends AppCompatActivity{
     //First letter capital
 
     String getName(View v) {
+        if(v == null) return "NULL";
         String id = getResources().getResourceEntryName(v.getId());
         String out = id.substring(0,1).toUpperCase()+id.substring(1);
         for (int i = 1; i < out.length(); i ++) {
