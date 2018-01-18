@@ -44,6 +44,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -679,6 +680,8 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent (context, PendingNotification.class);
         PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_ONE_SHOT);
+        Date date = Calendar.getInstance().getTime();
+        System.out.println(date.toString());
         alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+1000, pending);
     }
 
