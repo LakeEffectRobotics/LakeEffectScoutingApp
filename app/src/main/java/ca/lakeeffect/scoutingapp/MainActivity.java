@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity{
 
         System.out.println(labels.toString());
         System.out.println(data.toString());
-        String[] out = {labels.toString(), data.toString()};
+        String[] out = {data.toString(), labels.toString()};
         return out;
     }
     void enterLayout(ViewGroup top) {
