@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SteamworksScoutingApp.iml" filepath="$PROJECT_DIR$/SteamworksScoutingApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SteamworksScoutingAppFork.iml" filepath="$PROJECT_DIR$/SteamworksScoutingAppFork.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
