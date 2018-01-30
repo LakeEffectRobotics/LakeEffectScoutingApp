@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Round: XX  Robot: XXXX"
         android:id="@+id/robotNum"
-        android:layout_centerHorizontal="true"
-        android:textSize="30dp"
+        android:layout_alignLeft="@+id/deviceNameLayout"
         />
 
 
@@ -23,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id = "@+id/deviceNameLayout"
-        android:layout_below="@+id/robotNum"
         android:layout_centerHorizontal="true"
         android:gravity="center">
         <TextView
@@ -46,12 +44,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id = "@+id/numberOfPendingMessagesLayout"
-        android:layout_below="@+id/deviceNameLayout"
-        android:layout_centerHorizontal="true"
-        android:gravity="center">
+        android:layout_alignRight="@+id/deviceNameLayout">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
