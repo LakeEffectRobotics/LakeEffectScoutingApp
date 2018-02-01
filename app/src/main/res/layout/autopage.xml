@@ -10,58 +10,18 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/autopagetablelayout"
+        android:id="@+id/autopageTableLayout"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="17dp"
-            android:weightSum="3">
-
-            <TextView
-                android:text="Task"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/autoHeader0"
-                android:layout_weight="1"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                />
-            <TextView
-                android:text="Completed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/autoHeader1"
-                android:layout_weight="1"
-                android:textSize="17dp"
-                android:textStyle="bold"/>
-            <TextView
-                android:text="Failed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/autoHeader2"
-                android:layout_weight="1"
-                android:textSize="17dp"
-                android:textStyle="bold"/>
-        </TableRow>
 
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="17dp"
-            android:weightSum="3"
+            android:layout_marginTop="17dp"
+            android:weightSum="4"
             android:id="@+id/autoBaseline">
 
             <TextView
@@ -76,13 +36,11 @@
                 android:textSize="17dp" />
 
             <RadioGroup android:orientation="horizontal"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:id="@+id/autoBaselineGroup"
-
-                >
+                android:id="@+id/autoBaselineGroup">
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -90,21 +48,22 @@
                     android:layout_alignTop="@+id/tableLayout"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_weight="0.5"
+                    android:layout_weight="1"
                     android:id="@+id/autoBaselineFailed"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:text="Success"
+                    android:textSize="17dp"/>
 
                 <RadioButton
-                    android:text=""
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignTop="@+id/tableLayout"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:id="@+id/autoBaselineComplete"
-                    android:layout_weight="0.5"
-                    />
+                    android:layout_weight="1"
+                    android:text="Failed"
+                    android:textSize="17dp"/>
 
 
             </RadioGroup>
@@ -112,182 +71,76 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="17dp"
-            android:weightSum="3">
+            android:weightSum="1">
 
-            <TextView
-                android:text="Low Goal:"
-                android:layout_width="wrap_content"
+            <Spinner
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/autoTask1"
-                android:layout_weight="1"
-                android:textSize="17dp" />
-
-            <ca.lakeeffect.scoutingapp.Counter
-                android:id = "@+id/autoLowComplete"
-                android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/autoTableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                android:id="@+id/autoCube"
+                android:spinnerMode="dropdown"
+                android:layout_below="@id/autopageTableLayout"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"/>
-
-            <ca.lakeeffect.scoutingapp.Counter
-                android:id = "@+id/autoLowMissed"
-                android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/autoTableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="1"/>
-
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="17dp"
-            android:weightSum="3">
+            android:layout_height="wrap_content">
+            <RadioGroup android:orientation="horizontal"
+                android:layout_weight="3"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/autoCubeGroup">
 
-            <TextView
-                android:text="High Goal:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/autoTask2"
-                android:layout_weight="1"
-                android:textSize="17dp" />
+                <!--Spacer-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
 
-            <ca.lakeeffect.scoutingapp.Counter
-                android:id = "@+id/autoHighComplete"
-                android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="1"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="1"
+                    android:id="@+id/autoCubeSuccess"
+                    android:checked="false"
+                    android:text="Success"
+                    android:textSize="17dp"/>
 
-            <ca.lakeeffect.scoutingapp.Counter
-                android:id = "@+id/autoHighMissed"
-                android:layout_gravity="center_horizontal"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="1"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/autoCubeFailed"
+                    android:layout_weight="1"
+                    android:text="Failed"
+                    android:textSize="17dp"/>
 
+
+            </RadioGroup>
         </TableRow>
-
-        <!--<TableRow-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginBottom="17dp"-->
-            <!--android:weightSum="3">-->
-
-            <!--<TextView-->
-                <!--android:text="Gear Delivered:"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignTop="@+id/tableLayout"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:id="@+id/autoTask3"-->
-                <!--android:layout_weight="1"-->
-                <!--android:textSize="17dp"-->
-                <!--/>-->
-
-            <!--<RadioGroup android:orientation="horizontal"-->
-                <!--android:layout_weight="2"-->
-                <!--android:id="@+id/autoGearGroup">-->
-                <!--<RadioButton-->
-                    <!--android:layout_gravity="center_horizontal"-->
-                    <!--android:text=""-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignTop="@+id/tableLayout"-->
-                    <!--android:layout_alignParentLeft="true"-->
-                    <!--android:layout_alignParentStart="true"-->
-                    <!--android:id="@+id/autoGearComplete"-->
-                    <!--android:layout_weight="1" />-->
-
-                <!--<RadioButton-->
-                    <!--android:layout_gravity="center_horizontal"-->
-                    <!--android:text=""-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignTop="@+id/tableLayout"-->
-                    <!--android:layout_alignParentLeft="true"-->
-                    <!--android:layout_alignParentStart="true"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:id="@+id/autoGearMissed" />-->
-            <!--</RadioGroup>-->
-
-        <!--</TableRow>-->
-
-        <!--<TableRow-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginBottom="17dp"-->
-            <!--android:weightSum="3">-->
-
-            <!--<TextView-->
-                <!--android:text="Hopper Hit:"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignTop="@+id/tableLayout"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:id="@+id/autoTask4"-->
-                <!--android:layout_weight="1"-->
-                <!--android:textSize="17dp" />-->
-
-            <!--<ca.lakeeffect.scoutingapp.Counter-->
-                <!--android:id = "@+id/autoHopperComplete"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:text=""-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignTop="@+id/tableLayout"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_alignParentStart="true"-->
-                <!--android:layout_weight="1"/>-->
-
-            <!--<ca.lakeeffect.scoutingapp.Counter-->
-                <!--android:id = "@+id/autoHopperMissed"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:text=""-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignTop="@+id/tableLayout"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_alignParentStart="true"-->
-                <!--android:layout_weight="1"/>-->
-
-        <!--</TableRow>-->
-
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_marginTop="15dp">
+            <TextView
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text = "Picked up cube"
+                android:textSize="20dp"
+                android:gravity="right"/>
+            <CheckBox
+                android:layout_weight="1"
+                android:layout_height="match_parent"/>
+        </TableRow>
     </TableLayout>
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/autoPeg"
-        android:spinnerMode="dropdown"
-        android:layout_below="@id/autopagetablelayout"
-        android:layout_marginTop="10dp"/>
 
 
 </android.support.percent.PercentRelativeLayout>
