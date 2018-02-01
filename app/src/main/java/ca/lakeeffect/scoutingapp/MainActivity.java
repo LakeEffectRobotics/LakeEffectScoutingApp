@@ -75,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> pendingmessages = new ArrayList<>();
     boolean connected;
 
-    Button moreOptions;
-
     ListenerThread listenerThread;
 
     String savedLabels = null; //generated at the beginning
@@ -136,79 +134,6 @@ public class MainActivity extends AppCompatActivity {
                 pendingmessages.add(prefs.getString("message" + i, ""));
             }
         }
-
-        //set onclick listener for moreOptions
-        moreOptions = (Button) findViewById(R.id.moreOptions);
-        moreOptions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO Remove this once notification testing is done
-                startNotificationAlarm(getApplicationContext());
-                PopupMenu menu = new PopupMenu(MainActivity.this, v, Gravity.CENTER_HORIZONTAL);
-                menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
-                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId() == R.id.reset) {
-                            new AlertDialog.Builder(MainActivity.this)
-                                    .setTitle("Confirm")
-                                    .setMessage("Continuing will reset current data.")
-                                    .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            reset();
-
-                                        }
-                                    })
-                                    .setNegativeButton("Cancel", null)
-                                    .create()
-                                    .show();
-                        }
-                        if (item.getItemId() == R.id.changeNum) {
-                            alert();
-                        }
-                        if (item.getItemId() == R.id.resetPendingMessages) {
-                            for (String message : pendingmessages) {
-                                pendingmessages.remove(message);
-
-                                int loc = getLocationInSharedMessages(message);
-
-                                if (loc != -1) {
-                                    SharedPreferences prefs = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = prefs.edit();
-                                    editor.putString("message" + loc, null);
-                                    editor.apply();
-                                }
-                            }
-
-                            //set pending messages number on ui
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingmessages.size() + "");
-                                }
-                            });
-                        }
-
-                        if (item.getItemId() == R.id.changeTheme) {
-                            new AlertDialog.Builder(MainActivity.this)
-                                    .setTitle("Confirm")
-                                    .setMessage("Continuing will reset current data.")
-                                    .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(MainActivity.this, StartActivity.class);
-                                            startActivity(intent);
-                                        }
-                                    })
-                                    .setNegativeButton("Cancel", null)
-                                    .create()
-                                    .show();
-                        }
-                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
-                });
-                menu.show();
-            }
-        });
 
         //set device name
         BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
@@ -551,8 +476,72 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        startNotificationAlarm(getApplicationContext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            moreOptions.callOnClick();
+            System.out.println("Showing menu");
+            PopupMenu menu = new PopupMenu(MainActivity.this, findViewById(R.id.deviceNameLayout), Gravity.CENTER_HORIZONTAL);
+            menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
+            menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (item.getItemId() == R.id.reset) {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Confirm")
+                                .setMessage("Continuing will reset current data.")
+                                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        reset();
+
+                                    }
+                                })
+                                .setNegativeButton("Cancel", null)
+                                .create()
+                                .show();
+                    }
+                    if (item.getItemId() == R.id.changeNum) {
+                        alert();
+                    }
+                    if (item.getItemId() == R.id.resetPendingMessages) {
+                        for (String message : pendingmessages) {
+                            pendingmessages.remove(message);
+
+                            int loc = getLocationInSharedMessages(message);
+
+                            if (loc != -1) {
+                                SharedPreferences prefs = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putString("message" + loc, null);
+                                editor.apply();
+                            }
+                        }
+
+                        //set pending messages number on ui
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingmessages.size() + "");
+                            }
+                        });
+                    }
+
+                    if (item.getItemId() == R.id.changeTheme) {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Confirm")
+                                .setMessage("Continuing will reset current data.")
+                                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                                        startActivity(intent);
+                                    }
+                                })
+                                .setNegativeButton("Cancel", null)
+                                .create()
+                                .show();
+                    }
+                    Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+            menu.show();
         }
         return;
     }

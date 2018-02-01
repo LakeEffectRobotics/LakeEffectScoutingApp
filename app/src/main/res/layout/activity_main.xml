@@ -7,7 +7,8 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="ca.lakeeffect.scoutingapp.MainActivity">
+        tools:context="ca.lakeeffect.scoutingapp.MainActivity"
+        android:id="@+id/mainLayout">
 
     <TextView
         android:layout_width="wrap_content"
@@ -95,17 +96,6 @@
             android:paddingTop="4dp" />
 
     </android.support.v4.view.ViewPager>
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="More Options"
-        android:id="@+id/moreOptions"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="0dp"
-        android:textSize="20dp" />
 
     <!--<CheckBox-->
         <!--android:layout_width="wrap_content"-->

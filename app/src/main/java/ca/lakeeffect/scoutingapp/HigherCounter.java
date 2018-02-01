@@ -34,13 +34,13 @@ public class HigherCounter extends LinearLayout implements View.OnClickListener{
 
         inflater.inflate(R.layout.higher_counter, this);
 
-    for(int i = 0; i < attrs.getAttributeCount(); i++){
-        System.out.println(attrs.getAttributeName(i)+"\t"+attrs.getAttributeValue(i));
-        if(attrs.getAttributeName(i).equals("BigButtonValue")){
-            bigButton = Integer.parseInt(attrs.getAttributeValue(i));
-            break;
+        for(int i = 0; i < attrs.getAttributeCount(); i++){
+            System.out.println(attrs.getAttributeName(i)+"\t"+attrs.getAttributeValue(i));
+            if(attrs.getAttributeName(i).equals("BigButtonValue")){
+                bigButton = Integer.parseInt(attrs.getAttributeValue(i));
+                break;
+            }
         }
-    }
 
 
         plusBigButton = (Button) findViewById(R.id.plus5Button);
@@ -50,7 +50,7 @@ public class HigherCounter extends LinearLayout implements View.OnClickListener{
         minusOneButton = (Button) findViewById(R.id.minusOneButton);
         minusOneButton.setOnClickListener(this);
         minusBigButton = (Button) findViewById(R.id.minus5Button);
-        minusBigButton.setOnClickListener(this);//TODO CHANGE TO 3 AND 9
+        minusBigButton.setOnClickListener(this);
         plusBigButton.setText(String.valueOf(bigButton));
         minusBigButton.setText(String.valueOf(bigButton));
 
