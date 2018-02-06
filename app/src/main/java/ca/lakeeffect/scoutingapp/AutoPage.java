@@ -28,7 +28,7 @@ public class AutoPage extends Fragment{
 
         Spinner spinner = (Spinner) view.findViewById(R.id.autoCube);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.pegs, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(1);
 //        ((TextView) view.findViewById(R.id.autoPeg)).setTextSize(15);
