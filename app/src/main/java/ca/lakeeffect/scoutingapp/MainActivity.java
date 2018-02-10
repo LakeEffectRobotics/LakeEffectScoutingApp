@@ -205,14 +205,6 @@ public class MainActivity extends AppCompatActivity {
                 });
                 return null;
             }
-            if (((RadioGroup) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimbGroup)).getCheckedRadioButtonId() <= 0) {
-                runOnUiThread(new Thread() {
-                    public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it climbed!", Toast.LENGTH_LONG).show();
-                    }
-                });
-                return null;
-            }
         }
 
         data = new StringBuilder();

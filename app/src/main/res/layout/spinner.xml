@@ -3,7 +3,7 @@
     android:id="@+id/spinnerTarget"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="17dp"
+    android:textSize="@dimen/text_medium"
     android:paddingTop="7dp"
     android:paddingBottom="7dp"
     android:layout_marginBottom="5dp"

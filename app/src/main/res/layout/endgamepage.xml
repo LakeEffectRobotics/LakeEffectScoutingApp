@@ -21,7 +21,7 @@
                             android:layout_width="match_parent"
                             android:layout_weight="1"
                             android:text="Climb:"
-                            android:textSize="20dp"
+                            android:textSize="@dimen/text_medium"
                             android:gravity="right"/>
                         <Spinner
                             android:id="@+id/endgameClimb"
@@ -44,7 +44,7 @@
                         <CheckBox
                             android:layout_weight="1"
                             android:text="Defense"
-                            android:textSize="17dp"
+                            android:textSize="@dimen/text_small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
@@ -59,7 +59,7 @@
                             android:layout_below="@+id/defense"
                             android:layout_centerHorizontal="true"
                             android:id="@+id/died"
-                            android:textSize="17dp" />
+                            android:textSize="@dimen/text_small" />
                         <TextView />
                 </TableRow>
 
@@ -73,8 +73,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView2"
-                            android:textSize="20dp"
-                            android:layout_marginTop="17dp"
+                            android:textSize="@dimen/text_medium"
+                            android:layout_marginTop="@dimen/text_small"
                             android:layout_weight="1"
                             android:gravity="center"/>
                         <RatingBar
@@ -94,7 +94,8 @@
             android:layout_below="@+id/endgameTableLayout"
             android:layout_marginTop="75dp"
             android:hint="Comments"
-            android:id="@+id/endgameComments"/>
+            android:id="@+id/endgameComments"
+            android:textSize="@dimen/text_small"/>
 
         <Button
             android:text="Submit"
@@ -104,10 +105,6 @@
             android:id="@+id/submit"
             android:textSize="50sp"
             android:layout_centerHorizontal="true"/>
-
-
-
-
 
 </android.support.percent.PercentRelativeLayout>
 </ScrollView>

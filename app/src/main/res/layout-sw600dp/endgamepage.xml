@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/lib/ca.lakeeffect.scoutingapp"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content">
     <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -8,78 +7,95 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:id = "@+id/endgamePageLayout">
-
-        <RadioGroup
+        <TableLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="center"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/rotors"
-            android:id="@+id/endgameClimbGroup">
-            <RadioButton
-                android:text="Successful Climb"
-                android:textSize="40dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.5"
-                android:layout_marginBottom="10dp"
-                android:id="@+id/ClimbSuccess" />
+            android:id="@+id/endgameTableLayout"
+            android:layout_margin="5dp">
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:weightSum="4">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="Climb:"
+                    android:textSize="@dimen/text_medium"
+                    android:gravity="right"/>
+                <Spinner
+                    android:id="@+id/endgameClimb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_marginLeft="5dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+            </TableRow>
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+                <TextView />
+                <CheckBox
+                    android:layout_weight="1"
+                    android:text="Defense"
+                    android:textSize="@dimen/text_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/defense"
+                    android:layout_below="@id/endgameClimb"/>
 
-            <RadioButton
-                android:text="Failed Climb"
-                android:textSize="40dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/ClimbFail"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="0.5"/>
-            <RadioButton
-                android:text="Did Not Climb"
-                android:textSize="40dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignTop="@+id/tableLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/NoClimb"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="0.5"/>
-        </RadioGroup>
+                <CheckBox
+                    android:layout_weight="1"
+                    android:text="Died"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/defense"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/died"
+                    android:textSize="@dimen/text_small" />
+                <TextView />
+            </TableRow>
 
-        <CheckBox
-            android:text="Defense"
-            android:textSize="40dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/defense"
-            android:layout_below="@id/endgameClimbGroup"/>
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:weightSum="2">
 
-        <ca.lakeeffect.scoutingapp.Counter
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text=""
-            android:id="@+id/rotors"
-            android:layout_below="@+id/textView3"
-            android:layout_centerHorizontal="true"
-            app:MaxValue="4"/>
+                <TextView
+                    android:text="Drive Ability:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView2"
+                    android:textSize="@dimen/text_medium"
+                    android:layout_marginTop="@dimen/text_small"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/driveRating"
+                    android:numStars="4"
+                    android:stepSize="1"
+                    android:isIndicator="false"/>
+
+            </TableRow>
+        </TableLayout>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/died"
+            android:layout_below="@+id/endgameTableLayout"
             android:layout_marginTop="75dp"
             android:hint="Comments"
-            android:id="@+id/endgameComments"/>
+            android:id="@+id/endgameComments"
+            android:textSize="@dimen/text_small"/>
 
         <Button
             android:text="Submit"
@@ -87,28 +103,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/endgameComments"
             android:id="@+id/submit"
-            android:textSize="75sp"
+            android:textSize="50sp"
             android:layout_centerHorizontal="true"/>
-
-
-
-        <TextView
-            android:text="Rotors Turning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/textView3"
-            android:textSize="35dp"/>
-
-        <CheckBox
-            android:text="Died"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/defense"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/died"
-            android:textSize="40dp" />
-
 
     </android.support.percent.PercentRelativeLayout>
 </ScrollView>
