@@ -30,7 +30,6 @@ public class AutoPage extends Fragment{
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
         spinner.setAdapter(adapter);
-        spinner.setSelection(1);
 //        ((TextView) view.findViewById(R.id.autoPeg)).setTextSize(15);
         return view;
 

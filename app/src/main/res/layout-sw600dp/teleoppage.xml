@@ -208,24 +208,6 @@
 
     </TableLayout>
 
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/driveRating"
-        android:numStars="4"
-        android:stepSize="1"
-        android:isIndicator="false"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textView2"/>
 
-    <TextView
-        android:text="Drive Ability"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/teleoptablelayout"
-        android:layout_centerHorizontal="true"
-        android:textSize="25dp"
-        android:layout_marginTop="15dp"/>
 
 </android.support.percent.PercentRelativeLayout>
