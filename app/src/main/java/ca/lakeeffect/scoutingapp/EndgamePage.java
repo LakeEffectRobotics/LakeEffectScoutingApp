@@ -63,6 +63,7 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
 //        Toast.makeText(getActivity(),
 //                getActivity().toString(), Toast.LENGTH_LONG).show();
         if(v==submit){
+            MainActivity.startNotificationAlarm(getContext());
             new AlertDialog.Builder(getActivity())
                 .setTitle("Submiting")
                 .setMessage("Are you sure you would like to submit?")

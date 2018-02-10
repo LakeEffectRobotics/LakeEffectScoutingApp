@@ -56,8 +56,6 @@ public class Field implements View.OnTouchListener {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
 
-//                Canvas canvas = holder.lockCanvas();
-
                 android.view.ViewGroup.LayoutParams lp = surface.getLayoutParams();
                 lp.width = (int) ((Field.this.field.getWidth() / (float) Field.this.field.getHeight()) * surface.getHeight());
 
@@ -71,8 +69,6 @@ public class Field implements View.OnTouchListener {
                 normal.setStrokeWidth(canvas.getHeight()/100);
                 highlited.setStrokeWidth(canvas.getHeight()/100);
 
-
-
                 Field.this.field = Bitmap.createScaledBitmap(Field.this.field, (int) ((Field.this.field.getWidth() / (float) Field.this.field.getHeight()) * canvas.getHeight()), canvas.getHeight(), true);
 
                 canvas.drawColor(Color.BLACK);
@@ -80,8 +76,6 @@ public class Field implements View.OnTouchListener {
                 drawImage(canvas);
 
                 holder.unlockCanvasAndPost(canvas);
-
-
             }
 
             @Override
@@ -165,7 +159,7 @@ public class Field implements View.OnTouchListener {
 
         scaledRect.right /= scale;
         scaledRect.bottom /= scale;
-
+      
         return scaledRect;
     }
 
