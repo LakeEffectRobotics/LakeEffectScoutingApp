@@ -6,4 +6,10 @@
         <item>Scale</item>
         <item>Vault</item>
     </string-array>
+
+    <string-array name="climb">
+        <item>Did Not Try</item>
+        <item>Failed Climb</item>
+        <item>Successful Climb</item>
+    </string-array>
 </resources>

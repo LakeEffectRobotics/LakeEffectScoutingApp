@@ -10,11 +10,13 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
@@ -28,6 +30,7 @@ import java.util.Date;
 public class EndgamePage extends Fragment implements View.OnClickListener{
 
     Button submit;
+    Spinner climb;
 
     public EndgamePage() {
 
@@ -46,6 +49,10 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
 
         submit = (Button) view.findViewById(R.id.submit);
         submit.setOnClickListener(this);
+
+        climb = (Spinner) view.findViewById(R.id.endgameClimb);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.climb, R.layout.spinner);
+        climb.setAdapter(adapter);
 
         view.setTag("page3");
 
