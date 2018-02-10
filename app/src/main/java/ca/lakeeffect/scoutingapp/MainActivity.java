@@ -488,7 +488,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startNotificationAlarm(getApplicationContext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
             System.out.println("Showing menu");
             PopupMenu menu = new PopupMenu(MainActivity.this, findViewById(R.id.deviceNameLayout), Gravity.CENTER_HORIZONTAL);
@@ -687,15 +686,15 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void startNotificationAlarm(Context context) {
+     public static void startNotificationAlarm(Context context) {
         System.out.println("Setting alarm");
 //        new PendingNotification().send(context);
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent (context, PendingNotification.class);
-        PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
         Date date = Calendar.getInstance().getTime();
         System.out.println(date.toString());
-        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+1000, pending);
+        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+1000*60*20, pending);
     }
 
 }

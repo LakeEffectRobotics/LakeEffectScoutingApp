@@ -9,9 +9,6 @@ import android.support.v4.app.NotificationCompat;
 
 import java.util.Random;
 
-/**
- * Created by kellygr on 17/01/2018.
- */
 
 public class PendingNotification extends BroadcastReceiver {
     @Override
@@ -27,7 +24,8 @@ public class PendingNotification extends BroadcastReceiver {
         String message;
 
         //TODO get the amount of pending messages
-        message = "You have X unsent messages. Contact Ajay to get the data into the database ASAP!";
+
+        message = "You have "+ context.getSharedPreferences("pendingmessages", context.MODE_PRIVATE).getInt("messageAmount", -1) +" unsent messages. Contact Ajay to get the data into the database ASAP!";
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
