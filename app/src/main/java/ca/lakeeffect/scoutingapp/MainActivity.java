@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String[] getData(boolean bypassChecks) {
         if (!bypassChecks) {
-            if (((RatingBar) pagerAdapter.teleopPage.getView().findViewById(R.id.driveRating)).getRating() <= 0) {
+            if (((RatingBar) pagerAdapter.endgamePage.getView().findViewById(R.id.driveRating)).getRating() <= 0) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the drive ability!", Toast.LENGTH_LONG).show();
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             if (((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() <= 0) {
                 runOnUiThread(new Thread() {
                     public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it crossed the baseline! Go back to the teleop page!", Toast.LENGTH_LONG).show();
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it crossed the baseline! Go back to the auto page!", Toast.LENGTH_LONG).show();
                     }
                 });
                 return null;
@@ -211,8 +211,8 @@ public class MainActivity extends AppCompatActivity {
         labels = new StringBuilder();
 
         //General Info
-        data.append(robotNum + ",");
-        labels.append("Robot,");
+        data.append(round + ",");
+        labels.append("Match,");
 
         labels.append("Date and Time Of Match,");
         DateFormat dateFormat = new SimpleDateFormat("dd HH:mm:ss");
@@ -277,8 +277,28 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             if (v instanceof RadioGroup) {
-                //Radio button ID will be result output in data
-                data.append(getName(v.findViewById(((RadioGroup) v).getCheckedRadioButtonId())) + ",");
+                String selected = getName(v.findViewById(((RadioGroup) v).getCheckedRadioButtonId()));
+                //Game-specific cases
+                switch(selected){
+                    //Baseline radiogroup
+                    case "Baseline Success":
+                        data.append("True,");
+                        break;
+                    case "Baseline Failed":
+                        data.append("False,");
+                        break;
+                    //Power cube radiogroup
+                    case "Auto Cube Success":
+                        data.append("True,");
+                        break;
+                    case "Auto Cube Failed":
+                        data.append("False,");
+                        break;
+                    //Radio button ID will be result output in data
+                    default:
+                         data.append(selected + ",");
+                        break;
+                }
 //                data.append(((RadioGroup) v).getCheckedRadioButtonId() + ",");
                 labels.append(getName(v) + ",");
             }
