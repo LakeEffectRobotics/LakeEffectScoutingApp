@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "65306488781",
+    "firebase_url": "https://scoutingapp-f886b.firebaseio.com",
+    "project_id": "scoutingapp-f886b",
+    "storage_bucket": "scoutingapp-f886b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65306488781:android:8d8b229455c4677b",
+        "android_client_info": {
+          "package_name": "ca.lakeeffect.scoutingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65306488781-brdsac26fjhde3pdj3i9hh9vv0u4pm9o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlZ_UezBW_v53vTjTPDv9uja6sFb1at00"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

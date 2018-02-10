@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/spinnerTarget"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="17dp"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp"
+    android:layout_marginBottom="5dp"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    android:gravity="center_vertical"/>
