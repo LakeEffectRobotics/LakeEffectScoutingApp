@@ -166,10 +166,6 @@ public class Field implements View.OnTouchListener {
         scaledRect.right /= scale;
         scaledRect.bottom /= scale;
 
-
-        scaledRect.left += (c.getWidth() / 2 - field.getWidth() / 2);
-        scaledRect.right += (c.getWidth() / 2 - field.getWidth() / 2);
-
         return scaledRect;
     }
 
