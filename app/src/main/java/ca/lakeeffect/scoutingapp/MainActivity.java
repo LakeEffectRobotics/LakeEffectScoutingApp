@@ -226,9 +226,9 @@ public class MainActivity extends AppCompatActivity {
         layout = (PercentRelativeLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
         enterLayout(layout);
 
-        //Tele page
-        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
-        enterLayout(layout);
+//        //Tele page
+//        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
+//        enterLayout(layout);
 
         //Endgame page
         layout = (PercentRelativeLayout) pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
@@ -572,9 +572,9 @@ public class MainActivity extends AppCompatActivity {
         layout = (PercentRelativeLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
         clearData(layout);
 
-        //Tele page
-        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
-        clearData(layout);
+//        //Tele page
+//        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
+//        clearData(layout);
 
         //Endgame page
         layout = (PercentRelativeLayout) pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
