@@ -10,63 +10,67 @@
         tools:context="ca.lakeeffect.scoutingapp.MainActivity"
         android:id="@+id/mainLayout">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Round: XX  Robot: XXXX"
-        android:id="@+id/robotNum"
-        android:layout_alignLeft="@+id/deviceNameLayout"
-        />
 
-
-    <RelativeLayout
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id = "@+id/deviceNameLayout"
-        android:layout_centerHorizontal="true"
-        android:gravity="center">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Device Name: "
-            android:id="@+id/deviceNameTextView"
-            />
+        android:id="@+id/infoBar">
+        <TableRow
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Round: XX  Robot: XXXX"
+                android:id="@+id/robotNum"
+                android:layout_weight="1"
+                android:textSize="@dimen/text_small"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="XXXXXXX"
-            android:id="@+id/deviceName"
-            android:textStyle="bold"
-            android:layout_toRightOf="@+id/deviceNameTextView"
-            />
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id = "@+id/numberOfPendingMessagesLayout"
-        android:layout_alignRight="@+id/deviceNameLayout">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Unsent Data: "
-            android:id="@+id/numberOfPendingMessagesTextView"
-            />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id = "@+id/deviceNameLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Device Name: "
+                    android:id="@+id/deviceNameTextView"
+                    android:textSize="@dimen/text_medium"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="X"
-            android:id="@+id/numberOfPendingMessages"
-            android:textStyle="bold"
-            android:layout_toRightOf="@+id/numberOfPendingMessagesTextView"
-            />
-    </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="XXXXXXX"
+                    android:id="@+id/deviceName"
+                    android:textStyle="bold"
+                    android:layout_toRightOf="@id/deviceNameTextView"
+                    android:textSize="@dimen/text_medium"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id = "@+id/numberOfPendingMessagesLayout"
+                android:layout_alignRight="@+id/deviceNameLayout"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unsent Data: "
+                    android:id="@+id/numberOfPendingMessagesTextView"
+                    android:textSize="@dimen/text_small"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="X"
+                    android:id="@+id/numberOfPendingMessages"
+                    android:textStyle="bold"
+                    android:layout_toRightOf="@id/numberOfPendingMessagesTextView"
+                    android:textSize="@dimen/text_small"/>
+            </RelativeLayout>
 
     <!--<View-->
         <!--android:layout_width="match_parent"-->
@@ -77,14 +81,14 @@
         <!--android:layout_alignParentStart="true"-->
         <!--android:paddingBottom="@dimen/activity_vertical_margin"-->
         <!--android:id="@+id/view" />-->
-
+        </TableRow>
+    </TableLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/scrollingview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/numberOfPendingMessagesLayout"
-        android:layout_above="@+id/moreOptions">
+        android:layout_below="@id/infoBar">
         <!--android:layout_above="@+id/scaleCheckBox">-->
 
         <android.support.v4.view.PagerTabStrip
