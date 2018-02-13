@@ -94,6 +94,21 @@ public class Field implements View.OnTouchListener {
         });
     }
 
+    // called by the TeleopPage class when the deselect button is hit
+    public void deselect(){
+        Canvas c = surface.getHolder().lockCanvas();
+
+        if (c != null) {
+
+            selected = -1;
+
+            drawImage(c, selected);
+
+            surface.getHolder().unlockCanvasAndPost(c);
+        }
+
+    }
+
     @Override
     public boolean onTouch(final View v, MotionEvent event) {
         System.out.println(event.getX() + "\t" + event.getY());

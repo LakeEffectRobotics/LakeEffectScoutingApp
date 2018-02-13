@@ -67,11 +67,13 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         } else if(v == drop) {
             event = new Event(1, field.selected, System.currentTimeMillis(), 0);
         } else if(v == deselect) {
-            event = new Event(2, field.selected, System.currentTimeMillis(), 0);
+            field.deselect();
         } else if(v == score) {
             event = new Event(3, field.selected, System.currentTimeMillis(), 0);
         } else if(v == fail) {
             event = new Event(4, field.selected, System.currentTimeMillis(), 0);
         }
+
+        events.add(event);
     }
 }
