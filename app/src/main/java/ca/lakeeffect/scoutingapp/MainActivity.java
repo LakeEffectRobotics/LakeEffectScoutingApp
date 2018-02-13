@@ -361,12 +361,14 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
+            String events = getEventData();
+
             //save to file
             if (newfile) out.append(data[1]);
             out.append(data[0]);
 
             //add to pending messages
-            pendingmessages.add(robotNum + ":" + data[0]);
+            pendingmessages.add(robotNum + ":" + data[0] + ":" + events);
             //add to sharedprefs
             SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
