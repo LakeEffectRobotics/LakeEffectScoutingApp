@@ -10,6 +10,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class Field implements View.OnTouchListener {
 
 
@@ -41,6 +43,8 @@ public class Field implements View.OnTouchListener {
 
     //for scaling collision detection
     float scale; //multiplier of how much it scaled
+
+    int selected = -1; //currently selected item (-1 is ground)
 
     public Field(SurfaceView s, Bitmap field) {
         surface = s;
@@ -99,7 +103,7 @@ public class Field implements View.OnTouchListener {
 
             if (c != null) {
                 // the place selected, -1 if none
-                int selected = -1;
+                selected = -1;
 
                 Paint paint = new Paint();
                 paint.setColor(Color.RED);
