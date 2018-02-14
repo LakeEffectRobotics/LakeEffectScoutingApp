@@ -55,14 +55,19 @@ public class Field implements View.OnTouchListener {
         surface.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
+
+                android.view.ViewGroup.LayoutParams lp = surface.getLayoutParams();
+                lp.width = (int) ((Field.this.field.getWidth() / (float) Field.this.field.getHeight()) * surface.getHeight());
+
+                surface.setLayoutParams(lp);
+
                 Canvas canvas = holder.lockCanvas();
+
+                scale = (float) Field.this.field.getHeight() / ((float) canvas.getHeight());
 
                 //set paint stroke based on screen size
                 normal.setStrokeWidth(canvas.getHeight()/100);
                 highlited.setStrokeWidth(canvas.getHeight()/100);
-
-
-                scale = (float) Field.this.field.getHeight() / ((float) canvas.getHeight());
 
                 Field.this.field = Bitmap.createScaledBitmap(Field.this.field, (int) ((Field.this.field.getWidth() / (float) Field.this.field.getHeight()) * canvas.getHeight()), canvas.getHeight(), true);
 
@@ -130,7 +135,7 @@ public class Field implements View.OnTouchListener {
     }
 
     public void drawImage(Canvas c, int selected) {
-        c.drawBitmap(field, c.getWidth() / 2 - field.getWidth() / 2, 0, null);
+        c.drawBitmap(field, 0, 0, null);
 
         for (Rect rect : fieldPlacements) {
 
@@ -154,11 +159,7 @@ public class Field implements View.OnTouchListener {
 
         scaledRect.right /= scale;
         scaledRect.bottom /= scale;
-
-
-        scaledRect.left += (c.getWidth() / 2 - field.getWidth() / 2);
-        scaledRect.right += (c.getWidth() / 2 - field.getWidth() / 2);
-
+      
         return scaledRect;
     }
 
