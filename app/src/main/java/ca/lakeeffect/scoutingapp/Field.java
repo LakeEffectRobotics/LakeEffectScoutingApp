@@ -70,7 +70,7 @@ public class Field implements View.OnTouchListener {
 
                 if(scaledWidth > surface.getWidth()){ //scale by width
                     android.view.ViewGroup.LayoutParams lp = surface.getLayoutParams();
-                    lp.width = (int) (scaledHeight);
+                    lp.height = (int) (scaledHeight);
 
                     surface.setLayoutParams(lp);
                 }else{ //scale by height
@@ -200,7 +200,7 @@ public class Field implements View.OnTouchListener {
 
         scaledRect.right /= scale;
         scaledRect.bottom /= scale;
-      
+
         return scaledRect;
     }
 
