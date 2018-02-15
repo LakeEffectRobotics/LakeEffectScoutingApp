@@ -1,8 +1,10 @@
 package ca.lakeeffect.scoutingapp;
 
+import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.View;
@@ -60,20 +62,45 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Event event = null;
+        final Event event;
+        int eventType = -1;
+
+        String action = "";
 
         if(v == pickup) {
-            event = new Event(0, field.selected, System.currentTimeMillis(), 0);
+            eventType = 0;
+            action = "say that the robot picked up from location " + field.selected;
         } else if(v == drop) {
-            event = new Event(1, field.selected, System.currentTimeMillis(), 0);
+            eventType = 1;
+            action = "say that the robot dropped onto location " + field.selected;
         } else if(v == deselect) {
             field.deselect();
         } else if(v == score) {
-            event = new Event(3, field.selected, System.currentTimeMillis(), 0);
+            eventType = 2;
+            action = "say that the robot scored from location " + field.selected;
         } else if(v == fail) {
-            event = new Event(4, field.selected, System.currentTimeMillis(), 0);
+            eventType = 3;
+            action = "say that the robot failed in location " + field.selected;
         }
 
-        events.add(event);
+
+        if(eventType != -1){
+
+            event = new Event(eventType, field.selected, System.currentTimeMillis(), 0);
+
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Confirm")
+                    .setMessage("Are you sure you would like to " + action + "?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            events.add(event);
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .create()
+                    .show();
+        }
+
+
     }
 }
