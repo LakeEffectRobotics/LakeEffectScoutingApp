@@ -10,6 +10,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class Field implements View.OnTouchListener {
 
 
@@ -42,6 +44,8 @@ public class Field implements View.OnTouchListener {
     //for scaling collision detection
     float scale; //multiplier of how much it scaled
 
+    int selected = -1; //currently selected item (-1 is ground)
+
     public Field(SurfaceView s, Bitmap field) {
         surface = s;
         this.field = field;
@@ -56,10 +60,28 @@ public class Field implements View.OnTouchListener {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
 
-                android.view.ViewGroup.LayoutParams lp = surface.getLayoutParams();
-                lp.width = (int) ((Field.this.field.getWidth() / (float) Field.this.field.getHeight()) * surface.getHeight());
+                boolean scaleByHeight = false;
 
-                surface.setLayoutParams(lp);
+                //scaled with height
+                float scaledWidth = (Field.this.field.getWidth() / (float) Field.this.field.getHeight()) * surface.getHeight();
+
+                //scaled with width
+                float scaledHeight = (Field.this.field.getHeight() / (float) Field.this.field.getWidth()) * surface.getWidth();
+
+                if(scaledWidth > surface.getWidth()){ //scale by width
+                    android.view.ViewGroup.LayoutParams lp = surface.getLayoutParams();
+                    lp.height = (int) (scaledHeight);
+
+                    surface.setLayoutParams(lp);
+                }else{ //scale by height
+
+                    scaleByHeight = true;
+
+                    android.view.ViewGroup.LayoutParams lp = surface.getLayoutParams();
+                    lp.width = (int) (scaledWidth);
+
+                    surface.setLayoutParams(lp);
+                }
 
                 Canvas canvas = holder.lockCanvas();
 
@@ -69,7 +91,11 @@ public class Field implements View.OnTouchListener {
                 normal.setStrokeWidth(canvas.getHeight()/100);
                 highlited.setStrokeWidth(canvas.getHeight()/100);
 
-                Field.this.field = Bitmap.createScaledBitmap(Field.this.field, (int) ((Field.this.field.getWidth() / (float) Field.this.field.getHeight()) * canvas.getHeight()), canvas.getHeight(), true);
+                if(!scaleByHeight){
+                    Field.this.field = Bitmap.createScaledBitmap(Field.this.field, canvas.getWidth(), (int) (scaledHeight), true);
+                }else{
+                    Field.this.field = Bitmap.createScaledBitmap(Field.this.field, (int) (scaledWidth), canvas.getHeight(), true);
+                }
 
                 canvas.drawColor(Color.BLACK);
 
@@ -90,6 +116,21 @@ public class Field implements View.OnTouchListener {
         });
     }
 
+    // called by the TeleopPage class when the deselect button is hit
+    public void deselect(){
+        Canvas c = surface.getHolder().lockCanvas();
+
+        if (c != null) {
+
+            selected = -1;
+
+            drawImage(c, selected);
+
+            surface.getHolder().unlockCanvasAndPost(c);
+        }
+
+    }
+
     @Override
     public boolean onTouch(final View v, MotionEvent event) {
         System.out.println(event.getX() + "\t" + event.getY());
@@ -99,7 +140,7 @@ public class Field implements View.OnTouchListener {
 
             if (c != null) {
                 // the place selected, -1 if none
-                int selected = -1;
+                selected = -1;
 
                 Paint paint = new Paint();
                 paint.setColor(Color.RED);
@@ -159,7 +200,7 @@ public class Field implements View.OnTouchListener {
 
         scaledRect.right /= scale;
         scaledRect.bottom /= scale;
-      
+
         return scaledRect;
     }
 
