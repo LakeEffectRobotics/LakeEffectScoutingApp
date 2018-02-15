@@ -60,10 +60,28 @@ public class Field implements View.OnTouchListener {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
 
-                android.view.ViewGroup.LayoutParams lp = surface.getLayoutParams();
-                lp.width = (int) ((Field.this.field.getWidth() / (float) Field.this.field.getHeight()) * surface.getHeight());
+                boolean scaleByHeight = false;
 
-                surface.setLayoutParams(lp);
+                //scaled with height
+                float scaledWidth = (Field.this.field.getWidth() / (float) Field.this.field.getHeight()) * surface.getHeight();
+
+                //scaled with width
+                float scaledHeight = (Field.this.field.getHeight() / (float) Field.this.field.getWidth()) * surface.getWidth();
+
+                if(scaledWidth > surface.getWidth()){ //scale by width
+                    android.view.ViewGroup.LayoutParams lp = surface.getLayoutParams();
+                    lp.width = (int) (scaledHeight);
+
+                    surface.setLayoutParams(lp);
+                }else{ //scale by height
+
+                    scaleByHeight = true;
+
+                    android.view.ViewGroup.LayoutParams lp = surface.getLayoutParams();
+                    lp.width = (int) (scaledWidth);
+
+                    surface.setLayoutParams(lp);
+                }
 
                 Canvas canvas = holder.lockCanvas();
 
@@ -73,7 +91,11 @@ public class Field implements View.OnTouchListener {
                 normal.setStrokeWidth(canvas.getHeight()/100);
                 highlited.setStrokeWidth(canvas.getHeight()/100);
 
-                Field.this.field = Bitmap.createScaledBitmap(Field.this.field, (int) ((Field.this.field.getWidth() / (float) Field.this.field.getHeight()) * canvas.getHeight()), canvas.getHeight(), true);
+                if(!scaleByHeight){
+                    Field.this.field = Bitmap.createScaledBitmap(Field.this.field, canvas.getWidth(), (int) (scaledHeight), true);
+                }else{
+                    Field.this.field = Bitmap.createScaledBitmap(Field.this.field, (int) (scaledWidth), canvas.getHeight(), true);
+                }
 
                 canvas.drawColor(Color.BLACK);
 
