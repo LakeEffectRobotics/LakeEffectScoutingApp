@@ -24,7 +24,6 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
     Button pickup;
     Button drop;
     Button deselect;
-    Button score;
     Button fail;
 
     //All the events made by the person this round
@@ -50,8 +49,6 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         drop.setOnClickListener(this);
         deselect = (Button) view.findViewById(R.id.deselectButton);
         deselect.setOnClickListener(this);
-        score = (Button) view.findViewById(R.id.scoreButton);
-        score.setOnClickListener(this);
         fail = (Button) view.findViewById(R.id.failButton);
         fail.setOnClickListener(this);
 
@@ -75,11 +72,8 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
             action = "say that the robot dropped onto location " + field.selected;
         } else if(v == deselect) {
             field.deselect();
-        } else if(v == score) {
-            eventType = 2;
-            action = "say that the robot scored from location " + field.selected;
         } else if(v == fail) {
-            eventType = 3;
+            eventType = 2;
             action = "say that the robot failed in location " + field.selected;
         }
 
