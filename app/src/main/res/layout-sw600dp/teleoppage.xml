@@ -25,27 +25,26 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Pickup"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:id="@+id/pickupButton"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Drop"
-            android:layout_weight="1"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Deselect"
-            android:layout_weight="1"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Score"
-            android:layout_weight="1"/>
+            android:text="Drop Off"
+            android:layout_weight="1"
+            android:id="@+id/dropButton"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Fail"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:id="@+id/failButton"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Deselect"
+            android:layout_weight="1"
+            android:id="@+id/deselectButton"/>
     </LinearLayout>
 
 

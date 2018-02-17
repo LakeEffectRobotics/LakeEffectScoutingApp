@@ -187,6 +187,16 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder data;
     StringBuilder labels;
 
+    public String getEventData(){
+        StringBuilder events = new StringBuilder();
+
+        for(Event event : pagerAdapter.teleopPage.events){
+            events.append(event.eventType + "," + event.location + "," + event.timestamp + "," + event.metadata);
+        }
+
+        return events.toString();
+    }
+
     public String[] getData(boolean bypassChecks) {
         if (!bypassChecks) {
             if (((RatingBar) pagerAdapter.endgamePage.getView().findViewById(R.id.driveRating)).getRating() <= 0) {
@@ -351,12 +361,14 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
+            String events = getEventData();
+
             //save to file
             if (newfile) out.append(data[1]);
             out.append(data[0]);
 
             //add to pending messages
-            pendingmessages.add(robotNum + ":" + data[0]);
+            pendingmessages.add(robotNum + ":" + data[0] + ":" + events);
             //add to sharedprefs
             SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
@@ -371,53 +383,6 @@ public class MainActivity extends AppCompatActivity {
 
             f.close();
 
-//            Thread thread = new Thread(){
-//                public void run(){
-//                    while(true) {
-//                        System.out.println("aaaa");
-//                        byte[] bytes = new byte[1000];
-//                        try {
-//                            if(!connected){
-//                                pendingmessages.add(robotNum + ":" + labels.toString() + ":"  + data.toString());
-//                                SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
-//                                SharedPreferences.Editor editor = prefs.edit();
-//                                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + labels.toString() + ":"  + data.toString());
-//                                editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
-//                                editor.apply();
-//                                return;
-//                            }
-//                            int amount = in.read(bytes);
-//                            if (new String(bytes, Charset.forName("UTF-8")).equals("done")) {
-//                                return;
-//                            }
-//                            if(!connected){
-//                                pendingmessages.add(robotNum + ":" + labels.toString() + ":"  + data.toString());
-//                                SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
-//                                SharedPreferences.Editor editor = prefs.edit();
-//                                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + labels.toString() + ":"  + data.toString());
-//                                editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
-//                                editor.apply();
-//                                return;
-//                            }
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            };
-//
-//            if(bluetoothsocket != null && bluetoothsocket.isConnected()){
-//                System.out.println("aaaa");
-//                this.out.write((robotNum + ":" + labels.toString() + ":" + data.toString()).getBytes(Charset.forName("UTF-8")));
-//                thread.start();
-//            }else{
-//                pendingmessages.add(robotNum + ":" + labels.toString() + ":"  + data.toString());
-//                SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
-//                SharedPreferences.Editor editor = prefs.edit();
-//                editor.putString("message"+prefs.getInt("messageAmount",0), robotNum + ":" + labels.toString() + ":"  + data.toString());
-//                editor.putInt("messageAmount", prefs.getInt("messageAmount",0)+1);
-//                editor.apply();
-//            }
         } catch (IOException e) {
             e.printStackTrace();
         }

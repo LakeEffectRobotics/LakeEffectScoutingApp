@@ -87,7 +87,11 @@ public class Field implements View.OnTouchListener {
 
                 scale = (float) Field.this.field.getHeight() / ((float) canvas.getHeight());
 
-                //set paint stroke based on screen size
+                if(!scaleByHeight) {
+                    scale = (float) Field.this.field.getWidth() / ((float) canvas.getWidth());
+                }
+
+                    //set paint stroke based on screen size
                 normal.setStrokeWidth(canvas.getHeight()/100);
                 highlited.setStrokeWidth(canvas.getHeight()/100);
 
