@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder events = new StringBuilder();
 
         for(Event event : pagerAdapter.teleopPage.events){
-            events.append(event.eventType + "," + event.location + "," + event.timestamp + "," + event.metadata);
+            events.append(round + "," + event.eventType + "," + event.location + "," + event.timestamp + "," + event.metadata);
         }
 
         return events.toString();
