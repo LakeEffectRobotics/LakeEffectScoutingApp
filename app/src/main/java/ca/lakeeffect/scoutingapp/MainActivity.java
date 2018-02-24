@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -68,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
     int robotNum = 2708;
     int round = 0;
     String scoutName = "Woodie Flowers";
+
+    //the field data
+    boolean alliance; //red is false, true is blue
+    boolean side; //red on left is false, blue on left is true
 
     InputPagerAdapter pagerAdapter;
     ViewPager viewPager;
@@ -225,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         labels.append("Match,");
 
         labels.append("Date and Time Of Match,");
-        DateFormat dateFormat = new SimpleDateFormat("dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd HH;mm;ss");
         Date date = new Date();
         data.append(dateFormat.format(date) + ",");
 
@@ -580,23 +585,51 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, null)
                 .setCancelable(false)
                 .create();
+
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
+
+                //setup spinners (Drop downs)
+
+                View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
+
+                Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
+
+                ArrayAdapter<CharSequence> robotAllianceAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.alliances, R.layout.spinner);
+                robotAlliance.setAdapter(robotAllianceAdapter);
+
+                Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
+
+                ArrayAdapter<CharSequence> viewingSideAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.viewingSides, R.layout.spinner);
+                viewingSide.setAdapter(viewingSideAdapter);
 
                 //start bluetooth, all views are probably ready now
                 startListenerThread();
 
                 SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
-                ((EditText) ((AlertDialog) dialog).findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
+
+                //set scout name to previous name
+                ((EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
+
+                //once they hit ok
                 ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
-                        EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
-                        EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
-                        EditText scoutNamein = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText3);
+                        View layout = inflater.inflate(R.layout.dialog, null);
+
+                        View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
+
+                        EditText robotNumin = (EditText) linearLayout.findViewById(R.id.editText);
+                        EditText roundin = (EditText) linearLayout.findViewById(R.id.editText2);
+                        EditText scoutNamein = (EditText) linearLayout.findViewById(R.id.editText3);
+
+                        //spinners
+
+                        Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
+                        Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
+
                         try {
                             robotNum = Integer.parseInt(robotNumin.getText().toString());
                             round = Integer.parseInt(roundin.getText().toString());

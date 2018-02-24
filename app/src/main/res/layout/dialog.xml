@@ -1,31 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:imeOptions="flagNoExtractUi"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:hint="Robot Number" />
+        android:id="@+id/dialogLinearLayout">
 
-    <EditText
-        android:imeOptions="flagNoExtractUi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:hint="Match Number" />
-    <EditText
-        android:imeOptions="flagNoExtractUi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:ems="15"
-        android:id="@+id/editText3"
-        android:hint="Scout Name" />
-</LinearLayout>
+        <EditText
+            android:imeOptions="flagNoExtractUi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:hint="Robot Number" />
+
+        <EditText
+            android:imeOptions="flagNoExtractUi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText2"
+            android:hint="Match Number" />
+        <EditText
+            android:imeOptions="flagNoExtractUi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="15"
+            android:id="@+id/editText3"
+            android:hint="Scout Name" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/robotAlliance"
+            android:spinnerMode="dropdown"
+            android:textSize = "@dimen/text_small"
+            android:layout_gravity="top"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/viewingSide"
+            android:spinnerMode="dropdown"
+            android:textSize = "@dimen/text_small"
+            android:layout_gravity="top"/>
+
+    </LinearLayout>
+
+</ScrollView>
