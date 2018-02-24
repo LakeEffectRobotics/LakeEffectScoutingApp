@@ -592,12 +592,14 @@ public class MainActivity extends AppCompatActivity {
 
                 //setup spinners (Drop downs)
 
-                Spinner robotAlliance = (Spinner) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.robotAlliance);
+                View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
+
+                Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
 
                 ArrayAdapter<CharSequence> robotAllianceAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.alliances, R.layout.spinner);
                 robotAlliance.setAdapter(robotAllianceAdapter);
 
-                Spinner viewingSide = (Spinner) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.viewingSide);
+                Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
 
                 ArrayAdapter<CharSequence> viewingSideAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.viewingSides, R.layout.spinner);
                 viewingSide.setAdapter(viewingSideAdapter);
@@ -616,14 +618,17 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         View layout = inflater.inflate(R.layout.dialog, null);
-                        EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText);
-                        EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText2);
-                        EditText scoutNamein = (EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText3);
+
+                        View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
+
+                        EditText robotNumin = (EditText) linearLayout.findViewById(R.id.editText);
+                        EditText roundin = (EditText) linearLayout.findViewById(R.id.editText2);
+                        EditText scoutNamein = (EditText) linearLayout.findViewById(R.id.editText3);
 
                         //spinners
 
-//                        Spinner robotAlliance = (Spinner) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.robotAlliance);
-//                        Spinner viewingSide = (Spinner) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.viewingSide);
+                        Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
+                        Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
 
                         try {
                             robotNum = Integer.parseInt(robotNumin.getText().toString());
