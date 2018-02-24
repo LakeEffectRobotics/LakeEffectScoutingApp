@@ -70,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
     int round = 0;
     String scoutName = "Woodie Flowers";
 
+    //the field data
+    boolean alliance; //red is false, true is blue
+    boolean side; //red on left is false, blue on left is true
+
     InputPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
@@ -226,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         labels.append("Match,");
 
         labels.append("Date and Time Of Match,");
-        DateFormat dateFormat = new SimpleDateFormat("dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd HH;mm;ss");
         Date date = new Date();
         data.append(dateFormat.format(date) + ",");
 
@@ -602,15 +606,25 @@ public class MainActivity extends AppCompatActivity {
                 startListenerThread();
 
                 SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
+
+                //set scout name to previous name
                 ((EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
+
+                //once they hit ok
                 ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
+                        View layout = inflater.inflate(R.layout.dialog, null);
                         EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText);
                         EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText2);
                         EditText scoutNamein = (EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText3);
+
+                        //spinners
+
+//                        Spinner robotAlliance = (Spinner) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.robotAlliance);
+//                        Spinner viewingSide = (Spinner) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.viewingSide);
+
                         try {
                             robotNum = Integer.parseInt(robotNumin.getText().toString());
                             round = Integer.parseInt(roundin.getText().toString());
