@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -580,23 +581,36 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, null)
                 .setCancelable(false)
                 .create();
+
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
+
+                //setup spinners (Drop downs)
+
+                Spinner robotAlliance = (Spinner) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.robotAlliance);
+
+                ArrayAdapter<CharSequence> robotAllianceAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.alliances, R.layout.spinner);
+                robotAlliance.setAdapter(robotAllianceAdapter);
+
+                Spinner viewingSide = (Spinner) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.viewingSide);
+
+                ArrayAdapter<CharSequence> viewingSideAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.viewingSides, R.layout.spinner);
+                viewingSide.setAdapter(viewingSideAdapter);
 
                 //start bluetooth, all views are probably ready now
                 startListenerThread();
 
                 SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
-                ((EditText) ((AlertDialog) dialog).findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
+                ((EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
                 ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, null);
-                        EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText);
-                        EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText2);
-                        EditText scoutNamein = (EditText) ((AlertDialog) dialog).findViewById(R.id.editText3);
+                        EditText robotNumin = (EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText);
+                        EditText roundin = (EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText2);
+                        EditText scoutNamein = (EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText3);
                         try {
                             robotNum = Integer.parseInt(robotNumin.getText().toString());
                             round = Integer.parseInt(roundin.getText().toString());
