@@ -590,8 +590,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onShow(final DialogInterface dialog) {
 
-                //setup spinners (Drop downs)
+                //get date details
+                final int year = Calendar.getInstance().get(Calendar.YEAR);
+                final int month = Calendar.getInstance().get(Calendar.MONTH);
+                final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
+                //setup spinners (Drop downs)
                 View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
 
                 Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
@@ -610,7 +614,18 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
 
                 //set scout name to previous name
-                ((EditText) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout).findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
+                ((EditText) linearLayout.findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
+
+                //set spinners to previous values
+                prefs = getSharedPreferences("robotAlliance", MODE_PRIVATE);
+                if(prefs.getInt("day", -1) == day && prefs.getInt("month", -1) == month && prefs.getInt("year", -1) == year){
+                    robotAlliance.setSelection(prefs.getInt("robotAlliance", 0));
+                }
+
+                prefs = getSharedPreferences("viewingSide", MODE_PRIVATE);
+                if(prefs.getInt("day", -1) == day && prefs.getInt("month", -1) == month && prefs.getInt("year", -1) == year){
+                    viewingSide.setSelection(prefs.getInt("viewingSide", 0));
+                }
 
                 //once they hit ok
                 ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -626,18 +641,50 @@ public class MainActivity extends AppCompatActivity {
                         EditText scoutNamein = (EditText) linearLayout.findViewById(R.id.editText3);
 
                         //spinners
-
                         Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
                         Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
+
+                        if(robotAlliance.getSelectedItemPosition() == 0 || viewingSide.getSelectedItemPosition() == 0){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, "Please select which side you are on, and what alliance your robot is on...",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+                            return;
+                        }
 
                         try {
                             robotNum = Integer.parseInt(robotNumin.getText().toString());
                             round = Integer.parseInt(roundin.getText().toString());
                             scoutName = scoutNamein.getText().toString();
 
+                            alliance = robotAlliance.getSelectedItemPosition() == 2;
+                            side = viewingSide.getSelectedItemPosition() == 2;
+
                             SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("scoutName", scoutName);
+                            editor.apply();
+
+                            //save selections for robot alliance
+                            prefs = getSharedPreferences("robotAlliance", MODE_PRIVATE);
+                            editor = prefs.edit();
+                            editor.putInt("robotAlliance", robotAlliance.getSelectedItemPosition());
+                            editor.putInt("year", year);
+                            editor.putInt("month", month);
+                            editor.putInt("day", day);
+                            editor.apply();
+
+                            //save selections for seating placement
+                            prefs = getSharedPreferences("viewingSide", MODE_PRIVATE);
+                            editor = prefs.edit();
+                            editor.putInt("viewingSide", viewingSide.getSelectedItemPosition());
+                            editor.putInt("year", year);
+                            editor.putInt("month", month);
+                            editor.putInt("day", day);
                             editor.apply();
 
                             if (round > 99) {
