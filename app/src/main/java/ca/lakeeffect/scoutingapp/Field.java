@@ -3,6 +3,7 @@ package ca.lakeeffect.scoutingapp;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
@@ -45,6 +46,8 @@ public class Field implements View.OnTouchListener {
     float scale; //multiplier of how much it scaled
 
     int selected = -1; //currently selected item (-1 is ground)
+
+    boolean currentScale = false;
 
     public Field(SurfaceView s, Bitmap field) {
         surface = s;
@@ -135,6 +138,19 @@ public class Field implements View.OnTouchListener {
 
     }
 
+    //when the user specifies they are on a certain side, the field needs to flip to accomodate
+    public void switchSides(boolean side){
+        if((side && !currentScale) || (!side && currentScale)){
+            Matrix matrix = new Matrix();
+            matrix.postScale(-1, 1, field.getWidth(), field.getHeight());
+
+            field = Bitmap.createBitmap(field, 0, 0, field.getWidth(), field.getHeight(), matrix, true);
+
+            redraw();
+        }
+
+    }
+
     @Override
     public boolean onTouch(final View v, MotionEvent event) {
         System.out.println(event.getX() + "\t" + event.getY());
@@ -173,6 +189,16 @@ public class Field implements View.OnTouchListener {
 
         }
         return false;
+    }
+
+    public void redraw(){
+        Canvas c = surface.getHolder().lockCanvas();
+
+        if (c != null) {
+            drawImage(c);
+
+            surface.getHolder().unlockCanvasAndPost(c);
+        }
     }
 
     public void drawImage(Canvas c) {
