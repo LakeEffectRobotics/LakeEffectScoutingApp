@@ -664,6 +664,9 @@ public class MainActivity extends AppCompatActivity {
                             alliance = robotAlliance.getSelectedItemPosition() == 2;
                             side = viewingSide.getSelectedItemPosition() == 2;
 
+                            //adjust the field image according to selection
+                            pagerAdapter.teleopPage.field.switchSides(side);
+
                             SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("scoutName", scoutName);
