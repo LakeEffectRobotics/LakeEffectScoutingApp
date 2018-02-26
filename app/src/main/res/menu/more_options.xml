@@ -12,7 +12,7 @@
         android:title="Change Theme"/>
     <item
         android:id="@+id/resetPendingMessages"
-        android:title="Reset Pending Messages"/>
+        android:title="Delete Unsent Messages"/>
 
 
 </menu>
