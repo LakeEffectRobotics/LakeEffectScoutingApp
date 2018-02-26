@@ -146,6 +146,15 @@ public class Field implements View.OnTouchListener {
 
             field = Bitmap.createBitmap(field, 0, 0, field.getWidth(), field.getHeight(), matrix, true);
 
+            int top = fieldPlacements[12].top;
+            int bottom = fieldPlacements[12].bottom;
+
+            fieldPlacements[12].top = fieldPlacements[1].top;
+            fieldPlacements[12].bottom = fieldPlacements[1].bottom;
+
+            fieldPlacements[1].top = top;
+            fieldPlacements[1].bottom = bottom;
+
             redraw();
         }
 
