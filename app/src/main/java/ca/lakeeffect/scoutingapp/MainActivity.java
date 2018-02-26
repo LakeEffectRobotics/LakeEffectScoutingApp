@@ -528,16 +528,12 @@ public class MainActivity extends AppCompatActivity {
                     if (item.getItemId() == R.id.resetPendingMessages) {
                         for (String message : pendingmessages) {
                             pendingmessages.remove(message);
-
-                            int loc = getLocationInSharedMessages(message);
-
-                            if (loc != -1) {
-                                SharedPreferences prefs = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("message" + loc, null);
-                                editor.apply();
-                            }
                         }
+
+                        SharedPreferences prefs = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("messageAmount", 0);
+                        editor.apply();
 
                         //set pending messages number on ui
                         runOnUiThread(new Runnable() {
