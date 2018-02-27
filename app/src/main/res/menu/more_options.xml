@@ -7,12 +7,22 @@
     <item
         android:id="@+id/changeNum"
         android:title="Change robot/round number"/>
+
     <item
         android:id="@+id/changeTheme"
         android:title="Change Theme"/>
+
     <item
         android:id="@+id/resetPendingMessages"
-        android:title="Reset Pending Messages"/>
+        android:title="Delete Unsent Messages"/>
+
+    <item
+        android:id="@+id/restartBluetooth"
+        android:title="Restart Bluetooth Threads"/>
+
+    <item
+        android:id="@+id/stopBluetooth"
+        android:title="Stop Bluetooth Threads"/>
 
 
 </menu>

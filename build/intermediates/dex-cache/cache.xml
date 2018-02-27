@@ -1,3 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.google.firebase\firebase-common\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="42df48c7305b08b14fa0e84561091b0c24d70d26">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-common-9.0.0_8f6a980598a46ad5e198c75ab4b2c03832d8a9ab.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.android.support\percent\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="91c2541305eec5a688f3a60529d974e48f77d760">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.android.support-percent-23.4.0_52eb1bc88ed0a205d2bf1aeffa53833ad1d7965f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.android.support-appcompat-v7-23.4.0_ad05f5825547c2f95ed350b0e603b76fdc4ad77d.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.android.support-support-vector-drawable-23.4.0_f6b18e56142206e614e420a36fddf6014a0fc591.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\internal_impl-23.4.0_3cc3b749e64759cd6cead22f9353d3fbc4805129.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.android.support-animated-vector-drawable-23.4.0_79ad884d33c9752712f5f6baf61067e5b0ca596a.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1941832901fc4e7a93300b53762e9f65d7650b99">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-tasks-9.0.0_48492a891aa949cb11bb6638264ed34a884a7c86.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="cc178928721f3222b3b06bdfbd9497378ccb9792">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-basement-9.0.0_753175551a54b9691e564de48295fc574ad228c6.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.google.firebase\firebase-iid\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ea4b54dcbfe5ac05efb0a314105f07258118d3a7">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-iid-9.0.0_e15693fdf001a51fcecaf3b778b44e072628cf04.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\AppData\Local\Android\Sdk\extras\android\m2repository\com\android\support\support-annotations\23.4.0\support-annotations-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\support-annotations-23.4.0_f3ead3583ff4294c57ef01061f9bb72c54de383e.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6f65c144283b31b4b9a70e6e7aa4c4a1c897d4b8">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.google.android.gms-play-services-base-9.0.0_5f994430b4aae4fd8f2de1fe921372d819e0ccfb.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.android.support-support-v4-23.4.0_b3953994d51daa04bdb061b8b3798e21cfffee25.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics-impl\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0dc8ab07eeceda5e99b305c8069765056b6e5c9d">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-analytics-impl-9.0.0_9753389f0dd00dac7b21cdf20f5e66ca5b07749f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4ef8ab5fee042023018249474bc93bd4b2b9c17e">
+        <dex dex="C:\Users\Ajay\StudioProjects\LakeEffectScoutingApp\app\build\intermediates\pre-dexed\release\com.google.firebase-firebase-analytics-9.0.0_2779ad422f63e8687cfa59d873e8e58d4340f2dd.jar" />
+    </item>
+
+</items>
