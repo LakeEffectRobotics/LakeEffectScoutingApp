@@ -30,6 +30,8 @@ public class ListenerThread implements Runnable{
 
     ConnectionThread connectionThread;
 
+    Thread connectionThreadThreadClass;
+
     public ListenerThread(MainActivity mainActivity){
         this.mainActivity = mainActivity;
     }
@@ -60,7 +62,8 @@ public class ListenerThread implements Runnable{
                 //call connection thread and break;
 
                 connectionThread = new ConnectionThread(mainActivity, bluetoothSocket, out, in, bss);
-                new Thread(connectionThread).start();
+                connectionThreadThreadClass = new Thread(connectionThread);
+                connectionThreadThreadClass.start();
                 break;
             }
         }

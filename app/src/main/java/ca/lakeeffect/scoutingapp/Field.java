@@ -156,6 +156,8 @@ public class Field implements View.OnTouchListener {
             fieldPlacements[1].bottom = bottom;
 
             redraw();
+
+            currentScale = side;
         }
 
     }
