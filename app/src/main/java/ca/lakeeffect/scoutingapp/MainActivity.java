@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     boolean connected;
 
     ListenerThread listenerThread;
+    Thread listenerThreadThreadClass;
 
     String savedLabels = null; //generated at the beginning
 
@@ -178,14 +179,41 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void restartListenerThread(){
+
+        stopListenerThread();
+
+        startListenerThread();
+    }
+
+    public void stopListenerThread() {
+        if (listenerThread != null) {
+            if(listenerThread.connectionThreadThreadClass != null){
+                try {
+                    listenerThread.connectionThreadThreadClass.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } else{
+                if(listenerThreadThreadClass != null) {
+                    try {
+                        listenerThreadThreadClass.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
     public void startListenerThread() {
         if (savedLabels == null) savedLabels = getData(true)[1];
-        System.out.println(savedLabels + " labels");
 
         //start listening
         if (listenerThread == null) {
             listenerThread = new ListenerThread(this);
-            new Thread(listenerThread).start();
+            listenerThreadThreadClass = new Thread(listenerThread);
+            listenerThreadThreadClass.start();
         }
     }
 
@@ -558,6 +586,15 @@ public class MainActivity extends AppCompatActivity {
                                 .create()
                                 .show();
                     }
+
+                    if (item.getItemId() == R.id.restartBluetooth) {
+                        restartListenerThread();
+                    }
+
+                    if (item.getItemId() == R.id.stopBluetooth) {
+                        stopListenerThread();
+                    }
+
                     Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                     return true;
                 }
