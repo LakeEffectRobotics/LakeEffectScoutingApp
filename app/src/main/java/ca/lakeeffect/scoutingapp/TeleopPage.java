@@ -66,18 +66,23 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
         if(v == pickup) {
             eventType = 0;
-            action = "say that the robot picked up from location " + field.selected;
+            action = "say that the robot picked up from ";
         } else if(v == drop) {
             eventType = 1;
-            action = "say that the robot dropped onto location " + field.selected;
+            action = "say that the robot dropped onto ";
         } else if(v == fail) {
             eventType = 2;
-            action = "say that the robot failed picking up in location " + field.selected;
+            action = "say that the robot failed picking up in ";
         }else if(v == failedDropOff) {
             eventType = 3;
-            action = "say that the robot failed dropping off in location " + field.selected;
+            action = "say that the robot failed dropping off in ";
         }
 
+        if(field.selected != -1) {
+            action += "location " + field.selected;
+        } else{
+            action += "the field";
+        }
 
         if(eventType != -1){
 
