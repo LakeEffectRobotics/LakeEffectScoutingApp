@@ -36,15 +36,15 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Fail"
+            android:text="Failed Pickup"
             android:layout_weight="1"
             android:id="@+id/failButton"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Deselect"
+            android:text="Failed Drop Off"
             android:layout_weight="1"
-            android:id="@+id/deselectButton"/>
+            android:id="@+id/failDropOffButton"/>
     </LinearLayout>
 
 
