@@ -608,6 +608,7 @@ public class MainActivity extends AppCompatActivity {
         //setup scrolling viewpager
         alert();
 
+
 //        viewPager = (ViewPager) findViewById(R.id.scrollingview);
         viewPager.setAdapter(pagerAdapter);
 //        viewPager.setOffscreenPageLimit(3);
@@ -620,6 +621,8 @@ public class MainActivity extends AppCompatActivity {
         clearData(layout);
 
 //        //Tele page
+        pagerAdapter.teleopPage.reset();
+
 //        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
 //        clearData(layout);
 

@@ -57,7 +57,8 @@ public class Field implements View.OnTouchListener {
         normal.setStyle(Paint.Style.STROKE);
 
         highlited.setColor(Color.YELLOW);
-        highlited.setStyle(Paint.Style.STROKE);
+        highlited.setStyle(Paint.Style.FILL);
+        highlited.setAlpha(125);
 
         surface.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
