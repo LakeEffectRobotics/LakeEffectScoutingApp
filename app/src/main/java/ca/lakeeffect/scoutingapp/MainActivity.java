@@ -127,14 +127,18 @@ public class MainActivity extends AppCompatActivity {
         //add all buttons and counters etc.
 
         //go through all saved pending messages and add them to the variable
+        pendingmessages = new ArrayList<>();
         SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
-        for (int i = 0; i < prefs.getInt("messageAmount", 0); i++) {
+        int messageAmount = prefs.getInt("messageAmount", 0);
+        for (int i = 0; i < messageAmount; i++) {
             if (prefs.getString("message" + i, null) == null) {
                 SharedPreferences.Editor editor = prefs.edit();
-                for (int s = i; s < prefs.getInt("messageAmount", 0) - 1; s++) {
+                for (int s = i; s < messageAmount - 1; s++) {
                     editor.putString("message" + s, prefs.getString("message" + (s + 1), ""));
                 }
                 editor.putInt("messageAmount", prefs.getInt("messageAmount", 0) - 1);
+                messageAmount --;
+                i --;
                 editor.commit();
             } else {
                 pendingmessages.add(prefs.getString("message" + i, ""));
