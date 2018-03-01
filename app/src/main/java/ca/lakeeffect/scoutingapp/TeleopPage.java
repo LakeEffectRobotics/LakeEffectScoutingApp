@@ -100,7 +100,10 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
                     .create()
                     .show();
         }
-
-
     }
+
+    public void reset(){
+        events.clear();
+    }
+
 }
