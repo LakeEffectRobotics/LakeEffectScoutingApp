@@ -52,6 +52,8 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         failedDropOff = (Button) view.findViewById(R.id.failDropOffButton);
         failedDropOff.setOnClickListener(this);
 
+        System.out.println(events.size());
+
         view.setTag("page2");
 
         return view;
