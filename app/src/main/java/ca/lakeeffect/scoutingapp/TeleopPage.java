@@ -23,8 +23,8 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
     Button pickup;
     Button drop;
-    Button deselect;
     Button fail;
+    Button failedDropOff;
 
     //All the events made by the person this round
     ArrayList<Event> events = new ArrayList<Event>();
@@ -47,10 +47,10 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         pickup.setOnClickListener(this);
         drop = (Button) view.findViewById(R.id.dropButton);
         drop.setOnClickListener(this);
-        deselect = (Button) view.findViewById(R.id.deselectButton);
-        deselect.setOnClickListener(this);
         fail = (Button) view.findViewById(R.id.failButton);
         fail.setOnClickListener(this);
+        failedDropOff = (Button) view.findViewById(R.id.failDropOffButton);
+        failedDropOff.setOnClickListener(this);
 
         view.setTag("page2");
 
@@ -66,17 +66,23 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
         if(v == pickup) {
             eventType = 0;
-            action = "say that the robot picked up from location " + field.selected;
+            action = "say that the robot picked up from ";
         } else if(v == drop) {
             eventType = 1;
-            action = "say that the robot dropped onto location " + field.selected;
-        } else if(v == deselect) {
-            field.deselect();
+            action = "say that the robot dropped onto ";
         } else if(v == fail) {
             eventType = 2;
-            action = "say that the robot failed in location " + field.selected;
+            action = "say that the robot failed picking up in ";
+        }else if(v == failedDropOff) {
+            eventType = 3;
+            action = "say that the robot failed dropping off in ";
         }
 
+        if(field.selected != -1) {
+            action += "location " + field.selected;
+        } else{
+            action += "the field";
+        }
 
         if(eventType != -1){
 
