@@ -64,6 +64,21 @@
             </TableRow>
 
             <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView/>
+                <CheckBox
+                    android:layout_weight="1"
+                    android:text="Tipped"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/tipped"
+                    android:textSize="@dimen/text_small" />
+                <TextView/>
+            </TableRow>
+
+            <TableRow
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:weightSum="2">
@@ -89,6 +104,7 @@
         </TableLayout>
 
         <EditText
+            android:imeOptions="flagNoExtractUi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/endgameTableLayout"
