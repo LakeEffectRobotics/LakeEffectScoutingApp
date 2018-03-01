@@ -444,6 +444,21 @@ public class MainActivity extends AppCompatActivity {
 
             String events = getEventData();
 
+            File eventsFile = new File(sdCard.getPath() + "/#ScoutingData/EventData/" + robotNum + ".csv");
+
+            FileOutputStream eventsF = new FileOutputStream(eventsFile, true);
+
+            OutputStreamWriter eventsOut = new OutputStreamWriter(eventsF);
+
+            eventsFile.getParentFile().mkdirs();
+            if (!eventsFile.exists()) {
+                eventsFile.createNewFile();
+            }
+            eventsOut.append(events);
+            eventsOut.close();
+            eventsF.close();
+
+
             //save to file
             if (newfile) out.append(data[1]);
             out.append(data[0]);
