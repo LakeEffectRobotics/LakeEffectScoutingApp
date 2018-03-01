@@ -456,7 +456,7 @@ public class MainActivity extends AppCompatActivity {
             //add to sharedprefs
             SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("message" + prefs.getInt("messageAmount", 0), fulldata);
+            editor.putString("message" + prefs.getInt("messageAmount", 0), fulldata + "\n");
             editor.putInt("messageAmount", prefs.getInt("messageAmount", 0) + 1);
             editor.apply();
 
