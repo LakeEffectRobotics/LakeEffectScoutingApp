@@ -444,12 +444,19 @@ public class MainActivity extends AppCompatActivity {
             if (newfile) out.append(data[1]);
             out.append(data[0]);
 
+            String fulldata = "";
+            if (events.equals("")) {
+                fulldata = robotNum + ":" + data[0];
+            } else {
+                fulldata = robotNum + ":" + data[0] + ":" + events;
+            }
+
             //add to pending messages
-            pendingmessages.add(robotNum + ":" + data[0] + ":" + events);
+            pendingmessages.add(fulldata);
             //add to sharedprefs
             SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("message" + prefs.getInt("messageAmount", 0), robotNum + ":" + data[0] + ":" + events);
+            editor.putString("message" + prefs.getInt("messageAmount", 0), fulldata);
             editor.putInt("messageAmount", prefs.getInt("messageAmount", 0) + 1);
             editor.apply();
 
