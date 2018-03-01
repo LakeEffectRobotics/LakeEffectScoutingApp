@@ -49,6 +49,9 @@ public class Field implements View.OnTouchListener {
 
     boolean currentScale = false;
 
+    //code in surfacecreated can only be called once
+    boolean alreadyCreated = false;
+
     public Field(SurfaceView s, Bitmap field) {
         surface = s;
         this.field = field;
@@ -63,6 +66,12 @@ public class Field implements View.OnTouchListener {
         surface.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
+
+                if(alreadyCreated){
+                    redraw();
+                    return;
+                }
+                alreadyCreated = true;
 
                 boolean scaleByHeight = false;
 
