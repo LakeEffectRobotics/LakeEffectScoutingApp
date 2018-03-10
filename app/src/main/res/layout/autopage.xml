@@ -77,7 +77,7 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/autoCubeLocation"
+                android:id="@+id/firstAutoCubeLocation"
                 android:spinnerMode="dropdown"
                 android:layout_marginTop="10dp"
                 android:layout_weight="0.75"
@@ -90,7 +90,7 @@
                 android:weightSum="2"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/autoCubeGroup">
+                android:layout_id="@+id/firstAutoCubeGroup">
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -99,7 +99,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_weight="1"
-                    android:id="@+id/autoCubeSuccess"
+                    android:id="@+id/firstAutoCubeSuccess"
                     android:checked="false"
                     android:text="Success"
                     android:textSize="@dimen/text_small"/>
@@ -110,7 +110,56 @@
                     android:layout_alignTop="@+id/tableLayout"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:id="@+id/autoCubeFailed"
+                    android:id="@+id/firstAutoCubeFailed"
+                    android:layout_weight="1"
+                    android:text="Failed"
+                    android:textSize="@dimen/text_small"/>
+
+
+            </RadioGroup>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:weightSum="3">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/secondAutoCubeLocation"
+                android:spinnerMode="dropdown"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.75"
+                android:textSize = "@dimen/text_small"
+                android:layout_gravity="top"
+                android:gravity="left"/>
+
+            <RadioGroup android:orientation="horizontal"
+                android:layout_weight="2.25"
+                android:weightSum="2"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:id="secondAutoCubeGoup">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="1"
+                    android:id="@+id/secondAutoCubeSuccess"
+                    android:checked="false"
+                    android:text="Success"
+                    android:textSize="@dimen/text_small"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignTop="@+id/tableLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/secondAutoCubeFailed"
                     android:layout_weight="1"
                     android:text="Failed"
                     android:textSize="@dimen/text_small"/>
@@ -125,14 +174,15 @@
             android:layout_marginTop="15dp">
             <TextView
                 android:layout_height="match_parent"
-                android:text = "Picked up cube:"
+                android:text = "Cubes picked up:"
                 android:textSize="@dimen/text_medium"
                 android:gravity="center"
                 android:paddingRight="15dp"/>
-            <CheckBox
+            <ca.lakeeffect.scoutingapp.Counter
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:id="@+id/autoCubePickup"/>
+                android:id="@+id/autoCubePickup"
+                android:layout_gravity="center"/>
         </TableRow>
     </TableLayout>
 
