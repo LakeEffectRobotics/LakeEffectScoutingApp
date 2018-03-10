@@ -90,7 +90,7 @@
                 android:weightSum="2"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_id="@+id/firstAutoCubeGroup">
+                android:id="@+id/firstAutoCubeGroup">
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -139,7 +139,7 @@
                 android:weightSum="2"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:id="secondAutoCubeGoup">
+                android:id="@+id/secondAutoCubeGroup">
 
                 <RadioButton
                     android:layout_width="wrap_content"

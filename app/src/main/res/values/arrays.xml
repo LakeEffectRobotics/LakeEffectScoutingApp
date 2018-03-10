@@ -11,6 +11,7 @@
         <item>Did Not Try</item>
         <item>Failed Climb</item>
         <item>Successful Climb</item>
+        <item>Got carried</item>
     </string-array>
 
     <string-array name="alliances">
