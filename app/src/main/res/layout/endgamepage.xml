@@ -101,6 +101,29 @@
                             android:isIndicator="false"/>
 
                 </TableRow>
+
+                <TableRow
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:weightSum="2">
+
+                        <TextView
+                            android:text="Intake Ability:"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_medium"
+                            android:layout_marginTop="@dimen/text_small"
+                            android:layout_weight="1"
+                            android:gravity="center"/>
+                        <RatingBar
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/intakeRating"
+                            android:numStars="4"
+                            android:stepSize="1"
+                            android:isIndicator="false"/>
+
+                </TableRow>
         </TableLayout>
 
         <EditText
