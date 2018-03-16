@@ -134,7 +134,7 @@ public class ConnectionThread implements Runnable {
                 fullmessage += "nodata::end";
             }
 
-            this.out.write(fullmessage.getBytes(Charset.forName("UTF-8")));
+            this.out.write((fullmessage + "\n").getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
