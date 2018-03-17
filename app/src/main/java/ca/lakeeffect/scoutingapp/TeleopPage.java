@@ -106,4 +106,65 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         events.clear();
     }
 
+    public String[] getData(){
+        StringBuilder labels = new StringBuilder();
+        StringBuilder data = new StringBuilder();
+
+        int scaleHit=0;
+        int scaleMiss=0;
+        int ownSwitchHit=0;
+        int ownSwitchMiss=0;
+        int otherSwitchHit=0;
+        int otherSwitchMiss=0;
+        int vaultHit=0;
+        int vaultMiss=0;
+
+        for(Event e : events){
+            int location = e.location;
+            if(e.eventType==1){
+                if(location==2){
+                    vaultHit++;
+                }
+                if(location==5||location==6){
+                    ownSwitchHit++;
+                }
+                if(location==7||location==8){
+                    scaleHit++;
+                }
+                if(location==9||location==10){
+                    otherSwitchHit++;
+                }
+            }
+            if(e.eventType==3){
+                if(location==2){
+                    vaultMiss++;
+                }
+                if(location==5||location==6){
+                    ownSwitchMiss++;
+                }
+                if(location==7||location==8){
+                    scaleMiss++;
+                }
+                if(location==9||location==10){
+                    otherSwitchMiss++;
+                }
+            }
+        }
+
+        labels.append("Own Switch Cubes,");
+        data.append(ownSwitchHit+",");
+        labels.append("Own Switch Miss,");
+        data.append(ownSwitchMiss+",");
+        labels.append("Scale Cubes,");
+        data.append(scaleHit+",");
+        labels.append("Scale Miss,");
+        data.append(scaleMiss+",");
+        labels.append("Other Switch Cubes,");
+        data.append(otherSwitchHit+",");
+        labels.append("Other Switch Miss,");
+        data.append(otherSwitchMiss+",");
+
+        return(new String[] {labels.toString(), data.toString()});
+    }
+
 }
