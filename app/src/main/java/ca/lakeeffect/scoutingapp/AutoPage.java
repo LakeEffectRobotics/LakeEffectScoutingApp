@@ -26,9 +26,14 @@ public class AutoPage extends Fragment{
 
         view.setTag("page1");
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.autoCubeLocation);
+        Spinner spinner = (Spinner) view.findViewById(R.id.firstAutoCubeLocation);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
+        spinner.setAdapter(adapter);
+
+        spinner = (Spinner) view.findViewById(R.id.secondAutoCubeLocation);
+
+        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
         spinner.setAdapter(adapter);
 //        ((TextView) view.findViewById(R.id.autoPeg)).setTextSize(15);
         return view;
