@@ -30,12 +30,6 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Drop Off"
-            android:layout_weight="1"
-            android:id="@+id/dropButton"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:text="Failed Pickup"
             android:layout_weight="1"
             android:id="@+id/failButton"/>
@@ -45,6 +39,12 @@
             android:text="Failed Drop Off"
             android:layout_weight="1"
             android:id="@+id/failDropOffButton"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Drop Off"
+            android:layout_weight="1"
+            android:id="@+id/dropButton"/>
     </LinearLayout>
 
 
