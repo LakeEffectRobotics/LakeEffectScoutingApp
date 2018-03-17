@@ -375,10 +375,16 @@ public class MainActivity extends AppCompatActivity {
                         data.append("False,");
                         break;
                     //Power cube radiogroup
-                    case "Auto Cube Success":
+                    case "First Auto Cube Success":
                         data.append("True,");
                         break;
-                    case "Auto Cube Failed":
+                    case "Fist Auto Cube Failed":
+                        data.append("False,");
+                        break;
+                    case "Second Auto Cube Success":
+                        data.append("True,");
+                        break;
+                    case "Second Auto Cube Failed":
                         data.append("False,");
                         break;
                     //Radio button ID will be result output in data
@@ -400,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
     //First letter capital
 
     String getName(View v) {
-        if (v == null) return "NULL";
+        if (v == null || v.getId()==-1) return "NULL";
         String id = getResources().getResourceEntryName(v.getId());
         String out = id.substring(0, 1).toUpperCase() + id.substring(1);
         for (int i = 1; i < out.length(); i++) {
