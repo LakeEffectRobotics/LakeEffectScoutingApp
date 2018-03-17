@@ -128,18 +128,24 @@ public class MainActivity extends AppCompatActivity {
 
         //go through all saved pending messages and add them to the variable
         SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
-        for (int i = 0; i < prefs.getInt("messageAmount", 0); i++) {
+        int messageAmount = prefs.getInt("messageAmount", 0);
+        for (int i = 0; i < messageAmount; i++) {
             if (prefs.getString("message" + i, null) == null) {
-                SharedPreferences.Editor editor = prefs.edit();
-                for (int s = i; s < prefs.getInt("messageAmount", 0) - 1; s++) {
-                    editor.putString("message" + s, prefs.getString("message" + (s + 1), ""));
+                messageAmount ++;
+                i++;
+                if(i > 150){
+                    break;
                 }
-                editor.putInt("messageAmount", prefs.getInt("messageAmount", 0) - 1);
-                editor.commit();
             } else {
                 pendingmessages.add(prefs.getString("message" + i, ""));
             }
         }
+
+        //reset the amount of pending messages
+        SharedPreferences prefs2 = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = prefs2.edit();
+        editor2.putInt("messageAmount", pendingmessages.size());
+        editor2.apply();
 
         //set device name
         BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();

@@ -1,5 +1,6 @@
 package ca.lakeeffect.scoutingapp;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -25,11 +26,11 @@ public class PendingNotification extends BroadcastReceiver {
 
         //TODO get the amount of pending messages
 
-        if(context.getSharedPreferences("pendingmessages", context.MODE_PRIVATE).getInt("messageAmount", -1) <= 0){
+        if(context.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE).getInt("messageAmount", -1) <= 0){
             return;
         }
 
-        message = "You have "+ context.getSharedPreferences("pendingmessages", context.MODE_PRIVATE).getInt("messageAmount", -1) +" unsent messages. Contact Ajay to get the data into the database ASAP!";
+        message = "You have "+ context.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE).getInt("messageAmount", -1) +" unsent messages. Contact Ajay to get the data into the database ASAP!";
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
