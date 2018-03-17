@@ -284,6 +284,16 @@ public class MainActivity extends AppCompatActivity {
                 });
                 return null;
             }
+
+            if (((RatingBar) pagerAdapter.endgamePage.getView().findViewById(R.id.intakeRating)).getRating() <= 0) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the intake ability!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+
             if (((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() <= 0) {
                 runOnUiThread(new Thread() {
                     public void run() {
@@ -292,6 +302,7 @@ public class MainActivity extends AppCompatActivity {
                 });
                 return null;
             }
+
             if (((Spinner) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimb)).getSelectedItem().toString().equals("Choose One")) {
                 runOnUiThread(new Thread() {
                     public void run() {
