@@ -141,6 +141,16 @@ public class ConnectionThread implements Runnable {
     }
 
     public void deleteData(){ //deleted items that are in sent pending messages (because they now have been sent
+
+        SharedPreferences prefs2 = mainActivity.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = prefs2.edit();
+        if( prefs2.getInt("messageAmount", 0) - sentPendingMessages.size() >= 0){
+            editor2.putInt("messageAmount", prefs2.getInt("messageAmount", 0) - sentPendingMessages.size());
+        } else {
+            editor2.putInt("messageAmount", 0);
+        }
+        editor2.apply();
+
         for(String message: new ArrayList<>(sentPendingMessages)){
             mainActivity.pendingmessages.remove(message);
             sentPendingMessages.remove(message);
