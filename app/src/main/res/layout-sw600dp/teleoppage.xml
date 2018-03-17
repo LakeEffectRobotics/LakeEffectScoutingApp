@@ -6,45 +6,60 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <SurfaceView
-        android:layout_width = "match_parent"
-        android:layout_height = "match_parent"
-        android:layout_gravity="top|center"
-        android:layout_weight="3"
-        android:id="@+id/fieldCanvas">
 
-    </SurfaceView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
         android:layout_weight="0">
-        <Button
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Pickup"
-            android:layout_weight="1"
-            android:id="@+id/pickupButton"/>
-        <Button
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            android:layout_weight="1">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Pickup"
+                android:layout_weight="1"
+                android:id="@+id/pickupButton"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Failed Pickup"
+                android:layout_weight="1"
+                android:id="@+id/failButton"/>
+        </LinearLayout>
+        <SurfaceView
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"
+            android:layout_gravity="top|center"
+            android:layout_weight="2"
+            android:id="@+id/fieldCanvas">
+
+        </SurfaceView>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Failed Pickup"
-            android:layout_weight="1"
-            android:id="@+id/failButton"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Failed Drop Off"
-            android:layout_weight="1"
-            android:id="@+id/failDropOffButton"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Drop Off"
-            android:layout_weight="1"
-            android:id="@+id/dropButton"/>
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            android:layout_weight="1">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Drop Off"
+                android:layout_weight="1"
+                android:id="@+id/dropButton"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Failed Drop Off"
+                android:layout_weight="1"
+                android:id="@+id/failDropOffButton"/>
+        </LinearLayout>
     </LinearLayout>
 
 
