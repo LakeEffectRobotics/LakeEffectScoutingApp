@@ -12,7 +12,11 @@ def getdataforfile(filename, index, robotnumber):
 
     dates = []
     for line in lines:
+
         if(lines.index(line) != 0):
+            line = line.replace(";",":").replace("true","1").replace("false","0").replace("True","1").replace("False","0").replace("Successful Climb","1").replace("Failed Climb","0")
+
+
             if line.split(",")[0] in dates:
                 continue
             dates.append(line.split(",")[0])
@@ -43,16 +47,10 @@ def getdataforfile(filename, index, robotnumber):
                 continue
             except IndexError as verr:
                 continue
-            if i==16:
-                if roundnum == -1:
-                    pegPlacedAmount += 1
-            else:
-                totalsum += roundnum
-        if i == 1:
+            totalsum += roundnum
+        if i == 0:
             averages.append(len(data))
-        elif i == 16:
-            averages.append(str((len(data)-pegPlacedAmount)/(len(data))))
-        elif i == 23:
+        elif i == 11:
             
             averages.append('"' + fullString.replace('"',"").replace(",",".") + '"')
         else:
@@ -73,6 +71,7 @@ if not os.path.exists(foldername + '\\results\\'):
 files = os.listdir(foldername)
 print(files)
 files.remove("results")
+files.remove("EventData")
 
 #files = ["772.csv"]
 
