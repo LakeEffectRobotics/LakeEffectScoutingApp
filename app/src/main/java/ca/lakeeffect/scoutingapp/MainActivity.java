@@ -292,6 +292,14 @@ public class MainActivity extends AppCompatActivity {
                 });
                 return null;
             }
+            if (((Spinner) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimb)).getSelectedItem().toString().equals("Choose One")) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it climbed!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
         }
 
         data = new StringBuilder();
@@ -362,7 +370,6 @@ public class MainActivity extends AppCompatActivity {
                     labels.append(getName(v) + ",");
                 }
                 if (v instanceof Spinner) {
-                    //TODO
                     data.append(((Spinner) v).getSelectedItem().toString() + ",");
                     System.out.println(((Spinner) v).getSelectedItem().toString() + ",");
                     labels.append(getName(v) + ",");
