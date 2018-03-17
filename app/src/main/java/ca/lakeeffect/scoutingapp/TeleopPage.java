@@ -10,6 +10,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
     Button pickup;
     Button drop;
+    Button undo;
     Button fail;
     Button failedDropOff;
 
@@ -47,6 +49,8 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         pickup.setOnClickListener(this);
         drop = (Button) view.findViewById(R.id.dropButton);
         drop.setOnClickListener(this);
+        undo = (Button) view.findViewById(R.id.undo);
+        undo.setOnClickListener(this);
         fail = (Button) view.findViewById(R.id.failButton);
         fail.setOnClickListener(this);
         failedDropOff = (Button) view.findViewById(R.id.failDropOffButton);
@@ -59,6 +63,40 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+
+        if(v == undo){
+
+            if(events.size() > 0){
+
+                Event event = events.get(events.size()-1);
+
+                String location = "";
+
+                if(field.selected != -1) {
+                    location += "location " + field.selected;
+                } else{
+                    location += "the field";
+                }
+
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Confirm")
+                        .setMessage("Are you sure you would like to undo the action that said " + getActionText(event.eventType) + location + "?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                events.remove(events.size()-1);
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .create()
+                        .show();
+            } else {
+                Toast.makeText(getContext(), "There is nothing to undo, you have not made any events yet", Toast.LENGTH_SHORT).show();
+            }
+
+            return; //only have to undo, not add an event
+        }
+
+
         final Event event;
         int eventType = -1;
 
@@ -66,17 +104,15 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
         if(v == pickup) {
             eventType = 0;
-            action = "say that the robot picked up from ";
         } else if(v == drop) {
             eventType = 1;
-            action = "say that the robot dropped onto ";
         } else if(v == fail) {
             eventType = 2;
-            action = "say that the robot failed picking up in ";
         }else if(v == failedDropOff) {
             eventType = 3;
-            action = "say that the robot failed dropping off in ";
         }
+
+        action = getActionText(eventType);
 
         if(field.selected != -1) {
             action += "location " + field.selected;
@@ -90,7 +126,7 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
             new AlertDialog.Builder(getContext())
                     .setTitle("Confirm")
-                    .setMessage("Are you sure you would like to " + action + "?")
+                    .setMessage("Are you sure you would like to say " + action + "?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             events.add(event);
@@ -100,6 +136,20 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
                     .create()
                     .show();
         }
+    }
+
+    public String getActionText(int eventType){
+        switch (eventType){
+            case 0:
+                return "that the robot picked up from ";
+            case 1:
+                return "that the robot dropped onto ";
+            case 2:
+                return "that the robot failed picking up in ";
+            case 3:
+                return "that the robot failed dropping off in ";
+        }
+        return "invalid event";
     }
 
     public void reset(){

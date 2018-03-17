@@ -36,6 +36,13 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:text="Undo"
+            android:layout_gravity="bottom"
+            android:layout_weight="2"
+            android:id="@+id/undo"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:text="Failed Drop Off"
             android:layout_weight="1"
             android:id="@+id/failDropOffButton"/>

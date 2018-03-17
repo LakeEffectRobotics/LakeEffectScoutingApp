@@ -8,6 +8,7 @@
     </string-array>
 
     <string-array name="climb">
+        <item>Choose One</item>
         <item>Did Not Try</item>
         <item>Failed Climb</item>
         <item>Successful Climb</item>
