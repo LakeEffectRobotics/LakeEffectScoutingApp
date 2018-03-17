@@ -317,6 +317,11 @@ public class MainActivity extends AppCompatActivity {
 //        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
 //        enterLayout(layout);
 
+        String[] tele = pagerAdapter.teleopPage.getData();
+
+        labels.append(tele[0]);
+        data.append(tele[1]);
+
         //Endgame page
         layout = (PercentRelativeLayout) pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
         enterLayout(layout);
