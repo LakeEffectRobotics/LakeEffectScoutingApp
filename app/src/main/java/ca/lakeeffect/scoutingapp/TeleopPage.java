@@ -10,6 +10,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
     Button pickup;
     Button drop;
+    Button undo;
     Button fail;
     Button failedDropOff;
 
@@ -47,6 +49,8 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         pickup.setOnClickListener(this);
         drop = (Button) view.findViewById(R.id.dropButton);
         drop.setOnClickListener(this);
+        undo = (Button) view.findViewById(R.id.undo);
+        undo.setOnClickListener(this);
         fail = (Button) view.findViewById(R.id.failButton);
         fail.setOnClickListener(this);
         failedDropOff = (Button) view.findViewById(R.id.failDropOffButton);
@@ -59,6 +63,29 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+
+        if(v == undo){
+
+            if(events.size() > 0){
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Confirm")
+                        .setMessage("Are you sure you would like to undo your past action?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                events.remove(events.size()-1);
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .create()
+                        .show();
+            } else {
+                Toast.makeText(getContext(), "There is nothing to undo, you have not made any events yet", Toast.LENGTH_SHORT).show();
+            }
+
+            return; //only have to undo, not add an event
+        }
+
+
         final Event event;
         int eventType = -1;
 
