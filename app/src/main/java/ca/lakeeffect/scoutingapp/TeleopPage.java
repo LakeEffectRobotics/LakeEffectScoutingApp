@@ -213,6 +213,10 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         data.append(otherSwitchHit+",");
         labels.append("Other Switch Miss,");
         data.append(otherSwitchMiss+",");
+        labels.append("Vault Hit,");
+        data.append(vaultHit+",");
+        labels.append("Vault Miss,");
+        data.append(vaultMiss+",");
 
         return(new String[] {labels.toString(), data.toString()});
     }
