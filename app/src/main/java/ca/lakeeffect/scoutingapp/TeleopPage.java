@@ -172,30 +172,30 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         for(Event e : events){
             int location = e.location;
             if(e.eventType==1){
-                if(location==2){
+                if(location==1){
                     vaultHit++;
                 }
-                if(location==5||location==6){
+                if(location==4||location==5){
                     ownSwitchHit++;
                 }
-                if(location==7||location==8){
+                if(location==6||location==7){
                     scaleHit++;
                 }
-                if(location==9||location==10){
+                if(location==8||location==9){
                     otherSwitchHit++;
                 }
             }
             if(e.eventType==3){
-                if(location==2){
+                if(location==1){
                     vaultMiss++;
                 }
-                if(location==5||location==6){
+                if(location==4||location==5){
                     ownSwitchMiss++;
                 }
-                if(location==7||location==8){
+                if(location==6||location==7){
                     scaleMiss++;
                 }
-                if(location==9||location==10){
+                if(location==8||location==9){
                     otherSwitchMiss++;
                 }
             }
@@ -213,6 +213,10 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         data.append(otherSwitchHit+",");
         labels.append("Other Switch Miss,");
         data.append(otherSwitchMiss+",");
+        labels.append("Vault Cubes,");
+        data.append(vaultHit+",");
+        labels.append("Vault Miss,");
+        data.append(vaultMiss+",");
 
         return(new String[] {labels.toString(), data.toString()});
     }
