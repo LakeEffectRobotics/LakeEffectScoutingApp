@@ -1,8 +1,10 @@
 package ca.lakeeffect.scoutingapp;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -31,6 +33,9 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
     //All the events made by the person this round
     ArrayList<Event> events = new ArrayList<Event>();
 
+    Vibrator vibrator;
+    boolean hasVibrator;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -58,11 +63,17 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
         view.setTag("page2");
 
+        vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+
+        hasVibrator = vibrator.hasVibrator();
+
         return view;
     }
 
     @Override
     public void onClick(View v) {
+
+
 
         if(v == undo){
 
@@ -97,6 +108,9 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         }
 
 
+        //Vibrate the vibrator to notify scout
+        if(hasVibrator) vibrator.vibrate(new long[] {0, 100, 25, 100}, -1);
+
         final Event event;
         int eventType = -1;
 
@@ -112,6 +126,9 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
             eventType = 3;
         }
 
+
+
+
         action = getActionText(eventType);
 
         if(field.selected != -1) {
@@ -120,23 +137,33 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
             action += "the field";
         }
 
-        if(eventType != -1){
-
+        if(eventType != -1) {
+            final String a = action;
             event = new Event(eventType, field.selected, System.currentTimeMillis(), 0);
-
-            new AlertDialog.Builder(getContext())
-                    .setTitle("Confirm")
-                    .setMessage("Are you sure you would like to say " + action + "?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            events.add(event);
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .create()
-                    .show();
+            if (hasVibrator) {
+                addEvent(event, action);
+            }
+            else{
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Confirm")
+                        .setMessage("Are you sure you would like to say " + action + "?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                addEvent(event, a);
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .create()
+                        .show();
+            }
         }
     }
+
+    private void addEvent(Event e, String action){
+        events.add(e);
+        Toast.makeText(getContext(), "Event "+action+" recorded", Toast.LENGTH_SHORT).show();
+    }
+
 
     public String getActionText(int eventType){
         switch (eventType){
@@ -172,30 +199,30 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         for(Event e : events){
             int location = e.location;
             if(e.eventType==1){
-                if(location==2){
+                if(location==1){
                     vaultHit++;
                 }
-                if(location==5||location==6){
+                if(location==4||location==5){
                     ownSwitchHit++;
                 }
-                if(location==7||location==8){
+                if(location==6||location==7){
                     scaleHit++;
                 }
-                if(location==9||location==10){
+                if(location==8||location==9){
                     otherSwitchHit++;
                 }
             }
             if(e.eventType==3){
-                if(location==2){
+                if(location==1){
                     vaultMiss++;
                 }
-                if(location==5||location==6){
+                if(location==4||location==5){
                     ownSwitchMiss++;
                 }
-                if(location==7||location==8){
+                if(location==6||location==7){
                     scaleMiss++;
                 }
-                if(location==9||location==10){
+                if(location==8||location==9){
                     otherSwitchMiss++;
                 }
             }
