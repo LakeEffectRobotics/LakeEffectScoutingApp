@@ -11,6 +11,7 @@ def getdataforfile(filename, index, robotnumber):
     lines = list(lines)
     lines.pop(0)
     for line in lines:
+        line = line.replace(";"," ")
         line = robotnumber + "," + line
         alllines.append(line)
     
@@ -21,6 +22,7 @@ if not os.path.exists(foldername + '\\results\\'):
 files = os.listdir(foldername)
 
 files.remove("results")
+files.remove("EventData")
 
 for i in range(len(files)):
     getdataforfile(foldername + files[i], i, files[i])

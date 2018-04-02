@@ -4,6 +4,8 @@ class Score:
     def __init__(self):
         self.success = 0;
         self.fail = 0;
+        self.max = 0;
+        
     def __str__(self):
         return str(self.success)+","+str(self.fail)  
         
@@ -14,6 +16,8 @@ class Score:
         self.fail+=1;
         
     def multiScore(self, add):
+        if(add > self.max):
+            self.max = add;
         self.success+=add
         
     def multiMiss(self, add):
@@ -66,6 +70,7 @@ class Robot:
     
     
     def addMatch(self, match):
+        print(self.number)
         match = match.replace(";",":").replace("False","0").replace("True","1").replace("false","0").replace("true","1");
         print(match);
         data = match.split(",");
@@ -149,6 +154,8 @@ class Robot:
     def averageAll(self):
         averages = []
         labels = []
+        if(self.matches==0):
+            return("",self.number);
         labels.append("Robot")
         averages.append(self.number)
         labels.append("Match Count")
@@ -162,6 +169,8 @@ class Robot:
     def averageAuto(self):
         averages = []
         labels = []
+        if(self.matches==0):
+            return("",self.number);
         labels.append("Robot")
         averages.append(self.number)
         labels.append("Match Count")
@@ -174,6 +183,8 @@ class Robot:
     def averageTele(self):
         averages = []
         labels = []
+        if(self.matches==0):
+            return("",self.number);
         labels.append("Robot")
         averages.append(self.number)
         labels.append("Match Count")
@@ -243,6 +254,8 @@ class Robot:
         averages.append(self.ownSwitch.success/self.matches)
         labels.append("Own Switch Accuracy")
         averages.append(self.ownSwitch.getAccuracy())
+        labels.append("Own Switch Max");
+        averages.append(self.ownSwitch.max);
         
         labels.append("Scale Attempts")
         averages.append(self.scale.getTotal())
@@ -250,6 +263,8 @@ class Robot:
         averages.append(self.scale.success/self.matches)
         labels.append("Scale Accuracy")
         averages.append(self.scale.getAccuracy())
+        labels.append("Scale Max");
+        averages.append(self.scale.max);
         
         labels.append("Other Switch Attempts")
         averages.append(self.otherSwitch.getTotal())
@@ -257,6 +272,8 @@ class Robot:
         averages.append(self.otherSwitch.success/self.matches)
         labels.append("Other Switch Accuracy")
         averages.append(self.otherSwitch.getAccuracy())
+        labels.append("Other Switch Max");
+        averages.append(self.otherSwitch.max);
         
         labels.append("Vault Attempts")
         averages.append(self.vault.getTotal())
@@ -264,6 +281,8 @@ class Robot:
         averages.append(self.vault.success/self.matches)
         labels.append("Vault Accuracy")
         averages.append(self.vault.getAccuracy())
+        labels.append("Vault Max");
+        averages.append(self.vault.max);
         
         labels.append("Climb Average")
         averages.append(self.climb.getAccuracy())
@@ -308,7 +327,6 @@ for file in files:
     lines.pop(0)
     for line in lines:
         bot.addMatch(line)
-    print(bot)
     robots.append(bot)
 
 # Create CSV Files
