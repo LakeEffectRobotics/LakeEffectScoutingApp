@@ -612,8 +612,8 @@ public class MainActivity extends AppCompatActivity {
                         alert();
                     }
                     if (item.getItemId() == R.id.resetPendingMessages) {
-                        for (String message : pendingmessages) {
-                            pendingmessages.remove(message);
+                        for(int i=0;i<pendingmessages.size();i++){
+                            pendingmessages.remove(i);
                         }
 
                         SharedPreferences prefs = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
