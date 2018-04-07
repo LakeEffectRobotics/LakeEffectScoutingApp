@@ -1,6 +1,7 @@
 package ca.lakeeffect.scoutingapp;
 
 import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -58,6 +59,11 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             }
         }
+
+        //Set Unsent Messages Text
+        TextView unsentMessages = (TextView) findViewById(R.id.startUnsentMessages);
+        assert unsentMessages != null;
+        unsentMessages.setText("Unsent Messages: " + getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE).getInt("messageAmount", 0));
 
         //Set Version Text
         TextView versionNum = (TextView) findViewById(R.id.versionNum);
