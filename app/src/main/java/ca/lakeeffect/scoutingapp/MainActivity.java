@@ -927,13 +927,9 @@ public class MainActivity extends AppCompatActivity {
 
     //creates dialog to check if the user still wants to use a robot not in this event
     public void createRobotNumberOverrideDialog(final DialogInterface dialog){
-        String robot = "";
-        for(String robott : availableRobots){
-            robot += robott + "s\ns";
-        }
         new AlertDialog.Builder(this)
                 .setTitle("That robot is not at this event")
-                .setMessage("Would you like to use this robot number anyway? DOUBLE CHECK that you are typing in the right robot number." + robot)
+                .setMessage("Would you like to use this robot number anyway? DOUBLE CHECK that you are typing in the right robot number.")
                 .setPositiveButton("Yes, I would like to use this robot number", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog2, int which) {
                         onClickOkButton(dialog, true);
