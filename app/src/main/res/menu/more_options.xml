@@ -14,7 +14,7 @@
 
     <item
         android:id="@+id/resetPendingMessages"
-        android:title="Delete Unsent Messages"/>
+        android:title="Delete Unsent Data"/>
 
     <item
         android:id="@+id/restartBluetooth"

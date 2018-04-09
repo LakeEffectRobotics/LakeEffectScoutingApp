@@ -201,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
             availableRobots = s.split("\n");
 
+            //For some reason IOUtils spits out text with an extra character, this code fixes that
             for(int i = 0; i < availableRobots.length; i++) {
                 availableRobots[i] = availableRobots[i].substring(0, availableRobots[i].length() - 1);
             }
@@ -433,13 +434,19 @@ public class MainActivity extends AppCompatActivity {
                     case "First Auto Cube Success":
                         data.append("True,");
                         break;
-                    case "Fist Auto Cube Failed":
+                    case "First Auto Cube Failed":
                         data.append("False,");
                         break;
                     case "Second Auto Cube Success":
                         data.append("True,");
                         break;
                     case "Second Auto Cube Failed":
+                        data.append("False,");
+                        break;
+                    case "Third Auto Cube Success":
+                        data.append("True,");
+                        break;
+                    case "Third Auto Cube Failed":
                         data.append("False,");
                         break;
                     //Radio button ID will be result output in data
@@ -927,13 +934,9 @@ public class MainActivity extends AppCompatActivity {
 
     //creates dialog to check if the user still wants to use a robot not in this event
     public void createRobotNumberOverrideDialog(final DialogInterface dialog){
-        String robot = "";
-        for(String robott : availableRobots){
-            robot += robott + "s\ns";
-        }
         new AlertDialog.Builder(this)
                 .setTitle("That robot is not at this event")
-                .setMessage("Would you like to use this robot number anyway? DOUBLE CHECK that you are typing in the right robot number." + robot)
+                .setMessage("Would you like to use this robot number anyway? DOUBLE CHECK that you are typing in the right robot number.")
                 .setPositiveButton("Yes, I would like to use this robot number", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog2, int which) {
                         onClickOkButton(dialog, true);

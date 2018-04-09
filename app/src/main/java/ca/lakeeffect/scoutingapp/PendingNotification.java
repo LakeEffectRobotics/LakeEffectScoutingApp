@@ -30,7 +30,7 @@ public class PendingNotification extends BroadcastReceiver {
             return;
         }
 
-        message = "You have "+ context.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE).getInt("messageAmount", -1) +" unsent messages. Contact Ajay to get the data into the database ASAP!";
+        message = "You have "+ context.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE).getInt("messageAmount", -1) +" unsent data. Contact Ajay to get the data into the database ASAP!";
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
