@@ -171,6 +171,56 @@
 
                 </RadioGroup>
             </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:weightSum="3">
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/thirdAutoCubeLocation"
+                    android:spinnerMode="dropdown"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.75"
+                    android:textSize = "@dimen/text_small"
+                    android:layout_gravity="top"
+                    android:gravity="left"/>
+
+                <RadioGroup android:orientation="horizontal"
+                    android:layout_weight="2.25"
+                    android:weightSum="2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/thirdAutoCubeGroup">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignTop="@+id/tableLayout"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_weight="1"
+                        android:id="@+id/thirdAutoCubeSuccess"
+                        android:checked="false"
+                        android:text="Success"
+                        android:textSize="@dimen/text_small"/>
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignTop="@+id/tableLayout"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:id="@+id/thirdAutoCubeFailed"
+                        android:layout_weight="1"
+                        android:text="Failed"
+                        android:textSize="@dimen/text_small"/>
+
+
+                </RadioGroup>
+            </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

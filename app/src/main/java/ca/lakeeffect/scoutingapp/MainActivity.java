@@ -434,13 +434,19 @@ public class MainActivity extends AppCompatActivity {
                     case "First Auto Cube Success":
                         data.append("True,");
                         break;
-                    case "Fist Auto Cube Failed":
+                    case "First Auto Cube Failed":
                         data.append("False,");
                         break;
                     case "Second Auto Cube Success":
                         data.append("True,");
                         break;
                     case "Second Auto Cube Failed":
+                        data.append("False,");
+                        break;
+                    case "Third Auto Cube Success":
+                        data.append("True,");
+                        break;
+                    case "Third Auto Cube Failed":
                         data.append("False,");
                         break;
                     //Radio button ID will be result output in data
