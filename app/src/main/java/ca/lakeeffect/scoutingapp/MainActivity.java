@@ -201,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
             availableRobots = s.split("\n");
 
+            //For some reason IOUtils spits out text with an extra character, this code fixes that
             for(int i = 0; i < availableRobots.length; i++) {
                 availableRobots[i] = availableRobots[i].substring(0, availableRobots[i].length() - 1);
             }
