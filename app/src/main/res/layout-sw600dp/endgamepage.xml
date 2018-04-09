@@ -110,13 +110,17 @@
                     android:layout_marginTop="@dimen/text_small"
                     android:layout_weight="1"
                     android:gravity="center"/>
-                <RatingBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/driveRating"
-                    android:numStars="4"
-                    android:stepSize="1"
-                    android:isIndicator="false"/>
+
+                <LinearLayout>
+                    <!--This is a workaround to make #109 work as seen in https://stackoverflow.com/a/39653856/1985387-->
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/driveRating"
+                        android:numStars="4"
+                        android:stepSize="1"
+                        android:isIndicator="false"/>
+                </LinearLayout>
 
             </TableRow>
 
@@ -133,13 +137,16 @@
                     android:layout_marginTop="@dimen/text_small"
                     android:layout_weight="1"
                     android:gravity="center"/>
-                <RatingBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/intakeRating"
-                    android:numStars="4"
-                    android:stepSize="1"
-                    android:isIndicator="false"/>
+                <LinearLayout>
+                    <!--This is a workaround to make #109 work as seen in https://stackoverflow.com/a/39653856/1985387-->
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/intakeRating"
+                        android:numStars="4"
+                        android:stepSize="1"
+                        android:isIndicator="false"/>
+                </LinearLayout>
 
             </TableRow>
         </TableLayout>
