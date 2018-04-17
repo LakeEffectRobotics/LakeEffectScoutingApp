@@ -174,9 +174,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(3);
 
-        //Give teleop page a mainActivity pointer
-        pagerAdapter.teleopPage.mainActivity = this;
-
 //        NumberPicker np = (NumberPicker) findViewm counters
 //        np.setWrapSelectorWheel(false);ById(R.id.numberPicker);
 //
@@ -415,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
                 if (v instanceof RatingBar) {
                     data.append(((RatingBar) v).getRating() + ",");
 //                    System.out.println(getName(v));
-//                    labels.append(getName(v) + ",");
+                    labels.append(getName(v) + ",");
                 }
                 if (v instanceof Spinner) {
                     data.append(((Spinner) v).getSelectedItem().toString() + ",");

@@ -30,7 +30,6 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
     Button fail;
     Button failedDropOff;
 
-    public MainActivity mainActivity;
 
     //All the events made by the person this round
     ArrayList<Event> events = new ArrayList<Event>();
@@ -206,7 +205,7 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
             int location = e.location;
 
             if((!MainActivity.side && MainActivity.alliance) || (MainActivity.side && !MainActivity.alliance)){
-                location = mainActivity.flipLocation(location);
+                location = MainActivity.flipLocation(location);
             }
 
             if(e.eventType==1){
