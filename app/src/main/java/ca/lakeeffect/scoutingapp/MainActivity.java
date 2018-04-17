@@ -3,6 +3,7 @@ package ca.lakeeffect.scoutingapp;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ActionBar;
 import android.bluetooth.BluetoothAdapter;
@@ -11,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +22,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -39,14 +42,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -86,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
     String savedLabels = null; //generated at the beginning
 
     int versionCode;
+
+    //used to make sure the robot selected is actually at the competition
+    String[] availableRobots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +193,22 @@ public class MainActivity extends AppCompatActivity {
         robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
 
 //        submit.setOnClickListener(this);
+
+        //load available robots for this competition
+        InputStream is = getResources().openRawResource(R.raw.robotnumbers);
+        try {
+            String s = IOUtils.toString(is);
+
+            availableRobots = s.split("\n");
+
+            //For some reason IOUtils spits out text with an extra character, this code fixes that
+            for(int i = 0; i < availableRobots.length; i++) {
+                availableRobots[i] = availableRobots[i].substring(0, availableRobots[i].length() - 1);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        IOUtils.closeQuietly(is);
 
     }
 
@@ -407,13 +434,19 @@ public class MainActivity extends AppCompatActivity {
                     case "First Auto Cube Success":
                         data.append("True,");
                         break;
-                    case "Fist Auto Cube Failed":
+                    case "First Auto Cube Failed":
                         data.append("False,");
                         break;
                     case "Second Auto Cube Success":
                         data.append("True,");
                         break;
                     case "Second Auto Cube Failed":
+                        data.append("False,");
+                        break;
+                    case "Third Auto Cube Success":
+                        data.append("True,");
+                        break;
+                    case "Third Auto Cube Failed":
                         data.append("False,");
                         break;
                     //Radio button ID will be result output in data
@@ -769,107 +802,149 @@ public class MainActivity extends AppCompatActivity {
                 ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        View layout = inflater.inflate(R.layout.dialog, null);
-
-                        View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
-
-                        EditText robotNumin = (EditText) linearLayout.findViewById(R.id.editText);
-                        EditText roundin = (EditText) linearLayout.findViewById(R.id.editText2);
-                        EditText scoutNamein = (EditText) linearLayout.findViewById(R.id.editText3);
-
-                        //spinners
-                        Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
-                        Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
-
-                        if(robotAlliance.getSelectedItemPosition() == 0 || viewingSide.getSelectedItemPosition() == 0){
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(MainActivity.this, "Please select which side you are on, and what alliance your robot is on...",
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            });
-
-                            return;
-                        }
-
-                        try {
-                            robotNum = Integer.parseInt(robotNumin.getText().toString());
-                            round = Integer.parseInt(roundin.getText().toString());
-                            scoutName = scoutNamein.getText().toString();
-
-                            alliance = robotAlliance.getSelectedItemPosition() == 2;
-                            side = viewingSide.getSelectedItemPosition() == 2;
-
-                            //adjust the field image according to selection
-                            pagerAdapter.teleopPage.field.switchSides(side);
-
-                            SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.putString("scoutName", scoutName);
-                            editor.apply();
-
-                            //save selections for robot alliance
-                            prefs = getSharedPreferences("robotAlliance", MODE_PRIVATE);
-                            editor = prefs.edit();
-                            editor.putInt("robotAlliance", robotAlliance.getSelectedItemPosition());
-                            editor.putInt("year", year);
-                            editor.putInt("month", month);
-                            editor.putInt("day", day);
-                            editor.apply();
-
-                            //save selections for seating placement
-                            prefs = getSharedPreferences("viewingSide", MODE_PRIVATE);
-                            editor = prefs.edit();
-                            editor.putInt("viewingSide", viewingSide.getSelectedItemPosition());
-                            editor.putInt("year", year);
-                            editor.putInt("month", month);
-                            editor.putInt("day", day);
-                            editor.apply();
-
-                            if (round > 999) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(MainActivity.this, "Invalid Match Number",
-                                                Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                                return;
-                            }
-
-                            if (scoutName.equals("")) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(MainActivity.this, "Invalid Scout Name",
-                                                Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                                return;
-                            }
-
-                        } catch (NumberFormatException e) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(MainActivity.this, "Invalid Data! Are any fields blank?",
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            });
-                            return;
-                        }
-                        robotNumText = (TextView) findViewById(R.id.robotNum);
-                        robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
-
-                        dialog.dismiss();
+                        onClickOkButton(dialog, false);
                     }
                 });
 
             }
         });
         dialog.show();
+    }
+
+    //for the alert
+    public void onClickOkButton(DialogInterface dialog, boolean overrideRobotNumberCheck){
+        //get date details
+        final int year = Calendar.getInstance().get(Calendar.YEAR);
+        final int month = Calendar.getInstance().get(Calendar.MONTH);
+        final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.dialog, null);
+
+        View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
+
+        EditText robotNumin = (EditText) linearLayout.findViewById(R.id.editText);
+        EditText roundin = (EditText) linearLayout.findViewById(R.id.editText2);
+        EditText scoutNamein = (EditText) linearLayout.findViewById(R.id.editText3);
+
+        //spinners
+        Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
+        Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
+
+        if(robotAlliance.getSelectedItemPosition() == 0 || viewingSide.getSelectedItemPosition() == 0){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "Please select which side you are on, and what alliance your robot is on...",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+
+            return;
+        }
+
+        try {
+            robotNum = Integer.parseInt(robotNumin.getText().toString());
+            round = Integer.parseInt(roundin.getText().toString());
+            scoutName = scoutNamein.getText().toString();
+
+            alliance = robotAlliance.getSelectedItemPosition() == 2;
+            side = viewingSide.getSelectedItemPosition() == 2;
+
+            //adjust the field image according to selection
+            pagerAdapter.teleopPage.field.switchSides(side);
+
+            SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("scoutName", scoutName);
+            editor.apply();
+
+            //save selections for robot alliance
+            prefs = getSharedPreferences("robotAlliance", MODE_PRIVATE);
+            editor = prefs.edit();
+            editor.putInt("robotAlliance", robotAlliance.getSelectedItemPosition());
+            editor.putInt("year", year);
+            editor.putInt("month", month);
+            editor.putInt("day", day);
+            editor.apply();
+
+            //save selections for seating placement
+            prefs = getSharedPreferences("viewingSide", MODE_PRIVATE);
+            editor = prefs.edit();
+            editor.putInt("viewingSide", viewingSide.getSelectedItemPosition());
+            editor.putInt("year", year);
+            editor.putInt("month", month);
+            editor.putInt("day", day);
+            editor.apply();
+
+            if (round > 999) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Invalid Match Number",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+                return;
+            }
+
+            //the list contains spaces at the end of each line so a space is added to the search
+            if (!arrayContains(availableRobots, robotNum + "") && !overrideRobotNumberCheck) {
+                createRobotNumberOverrideDialog(dialog);
+                return;
+            }
+
+            if (scoutName.equals("")) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Invalid Scout Name",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+                return;
+            }
+
+        } catch (NumberFormatException e) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "Invalid Data! Are any fields blank?",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+            return;
+        }
+        robotNumText = (TextView) findViewById(R.id.robotNum);
+        robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
+
+        dialog.dismiss();
+    }
+
+    public boolean arrayContains(String[] array, String search){
+        for(String string : array){
+            System.out.println(string + "vs" + search);
+            System.out.println(string.length() + "vs" + search.length());
+            if(string.equals(search)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //creates dialog to check if the user still wants to use a robot not in this event
+    public void createRobotNumberOverrideDialog(final DialogInterface dialog){
+        new AlertDialog.Builder(this)
+                .setTitle("That robot is not at this event")
+                .setMessage("Would you like to use this robot number anyway? DOUBLE CHECK that you are typing in the right robot number.")
+                .setPositiveButton("Yes, I would like to use this robot number", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog2, int which) {
+                        onClickOkButton(dialog, true);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
     }
 
      public static void startNotificationAlarm(Context context) {

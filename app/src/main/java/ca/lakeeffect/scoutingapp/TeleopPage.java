@@ -141,27 +141,31 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
             final String a = action;
             event = new Event(eventType, field.selected, System.currentTimeMillis(), 0);
             if (hasVibrator) {
-                addEvent(event, action);
+                addEvent(event, action, true);
             }
             else{
+                addEvent(event, a, false);
                 new AlertDialog.Builder(getContext())
-                        .setTitle("Confirm")
-                        .setMessage("Are you sure you would like to say " + action + "?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setTitle("You just clicked a button!")
+                        .setMessage("You said that " + action + "\n\nThe even has already been registered, to undo it hit the ok button and then undo.")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                addEvent(event, a);
+                                dialog.dismiss();
                             }
                         })
-                        .setNegativeButton("No", null)
+                        .setCancelable(false)
                         .create()
                         .show();
             }
         }
     }
 
-    private void addEvent(Event e, String action){
+    private void addEvent(Event e, String action, boolean makeToast){
         events.add(e);
-        Toast.makeText(getContext(), "Event "+action+" recorded", Toast.LENGTH_SHORT).show();
+
+        if(makeToast){
+            Toast.makeText(getContext(), "Event "+action+" recorded", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

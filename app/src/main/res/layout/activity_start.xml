@@ -18,11 +18,20 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Unsent Data: "
+        android:id="@+id/startUnsentMessages"
+        android:layout_below="@+id/startScouting"
+        android:layout_centerHorizontal="true" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Change Theme"
-        android:id="@+id/changeTheme"
+        android:text="More Options"
+        android:id="@+id/moreOptionsStartScreen"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
@@ -32,7 +41,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Version: "
         android:id="@+id/versionNum"
-        android:layout_above="@+id/changeTheme"
+        android:layout_above="@+id/moreOptionsStartScreen"
         android:layout_centerHorizontal="true" />
 
     <android.support.percent.PercentRelativeLayout

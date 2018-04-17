@@ -35,7 +35,12 @@ public class AutoPage extends Fragment{
 
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
         spinner.setAdapter(adapter);
-//        ((TextView) view.findViewById(R.id.autoPeg)).setTextSize(15);
+
+        spinner = (Spinner) view.findViewById(R.id.thirdAutoCubeLocation);
+
+        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
+        spinner.setAdapter(adapter);
+
         return view;
 
     }
