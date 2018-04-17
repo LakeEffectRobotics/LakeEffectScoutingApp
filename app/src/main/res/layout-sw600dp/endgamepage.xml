@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/driveRating"
                         android:numStars="4"
-                        android:stepSize="1"
+                        android:stepSize="0.5"
                         android:isIndicator="false"/>
                 </LinearLayout>
 
@@ -144,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/intakeRating"
                         android:numStars="4"
-                        android:stepSize="1"
+                        android:stepSize="0.5"
                         android:isIndicator="false"/>
                 </LinearLayout>
 
