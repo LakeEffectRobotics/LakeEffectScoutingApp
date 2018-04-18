@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
     String scoutName = "Woodie Flowers";
 
     //the field data
-    boolean alliance; //red is false, true is blue
-    boolean side; //red on left is false, blue on left is true
+    public static boolean alliance; //red is false, true is blue
+    public static boolean side; //red on left is false, blue on left is true
 
     InputPagerAdapter pagerAdapter;
     ViewPager viewPager;
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //will return the same location but on the other side of the field
-    public int flipLocation(int location){
+    public static int flipLocation(int location){
         switch (location){
             case 0:
                 return 11;
@@ -411,6 +411,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (v instanceof RatingBar) {
                     data.append(((RatingBar) v).getRating() + ",");
+//                    System.out.println(getName(v));
                     labels.append(getName(v) + ",");
                 }
                 if (v instanceof Spinner) {
