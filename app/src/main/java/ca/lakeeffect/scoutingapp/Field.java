@@ -152,18 +152,18 @@ public class Field implements View.OnTouchListener {
     public void switchSides(boolean side){
         if((side && !currentScale) || (!side && currentScale)){
             Matrix matrix = new Matrix();
-            matrix.postScale(-1, 1, field.getWidth(), field.getHeight());
+            matrix.postScale(-1, -1, field.getWidth(), field.getHeight());
 
             field = Bitmap.createBitmap(field, 0, 0, field.getWidth(), field.getHeight(), matrix, true);
 
-            int top = fieldPlacements[12].top;
-            int bottom = fieldPlacements[12].bottom;
-
-            fieldPlacements[12].top = fieldPlacements[1].top;
-            fieldPlacements[12].bottom = fieldPlacements[1].bottom;
-
-            fieldPlacements[1].top = top;
-            fieldPlacements[1].bottom = bottom;
+//            int top = fieldPlacements[12].top;
+//            int bottom = fieldPlacements[12].bottom;
+//
+//            fieldPlacements[12].top = fieldPlacements[1].top;
+//            fieldPlacements[12].bottom = fieldPlacements[1].bottom;
+//
+//            fieldPlacements[1].top = top;
+//            fieldPlacements[1].bottom = bottom;
 
             redraw();
 
