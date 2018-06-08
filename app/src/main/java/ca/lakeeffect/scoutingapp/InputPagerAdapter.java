@@ -18,13 +18,15 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
     public TeleopPage teleopPage;
     public EndgamePage endgamePage;
 
-
+    //Instatiate pages
     public InputPagerAdapter(FragmentManager fm) {
         super(fm);
         autoPage = new AutoPage();
         teleopPage = new TeleopPage();
         endgamePage = new EndgamePage();
     }
+    
+    //More instatiation
     @Override
     public Fragment getItem(int position) {
         switch(position){
@@ -46,6 +48,7 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
         return PAGENUM;
     }
 
+    //Set page titles
     @Override
     public CharSequence getPageTitle(int position) {
         switch(position){

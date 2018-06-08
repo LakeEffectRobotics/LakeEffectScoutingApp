@@ -60,9 +60,9 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
     }
 
     public void onClick(View v){
-//        Toast.makeText(getActivity(),
-//                getActivity().toString(), Toast.LENGTH_LONG).show();
+        //If the submit button is pressed
         if(v==submit){
+            //Confirm Dialog
             MainActivity.startNotificationAlarm(getContext());
             new AlertDialog.Builder(getActivity())
                 .setTitle("Submiting")
@@ -77,9 +77,11 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
                 .setPositiveButton(android.R.string.yes,  new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //Save the data
                         if(((MainActivity)getActivity()).saveData()) {
                             Toast.makeText(getActivity(),
                                     "Saving", Toast.LENGTH_LONG).show();
+                            //Reset the inputs
                             ((MainActivity) getActivity()).reset();
                         }
 
@@ -89,61 +91,3 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
                 .show();
         }
     }
-
-//    public void saveData(){
-//
-//        File sdCard = Environment.getExternalStorageDirectory();
-////        File dir = new File (sdCard.getPath() + "/ScoutingData/");
-//
-//        getView().findViewById(R.id.header0);
-//
-//
-//        try {
-//            file.getParentFile().mkdirs();
-//            if(!file.exists()){
-//                file.createNewFile();
-//            }
-//
-//            FileOutputStream f = new FileOutputStream(file, true);
-//
-//            OutputStreamWriter out = new OutputStreamWriter(f);
-//
-//            DateFormat dateFormat = new SimpleDateFormat("dd HH mm ss");
-//            Date date = new Date();
-//
-//            out.append("\n" + "start " + round + " " + dateFormat.format(date) + "\n");
-//
-//            for(Counter counter: counters){
-//                out.append("counter " + getResources().getResourceEntryName(counter.getId()) + " " + counter.count + " " + counter.times.toString() + "\n");
-//            }
-//
-//            for(CheckBox checkbox: checkboxes){
-//                out.append("checkbox " + getResources().getResourceEntryName(checkbox.getId()) + " " + checkbox.isChecked() + "\n");
-//            }
-//
-//            for(RadioGroup radiogroup: radiogroups){
-//                out.append("radiogroup " + getResources().getResourceEntryName(radiogroup.getId()) + " " + radiogroup.indexOfChild(findViewById(radiogroup.getCheckedRadioButtonId())) + "\n");
-//            }
-//
-////            TODO: Write button data, might not be needed
-////            for(Button button: buttons){
-////                out.append("button " + getResources().getResourceEntryName(button.getId()) + " " + counter.count + "\n");
-////            }
-//
-//            for(SeekBar seekbar: seekbars){
-//                out.append("seekbar " + getResources().getResourceEntryName(seekbar.getId()) + " " + seekbar.getProgress() + "\n");
-//            }
-//
-//
-//            out.append("end");
-//            out.close();
-//
-//            f.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-}
-
-

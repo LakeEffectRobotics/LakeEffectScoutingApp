@@ -19,26 +19,24 @@ public class PendingNotification extends BroadcastReceiver {
 
     public void send(Context context) {
 
-
-        System.out.println("Sending notification");
-
         String message;
 
-        //TODO get the amount of pending messages
-
+        //If there are no pending messages, dont send anything
         if(context.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE).getInt("messageAmount", -1) <= 0){
             return;
         }
-
+        
+        //Create the message
         message = "You have "+ context.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE).getInt("messageAmount", -1) +" unsent data. Contact Ajay to get the data into the database ASAP!";
-
+        
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-
+        //Set title
         NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle()
                 .setBigContentTitle("Unsent Data!")
                 .bigText(message);
 
+        //Crate notification
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher))
@@ -47,7 +45,7 @@ public class PendingNotification extends BroadcastReceiver {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setVibrate(new long[]{1000,1000,1000,1000,1000})
                 .setStyle(style);
-        //TODO possibly change the ID so that multiple notifications can exist at the same time
+        //If you want to have multiple notifications co-exist, create a new number each time
         notificationManager.notify(1, notification.build());
     }
 

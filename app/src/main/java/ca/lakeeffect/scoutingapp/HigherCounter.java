@@ -33,7 +33,8 @@ public class HigherCounter extends LinearLayout implements View.OnClickListener{
         LayoutInflater inflater = LayoutInflater.from(context);
 
         inflater.inflate(R.layout.higher_counter, this);
-
+        
+        //Get the custom XML attribute
         for(int i = 0; i < attrs.getAttributeCount(); i++){
             System.out.println(attrs.getAttributeName(i)+"\t"+attrs.getAttributeValue(i));
             if(attrs.getAttributeName(i).equals("BigButtonValue")){
