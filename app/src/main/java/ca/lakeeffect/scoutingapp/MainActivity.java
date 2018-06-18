@@ -878,7 +878,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putInt("day", day);
             editor.apply();
 
-            if (round > 999) {
+            if (round > 99) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
