@@ -69,14 +69,19 @@ public class MainActivity extends AppCompatActivity {
     List<Button> buttons = new ArrayList<>();
     List<SeekBar> seekbars = new ArrayList<>();
 
-//    Button submit;
-
     TextView timer;
     TextView robotNumText; //robotnum and round
 
     int robotNum = 2708;
     int round = 0;
     String scoutName = "Woodie Flowers";
+
+    //the id of the user currently scouting. This decides when they must switch on and off from scouting
+    int userID = -1;
+    //the list of the usernames per user ID. This makes sure no one mistypes their name.
+    //the username selection screen will show a spinner with all the names in this list
+    //FUTURE: Maybe pull thses names from the server? Grab them from a text file?
+    String[] userNames = {'Ajay'};
 
     //the field data
     public static boolean alliance; //red is false, true is blue
@@ -775,6 +780,12 @@ public class MainActivity extends AppCompatActivity {
                 ArrayAdapter<CharSequence> robotAllianceAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.alliances, R.layout.spinner);
                 robotAlliance.setAdapter(robotAllianceAdapter);
 
+                //List user names available
+                Spinner userID = (Spinner) linearLayout.findViewById(R.id.userID);
+
+                ArrayAdapter<CharSequence> userIDAdapter = new ArrayAdapter<String>(MainActivity.this, R.layout.simple_spinner_dropdown_item, userNames);
+                userID.setAdapter(userIDAdapter);
+
                 Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
 
                 ArrayAdapter<CharSequence> viewingSideAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.viewingSides, R.layout.spinner);
@@ -831,6 +842,9 @@ public class MainActivity extends AppCompatActivity {
         //spinners
         Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
         Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
+
+        //get the userID selected
+        userID = ((Spinner) linearLayout.findViewById(R.id.userID)).getSelectedItemPosition();
 
         if(robotAlliance.getSelectedItemPosition() == 0 || viewingSide.getSelectedItemPosition() == 0){
             runOnUiThread(new Runnable() {
