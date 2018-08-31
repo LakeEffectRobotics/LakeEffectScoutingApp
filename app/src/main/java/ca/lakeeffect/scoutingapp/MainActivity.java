@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     TextView robotNumText; //robotnum and round
 
     int robotNum = 2708;
-    int round = 0;
+    int round = -1;
     String scoutName = "Woodie Flowers";
 
     //the id of the user currently scouting. This decides when they must switch on and off from scouting
@@ -798,6 +798,11 @@ public class MainActivity extends AppCompatActivity {
 
                 //set scout name to previous name
                 ((EditText) linearLayout.findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
+
+                //increment the match number if submit was hit
+                if (round != -1) {
+                    ((EditText) linearLayout.findViewById(R.id.editText)).setText(round + 1);
+                }
 
                 //set spinners to previous values
                 prefs = getSharedPreferences("robotAlliance", MODE_PRIVATE);

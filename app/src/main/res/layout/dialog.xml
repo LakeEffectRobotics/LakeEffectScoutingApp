@@ -37,6 +37,14 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/userID"
+            android:spinnerMode="dropdown"
+            android:textSize = "@dimen/text_small"
+            android:layout_gravity="top"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/robotAlliance"
             android:spinnerMode="dropdown"
             android:textSize = "@dimen/text_small"
