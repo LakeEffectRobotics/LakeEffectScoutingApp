@@ -726,10 +726,7 @@ public class MainActivity extends AppCompatActivity {
         alert();
 
 
-//        viewPager = (ViewPager) findViewById(R.id.scrollingview);
         viewPager.setAdapter(pagerAdapter);
-//        viewPager.setOffscreenPageLimit(3);
-//        viewPager.getAdapter().notifyDataSetChanged();
 
         PercentRelativeLayout layout;
 
@@ -737,11 +734,8 @@ public class MainActivity extends AppCompatActivity {
         layout = (PercentRelativeLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
         clearData(layout);
 
-//        //Tele page
+        //Tele page
         pagerAdapter.teleopPage.reset();
-
-//        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
-//        clearData(layout);
 
         //Endgame page
         layout = (PercentRelativeLayout) pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
