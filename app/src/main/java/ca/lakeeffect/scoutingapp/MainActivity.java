@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-            if (((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() <= 0) {
+            if (((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() == -1) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it crossed the baseline! Go back to the auto page!", Toast.LENGTH_LONG).show();
@@ -419,34 +419,31 @@ public class MainActivity extends AppCompatActivity {
         //Iterate over all child layouts
         for (int i = 0; i < top.getChildCount(); i++) {
             View v = top.getChildAt(i);
-            //If the layout has a valid ID
-            if (v.getId() > 0) {
-                if (v instanceof EditText) {
-                    data.append(((EditText) v).getText().toString().replace("|", "||").replace(",", "|c").replace("\n", "|n").replace("\"", "|q").replace(":", ";") + ",");
-                    labels.append(getName(v) + ",");
-                }
-                if (v instanceof CheckBox) {
-                    data.append(((CheckBox) v).isChecked() + ",");
-                    labels.append(getName(v) + ",");
-                }
-                if (v instanceof Counter) {
-                    data.append(((Counter) v).count + ",");
-                    labels.append(getName(v) + ",");
-                }
-                if (v instanceof HigherCounter) {
-                    data.append(((HigherCounter) v).count + ",");
-                    labels.append(getName(v) + ",");
-                }
-                if (v instanceof RatingBar) {
-                    data.append(((RatingBar) v).getRating() + ",");
+            if (v instanceof EditText) {
+                data.append(((EditText) v).getText().toString().replace("|", "||").replace(",", "|c").replace("\n", "|n").replace("\"", "|q").replace(":", ";") + ",");
+                labels.append(getName(v) + ",");
+            }
+            if (v instanceof CheckBox) {
+                data.append(((CheckBox) v).isChecked() + ",");
+                labels.append(getName(v) + ",");
+            }
+            if (v instanceof Counter) {
+                data.append(((Counter) v).count + ",");
+                labels.append(getName(v) + ",");
+            }
+            if (v instanceof HigherCounter) {
+                data.append(((HigherCounter) v).count + ",");
+                labels.append(getName(v) + ",");
+            }
+            if (v instanceof RatingBar) {
+                data.append(((RatingBar) v).getRating() + ",");
 //                    System.out.println(getName(v));
-                    labels.append(getName(v) + ",");
-                }
-                if (v instanceof Spinner) {
-                    data.append(((Spinner) v).getSelectedItem().toString() + ",");
-                    System.out.println(((Spinner) v).getSelectedItem().toString() + ",");
-                    labels.append(getName(v) + ",");
-                }
+                labels.append(getName(v) + ",");
+            }
+            if (v instanceof Spinner) {
+                data.append(((Spinner) v).getSelectedItem().toString() + ",");
+                System.out.println(((Spinner) v).getSelectedItem().toString() + ",");
+                labels.append(getName(v) + ",");
             }
             if (v instanceof RadioGroup) {
                 String selected = getName(v.findViewById(((RadioGroup) v).getCheckedRadioButtonId()));
@@ -754,22 +751,21 @@ public class MainActivity extends AppCompatActivity {
     public void clearData(ViewGroup top) {
         for (int i = 0; i < top.getChildCount(); i++) {
             View v = top.getChildAt(i);
-            if (v.getId() > 0) {
-                if (v instanceof EditText) {
-                    ((EditText) v).setText("");
-                }
-                if (v instanceof CheckBox) {
-                    ((CheckBox) v).setChecked(false);
-                }
-                if (v instanceof RadioGroup) {
-                    ((RadioGroup) v).clearCheck();
-                }
-                if (v instanceof RatingBar) {
-                    ((RatingBar) v).setRating(0);
-                }
-                if (v instanceof Spinner) {
-                    ((Spinner) v).setSelection(0);
-                }
+            if (v instanceof EditText) {
+                ((EditText) v).setText("");
+            }
+            if (v instanceof CheckBox) {
+                ((CheckBox) v).setChecked(false);
+                v.jumpDrawablesToCurrentState();
+            }
+            if (v instanceof RadioGroup) {
+                ((RadioGroup) v).clearCheck();
+            }
+            if (v instanceof RatingBar) {
+                ((RatingBar) v).setRating(0);
+            }
+            if (v instanceof Spinner) {
+                ((Spinner) v).setSelection(0);
             }
             if (v instanceof ViewGroup) {
                 clearData((ViewGroup) v);
@@ -842,14 +838,6 @@ public class MainActivity extends AppCompatActivity {
 
                 //start bluetooth, all views are probably ready now
                 startListenerThread();
-
-                //increment the match number if submit was hit
-                if (round != -1) {
-                    ((EditText) linearLayout.findViewById(R.id.matchNumber)).setText(round + 1);
-
-                    //Set robot number based on current match number
-                    ((EditText) linearLayout.findViewById(R.id.robotNumber)).setText(schedules.get(MainActivity.this.userID).robots.get(round + 1));
-                }
 
                 //set a listener for the match number as well to make sure to adjust other fields based on it will change as well
                 ((EditText) linearLayout.findViewById(R.id.matchNumber)).addTextChangedListener(new TextWatcher() {
