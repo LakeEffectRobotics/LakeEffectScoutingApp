@@ -12,7 +12,8 @@
             android:imeOptions="flagNoExtractUi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="none"
+            android:enabled="false"
             android:ems="10"
             android:id="@+id/robotNumber"
             android:hint="Robot Number" />
