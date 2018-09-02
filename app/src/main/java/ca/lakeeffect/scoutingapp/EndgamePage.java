@@ -27,7 +27,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class EndgamePage extends Fragment implements View.OnClickListener{
+public class EndgamePage extends Fragment implements View.OnClickListener {
 
     Button submit;
     Spinner climb;
@@ -37,14 +37,14 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
         View view = inflator.inflate(R.layout.endgamepage, container, false);
 
         submit = (Button) view.findViewById(R.id.submit);
@@ -59,35 +59,36 @@ public class EndgamePage extends Fragment implements View.OnClickListener{
         return view;
     }
 
-    public void onClick(View v){
+    public void onClick(View v) {
         //If the submit button is pressed
-        if(v==submit){
+        if (v == submit) {
             //Confirm Dialog
             MainActivity.startNotificationAlarm(getContext());
             new AlertDialog.Builder(getActivity())
-                .setTitle("Submiting")
-                .setMessage("Are you sure you would like to submit?")
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getActivity(),
-                                "Keep scouting then...", Toast.LENGTH_LONG).show();
-                    }
-                })
-                .setPositiveButton(android.R.string.yes,  new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Save the data
-                        if(((MainActivity)getActivity()).saveData()) {
+                    .setTitle("Submiting")
+                    .setMessage("Are you sure you would like to submit?")
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(getActivity(),
-                                    "Saving", Toast.LENGTH_LONG).show();
-                            //Reset the inputs
-                            ((MainActivity) getActivity()).reset();
+                                    "Keep scouting then...", Toast.LENGTH_LONG).show();
                         }
+                    })
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Save the data
+                            if (((MainActivity) getActivity()).saveData()) {
+                                Toast.makeText(getActivity(),
+                                        "Saving", Toast.LENGTH_LONG).show();
+                                //Reset the inputs
+                                ((MainActivity) getActivity()).reset();
+                            }
 
-                    }
-                })
-                .create()
-                .show();
+                        }
+                    })
+                    .create()
+                    .show();
         }
     }
+}

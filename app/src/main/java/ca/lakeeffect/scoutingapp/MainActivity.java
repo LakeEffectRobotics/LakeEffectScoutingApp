@@ -76,12 +76,15 @@ public class MainActivity extends AppCompatActivity {
     int round = -1;
     String scoutName = "Woodie Flowers";
 
+    //Robot schedule for each user (by user ID)
+    ArrayList<UserData> schedules = new ArrayList<>();
+
     //the id of the user currently scouting. This decides when they must switch on and off from scouting
     int userID = -1;
     //the list of the usernames per user ID. This makes sure no one mistypes their name.
     //the username selection screen will show a spinner with all the names in this list
     //FUTURE: Maybe pull thses names from the server? Grab them from a text file?
-    String[] userNames = {'Ajay'};
+    String[] userNames = {"Ajay"};
 
     //the field data
     public static boolean alliance; //red is false, true is blue
@@ -215,10 +218,21 @@ public class MainActivity extends AppCompatActivity {
         }
         IOUtils.closeQuietly(is);
 
+        //Temperarily set a predifined schedule to use for the robot numbers displayed per round.
+        //This will be replaced with data sent directly from the server
+        schedules = new ArrayList<>();
+        ArrayList<Integer> firstSchedule = new ArrayList<>();
+        firstSchedule.add(2708);
+        firstSchedule.add(2809);
+        firstSchedule.add(254);
+        firstSchedule.add(2056);
+        firstSchedule.add(1114);
+        firstSchedule.add(1511);
+        schedules.add(new UserData(0, firstSchedule));
+
     }
 
     public void restartListenerThread(){
-
         stopListenerThread();
 
         startListenerThread();
@@ -781,11 +795,12 @@ public class MainActivity extends AppCompatActivity {
                 robotAlliance.setAdapter(robotAllianceAdapter);
 
                 //List user names available
-                Spinner userID = (Spinner) linearLayout.findViewById(R.id.userID);
+                Spinner userIDSpinner = (Spinner) linearLayout.findViewById(R.id.userID);
 
-                ArrayAdapter<CharSequence> userIDAdapter = new ArrayAdapter<String>(MainActivity.this, R.layout.simple_spinner_dropdown_item, userNames);
-                userID.setAdapter(userIDAdapter);
+                ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.support_simple_spinner_dropdown_item, userNames);
+                userIDSpinner.setAdapter(userIDAdapter);
 
+                //Setup spinner for the side the field is being viewed from
                 Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
 
                 ArrayAdapter<CharSequence> viewingSideAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.viewingSides, R.layout.spinner);
@@ -801,7 +816,10 @@ public class MainActivity extends AppCompatActivity {
 
                 //increment the match number if submit was hit
                 if (round != -1) {
-                    ((EditText) linearLayout.findViewById(R.id.editText)).setText(round + 1);
+                    ((EditText) linearLayout.findViewById(R.id.editText2)).setText(round + 1);
+
+                    //Set robot number based on current match number
+                    ((EditText) linearLayout.findViewById(R.id.editText)).setText(schedules.get(MainActivity.this.userID).robots.get(round + 1));
                 }
 
                 //set spinners to previous values
