@@ -62,6 +62,9 @@ public class EndgamePage extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         //If the submit button is pressed
         if (v == submit) {
+            //save the time
+            MainActivity.lastSubmit = System.currentTimeMillis();
+
             //Confirm Dialog
             MainActivity.startNotificationAlarm(getContext());
             new AlertDialog.Builder(getActivity())

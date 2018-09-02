@@ -104,6 +104,10 @@ public class MainActivity extends AppCompatActivity {
     //used to make sure the robot selected is actually at the competition
     String[] availableRobots;
 
+    //the last time submit has been pressed
+    //used to see if "are you still here" messages should be placed
+    public static long lastSubmit = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -881,11 +885,25 @@ public class MainActivity extends AppCompatActivity {
 
     //When the user ID is changed by the userID spinner changing or when the match number is changed
     public void dialogScheduleDataChange(Spinner userIDSpinner, DialogInterface dialog) {
-        userID = userIDSpinner.getSelectedItemPosition() - 1;
+        int newUserID = userIDSpinner.getSelectedItemPosition() - 1;
 
         //it's moved to the default, no need to change anything
-        if(userID == -1) {
+        if(newUserID == -1) {
             return;
+        }
+
+        //has it been 15 minutes
+        if (newUserID != userID && (lastSubmit == -1 || System.currentTimeMillis() - lastSubmit > 900000)) {
+            //make a confirmation message here
+            AlertDialog confirmationDialog = new AlertDialog.Builder(this)
+                    .setTitle("Are you still " + schedules.get(MainActivity.this.userID).userName + "?")
+                    .setMessage("If you are not " + schedules.get(MainActivity.this.userID).userName + ", make sure to change the user.\n\n" +
+                            "Make sure the match number is accurate as well")
+                    .setPositiveButton(android.R.string.yes, null)
+                    .setCancelable(true)
+                    .create();
+
+            lastSubmit = System.currentTimeMillis();
         }
 
         //change other buttons on the dialog box accordingly
@@ -1049,8 +1067,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
      public static void startNotificationAlarm(Context context) {
-        System.out.println("Setting alarm");
-//        new PendingNotification().send(context);
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent (context, PendingNotification.class);
         PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
