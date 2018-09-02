@@ -50,6 +50,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -75,16 +76,15 @@ public class MainActivity extends AppCompatActivity {
     int round = -1;
     String scoutName = "Woodie Flowers";
 
+
     //Robot schedule for each user (by user ID)
+    //the username selection screen will show a spinner with all the names in this list
+    //FUTURE: Maybe pull thses names from the server? Grab them from a text file?
+    //Add one to the index as there is one placeholder default value
     ArrayList<UserData> schedules = new ArrayList<>();
 
     //the id of the user currently scouting. This decides when they must switch on and off from scouting
     int userID = -1;
-    //the list of the usernames per user ID. This makes sure no one mistypes their name.
-    //the username selection screen will show a spinner with all the names in this list
-    //FUTURE: Maybe pull thses names from the server? Grab them from a text file?
-    //Add one to the index as there is one placeholder default value
-    String[] userNames = {"Please Choose One", "Ajay"};
 
     //the field data
     public static boolean alliance; //red is false, true is blue
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         firstSchedule.add(2056);
         firstSchedule.add(1114);
         firstSchedule.add(1511);
-        schedules.add(new UserData(0, firstSchedule));
+        schedules.add(new UserData(0, "Ajay", firstSchedule));
 
     }
 
@@ -810,6 +810,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                ArrayList<String> userNames = new ArrayList<>();
+                userNames.add("Please choose a name");
+                for (UserData userData : schedules){
+                    userNames.add(userData.userName);
+                }
+
                 ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.support_simple_spinner_dropdown_item, userNames);
                 userIDSpinner.setAdapter(userIDAdapter);
 
@@ -893,7 +899,7 @@ public class MainActivity extends AppCompatActivity {
 
         //set new user name
         EditText scoutNameInput = (EditText) linearLayout.findViewById(R.id.editText3);
-        scoutNameInput.setText(userNames[userID + 1]);
+        scoutNameInput.setText(schedules.get(userID).userName);
 
         String roundText = roundInput.getText().toString();
         if (roundText.equals("")) {

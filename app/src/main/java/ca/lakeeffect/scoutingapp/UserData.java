@@ -5,10 +5,13 @@ import java.util.ArrayList;
 public class UserData {
     int userID;
 
+    String userName;
+
     ArrayList<Integer> robots;
 
-    public UserData(int userID, ArrayList<Integer> robots){
+    public UserData(int userID, String userName, ArrayList<Integer> robots){
         this.userID = userID;
+        this.userName = userName;
         this.robots = robots;
     }
 
