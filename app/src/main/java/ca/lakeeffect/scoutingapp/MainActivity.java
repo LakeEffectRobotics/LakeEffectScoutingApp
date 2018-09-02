@@ -3,16 +3,13 @@ package ca.lakeeffect.scoutingapp;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.Dialog;
 import android.app.PendingIntent;
-import android.app.ActionBar;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,18 +19,22 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.method.KeyListener;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -49,12 +50,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -84,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
     //the list of the usernames per user ID. This makes sure no one mistypes their name.
     //the username selection screen will show a spinner with all the names in this list
     //FUTURE: Maybe pull thses names from the server? Grab them from a text file?
-    String[] userNames = {"Ajay"};
+    //Add one to the index as there is one placeholder default value
+    String[] userNames = {"Please Choose One", "Ajay"};
 
     //the field data
     public static boolean alliance; //red is false, true is blue
@@ -795,7 +795,20 @@ public class MainActivity extends AppCompatActivity {
                 robotAlliance.setAdapter(robotAllianceAdapter);
 
                 //List user names available
-                Spinner userIDSpinner = (Spinner) linearLayout.findViewById(R.id.userID);
+                final Spinner userIDSpinner = (Spinner) linearLayout.findViewById(R.id.userID);
+
+                //set a listener to make sure to adjust other fields based on it will change as well
+                userIDSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        dialogScheduleDataChange(userIDSpinner, dialog);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
 
                 ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.support_simple_spinner_dropdown_item, userNames);
                 userIDSpinner.setAdapter(userIDAdapter);
@@ -822,6 +835,24 @@ public class MainActivity extends AppCompatActivity {
                     ((EditText) linearLayout.findViewById(R.id.editText)).setText(schedules.get(MainActivity.this.userID).robots.get(round + 1));
                 }
 
+                //set a listener for the match number as well to make sure to adjust other fields based on it will change as well
+                ((EditText) linearLayout.findViewById(R.id.editText2)).addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        dialogScheduleDataChange(userIDSpinner, dialog);
+                    }
+                });
+
                 //set spinners to previous values
                 prefs = getSharedPreferences("robotAlliance", MODE_PRIVATE);
                 if(prefs.getInt("day", -1) == day && prefs.getInt("month", -1) == month && prefs.getInt("year", -1) == year){
@@ -846,6 +877,44 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    //When the user ID is changed by the userID spinner changing or when the match number is changed
+    public void dialogScheduleDataChange(Spinner userIDSpinner, DialogInterface dialog) {
+        userID = userIDSpinner.getSelectedItemPosition() - 1;
+
+        //it's moved to the default, no need to change anything
+        if(userID == -1) {
+            return;
+        }
+
+        //change other buttons on the dialog box accordingly
+        View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
+
+        EditText roundInput = (EditText) linearLayout.findViewById(R.id.editText2);
+
+        //set new user name
+        EditText scoutNameInput = (EditText) linearLayout.findViewById(R.id.editText3);
+        scoutNameInput.setText(userNames[userID + 1]);
+
+        String roundText = roundInput.getText().toString();
+        if (roundText.equals("")) {
+            //The user has not specified what match number it is yet
+            runOnUiThread(new Thread() {
+                public void run() {
+                    Toast.makeText(MainActivity.this, "You must specify the match number",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            return;
+        }
+        //if the match number has been selected it can be used
+        int round = Integer.parseInt(roundText);
+
+        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.editText);
+
+        robotNumInput.setText(String.valueOf(schedules.get(MainActivity.this.userID).robots.get(round + 1)));
+    }
+
     //for the alert
     public void onClickOkButton(DialogInterface dialog, boolean overrideRobotNumberCheck){
         //get date details
@@ -858,16 +927,13 @@ public class MainActivity extends AppCompatActivity {
 
         View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
 
-        EditText robotNumin = (EditText) linearLayout.findViewById(R.id.editText);
-        EditText roundin = (EditText) linearLayout.findViewById(R.id.editText2);
-        EditText scoutNamein = (EditText) linearLayout.findViewById(R.id.editText3);
+        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.editText);
+        EditText roundInput = (EditText) linearLayout.findViewById(R.id.editText2);
+        EditText scoutNameInput = (EditText) linearLayout.findViewById(R.id.editText3);
 
         //spinners
         Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
         Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
-
-        //get the userID selected
-        userID = ((Spinner) linearLayout.findViewById(R.id.userID)).getSelectedItemPosition();
 
         if(robotAlliance.getSelectedItemPosition() == 0 || viewingSide.getSelectedItemPosition() == 0){
             runOnUiThread(new Runnable() {
@@ -882,9 +948,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            robotNum = Integer.parseInt(robotNumin.getText().toString());
-            round = Integer.parseInt(roundin.getText().toString());
-            scoutName = scoutNamein.getText().toString();
+            robotNum = Integer.parseInt(robotNumInput.getText().toString());
+            round = Integer.parseInt(roundInput.getText().toString());
+            scoutName = scoutNameInput.getText().toString();
 
             alliance = robotAlliance.getSelectedItemPosition() == 2;
             side = viewingSide.getSelectedItemPosition() == 2;
