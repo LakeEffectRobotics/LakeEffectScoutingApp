@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<UserData> schedules = new ArrayList<>();
 
     //the id of the user currently scouting. This decides when they must switch on and off from scouting
-    int userID = -1;
+    int userID = 0;
 
     //the field data
     public static boolean alliance; //red is false, true is blue
@@ -831,14 +831,14 @@ public class MainActivity extends AppCompatActivity {
 
                 //increment the match number if submit was hit
                 if (round != -1) {
-                    ((EditText) linearLayout.findViewById(R.id.editText2)).setText(round + 1);
+                    ((EditText) linearLayout.findViewById(R.id.matchNumber)).setText(round + 1);
 
                     //Set robot number based on current match number
-                    ((EditText) linearLayout.findViewById(R.id.editText)).setText(schedules.get(MainActivity.this.userID).robots.get(round + 1));
+                    ((EditText) linearLayout.findViewById(R.id.robotNumber)).setText(schedules.get(MainActivity.this.userID).robots.get(round + 1));
                 }
 
                 //set a listener for the match number as well to make sure to adjust other fields based on it will change as well
-                ((EditText) linearLayout.findViewById(R.id.editText2)).addTextChangedListener(new TextWatcher() {
+                ((EditText) linearLayout.findViewById(R.id.matchNumber)).addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -891,7 +891,7 @@ public class MainActivity extends AppCompatActivity {
         //change other buttons on the dialog box accordingly
         View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
 
-        EditText roundInput = (EditText) linearLayout.findViewById(R.id.editText2);
+        EditText roundInput = (EditText) linearLayout.findViewById(R.id.matchNumber);
 
         String roundText = roundInput.getText().toString();
         if (roundText.equals("")) {
@@ -908,7 +908,7 @@ public class MainActivity extends AppCompatActivity {
         //if the match number has been selected it can be used
         int round = Integer.parseInt(roundText);
 
-        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.editText);
+        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.robotNumber);
 
         robotNumInput.setText(String.valueOf(schedules.get(MainActivity.this.userID).robots.get(round + 1)));
     }
@@ -925,8 +925,8 @@ public class MainActivity extends AppCompatActivity {
 
         View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
 
-        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.editText);
-        EditText roundInput = (EditText) linearLayout.findViewById(R.id.editText2);
+        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.robotNumber);
+        EditText roundInput = (EditText) linearLayout.findViewById(R.id.matchNumber);
 
         //spinners
         Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);

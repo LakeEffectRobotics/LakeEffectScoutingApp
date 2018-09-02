@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText"
+            android:id="@+id/robotNumber"
             android:hint="Robot Number" />
 
         <EditText
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText2"
+            android:id="@+id/matchNumber"
             android:hint="Match Number" />
 
         <Spinner
