@@ -40,6 +40,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/robotAlliance"
             android:spinnerMode="dropdown"
+            android:enabled="false"
+            android:clickable="false"
             android:textSize = "@dimen/text_small"
             android:layout_gravity="top"/>
 

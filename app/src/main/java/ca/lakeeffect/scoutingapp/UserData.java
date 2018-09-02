@@ -9,9 +9,14 @@ public class UserData {
 
     ArrayList<Integer> robots;
 
-    public UserData(int userID, String userName, ArrayList<Integer> robots){
+    //red is false, true is blue
+    //lists what alliance this robot is on in each match
+    ArrayList<Boolean> alliances;
+
+    public UserData(int userID, String userName, ArrayList<Boolean> alliances, ArrayList<Integer> robots){
         this.userID = userID;
         this.userName = userName;
+        this.alliances = alliances;
         this.robots = robots;
     }
 

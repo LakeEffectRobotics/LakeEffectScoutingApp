@@ -224,13 +224,20 @@ public class MainActivity extends AppCompatActivity {
         //This will be replaced with data sent directly from the server
         schedules = new ArrayList<>();
         ArrayList<Integer> firstSchedule = new ArrayList<>();
+        ArrayList<Boolean> firstAlliances = new ArrayList<>();
         firstSchedule.add(2708);
+        firstAlliances.add(true);
         firstSchedule.add(2809);
+        firstAlliances.add(false);
         firstSchedule.add(254);
+        firstAlliances.add(false);
         firstSchedule.add(2056);
+        firstAlliances.add(true);
         firstSchedule.add(1114);
+        firstAlliances.add(false);
         firstSchedule.add(1511);
-        schedules.add(new UserData(0, "Ajay", firstSchedule));
+        firstAlliances.add(true);
+        schedules.add(new UserData(0, "Ajay", firstAlliances, firstSchedule));
 
     }
 
@@ -796,6 +803,9 @@ public class MainActivity extends AppCompatActivity {
                 ArrayAdapter<CharSequence> robotAllianceAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.alliances, R.layout.spinner);
                 robotAlliance.setAdapter(robotAllianceAdapter);
 
+                //make robot alliance disabled
+                robotAlliance.setEnabled(false);
+
                 //List user names available
                 final Spinner userIDSpinner = (Spinner) linearLayout.findViewById(R.id.userID);
 
@@ -926,9 +936,21 @@ public class MainActivity extends AppCompatActivity {
         //if the match number has been selected it can be used
         int round = Integer.parseInt(roundText);
 
+        //find the robot alliance
+        alliance = schedules.get(MainActivity.this.userID).alliances.get(round + 1);
+
         EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.robotNumber);
 
         robotNumInput.setText(String.valueOf(schedules.get(MainActivity.this.userID).robots.get(round + 1)));
+
+        Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
+
+        if (alliance) {
+            robotAlliance.setSelection(1);
+        } else {
+            robotAlliance.setSelection(2);
+        }
+
     }
 
     //for the alert
