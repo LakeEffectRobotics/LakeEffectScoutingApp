@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
     int robotNum = 2708;
     int round = -1;
-    String scoutName = "Woodie Flowers";
-
 
     //Robot schedule for each user (by user ID)
     //the username selection screen will show a spinner with all the names in this list
@@ -398,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
         enterLayout(layout);
 
         labels.append("Scout,\n");
-        data.append(scoutName + ",\n");
+        data.append(schedules.get(userID).userName + ",\n");
 
         System.out.println(labels.toString());
         System.out.println(data.toString());
@@ -818,6 +816,9 @@ public class MainActivity extends AppCompatActivity {
 
                 ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.support_simple_spinner_dropdown_item, userNames);
                 userIDSpinner.setAdapter(userIDAdapter);
+                //set to previous value
+                SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
+                userIDSpinner.setSelection(prefs.getInt("userID", 0));
 
                 //Setup spinner for the side the field is being viewed from
                 Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
@@ -827,11 +828,6 @@ public class MainActivity extends AppCompatActivity {
 
                 //start bluetooth, all views are probably ready now
                 startListenerThread();
-
-                SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
-
-                //set scout name to previous name
-                ((EditText) linearLayout.findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
 
                 //increment the match number if submit was hit
                 if (round != -1) {
@@ -897,10 +893,6 @@ public class MainActivity extends AppCompatActivity {
 
         EditText roundInput = (EditText) linearLayout.findViewById(R.id.editText2);
 
-        //set new user name
-        EditText scoutNameInput = (EditText) linearLayout.findViewById(R.id.editText3);
-        scoutNameInput.setText(schedules.get(userID).userName);
-
         String roundText = roundInput.getText().toString();
         if (roundText.equals("")) {
             //The user has not specified what match number it is yet
@@ -935,11 +927,11 @@ public class MainActivity extends AppCompatActivity {
 
         EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.editText);
         EditText roundInput = (EditText) linearLayout.findViewById(R.id.editText2);
-        EditText scoutNameInput = (EditText) linearLayout.findViewById(R.id.editText3);
 
         //spinners
         Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
         Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
+        Spinner userID = (Spinner) linearLayout.findViewById(R.id.userID);
 
         if(robotAlliance.getSelectedItemPosition() == 0 || viewingSide.getSelectedItemPosition() == 0){
             runOnUiThread(new Runnable() {
@@ -956,7 +948,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             robotNum = Integer.parseInt(robotNumInput.getText().toString());
             round = Integer.parseInt(roundInput.getText().toString());
-            scoutName = scoutNameInput.getText().toString();
 
             alliance = robotAlliance.getSelectedItemPosition() == 2;
             side = viewingSide.getSelectedItemPosition() == 2;
@@ -964,9 +955,9 @@ public class MainActivity extends AppCompatActivity {
             //adjust the field image according to selection
             pagerAdapter.teleopPage.field.switchSides(side);
 
-            SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
+            SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("scoutName", scoutName);
+            editor.putInt("userID", userID.getSelectedItemPosition());
             editor.apply();
 
             //save selections for robot alliance
@@ -1004,11 +995,11 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            if (scoutName.equals("")) {
+            if (userID.getSelectedItemPosition() == 0) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "Invalid Scout Name",
+                        Toast.makeText(MainActivity.this, "Please choose a user",
                                 Toast.LENGTH_LONG).show();
                     }
                 });
