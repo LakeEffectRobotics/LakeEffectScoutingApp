@@ -918,6 +918,17 @@ public class MainActivity extends AppCompatActivity {
         //if the match number has been selected it can be used
         int round = Integer.parseInt(roundText);
 
+        if (round >= schedules.size()){
+            //The match number is too high
+            runOnUiThread(new Thread() {
+                public void run() {
+                    Toast.makeText(MainActivity.this, "This match number is not on the schedule yet, choose another",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+
         //find the robot alliance
         alliance = schedules.get(MainActivity.this.userID).alliances.get(round + 1);
 
