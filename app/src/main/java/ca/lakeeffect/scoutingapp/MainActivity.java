@@ -818,7 +818,7 @@ public class MainActivity extends AppCompatActivity {
                     userNames.add(userData.userName);
                 }
 
-                ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.support_simple_spinner_dropdown_item, userNames);
+                ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner, userNames);
                 userIDSpinner.setAdapter(userIDAdapter);
                 //set to previous value
                 SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
