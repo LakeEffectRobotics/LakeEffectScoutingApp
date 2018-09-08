@@ -918,7 +918,10 @@ public class MainActivity extends AppCompatActivity {
         //if the match number has been selected it can be used
         int round = Integer.parseInt(roundText) - 1;
 
-        if (round >= schedules.size() && round >= 1){
+        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.robotNumber);
+        Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
+
+        if (round >= schedules.get(MainActivity.this.userID).robots.size() || round < 0){
             //The match number is too high
             runOnUiThread(new Thread() {
                 public void run() {
@@ -926,17 +929,18 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
             });
+
+            //set the robot number to blank
+            robotNumInput.setText("");
+            //reset alliance
+            robotAlliance.setSelection(0);
             return;
         }
 
         //find the robot alliance
         alliance = schedules.get(MainActivity.this.userID).alliances.get(round);
 
-        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.robotNumber);
-
         robotNumInput.setText(String.valueOf(schedules.get(MainActivity.this.userID).robots.get(round)));
-
-        Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
 
         if (alliance) {
             robotAlliance.setSelection(1);
