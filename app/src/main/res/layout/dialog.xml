@@ -12,9 +12,10 @@
             android:imeOptions="flagNoExtractUi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="none"
+            android:enabled="false"
             android:ems="10"
-            android:id="@+id/editText"
+            android:id="@+id/robotNumber"
             android:hint="Robot Number" />
 
         <EditText
@@ -23,22 +24,24 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText2"
+            android:id="@+id/matchNumber"
             android:hint="Match Number" />
-        <EditText
-            android:imeOptions="flagNoExtractUi"
+
+        <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:ems="15"
-            android:id="@+id/editText3"
-            android:hint="Scout Name" />
+            android:id="@+id/userID"
+            android:spinnerMode="dropdown"
+            android:textSize = "@dimen/text_small"
+            android:layout_gravity="top"/>
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/robotAlliance"
             android:spinnerMode="dropdown"
+            android:enabled="false"
+            android:clickable="false"
             android:textSize = "@dimen/text_small"
             android:layout_gravity="top"/>
 
