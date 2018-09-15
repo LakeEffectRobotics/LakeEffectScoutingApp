@@ -68,7 +68,7 @@ public class EndgamePage extends Fragment implements View.OnClickListener {
             //Confirm Dialog
             MainActivity.startNotificationAlarm(getContext());
             new AlertDialog.Builder(getActivity())
-                    .setTitle("Submiting")
+                    .setTitle("Submitting")
                     .setMessage("Are you sure you would like to submit?")
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         @Override
