@@ -3,16 +3,13 @@ package ca.lakeeffect.scoutingapp;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.Dialog;
 import android.app.PendingIntent;
-import android.app.ActionBar;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,18 +19,22 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.method.KeyListener;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -54,7 +55,6 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -69,14 +69,20 @@ public class MainActivity extends AppCompatActivity {
     List<Button> buttons = new ArrayList<>();
     List<SeekBar> seekbars = new ArrayList<>();
 
-//    Button submit;
-
     TextView timer;
     TextView robotNumText; //robotnum and round
 
     int robotNum = 2708;
-    int round = 0;
-    String scoutName = "Woodie Flowers";
+    int round = -1;
+
+    //Robot schedule for each user (by user ID)
+    //the username selection screen will show a spinner with all the names in this list
+    //FUTURE: Maybe pull thses names from the server? Grab them from a text file?
+    //Add one to the index as there is one placeholder default value
+    ArrayList<UserData> schedules = new ArrayList<>();
+
+    //the id of the user currently scouting. This decides when they must switch on and off from scouting
+    int userID = 0;
 
     //the field data
     public static boolean alliance; //red is false, true is blue
@@ -97,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
 
     //used to make sure the robot selected is actually at the competition
     String[] availableRobots;
+
+    //the last time submit has been pressed
+    //used to see if "are you still here" messages should be placed
+    public static long lastSubmit = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,10 +220,28 @@ public class MainActivity extends AppCompatActivity {
         }
         IOUtils.closeQuietly(is);
 
+        //Temperarily set a predifined schedule to use for the robot numbers displayed per round.
+        //This will be replaced with data sent directly from the server
+        schedules = new ArrayList<>();
+        ArrayList<Integer> firstSchedule = new ArrayList<>();
+        ArrayList<Boolean> firstAlliances = new ArrayList<>();
+        firstSchedule.add(2708);
+        firstAlliances.add(true);
+        firstSchedule.add(2809);
+        firstAlliances.add(false);
+        firstSchedule.add(254);
+        firstAlliances.add(false);
+        firstSchedule.add(2056);
+        firstAlliances.add(true);
+        firstSchedule.add(1114);
+        firstAlliances.add(false);
+        firstSchedule.add(1511);
+        firstAlliances.add(true);
+        schedules.add(new UserData(0, "Ajay", firstAlliances, firstSchedule));
+
     }
 
     public void restartListenerThread(){
-
         stopListenerThread();
 
         startListenerThread();
@@ -327,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-            if (((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() <= 0) {
+            if (((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() == -1) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it crossed the baseline! Go back to the auto page!", Toast.LENGTH_LONG).show();
@@ -379,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
         enterLayout(layout);
 
         labels.append("Scout,\n");
-        data.append(scoutName + ",\n");
+        data.append(schedules.get(userID).userName + ",\n");
 
         System.out.println(labels.toString());
         System.out.println(data.toString());
@@ -391,34 +419,31 @@ public class MainActivity extends AppCompatActivity {
         //Iterate over all child layouts
         for (int i = 0; i < top.getChildCount(); i++) {
             View v = top.getChildAt(i);
-            //If the layout has a valid ID
-            if (v.getId() > 0) {
-                if (v instanceof EditText) {
-                    data.append(((EditText) v).getText().toString().replace("|", "||").replace(",", "|c").replace("\n", "|n").replace("\"", "|q").replace(":", ";") + ",");
-                    labels.append(getName(v) + ",");
-                }
-                if (v instanceof CheckBox) {
-                    data.append(((CheckBox) v).isChecked() + ",");
-                    labels.append(getName(v) + ",");
-                }
-                if (v instanceof Counter) {
-                    data.append(((Counter) v).count + ",");
-                    labels.append(getName(v) + ",");
-                }
-                if (v instanceof HigherCounter) {
-                    data.append(((HigherCounter) v).count + ",");
-                    labels.append(getName(v) + ",");
-                }
-                if (v instanceof RatingBar) {
-                    data.append(((RatingBar) v).getRating() + ",");
+            if (v instanceof EditText) {
+                data.append(((EditText) v).getText().toString().replace("|", "||").replace(",", "|c").replace("\n", "|n").replace("\"", "|q").replace(":", ";") + ",");
+                labels.append(getName(v) + ",");
+            }
+            if (v instanceof CheckBox) {
+                data.append(((CheckBox) v).isChecked() + ",");
+                labels.append(getName(v) + ",");
+            }
+            if (v instanceof Counter) {
+                data.append(((Counter) v).count + ",");
+                labels.append(getName(v) + ",");
+            }
+            if (v instanceof HigherCounter) {
+                data.append(((HigherCounter) v).count + ",");
+                labels.append(getName(v) + ",");
+            }
+            if (v instanceof RatingBar) {
+                data.append(((RatingBar) v).getRating() + ",");
 //                    System.out.println(getName(v));
-                    labels.append(getName(v) + ",");
-                }
-                if (v instanceof Spinner) {
-                    data.append(((Spinner) v).getSelectedItem().toString() + ",");
-                    System.out.println(((Spinner) v).getSelectedItem().toString() + ",");
-                    labels.append(getName(v) + ",");
-                }
+                labels.append(getName(v) + ",");
+            }
+            if (v instanceof Spinner) {
+                data.append(((Spinner) v).getSelectedItem().toString() + ",");
+                System.out.println(((Spinner) v).getSelectedItem().toString() + ",");
+                labels.append(getName(v) + ",");
             }
             if (v instanceof RadioGroup) {
                 String selected = getName(v.findViewById(((RadioGroup) v).getCheckedRadioButtonId()));
@@ -701,10 +726,7 @@ public class MainActivity extends AppCompatActivity {
         alert();
 
 
-//        viewPager = (ViewPager) findViewById(R.id.scrollingview);
         viewPager.setAdapter(pagerAdapter);
-//        viewPager.setOffscreenPageLimit(3);
-//        viewPager.getAdapter().notifyDataSetChanged();
 
         PercentRelativeLayout layout;
 
@@ -712,11 +734,8 @@ public class MainActivity extends AppCompatActivity {
         layout = (PercentRelativeLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
         clearData(layout);
 
-//        //Tele page
+        //Tele page
         pagerAdapter.teleopPage.reset();
-
-//        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
-//        clearData(layout);
 
         //Endgame page
         layout = (PercentRelativeLayout) pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
@@ -726,22 +745,21 @@ public class MainActivity extends AppCompatActivity {
     public void clearData(ViewGroup top) {
         for (int i = 0; i < top.getChildCount(); i++) {
             View v = top.getChildAt(i);
-            if (v.getId() > 0) {
-                if (v instanceof EditText) {
-                    ((EditText) v).setText("");
-                }
-                if (v instanceof CheckBox) {
-                    ((CheckBox) v).setChecked(false);
-                }
-                if (v instanceof RadioGroup) {
-                    ((RadioGroup) v).clearCheck();
-                }
-                if (v instanceof RatingBar) {
-                    ((RatingBar) v).setRating(0);
-                }
-                if (v instanceof Spinner) {
-                    ((Spinner) v).setSelection(0);
-                }
+            if (v instanceof EditText) {
+                ((EditText) v).setText("");
+            }
+            if (v instanceof CheckBox) {
+                ((CheckBox) v).setChecked(false);
+                v.jumpDrawablesToCurrentState();
+            }
+            if (v instanceof RadioGroup) {
+                ((RadioGroup) v).clearCheck();
+            }
+            if (v instanceof RatingBar) {
+                ((RatingBar) v).setRating(0);
+            }
+            if (v instanceof Spinner) {
+                ((Spinner) v).setSelection(0);
             }
             if (v instanceof ViewGroup) {
                 clearData((ViewGroup) v);
@@ -775,6 +793,38 @@ public class MainActivity extends AppCompatActivity {
                 ArrayAdapter<CharSequence> robotAllianceAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.alliances, R.layout.spinner);
                 robotAlliance.setAdapter(robotAllianceAdapter);
 
+                //make robot alliance disabled
+                robotAlliance.setEnabled(false);
+
+                //List user names available
+                final Spinner userIDSpinner = (Spinner) linearLayout.findViewById(R.id.userID);
+
+                //set a listener to make sure to adjust other fields based on it will change as well
+                userIDSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        dialogScheduleDataChange(userIDSpinner, dialog);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+                ArrayList<String> userNames = new ArrayList<>();
+                userNames.add("Please choose a name");
+                for (UserData userData : schedules){
+                    userNames.add(userData.userName);
+                }
+
+                ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner, userNames);
+                userIDSpinner.setAdapter(userIDAdapter);
+                //set to previous value
+                SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
+                userIDSpinner.setSelection(prefs.getInt("userID", 0));
+
+                //Setup spinner for the side the field is being viewed from
                 Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
 
                 ArrayAdapter<CharSequence> viewingSideAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.viewingSides, R.layout.spinner);
@@ -783,10 +833,23 @@ public class MainActivity extends AppCompatActivity {
                 //start bluetooth, all views are probably ready now
                 startListenerThread();
 
-                SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
+                //set a listener for the match number as well to make sure to adjust other fields based on it will change as well
+                ((EditText) linearLayout.findViewById(R.id.matchNumber)).addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                //set scout name to previous name
-                ((EditText) linearLayout.findViewById(R.id.editText3)).setText(prefs.getString("scoutName", ""));
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        dialogScheduleDataChange(userIDSpinner, dialog);
+                    }
+                });
 
                 //set spinners to previous values
                 prefs = getSharedPreferences("robotAlliance", MODE_PRIVATE);
@@ -812,6 +875,81 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    //When the user ID is changed by the userID spinner changing or when the match number is changed
+    public void dialogScheduleDataChange(Spinner userIDSpinner, DialogInterface dialog) {
+        int newUserID = userIDSpinner.getSelectedItemPosition() - 1;
+
+        //it's moved to the default, no need to change anything
+        if(newUserID == -1) {
+            return;
+        }
+
+        //has it been 15 minutes
+        if (newUserID != userID && (lastSubmit == -1 || System.currentTimeMillis() - lastSubmit > 900000)) {
+            //make a confirmation message here
+            AlertDialog confirmationDialog = new AlertDialog.Builder(this)
+                    .setTitle("Are you still " + schedules.get(MainActivity.this.userID).userName + "?")
+                    .setMessage("If you are not " + schedules.get(MainActivity.this.userID).userName + ", make sure to change the user.\n\n" +
+                            "Make sure the match number is accurate as well")
+                    .setPositiveButton(android.R.string.yes, null)
+                    .setCancelable(true)
+                    .create();
+
+            lastSubmit = System.currentTimeMillis();
+        }
+
+        //change other buttons on the dialog box accordingly
+        View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
+
+        EditText roundInput = (EditText) linearLayout.findViewById(R.id.matchNumber);
+
+        String roundText = roundInput.getText().toString();
+        if (roundText.equals("")) {
+            //The user has not specified what match number it is yet
+            runOnUiThread(new Thread() {
+                public void run() {
+                    Toast.makeText(MainActivity.this, "You must specify the match number",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            return;
+        }
+        //if the match number has been selected it can be used
+        int round = Integer.parseInt(roundText) - 1;
+
+        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.robotNumber);
+        Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
+
+        if (round >= schedules.get(MainActivity.this.userID).robots.size() || round < 0){
+            //The match number is too high
+            runOnUiThread(new Thread() {
+                public void run() {
+                    Toast.makeText(MainActivity.this, "This match number is not on the schedule yet, choose another",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            //set the robot number to blank
+            robotNumInput.setText("");
+            //reset alliance
+            robotAlliance.setSelection(0);
+            return;
+        }
+
+        //find the robot alliance
+        alliance = schedules.get(MainActivity.this.userID).alliances.get(round);
+
+        robotNumInput.setText(String.valueOf(schedules.get(MainActivity.this.userID).robots.get(round)));
+
+        if (alliance) {
+            robotAlliance.setSelection(1);
+        } else {
+            robotAlliance.setSelection(2);
+        }
+
+    }
+
     //for the alert
     public void onClickOkButton(DialogInterface dialog, boolean overrideRobotNumberCheck){
         //get date details
@@ -824,13 +962,13 @@ public class MainActivity extends AppCompatActivity {
 
         View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
 
-        EditText robotNumin = (EditText) linearLayout.findViewById(R.id.editText);
-        EditText roundin = (EditText) linearLayout.findViewById(R.id.editText2);
-        EditText scoutNamein = (EditText) linearLayout.findViewById(R.id.editText3);
+        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.robotNumber);
+        EditText roundInput = (EditText) linearLayout.findViewById(R.id.matchNumber);
 
         //spinners
         Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
         Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
+        Spinner userID = (Spinner) linearLayout.findViewById(R.id.userID);
 
         if(robotAlliance.getSelectedItemPosition() == 0 || viewingSide.getSelectedItemPosition() == 0){
             runOnUiThread(new Runnable() {
@@ -845,9 +983,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            robotNum = Integer.parseInt(robotNumin.getText().toString());
-            round = Integer.parseInt(roundin.getText().toString());
-            scoutName = scoutNamein.getText().toString();
+            robotNum = Integer.parseInt(robotNumInput.getText().toString());
+            round = Integer.parseInt(roundInput.getText().toString());
 
             alliance = robotAlliance.getSelectedItemPosition() == 2;
             side = viewingSide.getSelectedItemPosition() == 2;
@@ -855,9 +992,9 @@ public class MainActivity extends AppCompatActivity {
             //adjust the field image according to selection
             pagerAdapter.teleopPage.field.switchSides(side);
 
-            SharedPreferences prefs = getSharedPreferences("scoutName", MODE_PRIVATE);
+            SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("scoutName", scoutName);
+            editor.putInt("userID", userID.getSelectedItemPosition());
             editor.apply();
 
             //save selections for robot alliance
@@ -878,7 +1015,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putInt("day", day);
             editor.apply();
 
-            if (round > 999) {
+            if (round > 99) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -895,11 +1032,11 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            if (scoutName.equals("")) {
+            if (userID.getSelectedItemPosition() == 0) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "Invalid Scout Name",
+                        Toast.makeText(MainActivity.this, "Please choose a user",
                                 Toast.LENGTH_LONG).show();
                     }
                 });
@@ -949,8 +1086,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
      public static void startNotificationAlarm(Context context) {
-        System.out.println("Setting alarm");
-//        new PendingNotification().send(context);
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent (context, PendingNotification.class);
         PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
