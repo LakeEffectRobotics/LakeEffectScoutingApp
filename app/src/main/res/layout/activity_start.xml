@@ -45,7 +45,7 @@
         android:layout_centerHorizontal="true" />
 
     <android.support.percent.PercentRelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true">
 
@@ -67,9 +67,7 @@
             android:textIsSelectable="true"
             android:textColor="@color/primary_text_material_dark"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/logo"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_below="@+id/logo" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -93,8 +91,7 @@
             android:textIsSelectable="true"
             android:textColor="@color/primary_text_material_dark"
             android:layout_below="@+id/introTextView1"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_centerHorizontal="true" />
 
     </android.support.percent.PercentRelativeLayout>
 
