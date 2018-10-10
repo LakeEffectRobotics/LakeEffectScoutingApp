@@ -583,7 +583,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void waitForConformation(final StringBuilder labels, final StringBuilder data) {
+    public void waitForConfirmation(final StringBuilder labels, final StringBuilder data) {
         Thread thread = new Thread() {
             public void run() {
                 while (true) {
