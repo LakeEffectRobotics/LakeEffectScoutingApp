@@ -150,7 +150,6 @@ public class ConnectionThread implements Runnable {
         try {
             String fullMessage = mainActivity.versionCode + ":::";
             for(String message : mainActivity.pendingMessages){
-//                this.out.write((mainActivity.robotNum + ":" + mainActivity.getData()[0]).getBytes(Charset.forName("UTF-8")));
                 if(!fullMessage.equals(mainActivity.versionCode + ":::")){
                     fullMessage += "::";
                 }

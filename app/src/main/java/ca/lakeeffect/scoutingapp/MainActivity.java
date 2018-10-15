@@ -117,13 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-//        View decorView = getWindow().getDecorView();
-//        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        decorView.setSystemUiVisibility(uiOptions);
-////        ActionBar actionBar = getActionBar();
-//        actionBar.hide();
-
-
         //check what theme is selected and set it as the theme
         SharedPreferences prefs1 = getSharedPreferences("theme", MODE_PRIVATE);
         switch (prefs1.getInt("theme", 0)) {
@@ -172,33 +165,15 @@ public class MainActivity extends AppCompatActivity {
         ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
 
 
-//        counters.add((Counter) findViewById(R.id.goalsCounter));
-
         //setup scrolling viewpager
         viewPager = (ViewPager) findViewById(R.id.scrollingview);
         pagerAdapter = new InputPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(3);
 
-//        NumberPicker np = (NumberPicker) findViewm counters
-//        np.setWrapSelectorWheel(false);ById(R.id.numberPicker);
-//
-//        np.setMinValue(0);
-//        np.setMaxValue(20);    //maybe switch fro
-//        np.setValue(0);
-
-        //add onClickListeners
-
-//        checkboxes.add((CheckBox) findViewById(R.id.scaleCheckBox));
-
-//        submit = (Button) findViewById(R.id.submitButton);
-
-//        timer = (TextView) findViewById(R.id.timer);
         robotNumText = (TextView) findViewById(R.id.robotNum);
 
         robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
-
-//        submit.setOnClickListener(this);
 
         //load available robots for this competition
         InputStream is = getResources().openRawResource(R.raw.robotnumbers);
