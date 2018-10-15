@@ -129,9 +129,10 @@ public class ConnectionThread implements Runnable {
 
         //go through the user schedule and assign robots based on the match schedule
         for (int userID = 0; userID < userSchedules.length; userID++) {
-            String[] userSchedule = userSchedules[userID].split(",");
+            String name = userSchedules[userID].split(":")[0];
+            String[] userSchedule = userSchedules[userID].split(":")[1].split(",");
 
-            UserData currentUserData = new UserData(userID, "PLACEHOLDER USERNAME #" + userID);
+            UserData currentUserData = new UserData(userID, name);
 
             mainActivity.schedules.add(currentUserData);
 
