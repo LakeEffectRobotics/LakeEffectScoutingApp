@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Robot schedule for each user (by user ID)
     //the username selection screen will show a spinner with all the names in this list
-    //FUTURE: Maybe pull thses names from the server? Grab them from a text file?
+    //FUTURE: Maybe pull these names from the server? Grab them from a text file?
     //Add one to the index as there is one placeholder default value
     ArrayList<UserData> schedules = new ArrayList<>();
 
@@ -822,7 +822,7 @@ public class MainActivity extends AppCompatActivity {
                 userIDSpinner.setAdapter(userIDAdapter);
                 //set to previous value
                 SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
-                userIDSpinner.setSelection(prefs.getInt("userID", 0));
+                userIDSpinner.setSelection(prefs.getInt("userID", -1) + 1);
 
                 //Setup spinner for the side the field is being viewed from
                 Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
@@ -994,7 +994,7 @@ public class MainActivity extends AppCompatActivity {
 
             SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("userID", userID.getSelectedItemPosition());
+            editor.putInt("userID", userID.getSelectedItemPosition() - 1);
             editor.apply();
 
             //save selections for robot alliance

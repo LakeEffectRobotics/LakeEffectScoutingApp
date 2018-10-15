@@ -54,11 +54,21 @@ public class ConnectionThread implements Runnable {
                 int amount = in.read(bytes);
 
                 //if some bytes were sent, then we received something, then cut out the unused bytes (bytes array is very big because it must be the MAXIMUM amount of data you are willing to receive
-                if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
+                if(amount > 0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
                 else continue;
 
                 String message = new String(bytes, Charset.forName("UTF-8"));
-                if (message.contains("REQUEST DATA")){ //received request
+                if (message.contains("SEND SCHEDULE")) { //received data about the schedule
+                    mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(mainActivity, "Received schedule",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    loadSchedule(message);
+                    data = "";
+                } else if (message.contains("REQUEST DATA")) { //received a request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -68,7 +78,7 @@ public class ConnectionThread implements Runnable {
                     });
                     sendData();
                     data = "";
-                }else if (message.contains("REQUEST LABELS")){ //received request
+                } else if (message.contains("REQUEST LABELS")) { //received a request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -78,7 +88,7 @@ public class ConnectionThread implements Runnable {
                     });
                     sendLabels();
                     data = "";
-                }else if (message.contains("RECEIVED")) {
+                } else if (message.contains("RECEIVED")) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -106,6 +116,33 @@ public class ConnectionThread implements Runnable {
 
         }
 
+    }
+
+    public void loadSchedule(String schedule) {
+        String[] userSchedules = schedule.split(":::")[1].split("::");
+        String matchSchedule = schedule.split(":::")[2];
+
+        String[] matches = matchSchedule.split("::");
+
+        //reset schedules
+        mainActivity.schedules = new ArrayList<>();
+
+        //go through the user schedule and assign robots based on the match schedule
+        for (int userID = 0; userID < userSchedules.length; userID++) {
+            String[] userSchedule = userSchedules[userID].split(",");
+
+            UserData currentUserData = new UserData(userID, "PLACEHOLDER USERNAME #" + userID);
+
+            mainActivity.schedules.add(currentUserData);
+
+            for (int matchNum = 0; matchNum < userSchedule.length; matchNum++) {
+                String[] robotNumbers = matches[matchNum].split(",");
+
+                int robotIndex = Integer.parseInt(userSchedule[matchNum]);
+                currentUserData.robots.add(Integer.parseInt(robotNumbers[robotIndex]));
+                currentUserData.alliances.add(robotIndex >= 3);
+            }
+        }
     }
 
     public void sendLabels(){
@@ -140,7 +177,7 @@ public class ConnectionThread implements Runnable {
         }
     }
 
-    public void deleteData(){ //deleted items that are in sent pending messages (because they now have been sent
+    public void deleteData(){ //deleted items that are in sent pending messages (because they now have been sent)
 
         SharedPreferences prefs2 = mainActivity.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefs2.edit();
