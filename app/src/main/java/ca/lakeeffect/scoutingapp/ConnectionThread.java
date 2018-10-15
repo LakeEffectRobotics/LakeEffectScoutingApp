@@ -1,7 +1,6 @@
 package ca.lakeeffect.scoutingapp;
 
 import android.app.Activity;
-import android.app.Instrumentation;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.SharedPreferences;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -46,8 +44,6 @@ public class ConnectionThread implements Runnable {
     @Override
     public void run() {
 
-        String data = "";
-
         while(out != null && in != null && bluetoothSocket.isConnected()){
             try {
                 byte[] bytes = new byte[100000];
@@ -67,7 +63,6 @@ public class ConnectionThread implements Runnable {
                         }
                     });
                     loadSchedule(message);
-                    data = "";
                 } else if (message.contains("REQUEST DATA")) { //received a request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
@@ -77,7 +72,6 @@ public class ConnectionThread implements Runnable {
                         }
                     });
                     sendData();
-                    data = "";
                 } else if (message.contains("REQUEST LABELS")) { //received a request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
@@ -87,7 +81,6 @@ public class ConnectionThread implements Runnable {
                         }
                     });
                     sendLabels();
-                    data = "";
                 } else if (message.contains("RECEIVED")) {
                     try {
                         Thread.sleep(1000);
@@ -102,8 +95,6 @@ public class ConnectionThread implements Runnable {
                     mainActivity.listenerThread.run();
                     new Thread(mainActivity.listenerThread).start();
                     break;
-                } else {
-                    data += message;
                 }
 
             } catch (IOException e) {
@@ -157,22 +148,22 @@ public class ConnectionThread implements Runnable {
 
     public void sendData(){
         try {
-            String fullmessage = mainActivity.versionCode + ":::";
-            for(String message : mainActivity.pendingmessages){
+            String fullMessage = mainActivity.versionCode + ":::";
+            for(String message : mainActivity.pendingMessages){
 //                this.out.write((mainActivity.robotNum + ":" + mainActivity.getData()[0]).getBytes(Charset.forName("UTF-8")));
-                if(!fullmessage.equals(mainActivity.versionCode + ":::")){
-                    fullmessage += "::";
+                if(!fullMessage.equals(mainActivity.versionCode + ":::")){
+                    fullMessage += "::";
                 }
-                fullmessage += message;
+                fullMessage += message;
 
                 sentPendingMessages.add(message);
             }
 
-            if(mainActivity.pendingmessages.isEmpty()){
-                fullmessage += "nodata::end";
+            if(mainActivity.pendingMessages.isEmpty()){
+                fullMessage += "nodata::end";
             }
 
-            this.out.write((fullmessage + "\n").getBytes(Charset.forName("UTF-8")));
+            this.out.write((fullMessage + "\n").getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -180,7 +171,7 @@ public class ConnectionThread implements Runnable {
 
     public void deleteData(){ //deleted items that are in sent pending messages (because they now have been sent)
 
-        SharedPreferences prefs2 = mainActivity.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+        SharedPreferences prefs2 = mainActivity.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefs2.edit();
         if( prefs2.getInt("messageAmount", 0) - sentPendingMessages.size() >= 0){
             editor2.putInt("messageAmount", prefs2.getInt("messageAmount", 0) - sentPendingMessages.size());
@@ -190,13 +181,13 @@ public class ConnectionThread implements Runnable {
         editor2.apply();
 
         for(String message: new ArrayList<>(sentPendingMessages)){
-            mainActivity.pendingmessages.remove(message);
+            mainActivity.pendingMessages.remove(message);
             sentPendingMessages.remove(message);
 
             int loc = mainActivity.getLocationInSharedMessages(message);
 
             if(loc != -1){
-                SharedPreferences prefs = mainActivity.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+                SharedPreferences prefs = mainActivity.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("message"+loc, null);
                 editor.apply();
@@ -207,7 +198,7 @@ public class ConnectionThread implements Runnable {
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((TextView) ((RelativeLayout) mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingmessages.size() + "");
+                ((TextView) ((RelativeLayout) mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingMessages.size() + "");
             }
         });
     }

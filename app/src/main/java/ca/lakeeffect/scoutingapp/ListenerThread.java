@@ -41,7 +41,7 @@ public class ListenerThread implements Runnable{
 
         ba = BluetoothAdapter.getDefaultAdapter();
 
-        while(true) {
+        while (true) {
             BluetoothServerSocket bss = null;
             try {
                 System.out.println("started search");

@@ -20,11 +20,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.KeyListener;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,7 +47,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -91,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     InputPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
-    ArrayList<String> pendingmessages = new ArrayList<>();
+    ArrayList<String> pendingMessages = new ArrayList<>();
     boolean connected;
 
     ListenerThread listenerThread;
@@ -148,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         //add all buttons and counters etc.
 
         //go through all saved pending messages and add them to the variable
-        SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
         int messageAmount = prefs.getInt("messageAmount", 0);
         for (int i = 0; i < messageAmount; i++) {
             if (prefs.getString("message" + i, null) == null) {
@@ -158,14 +154,14 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
             } else {
-                pendingmessages.add(prefs.getString("message" + i, ""));
+                pendingMessages.add(prefs.getString("message" + i, ""));
             }
         }
 
         //reset the amount of pending messages
-        SharedPreferences prefs2 = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+        SharedPreferences prefs2 = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefs2.edit();
-        editor2.putInt("messageAmount", pendingmessages.size());
+        editor2.putInt("messageAmount", pendingMessages.size());
         editor2.apply();
 
         //set device name
@@ -173,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         ((TextView) ((RelativeLayout) findViewById(R.id.deviceNameLayout)).findViewById(R.id.deviceName)).setText(ba.getName()); //if this method ends up not working refer to https://stackoverflow.com/a/6662271/1985387
 
         //set pending messages number on ui
-        ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingmessages.size() + "");
+        ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
 
 
 //        counters.add((Counter) findViewById(R.id.goalsCounter));
@@ -562,16 +558,16 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //add to pending messages
-            pendingmessages.add(fulldata);
+            pendingMessages.add(fulldata);
             //add to sharedprefs
-            SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+            SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("message" + prefs.getInt("messageAmount", 0), fulldata);
             editor.putInt("messageAmount", prefs.getInt("messageAmount", 0) + 1);
             editor.apply();
 
             //set pending messages number on ui
-            ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingmessages.size() + "");
+            ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
 
             out.close();
 
@@ -591,8 +587,8 @@ public class MainActivity extends AppCompatActivity {
                     byte[] bytes = new byte[1000];
                     try {
                         if (!connected) {
-                            pendingmessages.add(robotNum + ":" + labels.toString() + ":" + data.toString());
-                            SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+                            pendingMessages.add(robotNum + ":" + labels.toString() + ":" + data.toString());
+                            SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("message" + prefs.getInt("messageAmount", 0), robotNum + ":" + labels.toString() + ":" + data.toString());
                             editor.putInt("messageAmount", prefs.getInt("messageAmount", 0) + 1);
@@ -604,8 +600,8 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
                         if (!connected) {
-                            pendingmessages.add(robotNum + ":" + labels.toString() + ":" + data.toString());
-                            SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+                            pendingMessages.add(robotNum + ":" + labels.toString() + ":" + data.toString());
+                            SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("message" + prefs.getInt("messageAmount", 0), robotNum + ":" + labels.toString() + ":" + data.toString());
                             editor.putInt("messageAmount", prefs.getInt("messageAmount", 0) + 1);
@@ -621,7 +617,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getLocationInSharedMessages(String message) {
-        SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
         for (int i = 0; i < prefs.getInt("messageAmount", 0); i++) {
             if (prefs.getString("message" + i, "").equals(message)) {
                 return i;
@@ -671,11 +667,11 @@ public class MainActivity extends AppCompatActivity {
                         alert();
                     }
                     if (item.getItemId() == R.id.resetPendingMessages) {
-                        for(int i=0;i<pendingmessages.size();i++){
-                            pendingmessages.remove(i);
+                        for(int i = 0; i< pendingMessages.size(); i++){
+                            pendingMessages.remove(i);
                         }
 
-                        SharedPreferences prefs = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+                        SharedPreferences prefs = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt("messageAmount", 0);
                         editor.apply();
@@ -684,7 +680,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingmessages.size() + "");
+                                ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
                             }
                         });
                     }
