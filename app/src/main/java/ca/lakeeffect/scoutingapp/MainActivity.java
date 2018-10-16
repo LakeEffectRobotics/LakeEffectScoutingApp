@@ -20,11 +20,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.KeyListener;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,7 +47,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -77,12 +73,12 @@ public class MainActivity extends AppCompatActivity {
 
     //Robot schedule for each user (by user ID)
     //the username selection screen will show a spinner with all the names in this list
-    //FUTURE: Maybe pull thses names from the server? Grab them from a text file?
+    //FUTURE: Maybe pull these names from the server? Grab them from a text file?
     //Add one to the index as there is one placeholder default value
     ArrayList<UserData> schedules = new ArrayList<>();
 
     //the id of the user currently scouting. This decides when they must switch on and off from scouting
-    int userID = 0;
+    int userID = -1;
 
     //the field data
     public static boolean alliance; //red is false, true is blue
@@ -91,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     InputPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
-    ArrayList<String> pendingmessages = new ArrayList<>();
+    ArrayList<String> pendingMessages = new ArrayList<>();
     boolean connected;
 
     ListenerThread listenerThread;
@@ -101,12 +97,15 @@ public class MainActivity extends AppCompatActivity {
 
     int versionCode;
 
-    //used to make sure the robot selected is actually at the competition
-    String[] availableRobots;
-
     //the last time submit has been pressed
     //used to see if "are you still here" messages should be placed
     public static long lastSubmit = -1;
+
+    //the userIDSpinner on the alert menu
+    //null if alert is not open
+    Spinner userIDSpinner;
+    //toast displayed in the alert panel for errors when typing certain match numbers
+    Toast matchNumAlertToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,13 +119,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-//        View decorView = getWindow().getDecorView();
-//        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        decorView.setSystemUiVisibility(uiOptions);
-////        ActionBar actionBar = getActionBar();
-//        actionBar.hide();
-
 
         //check what theme is selected and set it as the theme
         SharedPreferences prefs1 = getSharedPreferences("theme", MODE_PRIVATE);
@@ -148,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         //add all buttons and counters etc.
 
         //go through all saved pending messages and add them to the variable
-        SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
         int messageAmount = prefs.getInt("messageAmount", 0);
         for (int i = 0; i < messageAmount; i++) {
             if (prefs.getString("message" + i, null) == null) {
@@ -158,14 +150,14 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
             } else {
-                pendingmessages.add(prefs.getString("message" + i, ""));
+                pendingMessages.add(prefs.getString("message" + i, ""));
             }
         }
 
         //reset the amount of pending messages
-        SharedPreferences prefs2 = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+        SharedPreferences prefs2 = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefs2.edit();
-        editor2.putInt("messageAmount", pendingmessages.size());
+        editor2.putInt("messageAmount", pendingMessages.size());
         editor2.apply();
 
         //set device name
@@ -173,10 +165,8 @@ public class MainActivity extends AppCompatActivity {
         ((TextView) ((RelativeLayout) findViewById(R.id.deviceNameLayout)).findViewById(R.id.deviceName)).setText(ba.getName()); //if this method ends up not working refer to https://stackoverflow.com/a/6662271/1985387
 
         //set pending messages number on ui
-        ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingmessages.size() + "");
+        ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
 
-
-//        counters.add((Counter) findViewById(R.id.goalsCounter));
 
         //setup scrolling viewpager
         viewPager = (ViewPager) findViewById(R.id.scrollingview);
@@ -184,61 +174,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(3);
 
-//        NumberPicker np = (NumberPicker) findViewm counters
-//        np.setWrapSelectorWheel(false);ById(R.id.numberPicker);
-//
-//        np.setMinValue(0);
-//        np.setMaxValue(20);    //maybe switch fro
-//        np.setValue(0);
-
-        //add onClickListeners
-
-//        checkboxes.add((CheckBox) findViewById(R.id.scaleCheckBox));
-
-//        submit = (Button) findViewById(R.id.submitButton);
-
-//        timer = (TextView) findViewById(R.id.timer);
         robotNumText = (TextView) findViewById(R.id.robotNum);
 
         robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
-
-//        submit.setOnClickListener(this);
-
-        //load available robots for this competition
-        InputStream is = getResources().openRawResource(R.raw.robotnumbers);
-        try {
-            String s = IOUtils.toString(is);
-
-            availableRobots = s.split("\n");
-
-            //For some reason IOUtils spits out text with an extra character, this code fixes that
-            for(int i = 0; i < availableRobots.length; i++) {
-                availableRobots[i] = availableRobots[i].substring(0, availableRobots[i].length() - 1);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        IOUtils.closeQuietly(is);
-
-        //Temperarily set a predifined schedule to use for the robot numbers displayed per round.
-        //This will be replaced with data sent directly from the server
-        schedules = new ArrayList<>();
-        ArrayList<Integer> firstSchedule = new ArrayList<>();
-        ArrayList<Boolean> firstAlliances = new ArrayList<>();
-        firstSchedule.add(2708);
-        firstAlliances.add(true);
-        firstSchedule.add(2809);
-        firstAlliances.add(false);
-        firstSchedule.add(254);
-        firstAlliances.add(false);
-        firstSchedule.add(2056);
-        firstAlliances.add(true);
-        firstSchedule.add(1114);
-        firstAlliances.add(false);
-        firstSchedule.add(1511);
-        firstAlliances.add(true);
-        schedules.add(new UserData(0, "Ajay", firstAlliances, firstSchedule));
-
     }
 
     public void restartListenerThread(){
@@ -407,7 +345,9 @@ public class MainActivity extends AppCompatActivity {
         enterLayout(layout);
 
         labels.append("Scout,\n");
-        data.append(schedules.get(userID).userName + ",\n");
+        if (userID >= 0) {
+            data.append(schedules.get(userID).userName + ",\n");
+        }
 
         System.out.println(labels.toString());
         System.out.println(data.toString());
@@ -562,16 +502,16 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //add to pending messages
-            pendingmessages.add(fulldata);
+            pendingMessages.add(fulldata);
             //add to sharedprefs
-            SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+            SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("message" + prefs.getInt("messageAmount", 0), fulldata);
             editor.putInt("messageAmount", prefs.getInt("messageAmount", 0) + 1);
             editor.apply();
 
             //set pending messages number on ui
-            ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingmessages.size() + "");
+            ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
 
             out.close();
 
@@ -591,8 +531,8 @@ public class MainActivity extends AppCompatActivity {
                     byte[] bytes = new byte[1000];
                     try {
                         if (!connected) {
-                            pendingmessages.add(robotNum + ":" + labels.toString() + ":" + data.toString());
-                            SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+                            pendingMessages.add(robotNum + ":" + labels.toString() + ":" + data.toString());
+                            SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("message" + prefs.getInt("messageAmount", 0), robotNum + ":" + labels.toString() + ":" + data.toString());
                             editor.putInt("messageAmount", prefs.getInt("messageAmount", 0) + 1);
@@ -604,8 +544,8 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
                         if (!connected) {
-                            pendingmessages.add(robotNum + ":" + labels.toString() + ":" + data.toString());
-                            SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+                            pendingMessages.add(robotNum + ":" + labels.toString() + ":" + data.toString());
+                            SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("message" + prefs.getInt("messageAmount", 0), robotNum + ":" + labels.toString() + ":" + data.toString());
                             editor.putInt("messageAmount", prefs.getInt("messageAmount", 0) + 1);
@@ -621,7 +561,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getLocationInSharedMessages(String message) {
-        SharedPreferences prefs = getSharedPreferences("pendingmessages", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
         for (int i = 0; i < prefs.getInt("messageAmount", 0); i++) {
             if (prefs.getString("message" + i, "").equals(message)) {
                 return i;
@@ -671,11 +611,11 @@ public class MainActivity extends AppCompatActivity {
                         alert();
                     }
                     if (item.getItemId() == R.id.resetPendingMessages) {
-                        for(int i=0;i<pendingmessages.size();i++){
-                            pendingmessages.remove(i);
+                        for(int i = 0; i< pendingMessages.size(); i++){
+                            pendingMessages.remove(i);
                         }
 
-                        SharedPreferences prefs = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+                        SharedPreferences prefs = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt("messageAmount", 0);
                         editor.apply();
@@ -684,7 +624,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingmessages.size() + "");
+                                ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
                             }
                         });
                     }
@@ -797,7 +737,7 @@ public class MainActivity extends AppCompatActivity {
                 robotAlliance.setEnabled(false);
 
                 //List user names available
-                final Spinner userIDSpinner = (Spinner) linearLayout.findViewById(R.id.userID);
+                userIDSpinner = (Spinner) linearLayout.findViewById(R.id.userID);
 
                 //set a listener to make sure to adjust other fields based on it will change as well
                 userIDSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -812,17 +752,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                ArrayList<String> userNames = new ArrayList<>();
-                userNames.add("Please choose a name");
-                for (UserData userData : schedules){
-                    userNames.add(userData.userName);
-                }
+                updateUserIDSpinner();
 
-                ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner, userNames);
-                userIDSpinner.setAdapter(userIDAdapter);
                 //set to previous value
                 SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
-                userIDSpinner.setSelection(prefs.getInt("userID", 0));
+                userIDSpinner.setSelection(prefs.getInt("userID", -1) + 1);
 
                 //Setup spinner for the side the field is being viewed from
                 Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
@@ -872,6 +806,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                //reset userIDSpinner to null since the alert has been closed
+                userIDSpinner = null;
+            }
+        });
+
         dialog.show();
     }
 
@@ -883,6 +826,9 @@ public class MainActivity extends AppCompatActivity {
         if(newUserID == -1) {
             return;
         }
+
+        //cancel previous error toast if there is one
+        if (matchNumAlertToast != null) matchNumAlertToast.cancel();
 
         //has it been 15 minutes
         if (newUserID != userID && (lastSubmit == -1 || System.currentTimeMillis() - lastSubmit > 900000)) {
@@ -908,8 +854,10 @@ public class MainActivity extends AppCompatActivity {
             //The user has not specified what match number it is yet
             runOnUiThread(new Thread() {
                 public void run() {
-                    Toast.makeText(MainActivity.this, "You must specify the match number",
-                            Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(MainActivity.this, "You must specify the match number",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    matchNumAlertToast = toast;
                 }
             });
 
@@ -925,8 +873,10 @@ public class MainActivity extends AppCompatActivity {
             //The match number is too high
             runOnUiThread(new Thread() {
                 public void run() {
-                    Toast.makeText(MainActivity.this, "This match number is not on the schedule yet, choose another",
-                            Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(MainActivity.this, "This match number is not on the schedule yet, choose another",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    matchNumAlertToast = toast;
                 }
             });
 
@@ -938,9 +888,51 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //find the robot alliance
-        alliance = schedules.get(MainActivity.this.userID).alliances.get(round);
+        alliance = schedules.get(userID).alliances.get(round);
 
-        robotNumInput.setText(String.valueOf(schedules.get(MainActivity.this.userID).robots.get(round)));
+        //set userID
+        userID = newUserID;
+
+        int robotNum = schedules.get(userID).robots.get(round);
+
+        //this scout is off this match
+        if (robotNum == -1) {
+            int matchBack = -1;
+
+            //find next mach number
+            for (int i = round; i < schedules.get(userID).robots.size(); i++) {
+                if (schedules.get(userID).robots.get(i) != -1) {
+                    matchBack = i + 1;
+                    break;
+                }
+            }
+
+            final String message;
+            if (matchBack == -1) {
+                //they never need to come back
+                message = "You are off this match You are off forever according to the schedule! If that does not make sense, ask somebody if something is up.";
+            } else {
+                message = "You are off this match! Come back at match number " + matchBack;
+            }
+
+            //The match number is too high
+            runOnUiThread(new Thread() {
+                public void run() {
+                    Toast toast = Toast.makeText(MainActivity.this, message,
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    matchNumAlertToast = toast;
+                }
+            });
+
+            //set the robot number to blank
+            robotNumInput.setText("");
+            //reset alliance
+            robotAlliance.setSelection(0);
+            return;
+        }
+
+        robotNumInput.setText(String.valueOf(robotNum));
 
         if (alliance) {
             robotAlliance.setSelection(1);
@@ -950,7 +942,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //for the alert
+    public void updateUserIDSpinner() {
+        String oldSelection = ((String) userIDSpinner.getSelectedItem());
+
+        ArrayList<String> userNames = new ArrayList<>();
+        userNames.add("Please choose a name");
+        for (UserData userData : schedules){
+            userNames.add(userData.userName);
+        }
+
+        ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner, userNames);
+        userIDSpinner.setAdapter(userIDAdapter);
+        int selectedIndex = 0;
+
+        for (int i = 0; i < userNames.size(); i++) {
+            if (userNames.get(i).equals(oldSelection)) {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        userIDSpinner.setSelection(selectedIndex);
+    }
+
+    //when the ok button on the alert is pressed
     public void onClickOkButton(DialogInterface dialog, boolean overrideRobotNumberCheck){
         //get date details
         final int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -994,7 +1009,7 @@ public class MainActivity extends AppCompatActivity {
 
             SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("userID", userID.getSelectedItemPosition());
+            editor.putInt("userID", userID.getSelectedItemPosition() - 1);
             editor.apply();
 
             //save selections for robot alliance
@@ -1023,12 +1038,6 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-                return;
-            }
-
-            //the list contains spaces at the end of each line so a space is added to the search
-            if (!arrayContains(availableRobots, robotNum + "") && !overrideRobotNumberCheck) {
-                createRobotNumberOverrideDialog(dialog);
                 return;
             }
 
@@ -1068,21 +1077,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
-    }
-
-    //creates dialog to check if the user still wants to use a robot not in this event
-    public void createRobotNumberOverrideDialog(final DialogInterface dialog){
-        new AlertDialog.Builder(this)
-                .setTitle("That robot is not at this event")
-                .setMessage("Would you like to use this robot number anyway? DOUBLE CHECK that you are typing in the right robot number.")
-                .setPositiveButton("Yes, I would like to use this robot number", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog2, int which) {
-                        onClickOkButton(dialog, true);
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
     }
 
      public static void startNotificationAlarm(Context context) {

@@ -68,7 +68,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         //Set Unsent Messages Text
         TextView unsentMessages = (TextView) findViewById(R.id.startUnsentMessages);
         assert unsentMessages != null;
-        unsentMessages.setText("Unsent Messages: " + getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE).getInt("messageAmount", 0));
+        unsentMessages.setText("Unsent Messages: " + getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE).getInt("messageAmount", 0));
 
         //Set Version Text
         TextView versionNum = (TextView) findViewById(R.id.versionNum);
@@ -95,7 +95,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
                     if (item.getItemId() == R.id.resetPendingMessages) {
-                        SharedPreferences prefs = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+                        SharedPreferences prefs = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt("messageAmount", 0);
                         editor.apply();

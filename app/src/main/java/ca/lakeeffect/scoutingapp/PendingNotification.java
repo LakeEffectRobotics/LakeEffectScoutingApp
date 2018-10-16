@@ -22,12 +22,12 @@ public class PendingNotification extends BroadcastReceiver {
         String message;
 
         //If there are no pending messages, dont send anything
-        if(context.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE).getInt("messageAmount", -1) <= 0){
+        if(context.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE).getInt("messageAmount", -1) <= 0){
             return;
         }
         
         //Create the message
-        message = "You have "+ context.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE).getInt("messageAmount", -1) +" unsent data. Contact Ajay to get the data into the database ASAP!";
+        message = "You have "+ context.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE).getInt("messageAmount", -1) +" unsent data. Contact Ajay to get the data into the database ASAP!";
         
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
