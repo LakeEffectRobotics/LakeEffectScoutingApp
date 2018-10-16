@@ -107,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
     //the userIDSpinner on the alert menu
     //null if alert is not open
     Spinner userIDSpinner;
+    //toast displayed in the alert panel for errors when typing certain match numbers
+    Toast matchNumAlertToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -862,6 +864,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        //cancel previous error toast if there is one
+        if (matchNumAlertToast != null) matchNumAlertToast.cancel();
+
         //has it been 15 minutes
         if (newUserID != userID && (lastSubmit == -1 || System.currentTimeMillis() - lastSubmit > 900000)) {
             //make a confirmation message here
@@ -886,8 +891,10 @@ public class MainActivity extends AppCompatActivity {
             //The user has not specified what match number it is yet
             runOnUiThread(new Thread() {
                 public void run() {
-                    Toast.makeText(MainActivity.this, "You must specify the match number",
-                            Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(MainActivity.this, "You must specify the match number",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    matchNumAlertToast = toast;
                 }
             });
 
@@ -903,8 +910,10 @@ public class MainActivity extends AppCompatActivity {
             //The match number is too high
             runOnUiThread(new Thread() {
                 public void run() {
-                    Toast.makeText(MainActivity.this, "This match number is not on the schedule yet, choose another",
-                            Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(MainActivity.this, "This match number is not on the schedule yet, choose another",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    matchNumAlertToast = toast;
                 }
             });
 
@@ -946,8 +955,10 @@ public class MainActivity extends AppCompatActivity {
             //The match number is too high
             runOnUiThread(new Thread() {
                 public void run() {
-                    Toast.makeText(MainActivity.this, message,
-                            Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(MainActivity.this, message,
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    matchNumAlertToast = toast;
                 }
             });
 
