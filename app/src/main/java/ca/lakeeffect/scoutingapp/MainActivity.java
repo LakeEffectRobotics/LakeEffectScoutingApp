@@ -909,9 +909,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //find the robot alliance
-        alliance = schedules.get(MainActivity.this.userID).alliances.get(round);
+        alliance = schedules.get(this.userID).alliances.get(round);
 
-        robotNumInput.setText(String.valueOf(schedules.get(MainActivity.this.userID).robots.get(round)));
+        //set userID
+        userID = newUserID;
+
+        robotNumInput.setText(String.valueOf(schedules.get(this.userID).robots.get(round)));
 
         if (alliance) {
             robotAlliance.setSelection(1);
