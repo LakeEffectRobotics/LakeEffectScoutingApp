@@ -104,6 +104,10 @@ public class MainActivity extends AppCompatActivity {
     //used to see if "are you still here" messages should be placed
     public static long lastSubmit = -1;
 
+    //the userIDSpinner on the alert menu
+    //null if alert is not open
+    Spinner userIDSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -768,7 +772,7 @@ public class MainActivity extends AppCompatActivity {
                 robotAlliance.setEnabled(false);
 
                 //List user names available
-                final Spinner userIDSpinner = (Spinner) linearLayout.findViewById(R.id.userID);
+                userIDSpinner = (Spinner) linearLayout.findViewById(R.id.userID);
 
                 //set a listener to make sure to adjust other fields based on it will change as well
                 userIDSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -783,14 +787,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                ArrayList<String> userNames = new ArrayList<>();
-                userNames.add("Please choose a name");
-                for (UserData userData : schedules){
-                    userNames.add(userData.userName);
-                }
+                updateUserIDSpinner();
 
-                ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner, userNames);
-                userIDSpinner.setAdapter(userIDAdapter);
                 //set to previous value
                 SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
                 userIDSpinner.setSelection(prefs.getInt("userID", -1) + 1);
@@ -843,6 +841,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                //reset userIDSpinner to null since the alert has been closed
+                userIDSpinner = null;
+            }
+        });
+
         dialog.show();
     }
 
@@ -909,12 +916,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //find the robot alliance
-        alliance = schedules.get(this.userID).alliances.get(round);
+        alliance = schedules.get(userID).alliances.get(round);
 
         //set userID
         userID = newUserID;
 
-        robotNumInput.setText(String.valueOf(schedules.get(this.userID).robots.get(round)));
+        robotNumInput.setText(String.valueOf(schedules.get(userID).robots.get(round)));
 
         if (alliance) {
             robotAlliance.setSelection(1);
@@ -922,6 +929,27 @@ public class MainActivity extends AppCompatActivity {
             robotAlliance.setSelection(2);
         }
 
+    }
+
+    public void updateUserIDSpinner() {
+        String oldSelection = ((String) userIDSpinner.getSelectedItem());
+
+        ArrayList<String> userNames = new ArrayList<>();
+        userNames.add("Please choose a name");
+        for (UserData userData : schedules){
+            userNames.add(userData.userName);
+        }
+
+        ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner, userNames);
+        userIDSpinner.setAdapter(userIDAdapter);
+
+        for (int i = 0; i < userNames.size(); i++) {
+            if (userNames.get(i).equals(oldSelection)) {
+                userIDSpinner.setSelection(i);
+                System.out.println("Set selection to " + i);
+                break;
+            }
+        }
     }
 
     //for the alert

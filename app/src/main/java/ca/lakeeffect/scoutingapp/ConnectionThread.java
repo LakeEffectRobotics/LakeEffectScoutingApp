@@ -152,6 +152,16 @@ public class ConnectionThread implements Runnable {
                 currentUserData.alliances.add(robotIndex >= 3);
             }
         }
+
+        //update the userIDSpinner if the alert is open
+        if (mainActivity.userIDSpinner != null) {
+            mainActivity.runOnUiThread(new Runnable() {
+               @Override
+               public void run() {
+                   mainActivity.updateUserIDSpinner();
+               }
+           });
+        }
     }
 
     public void sendLabels(){
