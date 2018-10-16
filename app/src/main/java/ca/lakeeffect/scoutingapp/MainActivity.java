@@ -97,9 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
     int versionCode;
 
-    //used to make sure the robot selected is actually at the competition
-    String[] availableRobots;
-
     //the last time submit has been pressed
     //used to see if "are you still here" messages should be placed
     public static long lastSubmit = -1;
@@ -180,22 +177,6 @@ public class MainActivity extends AppCompatActivity {
         robotNumText = (TextView) findViewById(R.id.robotNum);
 
         robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
-
-        //load available robots for this competition
-        InputStream is = getResources().openRawResource(R.raw.robotnumbers);
-        try {
-            String s = IOUtils.toString(is);
-
-            availableRobots = s.split("\n");
-
-            //For some reason IOUtils spits out text with an extra character, this code fixes that
-            for(int i = 0; i < availableRobots.length; i++) {
-                availableRobots[i] = availableRobots[i].substring(0, availableRobots[i].length() - 1);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        IOUtils.closeQuietly(is);
     }
 
     public void restartListenerThread(){
@@ -984,7 +965,7 @@ public class MainActivity extends AppCompatActivity {
         userIDSpinner.setSelection(selectedIndex);
     }
 
-    //for the alert
+    //when the ok button on the alert is pressed
     public void onClickOkButton(DialogInterface dialog, boolean overrideRobotNumberCheck){
         //get date details
         final int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -1060,12 +1041,6 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            //the list contains spaces at the end of each line so a space is added to the search
-            if (!arrayContains(availableRobots, robotNum + "") && !overrideRobotNumberCheck) {
-                createRobotNumberOverrideDialog(dialog);
-                return;
-            }
-
             if (userID.getSelectedItemPosition() == 0) {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -1102,21 +1077,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
-    }
-
-    //creates dialog to check if the user still wants to use a robot not in this event
-    public void createRobotNumberOverrideDialog(final DialogInterface dialog){
-        new AlertDialog.Builder(this)
-                .setTitle("That robot is not at this event")
-                .setMessage("Would you like to use this robot number anyway? DOUBLE CHECK that you are typing in the right robot number.")
-                .setPositiveButton("Yes, I would like to use this robot number", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog2, int which) {
-                        onClickOkButton(dialog, true);
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
     }
 
      public static void startNotificationAlarm(Context context) {
