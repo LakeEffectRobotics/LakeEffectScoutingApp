@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<UserData> schedules = new ArrayList<>();
 
     //the id of the user currently scouting. This decides when they must switch on and off from scouting
-    int userID = 0;
+    int userID = -1;
 
     //the field data
     public static boolean alliance; //red is false, true is blue
@@ -196,26 +196,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         IOUtils.closeQuietly(is);
-
-        //Temperarily set a predifined schedule to use for the robot numbers displayed per round.
-        //This will be replaced with data sent directly from the server
-        schedules = new ArrayList<>();
-        ArrayList<Integer> firstSchedule = new ArrayList<>();
-        ArrayList<Boolean> firstAlliances = new ArrayList<>();
-        firstSchedule.add(2708);
-        firstAlliances.add(true);
-        firstSchedule.add(2809);
-        firstAlliances.add(false);
-        firstSchedule.add(254);
-        firstAlliances.add(false);
-        firstSchedule.add(2056);
-        firstAlliances.add(true);
-        firstSchedule.add(1114);
-        firstAlliances.add(false);
-        firstSchedule.add(1511);
-        firstAlliances.add(true);
-        schedules.add(new UserData(0, "Ajay", firstAlliances, firstSchedule));
-
     }
 
     public void restartListenerThread(){
@@ -384,7 +364,9 @@ public class MainActivity extends AppCompatActivity {
         enterLayout(layout);
 
         labels.append("Scout,\n");
-        data.append(schedules.get(userID).userName + ",\n");
+        if (userID >= 0) {
+            data.append(schedules.get(userID).userName + ",\n");
+        }
 
         System.out.println(labels.toString());
         System.out.println(data.toString());
@@ -990,14 +972,16 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner, userNames);
         userIDSpinner.setAdapter(userIDAdapter);
+        int selectedIndex = 0;
 
         for (int i = 0; i < userNames.size(); i++) {
             if (userNames.get(i).equals(oldSelection)) {
-                userIDSpinner.setSelection(i);
-                System.out.println("Set selection to " + i);
+                selectedIndex = i;
                 break;
             }
         }
+
+        userIDSpinner.setSelection(selectedIndex);
     }
 
     //for the alert
