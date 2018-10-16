@@ -44,6 +44,9 @@ public class ConnectionThread implements Runnable {
     @Override
     public void run() {
 
+        //used if the full message is not sent
+        String data = "";
+
         while(out != null && in != null && bluetoothSocket.isConnected()){
             try {
                 byte[] bytes = new byte[100000];
@@ -53,7 +56,17 @@ public class ConnectionThread implements Runnable {
                 if(amount > 0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
                 else continue;
 
-                String message = new String(bytes, Charset.forName("UTF-8"));
+                String message = data + new String(bytes, Charset.forName("UTF-8"));
+
+                //message has not been fully sent, add to data and continue
+                if (!message.endsWith("END")) {
+                    data += message;
+                    continue;
+                }
+
+                //data has been fully sent, removed "END" from it
+                message = message.substring(0, message.length() - 3);
+
                 if (message.contains("SEND SCHEDULE")) { //received data about the schedule
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
@@ -97,6 +110,9 @@ public class ConnectionThread implements Runnable {
                     break;
                 }
 
+                //message has been fully sent and dealt with, reset data
+                data = "";
+
             } catch (IOException e) {
                 e.printStackTrace();
                 mainActivity.listenerThread = new ListenerThread(mainActivity);
@@ -114,6 +130,7 @@ public class ConnectionThread implements Runnable {
         String matchSchedule = schedule.split(":::")[2];
 
         String[] matches = matchSchedule.split("::");
+        System.out.println(schedule + " malen");
 
         //reset schedules
         mainActivity.schedules = new ArrayList<>();
@@ -128,6 +145,7 @@ public class ConnectionThread implements Runnable {
             mainActivity.schedules.add(currentUserData);
 
             for (int matchNum = 0; matchNum < userSchedule.length; matchNum++) {
+                System.out.println(matches[matchNum] + " ma: " + matchNum);
                 String[] robotNumbers = matches[matchNum].split(",");
 
                 int robotIndex = Integer.parseInt(userSchedule[matchNum]);
