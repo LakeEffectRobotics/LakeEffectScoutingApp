@@ -148,7 +148,11 @@ public class ConnectionThread implements Runnable {
                 String[] robotNumbers = matches[matchNum].split(",");
 
                 int robotIndex = Integer.parseInt(userSchedule[matchNum]);
-                currentUserData.robots.add(Integer.parseInt(robotNumbers[robotIndex]));
+                if (robotIndex != -1) {
+                    currentUserData.robots.add(Integer.parseInt(robotNumbers[robotIndex]));
+                } else {
+                    currentUserData.robots.add(-1);
+                }
                 currentUserData.alliances.add(robotIndex >= 3);
             }
         }

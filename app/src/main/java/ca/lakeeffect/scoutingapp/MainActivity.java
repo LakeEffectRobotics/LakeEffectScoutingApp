@@ -921,7 +921,44 @@ public class MainActivity extends AppCompatActivity {
         //set userID
         userID = newUserID;
 
-        robotNumInput.setText(String.valueOf(schedules.get(userID).robots.get(round)));
+        int robotNum = schedules.get(userID).robots.get(round);
+
+        //this scout is off this match
+        if (robotNum == -1) {
+            int matchBack = -1;
+
+            //find next mach number
+            for (int i = round; i < schedules.get(userID).robots.size(); i++) {
+                if (schedules.get(userID).robots.get(i) != -1) {
+                    matchBack = i + 1;
+                    break;
+                }
+            }
+
+            final String message;
+            if (matchBack == -1) {
+                //they never need to come back
+                message = "You are off this match You are off forever according to the schedule! If that does not make sense, ask somebody if something is up.";
+            } else {
+                message = "You are off this match! Come back at match number " + matchBack;
+            }
+
+            //The match number is too high
+            runOnUiThread(new Thread() {
+                public void run() {
+                    Toast.makeText(MainActivity.this, message,
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            //set the robot number to blank
+            robotNumInput.setText("");
+            //reset alliance
+            robotAlliance.setSelection(0);
+            return;
+        }
+
+        robotNumInput.setText(String.valueOf(robotNum));
 
         if (alliance) {
             robotAlliance.setSelection(1);
