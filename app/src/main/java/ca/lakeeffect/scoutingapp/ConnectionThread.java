@@ -157,8 +157,7 @@ public class ConnectionThread implements Runnable {
 
     public void sendLabels(){
         try {
-            System.out.println(mainActivity.labels + " sadsadsad");
-            this.out.write((mainActivity.versionCode + ":::" + mainActivity.labels).getBytes(Charset.forName("UTF-8")));
+            this.out.write((mainActivity.versionCode + ":::" + mainActivity.labels + "END").getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -177,7 +176,7 @@ public class ConnectionThread implements Runnable {
             }
 
             if(mainActivity.pendingMessages.isEmpty()){
-                fullMessage += "nodata::end";
+                fullMessage += "nodataEND";
             }
 
             this.out.write((fullMessage + "\n").getBytes(Charset.forName("UTF-8")));
