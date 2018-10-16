@@ -60,7 +60,7 @@ public class ConnectionThread implements Runnable {
 
                 //message has not been fully sent, add to data and continue
                 if (!message.endsWith("END")) {
-                    data += message;
+                    data = message;
                     continue;
                 }
 
@@ -131,7 +131,6 @@ public class ConnectionThread implements Runnable {
         String matchSchedule = schedule.split(":::")[2];
 
         String[] matches = matchSchedule.split("::");
-        System.out.println(schedule + " malen");
 
         //reset schedules
         mainActivity.schedules = new ArrayList<>();
@@ -146,7 +145,6 @@ public class ConnectionThread implements Runnable {
             mainActivity.schedules.add(currentUserData);
 
             for (int matchNum = 0; matchNum < userSchedule.length; matchNum++) {
-                System.out.println(matches[matchNum] + " ma: " + matchNum);
                 String[] robotNumbers = matches[matchNum].split(",");
 
                 int robotIndex = Integer.parseInt(userSchedule[matchNum]);
@@ -177,10 +175,12 @@ public class ConnectionThread implements Runnable {
             }
 
             if(mainActivity.pendingMessages.isEmpty()){
-                fullMessage += "nodataEND";
+                fullMessage += "nodata";
             }
 
-            this.out.write((fullMessage + "\n").getBytes(Charset.forName("UTF-8")));
+            fullMessage += "END";
+
+            this.out.write((fullMessage).getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
