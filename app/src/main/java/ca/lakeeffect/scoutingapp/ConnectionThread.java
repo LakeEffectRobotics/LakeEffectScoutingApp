@@ -76,6 +76,7 @@ public class ConnectionThread implements Runnable {
                         }
                     });
                     loadSchedule(message);
+                    this.out.write(("RECEIVEDEND").getBytes(Charset.forName("UTF-8")));
                 } else if (message.contains("REQUEST DATA")) { //received a request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
