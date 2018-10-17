@@ -815,7 +815,6 @@ public class MainActivity extends AppCompatActivity {
                 linearLayout.findViewById(R.id.matchNumber).setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        System.out.println("robtonumber clicked");
                         new AlertDialog.Builder(MainActivity.this)
                                 .setTitle("Override schedule")
                                 .setMessage("Would you like to override the schedule and manually choose a robot to scout. ONLY do this if you " +
