@@ -105,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
     //toast displayed in the alert panel for errors when typing certain match numbers
     Toast matchNumAlertToast = null;
 
+    //if the schedule has been overriden
+    boolean overrideSchedule;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -299,9 +302,10 @@ public class MainActivity extends AppCompatActivity {
 
     //updates the view showing the matches left until this scout is off
     public void updateMatchesLeft() {
-        int matchesLeft = getNextMatchOff() - matchNumber;
+        int nextMatchOff = getNextMatchOff();
+        int matchesLeft = nextMatchOff - matchNumber;
 
-        if (matchesLeft == -1) {
+        if (nextMatchOff == -1) {
             matchesLeftText.setText("Never");
         } else {
             matchesLeftText.setText(matchesLeft + "");
@@ -311,6 +315,9 @@ public class MainActivity extends AppCompatActivity {
     //this will return the match number when they have can stop scouting
     public int getNextMatchOff() {
         int matchBack = -1;
+
+        //there is no schedule
+        if (userID == -1) return -1;
 
         //find next mach number
         for (int i = matchNumber; i < schedules.get(userID).robots.size(); i++) {
@@ -397,6 +404,8 @@ public class MainActivity extends AppCompatActivity {
         labels.append("Scout,\n");
         if (userID >= 0) {
             data.append(schedules.get(userID).userName + ",\n");
+        } else {
+            data.append("No scout,\n");
         }
 
         System.out.println(labels.toString());
@@ -849,6 +858,8 @@ public class MainActivity extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int which) {
                                         linearLayout.findViewById(R.id.robotNumber).setEnabled(true);
                                         linearLayout.findViewById(R.id.robotAlliance).setEnabled(true);
+
+                                        overrideSchedule = true;
                                     }
                                 })
                                 .setNegativeButton("No, keep using the schedule", null)
@@ -1107,7 +1118,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            if (userID.getSelectedItemPosition() == 0) {
+            if (userID.getSelectedItemPosition() == 0 && !overrideSchedule) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
