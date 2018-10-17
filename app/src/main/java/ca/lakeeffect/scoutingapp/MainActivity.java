@@ -40,12 +40,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.commons.io.IOUtils;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
@@ -66,11 +63,11 @@ public class MainActivity extends AppCompatActivity {
     List<SeekBar> seekbars = new ArrayList<>();
 
     TextView timer;
-    TextView robotNumText; //robotnum and round
+    TextView robotNumText; //robotnum and matchNumber
     TextView matchesLeftText; //text that shows the matches left until off
 
     int robotNum = 2708;
-    int round = -1;
+    int matchNumber = -1;
 
     //Robot schedule for each user (by user ID)
     //the username selection screen will show a spinner with all the names in this list
@@ -177,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
         robotNumText = (TextView) findViewById(R.id.robotNum);
 
-        robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
+        robotNumText.setText("Round: " + matchNumber + "  Robot: " + robotNum);
 
         //load the saved schedule
         SharedPreferences schedulePrefs = getSharedPreferences("userSchedule", Context.MODE_PRIVATE);
@@ -258,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                 location = flipLocation(location);
             }
 
-            events.append(round + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
+            events.append(matchNumber + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
         }
 
         return events.toString();
@@ -302,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
 
     //updates the view showing the matches left until this scout is off
     public void updateMatchesLeft() {
-        int matchesLeft = getNextMatchOff() - round;
+        int matchesLeft = getNextMatchOff() - matchNumber;
 
         if (matchesLeft == -1) {
             matchesLeftText.setText("Never");
@@ -316,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
         int matchBack = -1;
 
         //find next mach number
-        for (int i = round; i < schedules.get(userID).robots.size(); i++) {
+        for (int i = matchNumber; i < schedules.get(userID).robots.size(); i++) {
             if (schedules.get(userID).robots.get(i) != -1) {
                 matchBack = i + 1;
                 break;
@@ -369,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
         labels = new StringBuilder();
 
         //General Info
-        data.append(round + ",");
+        data.append(matchNumber + ",");
         labels.append("Match,");
 
         labels.append("Date and Time Of Match,");
@@ -1068,7 +1065,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             robotNum = Integer.parseInt(robotNumInput.getText().toString());
-            round = Integer.parseInt(roundInput.getText().toString());
+            matchNumber = Integer.parseInt(roundInput.getText().toString());
 
             alliance = robotAlliance.getSelectedItemPosition() == 2;
             side = viewingSide.getSelectedItemPosition() == 2;
@@ -1099,7 +1096,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putInt("day", day);
             editor.apply();
 
-            if (round > 99) {
+            if (matchNumber > 99) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -1132,7 +1129,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         robotNumText = findViewById(R.id.robotNum);
-        robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
+        robotNumText.setText("Robot: " + robotNum + " " + "Round: " + matchNumber);
 
         matchesLeftText = findViewById(R.id.matchesLeft);
         updateMatchesLeft();
