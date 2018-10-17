@@ -821,7 +821,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setMessage("Would you like to override the schedule and manually choose a robot to scout. ONLY do this if you " +
                                         "are testing or being given instruction to do this.\n\n" +
                                         "WARNING: This could be dangerous!\n\n" +
-                                        "Note: This will still get automaticaly set if you change the match number, it will just " +
+                                        "Note: This will still get automatically set if you change the match number, it will just " +
                                         "allow you to edit it.")
                                 .setPositiveButton("I would like to manually choose a robot number", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
