@@ -752,9 +752,9 @@ public class MainActivity extends AppCompatActivity {
                 final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
                 //setup spinners (Drop downs)
-                View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
+                final View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
 
-                Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
+                final Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
 
                 ArrayAdapter<CharSequence> robotAllianceAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.alliances, R.layout.spinner);
                 robotAlliance.setAdapter(robotAllianceAdapter);
@@ -808,6 +808,31 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void afterTextChanged(Editable editable) {
                         dialogScheduleDataChange(userIDSpinner, dialog);
+                    }
+                });
+
+                //make it so that you can override the schedule if you need to
+                linearLayout.findViewById(R.id.matchNumber).setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        System.out.println("robtonumber clicked");
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Override schedule")
+                                .setMessage("Would you like to override the schedule and manually choose a robot to scout. ONLY do this if you " +
+                                        "are testing or being given instruction to do this.\n\n" +
+                                        "WARNING: This could be dangerous!\n\n" +
+                                        "Note: This will still get automaticaly set if you change the match number, it will just " +
+                                        "allow you to edit it.")
+                                .setPositiveButton("I would like to manually choose a robot number", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        linearLayout.findViewById(R.id.robotNumber).setEnabled(true);
+                                        linearLayout.findViewById(R.id.robotAlliance).setEnabled(true);
+                                    }
+                                })
+                                .setNegativeButton("No, keep using the schedule", null)
+                                .create()
+                                .show();
+                        return false;
                     }
                 });
 
