@@ -71,16 +71,6 @@
                     android:layout_toRightOf="@id/numberOfPendingMessagesTextView"
                     android:textSize="@dimen/text_small"/>
             </RelativeLayout>
-
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:background="@android:color/darker_gray"-->
-        <!--android:layout_below="@+id/status"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:paddingBottom="@dimen/activity_vertical_margin"-->
-        <!--android:id="@+id/view" />-->
         </TableRow>
     </TableLayout>
 
