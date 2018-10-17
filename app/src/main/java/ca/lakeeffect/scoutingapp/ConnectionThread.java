@@ -3,6 +3,7 @@ package ca.lakeeffect.scoutingapp;
 import android.app.Activity;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -166,6 +167,41 @@ public class ConnectionThread implements Runnable {
                }
            });
         }
+
+        //update the shared preferences
+        SharedPreferences prefs = mainActivity.getSharedPreferences("userSchedule", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        //set size
+        editor.putInt("userAmount", mainActivity.schedules.size());
+
+        //go through each user and add the data
+        for (int i = 0; i < mainActivity.schedules.size(); i++) {
+            UserData user = mainActivity.schedules.get(i);
+
+            String robots = "";
+            for (int s = 0; s < user.robots.size(); s++) {
+                robots += user.robots.get(s);
+
+                if (s < user.robots.size() - 1) {
+                    robots += ",";
+                }
+            }
+
+            String alliances = "";
+            for (int s = 0; s < user.robots.size(); s++) {
+                alliances += user.alliances.get(s);
+
+                if (s < user.alliances.size() - 1) {
+                    alliances += ",";
+                }
+            }
+
+            editor.putString("robots" + i, robots);
+            editor.putString("alliances" + i, alliances);
+            editor.putString("userName" + i, user.userName);
+        }
+
+        editor.apply();
     }
 
     public void sendLabels(){

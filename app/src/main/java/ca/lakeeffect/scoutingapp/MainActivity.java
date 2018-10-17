@@ -103,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
 
     //the userIDSpinner on the alert menu
     //null if alert is not open
-    Spinner userIDSpinner;
+    Spinner userIDSpinner = null;
     //toast displayed in the alert panel for errors when typing certain match numbers
-    Toast matchNumAlertToast;
+    Toast matchNumAlertToast = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +177,32 @@ public class MainActivity extends AppCompatActivity {
         robotNumText = (TextView) findViewById(R.id.robotNum);
 
         robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
+
+        //load the saved schedule
+        SharedPreferences schedulePrefs = getSharedPreferences("userSchedule", Context.MODE_PRIVATE);
+        int userAmount = schedulePrefs.getInt("userAmount", 0);
+
+        for (int i = 0; i < userAmount; i++) {
+            String[] robotNumbers = schedulePrefs.getString("robots" + i, "").split(",");
+            String[] alliances = schedulePrefs.getString("alliances" + i, "").split(",");
+            String userName = schedulePrefs.getString("userName" + i, "");
+
+            UserData user = new UserData(i, userName);
+
+            for (String robotNum : robotNumbers) {
+                user.robots.add(Integer.parseInt(robotNum));
+            }
+            for (String alliance : alliances) {
+                user.alliances.add(Boolean.parseBoolean(alliance));
+            }
+
+            //add the user data to the list of schedules
+            schedules.add(user);
+        }
+        //update the UI if necessary
+        if (userIDSpinner != null) {
+            updateUserIDSpinner();
+        }
     }
 
     public void restartListenerThread(){
@@ -726,9 +752,9 @@ public class MainActivity extends AppCompatActivity {
                 final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
                 //setup spinners (Drop downs)
-                View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
+                final View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
 
-                Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
+                final Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
 
                 ArrayAdapter<CharSequence> robotAllianceAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.alliances, R.layout.spinner);
                 robotAlliance.setAdapter(robotAllianceAdapter);
@@ -785,6 +811,31 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                //make it so that you can override the schedule if you need to
+                linearLayout.findViewById(R.id.matchNumber).setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        System.out.println("robtonumber clicked");
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Override schedule")
+                                .setMessage("Would you like to override the schedule and manually choose a robot to scout. ONLY do this if you " +
+                                        "are testing or being given instruction to do this.\n\n" +
+                                        "WARNING: This could be dangerous!\n\n" +
+                                        "Note: This will still get automatically set if you change the match number, it will just " +
+                                        "allow you to edit it.")
+                                .setPositiveButton("I would like to manually choose a robot number", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        linearLayout.findViewById(R.id.robotNumber).setEnabled(true);
+                                        linearLayout.findViewById(R.id.robotAlliance).setEnabled(true);
+                                    }
+                                })
+                                .setNegativeButton("No, keep using the schedule", null)
+                                .create()
+                                .show();
+                        return false;
+                    }
+                });
+
                 //set spinners to previous values
                 prefs = getSharedPreferences("robotAlliance", MODE_PRIVATE);
                 if(prefs.getInt("day", -1) == day && prefs.getInt("month", -1) == month && prefs.getInt("year", -1) == year){
@@ -831,7 +882,7 @@ public class MainActivity extends AppCompatActivity {
         if (matchNumAlertToast != null) matchNumAlertToast.cancel();
 
         //has it been 15 minutes
-        if (newUserID != userID && (lastSubmit == -1 || System.currentTimeMillis() - lastSubmit > 900000)) {
+        if (newUserID != userID && (lastSubmit == -1 || System.currentTimeMillis() - lastSubmit > 900000) && userID != -1) {
             //make a confirmation message here
             AlertDialog confirmationDialog = new AlertDialog.Builder(this)
                     .setTitle("Are you still " + schedules.get(MainActivity.this.userID).userName + "?")
@@ -866,6 +917,9 @@ public class MainActivity extends AppCompatActivity {
         //if the match number has been selected it can be used
         int round = Integer.parseInt(roundText) - 1;
 
+        //set userID
+        userID = newUserID;
+
         EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.robotNumber);
         Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
 
@@ -889,9 +943,6 @@ public class MainActivity extends AppCompatActivity {
 
         //find the robot alliance
         alliance = schedules.get(userID).alliances.get(round);
-
-        //set userID
-        userID = newUserID;
 
         int robotNum = schedules.get(userID).robots.get(round);
 
