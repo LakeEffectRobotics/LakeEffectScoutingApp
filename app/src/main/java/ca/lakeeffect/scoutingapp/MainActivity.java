@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView timer;
     TextView robotNumText; //robotnum and round
+    TextView matchesLeftText; //text that shows the matches left until off
 
     int robotNum = 2708;
     int round = -1;
@@ -299,6 +300,32 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
+    //updates the view showing the matches left until this scout is off
+    public void updateMatchesLeft() {
+        int matchesLeft = getNextMatchOff() - round;
+
+        if (matchesLeft == -1) {
+            matchesLeftText.setText("Never");
+        } else {
+            matchesLeftText.setText(matchesLeft + "");
+        }
+    }
+
+    //this will return the match number when they have can stop scouting
+    public int getNextMatchOff() {
+        int matchBack = -1;
+
+        //find next mach number
+        for (int i = round; i < schedules.get(userID).robots.size(); i++) {
+            if (schedules.get(userID).robots.get(i) != -1) {
+                matchBack = i + 1;
+                break;
+            }
+        }
+
+        return matchBack;
+    }
+
     public String[] getData(boolean bypassChecks) {
         if (!bypassChecks) {
             if (((RatingBar) pagerAdapter.endgamePage.getView().findViewById(R.id.driveRating)).getRating() <= 0) {
@@ -465,7 +492,6 @@ public class MainActivity extends AppCompatActivity {
         String out = id.substring(0, 1).toUpperCase() + id.substring(1);
         for (int i = 1; i < out.length(); i++) {
             if (Character.isUpperCase(out.charAt(i))) {
-                System.out.println("TEST");
                 out = out.substring(0, i) + " " + out.substring(i);
                 i++;
             }
@@ -947,15 +973,8 @@ public class MainActivity extends AppCompatActivity {
 
         //this scout is off this match
         if (robotNum == -1) {
-            int matchBack = -1;
 
-            //find next mach number
-            for (int i = round; i < schedules.get(userID).robots.size(); i++) {
-                if (schedules.get(userID).robots.get(i) != -1) {
-                    matchBack = i + 1;
-                    break;
-                }
-            }
+            int matchBack = getNextMatchOff();
 
             final String message;
             if (matchBack == -1) {
@@ -1112,8 +1131,11 @@ public class MainActivity extends AppCompatActivity {
             });
             return;
         }
-        robotNumText = (TextView) findViewById(R.id.robotNum);
+        robotNumText = findViewById(R.id.robotNum);
         robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
+
+        matchesLeftText = findViewById(R.id.matchesLeft);
+        updateMatchesLeft();
 
         dialog.dismiss();
     }
