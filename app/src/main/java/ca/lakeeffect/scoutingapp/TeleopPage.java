@@ -31,7 +31,7 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
     Button failedDropOff;
 
 
-    //All the events made by the person this round
+    //All the events made by the person this matchNumber
     ArrayList<Event> events = new ArrayList<Event>();
 
     Vibrator vibrator;

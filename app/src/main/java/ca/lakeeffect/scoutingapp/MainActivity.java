@@ -40,12 +40,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.commons.io.IOUtils;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
@@ -66,10 +63,11 @@ public class MainActivity extends AppCompatActivity {
     List<SeekBar> seekbars = new ArrayList<>();
 
     TextView timer;
-    TextView robotNumText; //robotnum and round
+    TextView robotNumText; //robotnum and matchNumber
+    TextView matchesLeftText; //text that shows the matches left until off
 
     int robotNum = 2708;
-    int round = -1;
+    int matchNumber = -1;
 
     //Robot schedule for each user (by user ID)
     //the username selection screen will show a spinner with all the names in this list
@@ -106,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
     Spinner userIDSpinner = null;
     //toast displayed in the alert panel for errors when typing certain match numbers
     Toast matchNumAlertToast = null;
+
+    //if the schedule has been overriden
+    boolean overrideSchedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
         robotNumText = (TextView) findViewById(R.id.robotNum);
 
-        robotNumText.setText("Round: " + round + "  Robot: " + robotNum);
+        robotNumText.setText("Round: " + matchNumber + "  Robot: " + robotNum);
 
         //load the saved schedule
         SharedPreferences schedulePrefs = getSharedPreferences("userSchedule", Context.MODE_PRIVATE);
@@ -257,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 location = flipLocation(location);
             }
 
-            events.append(round + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
+            events.append(matchNumber + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
         }
 
         return events.toString();
@@ -297,6 +298,36 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return 0;
+    }
+
+    //updates the view showing the matches left until this scout is off
+    public void updateMatchesLeft() {
+        int nextMatchOff = getNextMatchOff();
+        int matchesLeft = nextMatchOff - matchNumber;
+
+        if (nextMatchOff == -1) {
+            matchesLeftText.setText("Never");
+        } else {
+            matchesLeftText.setText(matchesLeft + "");
+        }
+    }
+
+    //this will return the match number when they have can stop scouting
+    public int getNextMatchOff() {
+        int matchBack = -1;
+
+        //there is no schedule
+        if (userID == -1) return -1;
+
+        //find next mach number
+        for (int i = matchNumber; i < schedules.get(userID).robots.size(); i++) {
+            if (schedules.get(userID).robots.get(i) != -1) {
+                matchBack = i + 1;
+                break;
+            }
+        }
+
+        return matchBack;
     }
 
     public String[] getData(boolean bypassChecks) {
@@ -342,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
         labels = new StringBuilder();
 
         //General Info
-        data.append(round + ",");
+        data.append(matchNumber + ",");
         labels.append("Match,");
 
         labels.append("Date and Time Of Match,");
@@ -373,6 +404,8 @@ public class MainActivity extends AppCompatActivity {
         labels.append("Scout,\n");
         if (userID >= 0) {
             data.append(schedules.get(userID).userName + ",\n");
+        } else {
+            data.append("No scout,\n");
         }
 
         System.out.println(labels.toString());
@@ -465,7 +498,6 @@ public class MainActivity extends AppCompatActivity {
         String out = id.substring(0, 1).toUpperCase() + id.substring(1);
         for (int i = 1; i < out.length(); i++) {
             if (Character.isUpperCase(out.charAt(i))) {
-                System.out.println("TEST");
                 out = out.substring(0, i) + " " + out.substring(i);
                 i++;
             }
@@ -815,7 +847,6 @@ public class MainActivity extends AppCompatActivity {
                 linearLayout.findViewById(R.id.matchNumber).setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        System.out.println("robtonumber clicked");
                         new AlertDialog.Builder(MainActivity.this)
                                 .setTitle("Override schedule")
                                 .setMessage("Would you like to override the schedule and manually choose a robot to scout. ONLY do this if you " +
@@ -827,6 +858,8 @@ public class MainActivity extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int which) {
                                         linearLayout.findViewById(R.id.robotNumber).setEnabled(true);
                                         linearLayout.findViewById(R.id.robotAlliance).setEnabled(true);
+
+                                        overrideSchedule = true;
                                     }
                                 })
                                 .setNegativeButton("No, keep using the schedule", null)
@@ -948,15 +981,8 @@ public class MainActivity extends AppCompatActivity {
 
         //this scout is off this match
         if (robotNum == -1) {
-            int matchBack = -1;
 
-            //find next mach number
-            for (int i = round; i < schedules.get(userID).robots.size(); i++) {
-                if (schedules.get(userID).robots.get(i) != -1) {
-                    matchBack = i + 1;
-                    break;
-                }
-            }
+            int matchBack = getNextMatchOff();
 
             final String message;
             if (matchBack == -1) {
@@ -1050,7 +1076,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             robotNum = Integer.parseInt(robotNumInput.getText().toString());
-            round = Integer.parseInt(roundInput.getText().toString());
+            matchNumber = Integer.parseInt(roundInput.getText().toString());
 
             alliance = robotAlliance.getSelectedItemPosition() == 2;
             side = viewingSide.getSelectedItemPosition() == 2;
@@ -1081,7 +1107,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putInt("day", day);
             editor.apply();
 
-            if (round > 99) {
+            if (matchNumber > 99) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -1092,7 +1118,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            if (userID.getSelectedItemPosition() == 0) {
+            if (userID.getSelectedItemPosition() == 0 && !overrideSchedule) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -1113,8 +1139,11 @@ public class MainActivity extends AppCompatActivity {
             });
             return;
         }
-        robotNumText = (TextView) findViewById(R.id.robotNum);
-        robotNumText.setText("Robot: " + robotNum + " " + "Round: " + round);
+        robotNumText = findViewById(R.id.robotNum);
+        robotNumText.setText("Robot: " + robotNum + " " + "Round: " + matchNumber);
+
+        matchesLeftText = findViewById(R.id.matchesLeft);
+        updateMatchesLeft();
 
         dialog.dismiss();
     }

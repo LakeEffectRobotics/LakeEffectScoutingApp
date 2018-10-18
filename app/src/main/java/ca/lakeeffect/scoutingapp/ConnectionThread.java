@@ -202,6 +202,9 @@ public class ConnectionThread implements Runnable {
         }
 
         editor.apply();
+
+        //update the UI with the time remaining
+        mainActivity.updateMatchesLeft();
     }
 
     public void sendLabels(){
