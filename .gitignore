@@ -38,3 +38,5 @@ app/google-services.json
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+/build/

@@ -302,14 +302,14 @@ public class MainActivity extends AppCompatActivity {
 
     //updates the view showing the matches left until this scout is off
     public void updateMatchesLeft() {
-        int nextMatchOff = getNextMatchOff();
-        int matchesLeft = nextMatchOff - matchNumber;
-
-        if (nextMatchOff == -1) {
-            matchesLeftText.setText("Never");
-        } else {
-            matchesLeftText.setText(matchesLeft + "");
-        }
+//        int nextMatchOff = getNextMatchOff();
+//        int matchesLeft = nextMatchOff - matchNumber;
+//
+//        if (nextMatchOff == -1) {
+//            matchesLeftText.setText("Never");
+//        } else {
+//            matchesLeftText.setText(matchesLeft + "");
+//        }
     }
 
     //this will return the match number when they have can stop scouting
