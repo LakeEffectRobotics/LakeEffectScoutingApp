@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
         //there is no schedule
         if (userID == -1) return -1;
 
-        //find next mach number
+        //find next match number
         int matchNumber = this.matchNumber;
         if (matchNumber <= 0) matchNumber = 1;
         for (int i = matchNumber - 1; i < schedules.get(userID).robots.size(); i++) {
@@ -342,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
         //there is no schedule
         if (userID == -1) return -1;
 
-        //find next mach number
+        //find next match number
         int matchNumber = this.matchNumber;
         if (matchNumber <= 0) matchNumber = 1;
         for (int i = matchNumber - 1; i < schedules.get(userID).robots.size(); i++) {
