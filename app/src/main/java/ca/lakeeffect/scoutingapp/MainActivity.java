@@ -135,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //setup matches left text
+        matchesLeftText = findViewById(R.id.matchesLeft);
+
         //call alert (asking scout name and robot number)
         alert();
 
@@ -320,7 +323,29 @@ public class MainActivity extends AppCompatActivity {
         if (userID == -1) return -1;
 
         //find next mach number
-        for (int i = matchNumber; i < schedules.get(userID).robots.size(); i++) {
+        int matchNumber = this.matchNumber;
+        if (matchNumber <= 0) matchNumber = 1;
+        for (int i = matchNumber - 1; i < schedules.get(userID).robots.size(); i++) {
+            if (schedules.get(userID).robots.get(i) == -1) {
+                matchBack = i + 1;
+                break;
+            }
+        }
+
+        return matchBack;
+    }
+
+    //this will return the match number when they have have to start scouting again
+    public int getNextMatchOn() {
+        int matchBack = -1;
+
+        //there is no schedule
+        if (userID == -1) return -1;
+
+        //find next mach number
+        int matchNumber = this.matchNumber;
+        if (matchNumber <= 0) matchNumber = 1;
+        for (int i = matchNumber - 1; i < schedules.get(userID).robots.size(); i++) {
             if (schedules.get(userID).robots.get(i) != -1) {
                 matchBack = i + 1;
                 break;
@@ -839,6 +864,12 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void afterTextChanged(Editable editable) {
+                        //update match number based on what has been typed
+                        EditText roundInput = (EditText) linearLayout.findViewById(R.id.matchNumber);
+                        if (!roundInput.getText().toString().equals("")) {
+                            matchNumber = Integer.parseInt(roundInput.getText().toString());
+                        }
+
                         dialogScheduleDataChange(userIDSpinner, dialog);
                     }
                 });
@@ -982,7 +1013,7 @@ public class MainActivity extends AppCompatActivity {
         //this scout is off this match
         if (robotNum == -1) {
 
-            int matchBack = getNextMatchOff();
+            int matchBack = getNextMatchOn();
 
             final String message;
             if (matchBack == -1) {
@@ -1142,7 +1173,6 @@ public class MainActivity extends AppCompatActivity {
         robotNumText = findViewById(R.id.robotNum);
         robotNumText.setText("Robot: " + robotNum + " " + "Round: " + matchNumber);
 
-        matchesLeftText = findViewById(R.id.matchesLeft);
         updateMatchesLeft();
 
         dialog.dismiss();
