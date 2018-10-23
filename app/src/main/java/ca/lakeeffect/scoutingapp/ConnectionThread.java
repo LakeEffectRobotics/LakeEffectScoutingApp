@@ -158,12 +158,15 @@ public class ConnectionThread implements Runnable {
             }
         }
 
-        //update the userIDSpinner if the alert is open
         if (mainActivity.userIDSpinner != null) {
             mainActivity.runOnUiThread(new Runnable() {
                @Override
                public void run() {
+                   //update the userIDSpinner if the alert is open
                    mainActivity.updateUserIDSpinner();
+
+                   //update the UI with the time remaining
+                   mainActivity.updateMatchesLeft();
                }
            });
         }
@@ -202,9 +205,6 @@ public class ConnectionThread implements Runnable {
         }
 
         editor.apply();
-
-        //update the UI with the time remaining
-        mainActivity.updateMatchesLeft();
     }
 
     public void sendLabels(){
