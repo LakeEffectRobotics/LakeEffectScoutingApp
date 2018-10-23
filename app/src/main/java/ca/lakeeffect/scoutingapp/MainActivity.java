@@ -864,6 +864,12 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void afterTextChanged(Editable editable) {
+                        //update match number based on what has been typed
+                        EditText roundInput = (EditText) linearLayout.findViewById(R.id.matchNumber);
+                        if (!roundInput.getText().toString().equals("")) {
+                            matchNumber = Integer.parseInt(roundInput.getText().toString());
+                        }
+
                         dialogScheduleDataChange(userIDSpinner, dialog);
                     }
                 });
