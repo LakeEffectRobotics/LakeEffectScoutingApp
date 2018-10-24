@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -426,12 +427,16 @@ public class MainActivity extends AppCompatActivity {
         layout = (PercentRelativeLayout) pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
         enterLayout(layout);
 
-        labels.append("Scout,\n");
+        labels.append("Scout");
         if (userID >= 0) {
-            data.append(schedules.get(userID).userName + ",\n");
+            data.append(schedules.get(userID).userName);
         } else {
-            data.append("No scout,\n");
+            data.append("No scout");
         }
+
+        //Add UUID
+        labels.append("UUID,\n");
+        data.append("," + UUID.randomUUID() + "\n");
 
         System.out.println(labels.toString());
         System.out.println(data.toString());
