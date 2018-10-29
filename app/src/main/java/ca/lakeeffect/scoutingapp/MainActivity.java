@@ -879,6 +879,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                //if the schedule has already been overridden, set it to overridden
+                if (overrideSchedule) {
+                    linearLayout.findViewById(R.id.robotNumber).setEnabled(true);
+                    linearLayout.findViewById(R.id.robotAlliance).setEnabled(true);
+                }
+
                 //make it so that you can override the schedule if you need to
                 linearLayout.findViewById(R.id.matchNumber).setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
