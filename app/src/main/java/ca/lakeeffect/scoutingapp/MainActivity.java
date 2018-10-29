@@ -869,13 +869,16 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-                        //update match number based on what has been typed
-                        EditText roundInput = (EditText) linearLayout.findViewById(R.id.matchNumber);
-                        if (!roundInput.getText().toString().equals("")) {
-                            matchNumber = Integer.parseInt(roundInput.getText().toString());
-                        }
+                        //don't update if the schedule is being overridden, it will be handled on the press of the ok button
+                        if (!overrideSchedule) {
+                            //update match number based on what has been typed
+                            EditText roundInput = linearLayout.findViewById(R.id.matchNumber);
+                            if (!roundInput.getText().toString().equals("")) {
+                                matchNumber = Integer.parseInt(roundInput.getText().toString());
+                            }
 
-                        dialogScheduleDataChange(userIDSpinner, dialog);
+                            dialogScheduleDataChange(userIDSpinner, dialog);
+                        }
                     }
                 });
 
