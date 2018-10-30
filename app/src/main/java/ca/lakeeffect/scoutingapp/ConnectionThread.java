@@ -34,6 +34,8 @@ public class ConnectionThread implements Runnable {
 
     ArrayList<String> sentPendingMessages = new ArrayList<>();
 
+    final String endSplitter = "{e}";
+
     public ConnectionThread(MainActivity mainActivity, BluetoothSocket bluetoothSocket, OutputStream out, InputStream in, BluetoothServerSocket bss){
         this.mainActivity = mainActivity;
         this.bluetoothSocket = bluetoothSocket;
@@ -60,12 +62,12 @@ public class ConnectionThread implements Runnable {
                 String message = data + new String(bytes, Charset.forName("UTF-8"));
 
                 //message has not been fully sent, add to data and continue
-                if (!message.endsWith("END")) {
+                if (!message.endsWith(endSplitter)) {
                     data = message;
                     continue;
                 }
 
-                //data has been fully sent, removed "END" from it
+                //data has been fully sent, removed "{e}" (the end splitter) from it
                 message = message.substring(0, message.length() - 3);
 
                 if (message.contains("SEND SCHEDULE")) { //received data about the schedule
@@ -77,7 +79,7 @@ public class ConnectionThread implements Runnable {
                         }
                     });
                     loadSchedule(message);
-                    this.out.write(("RECEIVEDEND").getBytes(Charset.forName("UTF-8")));
+                    this.out.write(("RECEIVED" + endSplitter).getBytes(Charset.forName("UTF-8")));
                 } else if (message.contains("REQUEST DATA")) { //received a request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
@@ -209,7 +211,7 @@ public class ConnectionThread implements Runnable {
 
     public void sendLabels(){
         try {
-            this.out.write((mainActivity.versionCode + ":::" + mainActivity.labels + "END").getBytes(Charset.forName("UTF-8")));
+            this.out.write((mainActivity.versionCode + ":::" + mainActivity.labels + endSplitter).getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -231,7 +233,7 @@ public class ConnectionThread implements Runnable {
                 fullMessage += "nodata";
             }
 
-            fullMessage += "END";
+            fullMessage += endSplitter;
 
             this.out.write((fullMessage).getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {

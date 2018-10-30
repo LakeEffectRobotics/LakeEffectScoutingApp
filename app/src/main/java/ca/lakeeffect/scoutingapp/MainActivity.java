@@ -32,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -51,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
 
     //the id of the user currently scouting. This decides when they must switch on and off from scouting
     int userID = -1;
+
+    //only used if the schedule is being overridden
+    String scoutName = "";
+    //view that contains the scout name if the schedule is overridden
+    EditText overriddenScoutName;
 
     //the field data
     public static boolean alliance; //red is false, true is blue
@@ -105,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     //toast displayed in the alert panel for errors when typing certain match numbers
     Toast matchNumAlertToast = null;
 
-    //if the schedule has been overriden
+    //if the schedule has been overridden
     boolean overrideSchedule;
 
     @Override
@@ -426,12 +433,16 @@ public class MainActivity extends AppCompatActivity {
         layout = (PercentRelativeLayout) pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
         enterLayout(layout);
 
-        labels.append("Scout,\n");
+        labels.append("Scout");
         if (userID >= 0) {
-            data.append(schedules.get(userID).userName + ",\n");
+            data.append(schedules.get(userID).userName);
         } else {
-            data.append("No scout,\n");
+            data.append(scoutName);
         }
+
+        //Add UUID
+        labels.append("UUID,\n");
+        data.append("," + UUID.randomUUID() + "\n");
 
         System.out.println(labels.toString());
         System.out.println(data.toString());
@@ -809,9 +820,9 @@ public class MainActivity extends AppCompatActivity {
                 final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
                 //setup spinners (Drop downs)
-                final View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
+                final LinearLayout linearLayout = (LinearLayout) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
 
-                final Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
+                final Spinner robotAlliance = linearLayout.findViewById(R.id.robotAlliance);
 
                 ArrayAdapter<CharSequence> robotAllianceAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.alliances, R.layout.spinner);
                 robotAlliance.setAdapter(robotAllianceAdapter);
@@ -820,7 +831,7 @@ public class MainActivity extends AppCompatActivity {
                 robotAlliance.setEnabled(false);
 
                 //List user names available
-                userIDSpinner = (Spinner) linearLayout.findViewById(R.id.userID);
+                userIDSpinner = linearLayout.findViewById(R.id.userID);
 
                 //set a listener to make sure to adjust other fields based on it will change as well
                 userIDSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -842,7 +853,7 @@ public class MainActivity extends AppCompatActivity {
                 userIDSpinner.setSelection(prefs.getInt("userID", -1) + 1);
 
                 //Setup spinner for the side the field is being viewed from
-                Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
+                Spinner viewingSide = linearLayout.findViewById(R.id.viewingSide);
 
                 ArrayAdapter<CharSequence> viewingSideAdapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.viewingSides, R.layout.spinner);
                 viewingSide.setAdapter(viewingSideAdapter);
@@ -864,15 +875,31 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-                        //update match number based on what has been typed
-                        EditText roundInput = (EditText) linearLayout.findViewById(R.id.matchNumber);
-                        if (!roundInput.getText().toString().equals("")) {
-                            matchNumber = Integer.parseInt(roundInput.getText().toString());
-                        }
+                        //don't update if the schedule is being overridden, it will be handled on the press of the ok button
+                        if (!overrideSchedule) {
+                            //update match number based on what has been typed
+                            EditText roundInput = linearLayout.findViewById(R.id.matchNumber);
+                            if (!roundInput.getText().toString().equals("")) {
+                                matchNumber = Integer.parseInt(roundInput.getText().toString());
+                            }
 
-                        dialogScheduleDataChange(userIDSpinner, dialog);
+                            dialogScheduleDataChange(userIDSpinner, dialog);
+                        }
                     }
                 });
+
+                overriddenScoutName = new EditText(MainActivity.this);
+                overriddenScoutName.setHint("Scout Name");
+
+                //if the schedule has already been overridden, set it to overridden
+                if (overrideSchedule) {
+                    linearLayout.findViewById(R.id.robotNumber).setEnabled(true);
+                    linearLayout.findViewById(R.id.robotAlliance).setEnabled(true);
+
+                    linearLayout.findViewById(R.id.userID).setEnabled(false);
+                    ((Spinner) linearLayout.findViewById(R.id.userID)).setSelection(0);
+                    linearLayout.addView(overriddenScoutName, 0);
+                }
 
                 //make it so that you can override the schedule if you need to
                 linearLayout.findViewById(R.id.matchNumber).setOnLongClickListener(new View.OnLongClickListener() {
@@ -889,6 +916,10 @@ public class MainActivity extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int which) {
                                         linearLayout.findViewById(R.id.robotNumber).setEnabled(true);
                                         linearLayout.findViewById(R.id.robotAlliance).setEnabled(true);
+
+                                        linearLayout.findViewById(R.id.userID).setEnabled(false);
+                                        ((Spinner) linearLayout.findViewById(R.id.userID)).setSelection(0);
+                                        linearLayout.addView(overriddenScoutName, 0);
 
                                         overrideSchedule = true;
                                     }
@@ -1085,13 +1116,13 @@ public class MainActivity extends AppCompatActivity {
 
         View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
 
-        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.robotNumber);
-        EditText roundInput = (EditText) linearLayout.findViewById(R.id.matchNumber);
+        EditText robotNumInput = linearLayout.findViewById(R.id.robotNumber);
+        EditText roundInput = linearLayout.findViewById(R.id.matchNumber);
 
         //spinners
-        Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
-        Spinner viewingSide = (Spinner) linearLayout.findViewById(R.id.viewingSide);
-        Spinner userID = (Spinner) linearLayout.findViewById(R.id.userID);
+        Spinner robotAlliance = linearLayout.findViewById(R.id.robotAlliance);
+        Spinner viewingSide = linearLayout.findViewById(R.id.viewingSide);
+        Spinner userID = linearLayout.findViewById(R.id.userID);
 
         if(robotAlliance.getSelectedItemPosition() == 0 || viewingSide.getSelectedItemPosition() == 0){
             runOnUiThread(new Runnable() {
@@ -1119,6 +1150,8 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt("userID", userID.getSelectedItemPosition() - 1);
             editor.apply();
+
+            scoutName = overriddenScoutName.getText().toString();
 
             //save selections for robot alliance
             prefs = getSharedPreferences("robotAlliance", MODE_PRIVATE);
