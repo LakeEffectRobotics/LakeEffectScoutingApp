@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 /**
  * Created by Ajay on 02/10/2017.
- *
+ * 
  * This thread runs once the client is connected to the sever, it waits for the server to ask for the data
  */
 
@@ -36,7 +36,7 @@ public class ConnectionThread implements Runnable {
 
     final String endSplitter = "{e}";
 
-    public ConnectionThread(MainActivity mainActivity, BluetoothSocket bluetoothSocket, OutputStream out, InputStream in, BluetoothServerSocket bss){
+    public ConnectionThread(MainActivity mainActivity, BluetoothSocket bluetoothSocket, OutputStream out, InputStream in, BluetoothServerSocket bss) {
         this.mainActivity = mainActivity;
         this.bluetoothSocket = bluetoothSocket;
         this.out = out;
@@ -50,13 +50,14 @@ public class ConnectionThread implements Runnable {
         //used if the full message is not sent
         String data = "";
 
-        while(out != null && in != null && bluetoothSocket.isConnected()){
+        while (out != null && in != null && bluetoothSocket.isConnected()) {
             try {
                 byte[] bytes = new byte[100000];
                 int amount = in.read(bytes);
 
                 //if some bytes were sent, then we received something, then cut out the unused bytes (bytes array is very big because it must be the MAXIMUM amount of data you are willing to receive
-                if(amount > 0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
+                if (amount > 0)
+                    bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
                 else continue;
 
                 String message = data + new String(bytes, Charset.forName("UTF-8"));
@@ -162,15 +163,15 @@ public class ConnectionThread implements Runnable {
 
         if (mainActivity.userIDSpinner != null) {
             mainActivity.runOnUiThread(new Runnable() {
-               @Override
-               public void run() {
-                   //update the userIDSpinner if the alert is open
-                   mainActivity.updateUserIDSpinner();
+                @Override
+                public void run() {
+                    //update the userIDSpinner if the alert is open
+                    mainActivity.updateUserIDSpinner();
 
-                   //update the UI with the time remaining
-                   mainActivity.updateMatchesLeft();
-               }
-           });
+                    //update the UI with the time remaining
+                    mainActivity.updateMatchesLeft();
+                }
+            });
         }
 
         //update the shared preferences
@@ -209,7 +210,7 @@ public class ConnectionThread implements Runnable {
         editor.apply();
     }
 
-    public void sendLabels(){
+    public void sendLabels() {
         try {
             this.out.write((mainActivity.versionCode + ":::" + mainActivity.labels + endSplitter).getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
@@ -217,11 +218,11 @@ public class ConnectionThread implements Runnable {
         }
     }
 
-    public void sendData(){
+    public void sendData() {
         try {
             String fullMessage = mainActivity.versionCode + ":::";
-            for(String message : mainActivity.pendingMessages){
-                if(!fullMessage.equals(mainActivity.versionCode + ":::")){
+            for (String message : mainActivity.pendingMessages) {
+                if (!fullMessage.equals(mainActivity.versionCode + ":::")) {
                     fullMessage += "::";
                 }
                 fullMessage += message;
@@ -229,7 +230,7 @@ public class ConnectionThread implements Runnable {
                 sentPendingMessages.add(message);
             }
 
-            if(mainActivity.pendingMessages.isEmpty()){
+            if (mainActivity.pendingMessages.isEmpty()) {
                 fullMessage += "nodata";
             }
 
@@ -241,27 +242,27 @@ public class ConnectionThread implements Runnable {
         }
     }
 
-    public void deleteData(){ //deleted items that are in sent pending messages (because they now have been sent)
+    public void deleteData() { //deleted items that are in sent pending messages (because they now have been sent)
 
         SharedPreferences prefs2 = mainActivity.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefs2.edit();
-        if( prefs2.getInt("messageAmount", 0) - sentPendingMessages.size() >= 0){
+        if (prefs2.getInt("messageAmount", 0) - sentPendingMessages.size() >= 0) {
             editor2.putInt("messageAmount", prefs2.getInt("messageAmount", 0) - sentPendingMessages.size());
         } else {
             editor2.putInt("messageAmount", 0);
         }
         editor2.apply();
 
-        for(String message: new ArrayList<>(sentPendingMessages)){
+        for (String message : new ArrayList<>(sentPendingMessages)) {
             mainActivity.pendingMessages.remove(message);
             sentPendingMessages.remove(message);
 
             int loc = mainActivity.getLocationInSharedMessages(message);
 
-            if(loc != -1){
+            if (loc != -1) {
                 SharedPreferences prefs = mainActivity.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("message"+loc, null);
+                editor.putString("message" + loc, null);
                 editor.apply();
             }
         }
@@ -270,7 +271,7 @@ public class ConnectionThread implements Runnable {
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((TextView) ((RelativeLayout) mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingMessages.size() + "");
+                ((TextView) (mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingMessages.size() + "");
             }
         });
     }

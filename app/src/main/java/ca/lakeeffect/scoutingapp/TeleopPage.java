@@ -47,19 +47,19 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
         View view = inflator.inflate(R.layout.teleoppage, container, false);
 
-        surface = (SurfaceView) view.findViewById(R.id.fieldCanvas);
+        surface = view.findViewById(R.id.fieldCanvas);
         field = new Field(surface, BitmapFactory.decodeResource(getResources(), R.drawable.field));
         surface.setOnTouchListener(field);
 
-        pickup = (Button) view.findViewById(R.id.pickupButton);
+        pickup = view.findViewById(R.id.pickupButton);
         pickup.setOnClickListener(this);
-        drop = (Button) view.findViewById(R.id.dropButton);
+        drop = view.findViewById(R.id.dropButton);
         drop.setOnClickListener(this);
-        undo = (Button) view.findViewById(R.id.undo);
+        undo = view.findViewById(R.id.undo);
         undo.setOnClickListener(this);
-        fail = (Button) view.findViewById(R.id.failButton);
+        fail = view.findViewById(R.id.failButton);
         fail.setOnClickListener(this);
-        failedDropOff = (Button) view.findViewById(R.id.failDropOffButton);
+        failedDropOff = view.findViewById(R.id.failDropOffButton);
         failedDropOff.setOnClickListener(this);
 
         view.setTag("page2");

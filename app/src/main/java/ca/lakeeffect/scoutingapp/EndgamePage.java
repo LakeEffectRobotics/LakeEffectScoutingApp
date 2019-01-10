@@ -47,10 +47,10 @@ public class EndgamePage extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
         View view = inflator.inflate(R.layout.endgamepage, container, false);
 
-        submit = (Button) view.findViewById(R.id.submit);
+        submit = view.findViewById(R.id.submit);
         submit.setOnClickListener(this);
 
-        climb = (Spinner) view.findViewById(R.id.endgameClimb);
+        climb = view.findViewById(R.id.endgameClimb);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.climb, R.layout.spinner);
         climb.setAdapter(adapter);
 
