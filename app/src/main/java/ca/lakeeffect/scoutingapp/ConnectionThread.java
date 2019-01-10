@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 /**
  * Created by Ajay on 02/10/2017.
- * <p>
+ * 
  * This thread runs once the client is connected to the sever, it waits for the server to ask for the data
  */
 
