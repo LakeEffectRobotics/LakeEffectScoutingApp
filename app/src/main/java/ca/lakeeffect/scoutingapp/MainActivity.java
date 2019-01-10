@@ -455,7 +455,9 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < top.getChildCount(); i++) {
             View v = top.getChildAt(i);
             if (v instanceof EditText) {
-                data.append(((EditText) v).getText().toString().replace("|", "||").replace(",", "|c").replace("\n", "|n").replace("\"", "|q").replace(":", ";") + ",");
+                data.append(((EditText) v).getText().toString().replace("|", "||").replace(",", "|c")
+                        .replace("\n", "|n").replace("\"", "|q").replace(":", ";")
+                        .replace("{", "|ob").replace("}", "|cb") + ",");
                 labels.append(getName(v) + ",");
             }
             if (v instanceof CheckBox) {
