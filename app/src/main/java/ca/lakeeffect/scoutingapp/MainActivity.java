@@ -35,7 +35,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -1146,7 +1145,7 @@ public class MainActivity extends AppCompatActivity {
             side = viewingSide.getSelectedItemPosition() == 2;
 
             //adjust the field image according to selection
-            pagerAdapter.teleopPage.field.switchSides(side);
+            pagerAdapter.teleopPage.field.updateField(this, side);
 
             SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
