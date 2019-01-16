@@ -52,8 +52,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        startScouting = (Button) findViewById(R.id.startScouting);
-        moreOptions = (Button) findViewById(R.id.moreOptionsStartScreen);
+        startScouting = findViewById(R.id.startScouting);
+        moreOptions = findViewById(R.id.moreOptionsStartScreen);
 
         startScouting.setOnClickListener(this);
         moreOptions.setOnClickListener(this);
@@ -66,12 +66,12 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         }
 
         //Set Unsent Messages Text
-        TextView unsentMessages = (TextView) findViewById(R.id.startUnsentMessages);
+        TextView unsentMessages = findViewById(R.id.startUnsentMessages);
         assert unsentMessages != null;
         unsentMessages.setText("Unsent Messages: " + getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE).getInt("messageAmount", 0));
 
         //Set Version Text
-        TextView versionNum = (TextView) findViewById(R.id.versionNum);
+        TextView versionNum = findViewById(R.id.versionNum);
         try {
             assert versionNum != null;
             versionNum.setText("Version: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
