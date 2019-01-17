@@ -2,6 +2,7 @@ package ca.lakeeffect.scoutingapp;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -30,7 +31,6 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
     Button fail;
     Button failedDropOff;
 
-
     //All the events made by the person this matchNumber
     ArrayList<Event> events = new ArrayList<Event>();
 
@@ -48,7 +48,15 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         View view = inflator.inflate(R.layout.teleoppage, container, false);
 
         surface = (SurfaceView) view.findViewById(R.id.fieldCanvas);
-        field = new Field(surface, BitmapFactory.decodeResource(getResources(), R.drawable.field));
+        Bitmap fieldImage = null;
+        if (!MainActivity.alliance) {
+            //red alliance's image
+            fieldImage = BitmapFactory.decodeResource(getResources(), R.drawable.fieldred);
+        } else {
+            //blue alliance's image
+            fieldImage = BitmapFactory.decodeResource(getResources(), R.drawable.fieldblue);
+        }
+        field = new Field(surface, fieldImage);
         surface.setOnTouchListener(field);
 
         pickup = (Button) view.findViewById(R.id.pickupButton);

@@ -19,6 +19,13 @@ public class Field implements View.OnTouchListener {
     SurfaceView surface;
     Bitmap field;
 
+    //hello ajay, how's it going
+    //I am typing in comments
+
+    //This should work
+
+
+
     Rect[] fieldPlacements = new Rect[]{
             new Rect(37, 9, 183, 155),
             new Rect(44, 288, 190, 435),
