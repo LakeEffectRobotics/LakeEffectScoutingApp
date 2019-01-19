@@ -26,11 +26,12 @@ public class AutoPage extends Fragment {
 
         view.setTag("page1");
 
-        Spinner spinner = view.findViewById(R.id.autoStartLocation);
+        Spinner spinner = (Spinner) view.findViewById(R.id.autoStartLocation);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.startPosition, R.layout.spinner);
         spinner.setAdapter(adapter);
 
-        spinner = view.findViewById(R.id.firstAutoCubeLocation);
+        /*
+        spinner = (Spinner) view.findViewById(R.id.firstAutoCubeLocation);
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
         spinner.setAdapter(adapter);
 
@@ -53,6 +54,7 @@ public class AutoPage extends Fragment {
         spinner = view.findViewById(R.id.thirdAutoCubeOrientation);
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.orientations, R.layout.spinner);
         spinner.setAdapter(adapter);
+        */
 
 
         return view;

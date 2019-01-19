@@ -381,7 +381,8 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-            if (((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() == -1) {
+            /*
+            if (((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.leftHab)).getCheckedRadioButtonId() == -1) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it crossed the baseline! Go back to the auto page!", Toast.LENGTH_LONG).show();
@@ -389,6 +390,7 @@ public class MainActivity extends AppCompatActivity {
                 });
                 return null;
             }
+            */
 
             if (((Spinner) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimb)).getSelectedItem().toString().equals("Choose One")) {
                 runOnUiThread(new Thread() {
@@ -477,6 +479,8 @@ public class MainActivity extends AppCompatActivity {
                 labels.append(getName(v) + ",");
             }
             if (v instanceof Spinner) {
+                System.out.println(v);
+                System.out.println(v);
                 data.append(((Spinner) v).getSelectedItem().toString() + ",");
                 System.out.println(((Spinner) v).getSelectedItem().toString() + ",");
                 labels.append(getName(v) + ",");
@@ -801,7 +805,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 
     public void alert() {
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -1210,6 +1213,7 @@ public class MainActivity extends AppCompatActivity {
         updateMatchesLeft();
 
         dialog.dismiss();
+
     }
 
     public boolean arrayContains(String[] array, String search){
