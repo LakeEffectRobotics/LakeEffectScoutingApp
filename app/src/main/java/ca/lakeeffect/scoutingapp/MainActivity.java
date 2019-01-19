@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     ListenerThread listenerThread;
     Thread listenerThreadThreadClass;
 
-    String savedLabels = null; //generated at the beginning
+    byte[] savedLabels = null; //generated at the beginning
 
     int versionCode;
 
@@ -273,7 +273,9 @@ public class MainActivity extends AppCompatActivity {
             events.append(matchNumber + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
         }
 
-        return events.toString();
+
+
+        return Base64.encodeToString(events.toString().getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
     }
 
     //will return the same location but on the other side of the field
@@ -364,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
         return matchBack;
     }
 
-    public String[] getData(boolean bypassChecks) {
+    public byte[][] getData(boolean bypassChecks) {
         if (!bypassChecks) {
             if (((RatingBar) pagerAdapter.endgamePage.getView().findViewById(R.id.driveRating)).getRating() <= 0) {
                 runOnUiThread(new Thread() {
@@ -450,9 +452,10 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(data.toString());
         byte[] dataBytes = data.toString().getBytes(Charset.forName("UTF-8"));
         byte[] labelsBytes = labels.toString().getBytes(Charset.forName("UTF-8"));
-        String dataBase64 = Base64.encodeToString(dataBytes, Base64.DEFAULT);
-        String labelsBase64 = Base64.encodeToString(labelsBytes, Base64.DEFAULT);
-        String[] out = {dataBase64, labelsBase64};
+        byte[] dataBase64 = Base64.encode(dataBytes, Base64.DEFAULT);
+        byte[] labelsBase64 = Base64.encode(labelsBytes, Base64.DEFAULT);
+
+        byte[][] out = {dataBase64, labelsBase64};
 
         return out;
     }
@@ -570,7 +573,7 @@ public class MainActivity extends AppCompatActivity {
 
             OutputStreamWriter out = new OutputStreamWriter(f);
 
-            String[] data = getData(false);
+            byte[][] data = getData(false);
             if (data == null) {
                 return false;
             }
@@ -588,14 +591,14 @@ public class MainActivity extends AppCompatActivity {
 
             OutputStreamWriter eventsOut = new OutputStreamWriter(eventsF);
 
-            eventsOut.append(events);
+            eventsOut.append(new String(Base64.decode(events, Base64.DEFAULT), Charset.forName("UTF-8")));
             eventsOut.close();
             eventsF.close();
 
-
             //save to file
-            if (newfile) out.append(data[1]);
-            out.append(data[0]);
+            if (newfile) out.append(new String(Base64.decode(data[1], Base64.DEFAULT), Charset.forName("UTF-8")));
+            out.append(new String(Base64.decode(data[0], Base64.DEFAULT), Charset.forName("UTF-8")));
+
 
             String fulldata = "";
             if (events.equals("")) {
@@ -603,6 +606,9 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 fulldata = robotNum + ":" + data[0] + ":" + events;
             }
+
+            //encode to base64
+            fulldata = Base64.encodeToString(fulldata.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
 
             //add to pending messages
             pendingMessages.add(fulldata);

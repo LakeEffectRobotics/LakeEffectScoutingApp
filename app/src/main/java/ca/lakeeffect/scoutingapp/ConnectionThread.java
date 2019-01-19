@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -212,7 +213,11 @@ public class ConnectionThread implements Runnable {
 
     public void sendLabels() {
         try {
-            this.out.write((mainActivity.versionCode + ":::" + mainActivity.labels + endSplitter).getBytes(Charset.forName("UTF-8")));
+            String outString = mainActivity.versionCode + ":::" + mainActivity.savedLabels + endSplitter;
+            //convert to base 64 bytes
+            byte[] outBase64 = Base64.encode(outString.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
+
+            this.out.write(outBase64);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -236,7 +241,9 @@ public class ConnectionThread implements Runnable {
 
             fullMessage += endSplitter;
 
-            this.out.write((fullMessage).getBytes(Charset.forName("UTF-8")));
+            byte[] fullMessageBase64 = Base64.encode(fullMessage.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
+
+            this.out.write(fullMessageBase64);
         } catch (IOException e) {
             e.printStackTrace();
         }
