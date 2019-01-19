@@ -35,7 +35,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -173,19 +172,19 @@ public class MainActivity extends AppCompatActivity {
 
         //set device name
         BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
-        ((TextView) ((RelativeLayout) findViewById(R.id.deviceNameLayout)).findViewById(R.id.deviceName)).setText(ba.getName()); //if this method ends up not working refer to https://stackoverflow.com/a/6662271/1985387
+        ((TextView) findViewById(R.id.deviceNameLayout).findViewById(R.id.deviceName)).setText(ba.getName()); //if this method ends up not working refer to https://stackoverflow.com/a/6662271/1985387
 
         //set pending messages number on ui
-        ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
+        ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
 
 
         //setup scrolling viewpager
-        viewPager = (ViewPager) findViewById(R.id.scrollingview);
+        viewPager = findViewById(R.id.scrollingview);
         pagerAdapter = new InputPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(3);
 
-        robotNumText = (TextView) findViewById(R.id.robotNum);
+        robotNumText = findViewById(R.id.robotNum);
 
         robotNumText.setText("Round: " + matchNumber + "  Robot: " + robotNum);
 
@@ -417,7 +416,7 @@ public class MainActivity extends AppCompatActivity {
         PercentRelativeLayout layout;
 
         //Auto page
-        layout = (PercentRelativeLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
+        layout = pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
         enterLayout(layout);
 
 //        //Tele page
@@ -430,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
         data.append(tele[1]);
 
         //Endgame page
-        layout = (PercentRelativeLayout) pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
+        layout = pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
         enterLayout(layout);
 
         labels.append("Scout");
@@ -455,7 +454,9 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < top.getChildCount(); i++) {
             View v = top.getChildAt(i);
             if (v instanceof EditText) {
-                data.append(((EditText) v).getText().toString().replace("|", "||").replace(",", "|c").replace("\n", "|n").replace("\"", "|q").replace(":", ";") + ",");
+                data.append(((EditText) v).getText().toString().replace("|", "||").replace(",", "|c")
+                        .replace("\n", "|n").replace("\"", "|q").replace(":", ";")
+                        .replace("{", "|ob").replace("}", "|cb") + ",");
                 labels.append(getName(v) + ",");
             }
             if (v instanceof CheckBox) {
@@ -605,7 +606,7 @@ public class MainActivity extends AppCompatActivity {
             editor.apply();
 
             //set pending messages number on ui
-            ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
+            ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
 
             out.close();
 
@@ -718,7 +719,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ((TextView) ((RelativeLayout) findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
+                                ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
                             }
                         });
                     }
@@ -765,14 +766,14 @@ public class MainActivity extends AppCompatActivity {
         PercentRelativeLayout layout;
 
         //Auto page
-        layout = (PercentRelativeLayout) pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
+        layout = pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
         clearData(layout);
 
         //Tele page
         pagerAdapter.teleopPage.reset();
 
         //Endgame page
-        layout = (PercentRelativeLayout) pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
+        layout = pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
         clearData(layout);
     }
 
@@ -820,7 +821,7 @@ public class MainActivity extends AppCompatActivity {
                 final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
                 //setup spinners (Drop downs)
-                final LinearLayout linearLayout = (LinearLayout) ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
+                final LinearLayout linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
 
                 final Spinner robotAlliance = linearLayout.findViewById(R.id.robotAlliance);
 
@@ -993,7 +994,7 @@ public class MainActivity extends AppCompatActivity {
         //change other buttons on the dialog box accordingly
         View linearLayout = ((AlertDialog) dialog).findViewById(R.id.dialogLinearLayout);
 
-        EditText roundInput = (EditText) linearLayout.findViewById(R.id.matchNumber);
+        EditText roundInput = linearLayout.findViewById(R.id.matchNumber);
 
         String roundText = roundInput.getText().toString();
         if (roundText.equals("")) {
@@ -1015,8 +1016,8 @@ public class MainActivity extends AppCompatActivity {
         //set userID
         userID = newUserID;
 
-        EditText robotNumInput = (EditText) linearLayout.findViewById(R.id.robotNumber);
-        Spinner robotAlliance = (Spinner) linearLayout.findViewById(R.id.robotAlliance);
+        EditText robotNumInput = linearLayout.findViewById(R.id.robotNumber);
+        Spinner robotAlliance = linearLayout.findViewById(R.id.robotAlliance);
 
         if (round >= schedules.get(MainActivity.this.userID).robots.size() || round < 0){
             //The match number is too high
@@ -1144,7 +1145,7 @@ public class MainActivity extends AppCompatActivity {
             side = viewingSide.getSelectedItemPosition() == 2;
 
             //adjust the field image according to selection
-            pagerAdapter.teleopPage.field.switchSides(side);
+            pagerAdapter.teleopPage.field.updateField(this, side);
 
             SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();

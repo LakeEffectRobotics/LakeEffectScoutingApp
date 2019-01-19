@@ -31,6 +31,7 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
     Button fail;
     Button failedDropOff;
 
+
     //All the events made by the person this matchNumber
     ArrayList<Event> events = new ArrayList<Event>();
 
@@ -47,27 +48,21 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
         View view = inflator.inflate(R.layout.teleoppage, container, false);
 
-        surface = (SurfaceView) view.findViewById(R.id.fieldCanvas);
-        Bitmap fieldImage = null;
-        if (!MainActivity.alliance) {
-            //red alliance's image
-            fieldImage = BitmapFactory.decodeResource(getResources(), R.drawable.fieldred);
-        } else {
-            //blue alliance's image
-            fieldImage = BitmapFactory.decodeResource(getResources(), R.drawable.fieldblue);
-        }
-        field = new Field(surface, fieldImage);
+        surface = view.findViewById(R.id.fieldCanvas);
+        Bitmap fieldRed = BitmapFactory.decodeResource(getResources(), R.drawable.fieldred);
+        Bitmap fieldBlue = BitmapFactory.decodeResource(getResources(), R.drawable.fieldblue);
+        field = new Field(surface, fieldRed, fieldBlue);
         surface.setOnTouchListener(field);
 
-        pickup = (Button) view.findViewById(R.id.pickupButton);
+        pickup = view.findViewById(R.id.pickupButton);
         pickup.setOnClickListener(this);
-        drop = (Button) view.findViewById(R.id.dropButton);
+        drop = view.findViewById(R.id.dropButton);
         drop.setOnClickListener(this);
-        undo = (Button) view.findViewById(R.id.undo);
+        undo = view.findViewById(R.id.undo);
         undo.setOnClickListener(this);
-        fail = (Button) view.findViewById(R.id.failButton);
+        fail = view.findViewById(R.id.failButton);
         fail.setOnClickListener(this);
-        failedDropOff = (Button) view.findViewById(R.id.failDropOffButton);
+        failedDropOff = view.findViewById(R.id.failDropOffButton);
         failedDropOff.setOnClickListener(this);
 
         view.setTag("page2");

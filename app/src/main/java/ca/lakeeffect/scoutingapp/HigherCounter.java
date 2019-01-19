@@ -44,18 +44,18 @@ public class HigherCounter extends LinearLayout implements View.OnClickListener{
         }
 
 
-        plusBigButton = (Button) findViewById(R.id.plus5Button);
+        plusBigButton = findViewById(R.id.plus5Button);
         plusBigButton.setOnClickListener(this);
-        plusOneButton = (Button) findViewById(R.id.plusOneButton);
+        plusOneButton = findViewById(R.id.plusOneButton);
         plusOneButton.setOnClickListener(this);
-        minusOneButton = (Button) findViewById(R.id.minusOneButton);
+        minusOneButton = findViewById(R.id.minusOneButton);
         minusOneButton.setOnClickListener(this);
-        minusBigButton = (Button) findViewById(R.id.minus5Button);
+        minusBigButton = findViewById(R.id.minus5Button);
         minusBigButton.setOnClickListener(this);
         plusBigButton.setText(String.valueOf(bigButton));
         minusBigButton.setText(String.valueOf(bigButton));
 
-        counterText = (TextView) findViewById(R.id.counterText);
+        counterText = findViewById(R.id.counterText);
     }
 
     @Override
