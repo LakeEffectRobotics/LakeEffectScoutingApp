@@ -58,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO: Redo text sizes
 
-    public final boolean DEBUG = true;
-
     List<Counter> counters = new ArrayList<>();
     List<CheckBox> checkboxes = new ArrayList<>();
     List<RadioGroup> radiogroups = new ArrayList<>();
@@ -904,7 +902,7 @@ public class MainActivity extends AppCompatActivity {
                     linearLayout.addView(overriddenScoutName, 0);
                 }
 
-                if (DEBUG) {
+                if (BuildConfig.DEBUG) {
                     ((EditText) linearLayout.findViewById(R.id.matchNumber)).setText("27");
                     ((EditText) linearLayout.findViewById(R.id.robotNumber)).setText("2708");
                     overriddenScoutName.setText("Debug Scout Name");
