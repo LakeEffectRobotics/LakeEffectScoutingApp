@@ -6,52 +6,98 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <SurfaceView
-        android:layout_width = "match_parent"
-        android:layout_height = "match_parent"
-        android:layout_gravity="top|center"
-        android:layout_weight="3"
-        android:id="@+id/fieldCanvas">
-
-    </SurfaceView>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
-        android:layout_weight="0">
-        <Button
+        android:layout_weight="0"
+        android:weightSum="3">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Pickup"
-            android:layout_weight="1"
-            android:id="@+id/pickupButton"/>
-        <Button
+            android:orientation="vertical"
+            android:layout_gravity="bottom">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Pickup"
+                android:layout_weight="1"
+                android:id="@+id/pickupHatch"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Failed Pickup"
+                android:layout_weight="1"
+                android:id="@+id/failPickupHatch"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Drop off"
+                android:layout_weight="1"
+                android:id="@+id/failDropHatch"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Failed dropoff"
+                android:layout_weight="1"
+                android:id="@+id/dropHatch"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="3">
+
+            <SurfaceView
+                android:layout_width = "match_parent"
+                android:layout_height = "match_parent"
+                android:layout_gravity="top|center"
+                android:layout_weight="3"
+                android:id="@+id/fieldCanvas">
+
+            </SurfaceView>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Undo"
+                android:layout_gravity="bottom|center"
+                android:layout_weight="2"
+                android:id="@+id/undo"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Failed Pickup"
-            android:layout_weight="1"
-            android:id="@+id/failButton"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Undo"
+            android:orientation="vertical"
             android:layout_gravity="bottom"
-            android:layout_weight="2"
-            android:id="@+id/undo"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Failed Drop Off"
-            android:layout_weight="1"
-            android:id="@+id/failDropOffButton"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Drop Off"
-            android:layout_weight="1"
-            android:id="@+id/dropButton"/>
+            android:layout_weight="1">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Pickup"
+                android:layout_weight="1"
+                android:id="@+id/pickupCargo"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Failed Pickup"
+                android:layout_weight="1"
+                android:id="@+id/failPickupCargo"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Drop off"
+                android:layout_weight="1"
+                android:id="@+id/failDropCargo"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Failed dropoff"
+                android:layout_weight="1"
+                android:id="@+id/dropCargo"/>
+        </LinearLayout>
     </LinearLayout>
 
 

@@ -35,11 +35,15 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
     SurfaceView surface;
     Field field;
 
-    Button pickup;
-    Button drop;
+    Button pickupHatch;
+    Button pickupCargo;
+    Button failPickupHatch;
+    Button failPickupCargo;
     Button undo;
-    Button fail;
-    Button failedDropOff;
+    Button dropHatch;
+    Button dropCargo;
+    Button failDropHatch;
+    Button failDropCargo;
 
 
     //All the events made by the person this matchNumber
@@ -64,16 +68,34 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         field = new Field(surface, fieldRed, fieldBlue);
         surface.setOnTouchListener(field);
 
-        pickup = view.findViewById(R.id.pickupButton);
-        pickup.setOnClickListener(this);
-        drop = view.findViewById(R.id.dropButton);
-        drop.setOnClickListener(this);
+
+        pickupHatch = view.findViewById(R.id.pickupHatch);
+        pickupHatch.setOnClickListener(this);
+
+        pickupCargo = view.findViewById(R.id.pickupCargo);
+        pickupCargo.setOnClickListener(this);
+
+        failPickupHatch = view.findViewById(R.id.failPickupHatch);
+        failPickupHatch.setOnClickListener(this);
+
+        failPickupCargo = view.findViewById(R.id.failPickupCargo);
+        failPickupCargo.setOnClickListener(this);
+
         undo = view.findViewById(R.id.undo);
         undo.setOnClickListener(this);
-        fail = view.findViewById(R.id.failButton);
-        fail.setOnClickListener(this);
-        failedDropOff = view.findViewById(R.id.failDropOffButton);
-        failedDropOff.setOnClickListener(this);
+
+        dropHatch = view.findViewById(R.id.dropHatch);
+        dropHatch.setOnClickListener(this);
+
+        dropCargo = view.findViewById(R.id.dropCargo);
+        dropCargo.setOnClickListener(this);
+
+        failDropHatch = view.findViewById(R.id.failDropHatch);
+        failDropHatch.setOnClickListener(this);
+
+        failDropCargo = view.findViewById(R.id.failDropCargo);
+        failDropCargo.setOnClickListener(this);
+
 
         view.setTag("page2");
 
@@ -130,16 +152,24 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
         String action = "";
 
-        if(v == pickup) {
+        //hatch eventTypes are from 0-3, cargo eventTypes are from 4-7
+        if(v == pickupHatch) {
             eventType = 0;
-        } else if(v == drop) {
+        } else if(v == pickupCargo) {
+            eventType = 4;
+        } else if(v == failPickupHatch) {
             eventType = 1;
-        } else if(v == fail) {
+        } else if(v == failPickupCargo) {
+            eventType = 5;
+        } else if(v == dropHatch){
             eventType = 2;
-        }else if(v == failedDropOff) {
+        } else if(v == dropCargo) {
+            eventType = 6;
+        } else if(v == failDropHatch) {
             eventType = 3;
+        } else if(v == failDropCargo) {
+            eventType = 7;
         }
-
 
 
 
@@ -184,15 +214,21 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
 
     public String getActionText(int eventType){
+        String item = "hatch";
+        if(eventType > 3){
+            eventType -= 4;
+            item = "cargo";
+        }
+
         switch (eventType){
             case 0:
-                return "that the robot picked up from ";
+                return "that the robot picked up a " + item + " from ";
             case 1:
-                return "that the robot dropped onto ";
+                return "that the robot failed picking up a " + item + " in ";
             case 2:
-                return "that the robot failed picking up in ";
+                return "that the robot failed dropping off a " + item + " in ";
             case 3:
-                return "that the robot failed dropping off in ";
+                return "that the robot dropped a " + item + " onto ";
         }
         return "invalid event";
     }
