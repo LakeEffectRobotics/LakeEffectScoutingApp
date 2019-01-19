@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //check what theme is selected and set it as the theme
@@ -901,6 +900,12 @@ public class MainActivity extends AppCompatActivity {
                     linearLayout.findViewById(R.id.userID).setEnabled(false);
                     ((Spinner) linearLayout.findViewById(R.id.userID)).setSelection(0);
                     linearLayout.addView(overriddenScoutName, 0);
+                }
+
+                if (BuildConfig.DEBUG) {
+                    ((EditText) linearLayout.findViewById(R.id.matchNumber)).setText("27");
+                    ((EditText) linearLayout.findViewById(R.id.robotNumber)).setText("2708");
+                    overriddenScoutName.setText("Debug Scout Name");
                 }
 
                 //make it so that you can override the schedule if you need to
