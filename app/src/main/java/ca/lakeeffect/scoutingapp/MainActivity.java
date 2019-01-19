@@ -56,7 +56,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-
 public class MainActivity extends AppCompatActivity {
 
     //TODO: Redo text sizes
@@ -449,14 +448,13 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(labels.toString());
         System.out.println(data.toString());
-        String[] out = {data.toString(), labels.toString()};
-        byte[] data2 = out[0].getBytes(Charset.forName("UTF-8"));
-        byte[] labels2 = out[1].getBytes(Charset.forName("UTF-8"));
-        String data_base64 = Base64.encodeToString(data2, Base64.DEFAULT);
-        String labels_base64 = Base64.encodeToString(labels2, Base64.DEFAULT);
-        String[] out2 = {data_base64, labels_base64};
+        byte[] dataBytes = data.toString().getBytes(Charset.forName("UTF-8"));
+        byte[] labelsBytes = labels.toString().getBytes(Charset.forName("UTF-8"));
+        String dataBase64 = Base64.encodeToString(dataBytes, Base64.DEFAULT);
+        String labelsBase64 = Base64.encodeToString(labelsBytes, Base64.DEFAULT);
+        String[] out = {dataBase64, labelsBase64};
 
-        return out2;
+        return out;
     }
 
     void enterLayout(ViewGroup top) {
