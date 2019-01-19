@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO: Redo text sizes
 
+    public final boolean DEBUG = true;
+
     List<Counter> counters = new ArrayList<>();
     List<CheckBox> checkboxes = new ArrayList<>();
     List<RadioGroup> radiogroups = new ArrayList<>();
@@ -892,6 +894,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+
+
+
                 overriddenScoutName = new EditText(MainActivity.this);
                 overriddenScoutName.setHint("Scout Name");
 
@@ -903,6 +908,12 @@ public class MainActivity extends AppCompatActivity {
                     linearLayout.findViewById(R.id.userID).setEnabled(false);
                     ((Spinner) linearLayout.findViewById(R.id.userID)).setSelection(0);
                     linearLayout.addView(overriddenScoutName, 0);
+                }
+
+                if (DEBUG) {
+                    ((EditText) linearLayout.findViewById(R.id.matchNumber)).setText("27");
+                    ((EditText) linearLayout.findViewById(R.id.robotNumber)).setText("2708");
+                    overriddenScoutName.setText("A dry hen");
                 }
 
                 //make it so that you can override the schedule if you need to
