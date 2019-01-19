@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -46,6 +47,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -447,7 +450,13 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(labels.toString());
         System.out.println(data.toString());
         String[] out = {data.toString(), labels.toString()};
-        return out;
+        byte[] data2 = out[0].getBytes(Charset.forName("UTF-8"));
+        byte[] labels2 = out[1].getBytes(Charset.forName("UTF-8"));
+        String data_base64 = Base64.encodeToString(data2, Base64.DEFAULT);
+        String labels_base64 = Base64.encodeToString(labels2, Base64.DEFAULT);
+        String[] out2 = {data_base64, labels_base64};
+
+        return out2;
     }
 
     void enterLayout(ViewGroup top) {
