@@ -145,18 +145,18 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         //hatch eventTypes are from 0-3, cargo eventTypes are from 4-7
         if(v == pickupHatch) {
             eventType = 0;
-        } else if(v == pickupCargo) {
-            eventType = 4;
         } else if(v == failPickupHatch) {
             eventType = 1;
-        } else if(v == failPickupCargo) {
-            eventType = 5;
         } else if(v == dropHatch){
             eventType = 2;
-        } else if(v == dropCargo) {
-            eventType = 6;
         } else if(v == failDropHatch) {
             eventType = 3;
+        } else if(v == pickupCargo) {
+            eventType = 4;
+        } else if(v == failPickupCargo) {
+            eventType = 5;
+        } else if(v == dropCargo) {
+            eventType = 6;
         } else if(v == failDropCargo) {
             eventType = 7;
         }
@@ -206,6 +206,8 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
     public String getActionText(int eventType){
         String item = "hatch";
         if(eventType > 3){
+            //this converts it to as if it was a hatch event, as they have the same
+            // messages other than the different item
             eventType -= 4;
             item = "cargo";
         }
