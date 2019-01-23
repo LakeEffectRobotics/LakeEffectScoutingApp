@@ -19,16 +19,6 @@ import java.util.ArrayList;
 
 /**
  * Created by Ajay on 9/25/2016.
- * Xan's doing stuff now
- * Ha ha
- * Yay
- * Well, mainly system.out.printlns
- *      _
- *  .__(.)>
- *  \___)
- *
- *  copyright amazon.com
- *  well, just the duck
  */
 public class TeleopPage extends Fragment implements View.OnClickListener {
 

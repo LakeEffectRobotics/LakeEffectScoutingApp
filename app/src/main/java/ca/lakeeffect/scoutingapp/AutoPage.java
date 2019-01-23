@@ -26,7 +26,7 @@ public class AutoPage extends Fragment {
 
         view.setTag("page1");
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.autoStartLocation);
+        Spinner spinner = view.findViewById(R.id.autoStartLocation);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.startPosition, R.layout.spinner);
         spinner.setAdapter(adapter);
 

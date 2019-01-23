@@ -20,13 +20,6 @@ public class Field implements View.OnTouchListener {
     SurfaceView surface;
     Bitmap fieldRed, fieldBlue;
 
-    //hello ajay, how's it going
-    //I am typing in comments
-
-    //This should work
-
-
-
     Rect[] fieldPlacements = new Rect[]{
             new Rect(37, 9, 183, 155),
             new Rect(44, 288, 190, 435),
@@ -169,7 +162,6 @@ public class Field implements View.OnTouchListener {
         //alliance^side
         //boolean imageShouldBeFlipped = MainActivity.alliance ^ side;
         // ^ means XOR
-        //now you know
 
         boolean imageShouldBeFlipped = (!MainActivity.alliance && side) || (MainActivity.alliance && !side);
         if ((imageShouldBeFlipped && !currentScale) || (!imageShouldBeFlipped && currentScale)){
