@@ -71,13 +71,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         unsentMessages.setText("Unsent Messages: " + getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE).getInt("messageAmount", 0));
 
         //Set Version Text
+        TextView buildNum = findViewById(R.id.buildNum);
         TextView versionNum = findViewById(R.id.versionNum);
-        try {
-            assert versionNum != null;
-            versionNum.setText("Version: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        buildNum.setText("Build: " +  + BuildConfig.VERSION_CODE + " " + (BuildConfig.DEBUG ? "Debug" : "Release"));
+        versionNum.setText("Version: " + BuildConfig.VERSION_NAME);
 
         Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(turnOn, 0);
