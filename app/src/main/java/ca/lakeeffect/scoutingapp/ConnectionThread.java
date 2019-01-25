@@ -132,9 +132,13 @@ public class ConnectionThread implements Runnable {
     }
 
     public void loadSchedule(String schedule) {
-        String[] userSchedules = schedule.split(":::")[1].split("::");
-        String matchSchedule = schedule.split(":::")[2];
+        String allUserSchedules = schedule.split(":::")[1];
+        allUserSchedules = new String(Base64.decode(allUserSchedules, Base64.DEFAULT), Charset.forName("UTF-8"));
+        String[] userSchedules = allUserSchedules.split("::");
 
+
+        String matchSchedule = schedule.split(":::")[2];
+        matchSchedule = new String(Base64.decode(matchSchedule, Base64.DEFAULT), Charset.forName("UTF-8"));
         String[] matches = matchSchedule.split("::");
 
         //reset schedules
