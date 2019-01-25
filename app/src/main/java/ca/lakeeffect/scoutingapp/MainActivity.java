@@ -914,9 +914,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (BuildConfig.DEBUG) {
-                    ((EditText) linearLayout.findViewById(R.id.matchNumber)).setText("27");
-                    ((EditText) linearLayout.findViewById(R.id.robotNumber)).setText("2708");
-                    overriddenScoutName.setText("Debug Scout Name");
+                    ((EditText) linearLayout.findViewById(R.id.matchNumber)).setText("1");
+                    ((EditText) linearLayout.findViewById(R.id.robotNumber)).setText("2809");
+                    overriddenScoutName.setText("Debug Scout Name Build " + BuildConfig.VERSION_NAME);
                 }
 
                 //make it so that you can override the schedule if you need to
