@@ -72,6 +72,9 @@ public class ConnectionThread implements Runnable {
                 //data has been fully sent, removed "{e}" (the end splitter) from it
                 message = message.substring(0, message.length() - 3);
 
+                //decode this data from base 64 to normal data
+                message = new String(Base64.decode(message, Base64.DEFAULT), Charset.forName("UTF-8"));
+
                 if (message.contains("SEND SCHEDULE")) { //received data about the schedule
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
@@ -80,8 +83,11 @@ public class ConnectionThread implements Runnable {
                                     Toast.LENGTH_LONG).show();
                         }
                     });
+
                     loadSchedule(message);
-                    this.out.write(("RECEIVED" + endSplitter).getBytes(Charset.forName("UTF-8")));
+
+                    //send that this message was recieved, conver to base 64 and add the end splitter first
+                    this.out.write((toBase64("RECEIVED") + endSplitter).getBytes(Charset.forName("UTF-8")));
                 } else if (message.contains("REQUEST DATA")) { //received a request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
@@ -217,11 +223,11 @@ public class ConnectionThread implements Runnable {
 
     public void sendLabels() {
         try {
-            String outString = mainActivity.versionCode + ":::" + mainActivity.savedLabels + endSplitter;
+            String outString = mainActivity.versionCode + ":::" + mainActivity.savedLabels;
             //convert to base 64 bytes
-            byte[] outBase64 = Base64.encode(outString.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
+            String outBase64 = Base64.encodeToString(outString.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT) + endSplitter;
 
-            this.out.write(outBase64);
+            this.out.write(outBase64.getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -243,11 +249,7 @@ public class ConnectionThread implements Runnable {
                 fullMessage += "nodata";
             }
 
-            fullMessage += endSplitter;
-
-            byte[] fullMessageBase64 = Base64.encode(fullMessage.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
-
-            this.out.write(fullMessageBase64);
+            this.out.write((toBase64(fullMessage) + endSplitter).getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -285,5 +287,9 @@ public class ConnectionThread implements Runnable {
                 ((TextView) (mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingMessages.size() + "");
             }
         });
+    }
+
+    public String toBase64(String string) {
+        return Base64.encodeToString(string.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
     }
 }

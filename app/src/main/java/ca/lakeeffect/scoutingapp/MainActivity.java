@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     ListenerThread listenerThread;
     Thread listenerThreadThreadClass;
 
-    byte[] savedLabels = null; //generated at the beginning
+    String savedLabels = null; //generated at the beginning
 
     int versionCode;
 
@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
         return matchBack;
     }
 
-    public byte[][] getData(boolean bypassChecks) {
+    public String[] getData(boolean bypassChecks) {
         if (!bypassChecks) {
             if (((RatingBar) pagerAdapter.endgamePage.getView().findViewById(R.id.driveRating)).getRating() <= 0) {
                 runOnUiThread(new Thread() {
@@ -452,10 +452,10 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(data.toString());
         byte[] dataBytes = data.toString().getBytes(Charset.forName("UTF-8"));
         byte[] labelsBytes = labels.toString().getBytes(Charset.forName("UTF-8"));
-        byte[] dataBase64 = Base64.encode(dataBytes, Base64.DEFAULT);
-        byte[] labelsBase64 = Base64.encode(labelsBytes, Base64.DEFAULT);
+        String dataBase64 = Base64.encodeToString(dataBytes, Base64.DEFAULT);
+        String labelsBase64 = Base64.encodeToString(labelsBytes, Base64.DEFAULT);
 
-        byte[][] out = {dataBase64, labelsBase64};
+        String[] out = {dataBase64, labelsBase64};
 
         return out;
     }
@@ -572,8 +572,7 @@ public class MainActivity extends AppCompatActivity {
             FileOutputStream f = new FileOutputStream(file, true);
 
             OutputStreamWriter out = new OutputStreamWriter(f);
-
-            byte[][] data = getData(false);
+            String[] data = getData(false);
             if (data == null) {
                 return false;
             }
@@ -598,7 +597,6 @@ public class MainActivity extends AppCompatActivity {
             //save to file
             if (newfile) out.append(new String(Base64.decode(data[1], Base64.DEFAULT), Charset.forName("UTF-8")));
             out.append(new String(Base64.decode(data[0], Base64.DEFAULT), Charset.forName("UTF-8")));
-
 
             String fulldata = "";
             if (events.equals("")) {
