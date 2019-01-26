@@ -20,22 +20,33 @@ public class Field implements View.OnTouchListener {
     SurfaceView surface;
     Bitmap fieldRed, fieldBlue;
 
+    final int WIDTH = 80;
+    final int HEIGHT = 80;
+    
     Rect[] fieldPlacements = new Rect[]{
-            new Rect(37, 9, 183, 155),
-            new Rect(44, 288, 190, 435),
-            new Rect(37, 748, 183, 894),
-            new Rect(303, 379, 431, 526),
-            new Rect(426, 244, 572, 390),
-            new Rect(426, 513, 572, 659),
-            new Rect(816, 200, 961, 345),
-            new Rect(816, 558, 961, 703),
-            new Rect(1206, 244, 1351, 390),
-            new Rect(1206, 513, 1351, 659),
-            new Rect(1347, 379, 1474, 526),
-            new Rect(1594, 9, 1740, 155),
-            new Rect(1587, 469, 1733, 614),
-            new Rect(1594, 748, 1740, 894)
+            makeRect(400, 18),
+            makeRect(480, 18),
+            makeRect(400, 98),
+            makeRect(480, 98),
+            makeRect(400, 178),
+            makeRect(480, 178),
+            makeRect(400, 271),
+            makeRect(480, 271),
+            makeRect(400, 351),
+            makeRect(480, 351),
+            makeRect(400, 431),
+            makeRect(480, 431),
+            makeRect(664, 206),
+            makeRect(744, 206),
+            makeRect(824, 206),
+            makeRect(584, 225),
+            makeRect(584, 305),
+            makeRect(664, 328),
+            makeRect(744, 328),
+            makeRect(824, 328)
     };
+    
+    
 
     //the normal paint for the boxes
     Paint normal = new Paint();
@@ -58,7 +69,7 @@ public class Field implements View.OnTouchListener {
         this.fieldRed = fieldRed;
         this.fieldBlue = fieldBlue;
 
-        normal.setColor(Color.RED);
+        normal.setColor(s.getResources().getColor(R.color.colorPrimary));
         normal.setStyle(Paint.Style.STROKE);
 
         highlited.setColor(Color.YELLOW);
@@ -152,6 +163,10 @@ public class Field implements View.OnTouchListener {
 
     }
 
+    public Rect makeRect (int x, int y){
+        return new Rect(x, y, x + WIDTH, y + HEIGHT);
+    }
+
     //when the user specifies they are on a certain side, the field needs to flip to accomodate
     public void updateField(MainActivity mainActivity, boolean side){
         //side false is red on the left, blue on the right
@@ -172,6 +187,13 @@ public class Field implements View.OnTouchListener {
             fieldBlue = Bitmap.createBitmap(fieldBlue, 0, 0, fieldBlue.getWidth(), fieldBlue.getHeight(), matrix, true);
 
             currentScale = imageShouldBeFlipped;
+            
+            //Flip rectangles
+            for (int i=0; i<fieldPlacements.length; i++){
+                int fieldWidth = (int)(fieldRed.getWidth() * scale);
+                int rectWidth = (int) (fieldPlacements[i].right - fieldPlacements[i].left);
+                fieldPlacements[i] = new Rect(fieldWidth - fieldPlacements[i].left - rectWidth, fieldPlacements[i].top, fieldWidth - fieldPlacements[i].right + rectWidth, fieldPlacements[i].bottom);
+            }
         }
 
         //this redraw() down here because if just the alliance colour changes, then the if statement won't run

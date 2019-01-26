@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,18 +19,31 @@
             android:orientation="vertical"
             android:layout_gravity="bottom">
             <Button
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Pickup"
                 android:layout_weight="1"
-                android:id="@+id/pickupButton"/>
+                android:id="@+id/pickupHatch"/>
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Failed Pickup"
                 android:layout_weight="1"
-                android:id="@+id/failButton"/>
+                android:id="@+id/failPickupHatch"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Drop off"
+                android:layout_weight="1"
+                android:id="@+id/failDropHatch"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Failed dropoff"
+                android:layout_weight="1"
+                android:id="@+id/dropHatch"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,12 +60,12 @@
             </SurfaceView>
 
             <Button
+                android:id="@+id/undo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Undo"
-                android:layout_gravity="bottom|center"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
                 android:layout_weight="2"
-                android:id="@+id/undo"/>
+                android:text="Undo" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -63,23 +74,31 @@
             android:layout_gravity="bottom"
             android:layout_weight="1">
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Drop Off"
-                android:layout_weight="1"
-                android:layout_gravity="right"
-                android:id="@+id/dropButton"/>
-            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Failed Drop Off"
+                android:text="Pickup"
                 android:layout_weight="1"
-                android:layout_gravity="right"
-                android:id="@+id/failDropOffButton"/>
+                android:id="@+id/pickupCargo"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Failed Pickup"
+                android:layout_weight="1"
+                android:id="@+id/failPickupCargo"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Drop off"
+                android:layout_weight="1"
+                android:id="@+id/failDropCargo"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Failed dropoff"
+                android:layout_weight="1"
+                android:id="@+id/dropCargo"/>
         </LinearLayout>
     </LinearLayout>
-
-
 
 
 </LinearLayout>
