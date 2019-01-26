@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
@@ -383,21 +384,29 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-            /*
-            if (((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.leftHab)).getCheckedRadioButtonId() == -1) {
+
+            if (!((RadioButton) pagerAdapter.autoPage.getView().findViewById(R.id.leftHabSuccess)).isChecked() && !((RadioButton) pagerAdapter.autoPage.getView().findViewById(R.id.leftHabFail)).isChecked()) {
                 runOnUiThread(new Thread() {
                     public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it crossed the baseline! Go back to the auto page!", Toast.LENGTH_LONG).show();
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it left the habitat! Go back to the auto page!", Toast.LENGTH_LONG).show();
                     }
                 });
                 return null;
             }
-            */
 
             if (((Spinner) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimb)).getSelectedItem().toString().equals("Choose One")) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it climbed!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+
+            if (((Spinner) pagerAdapter.autoPage.getView().findViewById(R.id.autoStartLocation)).getSelectedItem().toString().equals("Choose One")) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify where it started!", Toast.LENGTH_LONG).show();
                     }
                 });
                 return null;

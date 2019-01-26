@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -30,32 +33,49 @@ public class AutoPage extends Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.startPosition, R.layout.spinner);
         spinner.setAdapter(adapter);
 
-        /*
-        spinner = (Spinner) view.findViewById(R.id.firstAutoCubeLocation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
-        spinner.setAdapter(adapter);
+        final RadioButton success = (RadioButton) view.findViewById(R.id.leftHabSuccess);
 
-        spinner = view.findViewById(R.id.secondAutoCubeLocation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
-        spinner.setAdapter(adapter);
+        final RadioButton fail = (RadioButton) view.findViewById(R.id.leftHabFail);
 
-        spinner = view.findViewById(R.id.thirdAutoCubeLocation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
-        spinner.setAdapter(adapter);
+        success.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked){
+                    fail.setChecked(false);
+                }
+            }
+        });
 
-        spinner = view.findViewById(R.id.firstAutoCubeOrientation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.orientations, R.layout.spinner);
-        spinner.setAdapter(adapter);
+        fail.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked){
+                    success.setChecked(false);
+                }
+            }
+        });
 
-        spinner = view.findViewById(R.id.secondAutoCubeOrientation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.orientations, R.layout.spinner);
-        spinner.setAdapter(adapter);
+        final CheckBox cargo = (CheckBox) view.findViewById(R.id.startingObjectsCargo);
 
-        spinner = view.findViewById(R.id.thirdAutoCubeOrientation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.orientations, R.layout.spinner);
-        spinner.setAdapter(adapter);
-        */
+        final CheckBox hatch = (CheckBox) view.findViewById(R.id.startingObjectsHatch);
 
+        cargo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked){
+                    hatch.setChecked(false);
+                }
+            }
+        });
+
+        hatch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked){
+                    cargo.setChecked(false);
+                }
+            }
+        });
 
         return view;
 

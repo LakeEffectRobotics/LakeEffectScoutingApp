@@ -11,319 +11,135 @@
         android:layout_height="match_parent">
 
 
-        <TableLayout
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/autopageTableLayout"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:rowCount="4"
+            android:columnCount="3"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
 
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="17dp"
-                android:weightSum="4">
-
-                <TextView
-                    android:text="Start Position: "
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/tableLayout"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_weight="1"
-                    android:textSize="@dimen/text_medium"
-                    android:gravity="center_vertical"/>
-
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/autoStartLocation"
-                    android:spinnerMode="dropdown"
-                    android:layout_weight="3"
-                    android:textSize = "@dimen/text_small"
-                    android:layout_gravity="top"
-                    android:gravity="center"/>
-
-            </TableRow>
-
-
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_marginBottom="17dp"
-                android:weightSum="4"
-                android:id="@+id/autoBaseline">
-
-                <TextView
-                    android:text="Baseline: "
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/tableLayout"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/autoTask0"
-                    android:layout_weight="1"
-                    android:textSize="@dimen/text_medium"
-                    android:gravity="center_vertical"/>
-
-                <RadioGroup android:orientation="horizontal"
-                    android:layout_weight="3"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:id="@+id/autoBaselineGroup">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_weight="1"
-                        android:id="@+id/baselineSuccess"
-                        android:checked="false"
-                        android:text="Success"
-                        android:textSize="@dimen/text_small"/>
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:id="@+id/baselineFailed"
-                        android:layout_weight="1"
-                        android:text="Failed"
-                        android:textSize="@dimen/text_small"/>
-
-
-                </RadioGroup>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:weightSum="4">
-                <TextView
-                    android:layout_height="match_parent"
-                    android:text = "Cross field:"
-                    android:textSize="@dimen/text_medium"
-                    android:gravity="left|center_vertical"/>
-
-                <CheckBox
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/autoCrossField"
-                    android:spinnerMode="dropdown"
-                    android:layout_weight="3"
-                    android:textSize = "@dimen/text_small"
-                    android:layout_gravity="top"
-                    android:gravity="center"/>
-            </TableRow>
-            <TableRow
-                android:layout_width="match_parent"
-                android:weightSum="4">
-
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/firstAutoCubeLocation"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.75"
-                    android:textSize = "@dimen/text_small"
-                    android:layout_gravity="top"
-                    android:gravity="left"/>
-
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/firstAutoCubeOrientation"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.5"
-                    android:textSize = "@dimen/text_small"
-                    android:layout_gravity="top"
-                    android:gravity="left"/>
-
-                <RadioGroup android:orientation="horizontal"
-                    android:layout_weight="3.5"
-                    android:weightSum="2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/firstAutoCubeGroup">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_weight="1"
-                        android:id="@+id/firstAutoCubeSuccess"
-                        android:checked="false"
-                        android:text="Success"
-                        android:textSize="@dimen/text_small"/>
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:id="@+id/firstAutoCubeFailed"
-                        android:layout_weight="1"
-                        android:text="Failed"
-                        android:textSize="@dimen/text_small"/>
-
-
-                </RadioGroup>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:weightSum="4">
-
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/secondAutoCubeLocation"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.75"
-                    android:textSize = "@dimen/text_small"
-                    android:layout_gravity="top"
-                    android:gravity="left"/>
-
-
-
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/secondAutoCubeOrientation"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.5"
-                    android:textSize = "@dimen/text_small"
-                    android:layout_gravity="top"
-                    android:gravity="left"/>
-
-                <RadioGroup android:orientation="horizontal"
-                    android:layout_weight="3.5"
-                    android:weightSum="2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/secondAutoCubeGroup">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_weight="1"
-                        android:id="@+id/secondAutoCubeSuccess"
-                        android:checked="false"
-                        android:text="Success"
-                        android:textSize="@dimen/text_small"/>
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:id="@+id/secondAutoCubeFailed"
-                        android:layout_weight="1"
-                        android:text="Failed"
-                        android:textSize="@dimen/text_small"/>
-
-
-                </RadioGroup>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:weightSum="4">
-
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/thirdAutoCubeLocation"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.75"
-                    android:textSize = "@dimen/text_small"
-                    android:layout_gravity="top"
-                    android:gravity="left"/>
-
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/thirdAutoCubeOrientation"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.5"
-                    android:textSize = "@dimen/text_small"
-                    android:layout_gravity="top"
-                    android:gravity="left"/>
-
-                <RadioGroup android:orientation="horizontal"
-                    android:layout_weight="3.5"
-                    android:weightSum="2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/thirdAutoCubeGroup">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_weight="1"
-                        android:id="@+id/thirdAutoCubeSuccess"
-                        android:checked="false"
-                        android:text="Success"
-                        android:textSize="@dimen/text_small"/>
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:id="@+id/thirdAutoCubeFailed"
-                        android:layout_weight="1"
-                        android:text="Failed"
-                        android:textSize="@dimen/text_small"/>
-
-
-                </RadioGroup>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
+            <TextView
+                android:text="Start Position: "
+                android:textSize="@dimen/text_medium"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:weightSum="4"
-                android:layout_marginTop="15dp">
-                <TextView
-                    android:layout_height="match_parent"
-                    android:text = "End with cube:"
-                    android:textSize="@dimen/text_medium"
-                    android:gravity="left|center_vertical"/>
-                <CheckBox
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/autoCubePickup"
-                    android:spinnerMode="dropdown"
-                    android:layout_weight="3"
-                    android:textSize = "@dimen/text_small"
-                    android:layout_gravity="top"
-                    android:gravity="center"/>
-            </TableRow>
-        </TableLayout>
+                android:paddingVertical="15dp"
+                android:paddingRight="50dp"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_columnSpan="1"
+                />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize = "@dimen/text_small"
+                android:id="@+id/autoStartLocation"
+                android:spinnerMode="dropdown"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_columnSpan="1"
+                android:paddingVertical="15dp"
+                android:text="Left hab area: "
+                android:textSize="@dimen/text_medium" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:id="@+id/leftHabSuccess"
+                android:checked="false"
+                android:text="Success"
+                android:textSize="@dimen/text_small"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_row="1"
+                android:layout_column="2"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:id="@+id/leftHabFail"
+                android:checked="false"
+                android:text="Fail"
+                android:textSize="@dimen/text_small"/>
+
+            <TextView
+                android:text="Started with:  "
+                android:textSize="@dimen/text_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_row="2"
+                android:layout_column="0"
+                android:layout_columnSpan="1" />
+
+            <CheckBox
+                android:id="@+id/startingObjectsCargo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_row="2"
+                android:layout_column="1"
+                android:checked="false"
+                android:text="Cargo"
+                android:textSize="@dimen/text_small" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_row="2"
+                android:layout_column="2"
+                android:id="@+id/startingObjectsHatch"
+                android:text="Hatch"
+                android:textSize="@dimen/text_small"/>
+
+            <TextView
+                android:text="My happiness: "
+                android:textSize="@dimen/text_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_row="3"
+                android:layout_column="0"
+                android:layout_columnSpan="1" />
+
+            <SeekBar
+                android:id="@+id/myHappiness"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_row="3"
+                android:layout_column="1"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal|center_vertical"
+                android:layout_marginRight="20dp"
+                android:max="100"
+                android:progress="80"
+                android:textSize="@dimen/text_small" />
+
+
+
+        </GridLayout>
+
     </ScrollView>
 
 </android.support.percent.PercentRelativeLayout>
