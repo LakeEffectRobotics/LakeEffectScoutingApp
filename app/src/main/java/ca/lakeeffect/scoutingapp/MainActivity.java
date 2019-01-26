@@ -490,8 +490,6 @@ public class MainActivity extends AppCompatActivity {
                 labels.append(getName(v) + ",");
             }
             if (v instanceof Spinner) {
-                System.out.println(v);
-                System.out.println(v);
                 data.append(((Spinner) v).getSelectedItem().toString() + ",");
                 System.out.println(((Spinner) v).getSelectedItem().toString() + ",");
                 labels.append(getName(v) + ",");
