@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -46,6 +47,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,8 +59,6 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity {
 
     //TODO: Redo text sizes
-
-    public final boolean DEBUG = true;
 
     List<Counter> counters = new ArrayList<>();
     List<CheckBox> checkboxes = new ArrayList<>();
@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -273,7 +272,9 @@ public class MainActivity extends AppCompatActivity {
             events.append(matchNumber + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
         }
 
-        return events.toString();
+
+
+        return Base64.encodeToString(events.toString().getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
     }
 
     //will return the same location but on the other side of the field
@@ -458,7 +459,13 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(labels.toString());
         System.out.println(data.toString());
-        String[] out = {data.toString(), labels.toString()};
+        byte[] dataBytes = data.toString().getBytes(Charset.forName("UTF-8"));
+        byte[] labelsBytes = labels.toString().getBytes(Charset.forName("UTF-8"));
+        String dataBase64 = Base64.encodeToString(dataBytes, Base64.DEFAULT);
+        String labelsBase64 = Base64.encodeToString(labelsBytes, Base64.DEFAULT);
+
+        String[] out = {dataBase64, labelsBase64};
+
         return out;
     }
 
@@ -574,7 +581,6 @@ public class MainActivity extends AppCompatActivity {
             FileOutputStream f = new FileOutputStream(file, true);
 
             OutputStreamWriter out = new OutputStreamWriter(f);
-
             String[] data = getData(false);
             if (data == null) {
                 return false;
@@ -593,14 +599,13 @@ public class MainActivity extends AppCompatActivity {
 
             OutputStreamWriter eventsOut = new OutputStreamWriter(eventsF);
 
-            eventsOut.append(events);
+            eventsOut.append(new String(Base64.decode(events, Base64.DEFAULT), Charset.forName("UTF-8")));
             eventsOut.close();
             eventsF.close();
 
-
             //save to file
-            if (newfile) out.append(data[1]);
-            out.append(data[0]);
+            if (newfile) out.append(new String(Base64.decode(data[1], Base64.DEFAULT), Charset.forName("UTF-8")));
+            out.append(new String(Base64.decode(data[0], Base64.DEFAULT), Charset.forName("UTF-8")));
 
             String fulldata = "";
             if (events.equals("")) {
@@ -608,6 +613,9 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 fulldata = robotNum + ":" + data[0] + ":" + events;
             }
+
+            //encode to base64
+            fulldata = Base64.encodeToString(fulldata.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
 
             //add to pending messages
             pendingMessages.add(fulldata);
@@ -901,9 +909,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
-
-
                 overriddenScoutName = new EditText(MainActivity.this);
                 overriddenScoutName.setHint("Scout Name");
 
@@ -917,10 +922,10 @@ public class MainActivity extends AppCompatActivity {
                     linearLayout.addView(overriddenScoutName, 0);
                 }
 
-                if (DEBUG) {
-                    ((EditText) linearLayout.findViewById(R.id.matchNumber)).setText("27");
-                    ((EditText) linearLayout.findViewById(R.id.robotNumber)).setText("2708");
-                    overriddenScoutName.setText("A dry hen");
+                if (BuildConfig.DEBUG) {
+                    ((EditText) linearLayout.findViewById(R.id.matchNumber)).setText("1");
+                    ((EditText) linearLayout.findViewById(R.id.robotNumber)).setText("2809");
+                    overriddenScoutName.setText("Debug Scout Name Build " + BuildConfig.VERSION_NAME);
                 }
 
                 //make it so that you can override the schedule if you need to

@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +72,9 @@ public class ConnectionThread implements Runnable {
                 //data has been fully sent, removed "{e}" (the end splitter) from it
                 message = message.substring(0, message.length() - 3);
 
+                //decode this data from base 64 to normal data
+                message = new String(Base64.decode(message, Base64.DEFAULT), Charset.forName("UTF-8"));
+
                 if (message.contains("SEND SCHEDULE")) { //received data about the schedule
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
@@ -79,8 +83,11 @@ public class ConnectionThread implements Runnable {
                                     Toast.LENGTH_LONG).show();
                         }
                     });
+
                     loadSchedule(message);
-                    this.out.write(("RECEIVED" + endSplitter).getBytes(Charset.forName("UTF-8")));
+
+                    //send that this message was recieved, conver to base 64 and add the end splitter first
+                    this.out.write((toBase64("RECEIVED") + endSplitter).getBytes(Charset.forName("UTF-8")));
                 } else if (message.contains("REQUEST DATA")) { //received a request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
@@ -131,9 +138,13 @@ public class ConnectionThread implements Runnable {
     }
 
     public void loadSchedule(String schedule) {
-        String[] userSchedules = schedule.split(":::")[1].split("::");
-        String matchSchedule = schedule.split(":::")[2];
+        String allUserSchedules = schedule.split(":::")[1];
+        allUserSchedules = new String(Base64.decode(allUserSchedules, Base64.DEFAULT), Charset.forName("UTF-8"));
+        String[] userSchedules = allUserSchedules.split("::");
 
+
+        String matchSchedule = schedule.split(":::")[2];
+        matchSchedule = new String(Base64.decode(matchSchedule, Base64.DEFAULT), Charset.forName("UTF-8"));
         String[] matches = matchSchedule.split("::");
 
         //reset schedules
@@ -212,7 +223,11 @@ public class ConnectionThread implements Runnable {
 
     public void sendLabels() {
         try {
-            this.out.write((mainActivity.versionCode + ":::" + mainActivity.labels + endSplitter).getBytes(Charset.forName("UTF-8")));
+            String outString = mainActivity.versionCode + ":::" + mainActivity.savedLabels;
+            //convert to base 64 bytes
+            String outBase64 = Base64.encodeToString(outString.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT) + endSplitter;
+
+            this.out.write(outBase64.getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -234,9 +249,7 @@ public class ConnectionThread implements Runnable {
                 fullMessage += "nodata";
             }
 
-            fullMessage += endSplitter;
-
-            this.out.write((fullMessage).getBytes(Charset.forName("UTF-8")));
+            this.out.write((toBase64(fullMessage) + endSplitter).getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -274,5 +287,9 @@ public class ConnectionThread implements Runnable {
                 ((TextView) (mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingMessages.size() + "");
             }
         });
+    }
+
+    public String toBase64(String string) {
+        return Base64.encodeToString(string.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
     }
 }
