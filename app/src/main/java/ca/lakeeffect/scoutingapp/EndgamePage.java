@@ -10,13 +10,20 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -54,7 +61,60 @@ public class EndgamePage extends Fragment implements View.OnClickListener {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.climb, R.layout.spinner);
         climb.setAdapter(adapter);
 
+        climb = view.findViewById(R.id.endgameClimbType);
+        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.climbType, R.layout.spinner);
+        climb.setAdapter(adapter);
+
+        final RatingBar defenceRating = view.findViewById(R.id.defenceRating);
+        final TextView defenceText = view.findViewById(R.id.defenceText);
+
+        final Spinner endgameClimbType = (Spinner) view.findViewById(R.id.endgameClimbType);
+        final Spinner endgameClimb = (Spinner) view.findViewById(R.id.endgameClimb);
+
+        defenceRating.setVisibility(View.INVISIBLE);
+        defenceText.setVisibility(View.INVISIBLE);
+        endgameClimb.setVisibility(View.INVISIBLE);
+
+        final CheckBox defence = (CheckBox) view.findViewById(R.id.defense);
+
+
         view.setTag("page3");
+
+        defence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked){
+                    defenceRating.setVisibility(View.VISIBLE);
+                    defenceText.setVisibility(View.VISIBLE);
+                }else{
+                    defenceRating.setVisibility(View.INVISIBLE);
+                    defenceText.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        endgameClimbType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
+            {
+                Object item = parent.getItemAtPosition(pos);
+
+                System.out.println(pos);
+
+                if(pos >= 3){
+                    endgameClimb.setVisibility(View.VISIBLE);
+                }else{
+                    endgameClimb.setVisibility(View.INVISIBLE);
+                }
+
+            }
+
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+
 
         return view;
     }

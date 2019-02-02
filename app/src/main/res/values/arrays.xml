@@ -9,11 +9,17 @@
 
     <string-array name="climb">
         <item>Choose One</item>
-        <item>Did Not Try</item>
-        <item>Parked</item>
-        <item>Failed Climb</item>
-        <item>Successful Climb</item>
         <item>Got carried</item>
+        <item>Attempted climb</item>
+        <item>Climbed</item>
+    </string-array>
+
+    <string-array name="climbType">
+        <item>Where did it climb?</item>
+        <item>Did not climb</item>
+        <item>Returned to hab</item>
+        <item>Level 2</item>
+        <item>Level 3</item>
     </string-array>
 
     <string-array name="alliances">

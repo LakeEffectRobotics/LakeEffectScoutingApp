@@ -385,6 +385,16 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
+            //if the defence rating is visible and it is <= 0
+            //TODO: make this work
+            if (((RatingBar) pagerAdapter.endgamePage.getView().findViewById(R.id.defenceRating)).getRating() <= 0 && ((RatingBar) pagerAdapter.endgamePage.getView().findViewById(R.id.defenceRating)).getVisibility() == View.VISIBLE) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the defence ability!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
 
             if (!((RadioButton) pagerAdapter.autoPage.getView().findViewById(R.id.leftHabSuccess)).isChecked() && !((RadioButton) pagerAdapter.autoPage.getView().findViewById(R.id.leftHabFail)).isChecked()) {
                 runOnUiThread(new Thread() {
@@ -395,14 +405,27 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-            if (((Spinner) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimb)).getSelectedItem().toString().equals("Choose One")) {
+            if (((Spinner) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimbType)).getSelectedItem().toString().equals("Where did it climb?")) {
                 runOnUiThread(new Thread() {
                     public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it climbed!", Toast.LENGTH_LONG).show();
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify where it climbed!", Toast.LENGTH_LONG).show();
                     }
                 });
                 return null;
             }
+
+            //if the second spinner is visible and it is "Choose One"
+            //TODO: make this work
+            if (((Spinner) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimb)).getSelectedItem().toString().equals("Choose One") && ((Spinner) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimb)).getVisibility() == View.VISIBLE) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify how it climbed!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+
+
 
             if (((Spinner) pagerAdapter.autoPage.getView().findViewById(R.id.autoStartLocation)).getSelectedItem().toString().equals("Choose One")) {
                 runOnUiThread(new Thread() {
@@ -412,6 +435,7 @@ public class MainActivity extends AppCompatActivity {
                 });
                 return null;
             }
+
         }
 
         data = new StringBuilder();
