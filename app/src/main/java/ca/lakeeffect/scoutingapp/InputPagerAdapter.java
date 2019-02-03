@@ -2,7 +2,6 @@ package ca.lakeeffect.scoutingapp;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
@@ -14,16 +13,16 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
 
     final int PAGENUM = 3;
 
-    public AutoPage autoPage;
+    public PregamePage pregamePage;
     public TeleopPage teleopPage;
-    public EndgamePage endgamePage;
+    public PostgamePage postgamePage;
 
     //Instatiate pages
     public InputPagerAdapter(FragmentManager fm) {
         super(fm);
-        autoPage = new AutoPage();
+        pregamePage = new PregamePage();
         teleopPage = new TeleopPage();
-        endgamePage = new EndgamePage();
+        postgamePage = new PostgamePage();
     }
     
     //More instatiation
@@ -31,14 +30,14 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch(position){
             case 0:
-                autoPage = new AutoPage();
-                return autoPage;
+                pregamePage = new PregamePage();
+                return pregamePage;
             case 1:
                 teleopPage = new TeleopPage();
                 return teleopPage;
             case 2:
-                endgamePage = new EndgamePage();
-                return endgamePage;
+                postgamePage = new PostgamePage();
+                return postgamePage;
         }
         return null;
     }

@@ -7,12 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 /**
  * Created by Ajay on 9/25/2016.
  */
-public class AutoPage extends Fragment {
+public class PregamePage extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,7 +21,7 @@ public class AutoPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflator.inflate(R.layout.autopage, container, false);
+        View view = inflator.inflate(R.layout.pregamepage, container, false);
 
         view.setTag("page1");
 

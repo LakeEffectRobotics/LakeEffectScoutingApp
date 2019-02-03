@@ -2,37 +2,22 @@ package ca.lakeeffect.scoutingapp;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.RadioGroup;
-import android.widget.ScrollView;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-public class EndgamePage extends Fragment implements View.OnClickListener {
+public class PostgamePage extends Fragment implements View.OnClickListener {
 
     Button submit;
     Spinner climb;
 
-    public EndgamePage() {
+    public PostgamePage() {
 
     }
 
@@ -45,7 +30,7 @@ public class EndgamePage extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflator.inflate(R.layout.endgamepage, container, false);
+        View view = inflator.inflate(R.layout.postgamepage, container, false);
 
         submit = view.findViewById(R.id.submit);
         submit.setOnClickListener(this);
