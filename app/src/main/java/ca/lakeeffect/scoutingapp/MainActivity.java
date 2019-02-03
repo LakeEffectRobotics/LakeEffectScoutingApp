@@ -383,10 +383,19 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-            if (((RadioGroup) pagerAdapter.pregamePage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() == -1) {
+            if (((RadioGroup) pagerAdapter.pregamePage.getView().findViewById(R.id.startPositionGroup)).getCheckedRadioButtonId() == -1) {
                 runOnUiThread(new Thread() {
                     public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it crossed the baseline! Go back to the auto page!", Toast.LENGTH_LONG).show();
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to where it started! Go back to the pregame page!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+
+            if (((RadioGroup) pagerAdapter.pregamePage.getView().findViewById(R.id.preloadGroup)).getCheckedRadioButtonId() == -1) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to what is started with! Go back to the pregame page!", Toast.LENGTH_LONG).show();
                     }
                 });
                 return null;
