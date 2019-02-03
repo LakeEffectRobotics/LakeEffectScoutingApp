@@ -1,174 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
     <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:id="@+id/endgamePageLayout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:id = "@+id/endgamePageLayout">
+        android:orientation="vertical">
+
         <TableLayout
+            android:id="@+id/endgameTableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/endgameTableLayout"
-            android:layout_margin="5dp">
+            android:layout_marginTop="@dimen/text_small">
+
             <TableRow
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:weightSum="4">
+
                 <TextView
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="right"
                     android:text="Climb:"
-                    android:textSize="@dimen/text_medium"
-                    android:gravity="right"/>
+                    android:textSize="@dimen/text_medium" />
+
                 <Spinner
                     android:id="@+id/endgameClimb"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginLeft="5dp"/>
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="2" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
             </TableRow>
+
             <TableRow
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:weightSum="2">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_small"
+                android:weightSum="5">
 
                 <TextView
-                    android:text="Robots Carried:"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_medium"
-                    android:layout_marginTop="@dimen/text_small"
                     android:layout_weight="1"
-                    android:gravity="center"/>
-                <ca.lakeeffect.scoutingapp.Counter
+                    android:gravity="center"
+                    android:text="Robots Carried:"
+                    android:textSize="@dimen/text_medium" />
+
+                <RadioGroup
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="No carry"
+                        android:textSize="@dimen/text_small" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Was Carried"
+                        android:textSize="@dimen/text_small" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Carried 1"
+                        android:textSize="@dimen/text_small" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Carried 2"
+                        android:textSize="@dimen/text_small" />
+                </RadioGroup>
+
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_small"
+                android:weightSum="3">
+
+                <CheckBox
+                    android:id="@+id/defense"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/robotsCarried"/>
-            </TableRow>
-            <TableRow
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:weightSum="2"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
-                <TextView />
-                <CheckBox
                     android:layout_weight="1"
                     android:text="Defense"
-                    android:textSize="@dimen/text_small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:id="@+id/defense"
-                    android:layout_below="@id/endgameClimb"/>
+                    android:textSize="@dimen/text_small" />
 
                 <CheckBox
+                    android:id="@+id/died"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Died"
+                    android:textSize="@dimen/text_small" />
+
+                <CheckBox
+                    android:id="@+id/tipped"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/defense"
-                    android:layout_centerHorizontal="true"
-                    android:id="@+id/died"
-                    android:textSize="@dimen/text_small" />
-                <TextView />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView/>
-                <CheckBox
                     android:layout_weight="1"
                     android:text="Tipped"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:id="@+id/tipped"
                     android:textSize="@dimen/text_small" />
-                <TextView/>
+
             </TableRow>
 
             <TableRow
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_small"
                 android:weightSum="2">
 
                 <TextView
-                    android:text="Drive Ability:"
+                    android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView2"
-                    android:textSize="@dimen/text_medium"
                     android:layout_marginTop="@dimen/text_small"
                     android:layout_weight="1"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:text="Drive Ability:"
+                    android:textSize="@dimen/text_medium" />
 
                 <LinearLayout>
                     <!--This is a workaround to make #109 work as seen in https://stackoverflow.com/a/39653856/1985387-->
                     <RatingBar
+                        android:id="@+id/driveRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/driveRating"
+                        android:isIndicator="false"
                         android:numStars="4"
-                        android:stepSize="0.5"
-                        android:isIndicator="false"/>
+                        android:stepSize="0.5" />
                 </LinearLayout>
 
             </TableRow>
 
             <TableRow
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_small"
                 android:weightSum="2">
 
                 <TextView
-                    android:text="Intake Ability:"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_medium"
                     android:layout_marginTop="@dimen/text_small"
                     android:layout_weight="1"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:text="Intake Ability:"
+                    android:textSize="@dimen/text_medium" />
+
                 <LinearLayout>
                     <!--This is a workaround to make #109 work as seen in https://stackoverflow.com/a/39653856/1985387-->
                     <RatingBar
+                        android:id="@+id/intakeRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/intakeRating"
+                        android:isIndicator="false"
                         android:numStars="4"
-                        android:stepSize="0.5"
-                        android:isIndicator="false"/>
+                        android:stepSize="0.5" />
+
                 </LinearLayout>
 
             </TableRow>
         </TableLayout>
 
-        <EditText
-            android:imeOptions="flagNoExtractUi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/endgameTableLayout"
-            android:layout_marginTop="75dp"
-            android:hint="Comments"
-            android:id="@+id/endgameComments"
-            android:textSize="@dimen/text_small"/>
+        <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/endgameTableLayout"-->
+        <!--android:layout_marginTop="75dp"-->
+        <!--android:hint="Comments"-->
+        <!--android:id="@+id/endgameComments"-->
+        <!--android:textSize="@dimen/text_small"/>-->
 
-        <Button
-            android:text="Submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/endgameComments"
-            android:id="@+id/submit"
-            android:textSize="50sp"
-            android:layout_centerHorizontal="true"/>
+        <!--<Button-->
+        <!--android:text="Submit"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/endgameComments"-->
+        <!--android:id="@+id/submit"-->
+        <!--android:textSize="50sp"-->
+        <!--android:layout_centerHorizontal="true"/>-->
 
     </android.support.percent.PercentRelativeLayout>
 </ScrollView>
