@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/endgamePageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:orientation="vertical">
+
+        <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:hint="Comments"
+        android:id="@+id/qualitativeComments"
+        android:textSize="@dimen/text_small"/>
+
+        <Button
+        android:text="Submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/qualitativeComments"
+        android:id="@+id/submit"
+        android:textSize="50sp"
+        android:layout_centerHorizontal="true"/>
+
+    </android.support.percent.PercentRelativeLayout>
+</ScrollView>

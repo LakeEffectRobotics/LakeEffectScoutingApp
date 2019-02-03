@@ -11,11 +11,12 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 public class InputPagerAdapter extends FragmentStatePagerAdapter {
 
-    final int PAGENUM = 3;
+    final int PAGENUM = 4;
 
     public PregamePage pregamePage;
     public TeleopPage teleopPage;
     public PostgamePage postgamePage;
+    public QualitativePage qualitativePage;
 
     //Instatiate pages
     public InputPagerAdapter(FragmentManager fm) {
@@ -23,6 +24,7 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
         pregamePage = new PregamePage();
         teleopPage = new TeleopPage();
         postgamePage = new PostgamePage();
+        qualitativePage = new QualitativePage();
     }
     
     //More instatiation
@@ -38,6 +40,9 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
             case 2:
                 postgamePage = new PostgamePage();
                 return postgamePage;
+            case 3:
+                qualitativePage = new QualitativePage();
+                return qualitativePage;
         }
         return null;
     }
@@ -57,6 +62,8 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
                 return "TeleOp Round";
             case 2:
                 return "Post-Game";
+            case 3:
+                return "Qualitative";
         }
         return "";
     }
