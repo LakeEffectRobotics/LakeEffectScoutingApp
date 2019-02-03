@@ -41,39 +41,4 @@ public class PostgamePage extends Fragment {
         return view;
     }
 
-//    public void onClick(View v) {
-//        //If the submit button is pressed
-//        if (v == submit) {
-//            //save the time
-//            MainActivity.lastSubmit = System.currentTimeMillis();
-//
-//            //Confirm Dialog
-//            MainActivity.startNotificationAlarm(getContext());
-//            new AlertDialog.Builder(getActivity())
-//                    .setTitle("Submitting")
-//                    .setMessage("Are you sure you would like to submit?")
-//                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            Toast.makeText(getActivity(),
-//                                    "Keep scouting then...", Toast.LENGTH_LONG).show();
-//                        }
-//                    })
-//                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            //Save the data
-//                            if (((MainActivity) getActivity()).saveData()) {
-//                                Toast.makeText(getActivity(),
-//                                        "Saving", Toast.LENGTH_LONG).show();
-//                                //Reset the inputs
-//                                ((MainActivity) getActivity()).reset();
-//                            }
-//
-//                        }
-//                    })
-//                    .create()
-//                    .show();
-//        }
-//    }
 }
