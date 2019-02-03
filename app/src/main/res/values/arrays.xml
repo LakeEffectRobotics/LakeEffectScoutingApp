@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="places">
-        <item>None</item>
-        <item>Switch</item>
-        <item>Scale</item>
-        <item>Vault</item>
-    </string-array>
-
     <string-array name="climb">
         <item>Choose One</item>
         <item>Did Not Try</item>
-        <item>Parked</item>
-        <item>Failed Climb</item>
-        <item>Successful Climb</item>
-        <item>Got carried</item>
+        <item>HAB 1</item>
+        <item>HAB 2</item>
+        <item>HAB 3</item>
     </string-array>
 
     <string-array name="alliances">
@@ -35,10 +27,4 @@
         <item>Back</item>
     </string-array>
 
-    <string-array name="startPosition">
-        <item>Choose one</item>
-        <item>Left</item>
-        <item>Center</item>
-        <item>Right</item>
-    </string-array>
 </resources>
