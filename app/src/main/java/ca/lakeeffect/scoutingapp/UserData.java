@@ -7,11 +7,11 @@ public class UserData {
 
     String userName;
 
-    ArrayList<Integer> robots;
+    ArrayList<Integer> robots = new ArrayList<>();
 
     //red is false, true is blue
     //lists what alliance this robot is on in each match
-    ArrayList<Boolean> alliances;
+    ArrayList<Boolean> alliances = new ArrayList<>();
 
     public UserData(int userID, String userName, ArrayList<Boolean> alliances, ArrayList<Integer> robots){
         this.userID = userID;
@@ -20,8 +20,13 @@ public class UserData {
         this.robots = robots;
     }
 
+    public UserData(int userID, String userName){
+        this.userID = userID;
+        this.userName = userName;
+    }
+
     //is the user able to go off duty (someone else has swapped in)
-    public boolean isOff() {
-        return false;
+    public boolean isOff(int matchNum) {
+        return robots.get(matchNum) == -1;
     }
 }

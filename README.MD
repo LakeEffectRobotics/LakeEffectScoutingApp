@@ -30,10 +30,6 @@ Make sure to move the files from the phone onto the computer before using these 
 
 The results for these programs will be put in a folder called "results"
 
-# Trello
-
-View the Trello here: https://trello.com/b/AxQV80dP/scouting-app
-
 # Other Questions
 
 You can contact @ajayyy or make an issue.

@@ -12,45 +12,45 @@ import android.widget.TextView;
 /**
  * Created by Ajay on 9/25/2016.
  */
-public class AutoPage extends Fragment{
+public class AutoPage extends Fragment {
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflator.inflate(R.layout.autopage, container, false);
 
         view.setTag("page1");
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.autoStartLocation);
+        Spinner spinner = view.findViewById(R.id.autoStartLocation);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.startPosition, R.layout.spinner);
         spinner.setAdapter(adapter);
 
-        spinner = (Spinner) view.findViewById(R.id.firstAutoCubeLocation);
+        spinner = view.findViewById(R.id.firstAutoCubeLocation);
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
         spinner.setAdapter(adapter);
 
-        spinner = (Spinner) view.findViewById(R.id.secondAutoCubeLocation);
+        spinner = view.findViewById(R.id.secondAutoCubeLocation);
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
         spinner.setAdapter(adapter);
 
-        spinner = (Spinner) view.findViewById(R.id.thirdAutoCubeLocation);
+        spinner = view.findViewById(R.id.thirdAutoCubeLocation);
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
         spinner.setAdapter(adapter);
 
-        spinner = (Spinner) view.findViewById(R.id.firstAutoCubeOrientation);
+        spinner = view.findViewById(R.id.firstAutoCubeOrientation);
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.orientations, R.layout.spinner);
         spinner.setAdapter(adapter);
 
-        spinner = (Spinner) view.findViewById(R.id.secondAutoCubeOrientation);
+        spinner = view.findViewById(R.id.secondAutoCubeOrientation);
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.orientations, R.layout.spinner);
         spinner.setAdapter(adapter);
 
-        spinner = (Spinner) view.findViewById(R.id.thirdAutoCubeOrientation);
+        spinner = view.findViewById(R.id.thirdAutoCubeOrientation);
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.orientations, R.layout.spinner);
         spinner.setAdapter(adapter);
 

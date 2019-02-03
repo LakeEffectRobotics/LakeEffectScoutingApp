@@ -1,10 +1,11 @@
 package ca.lakeeffect.scoutingapp;
 
 import android.app.Activity;
-import android.app.Instrumentation;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,13 +14,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Created by Ajay on 02/10/2017.
- *
+ * 
  * This thread runs once the client is connected to the sever, it waits for the server to ask for the data
  */
 
@@ -35,7 +35,9 @@ public class ConnectionThread implements Runnable {
 
     ArrayList<String> sentPendingMessages = new ArrayList<>();
 
-    public ConnectionThread(MainActivity mainActivity, BluetoothSocket bluetoothSocket, OutputStream out, InputStream in, BluetoothServerSocket bss){
+    final String endSplitter = "{e}";
+
+    public ConnectionThread(MainActivity mainActivity, BluetoothSocket bluetoothSocket, OutputStream out, InputStream in, BluetoothServerSocket bss) {
         this.mainActivity = mainActivity;
         this.bluetoothSocket = bluetoothSocket;
         this.out = out;
@@ -46,19 +48,47 @@ public class ConnectionThread implements Runnable {
     @Override
     public void run() {
 
+        //used if the full message is not sent
         String data = "";
 
-        while(out != null && in != null && bluetoothSocket.isConnected()){
+        while (out != null && in != null && bluetoothSocket.isConnected()) {
             try {
                 byte[] bytes = new byte[100000];
                 int amount = in.read(bytes);
 
                 //if some bytes were sent, then we received something, then cut out the unused bytes (bytes array is very big because it must be the MAXIMUM amount of data you are willing to receive
-                if(amount>0)  bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
+                if (amount > 0)
+                    bytes = Arrays.copyOfRange(bytes, 0, amount);//puts data into bytes and cuts bytes
                 else continue;
 
-                String message = new String(bytes, Charset.forName("UTF-8"));
-                if (message.contains("REQUEST DATA")){ //received request
+                String message = data + new String(bytes, Charset.forName("UTF-8"));
+
+                //message has not been fully sent, add to data and continue
+                if (!message.endsWith(endSplitter)) {
+                    data = message;
+                    continue;
+                }
+
+                //data has been fully sent, removed "{e}" (the end splitter) from it
+                message = message.substring(0, message.length() - 3);
+
+                //decode this data from base 64 to normal data
+                message = new String(Base64.decode(message, Base64.DEFAULT), Charset.forName("UTF-8"));
+
+                if (message.contains("SEND SCHEDULE")) { //received data about the schedule
+                    mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(mainActivity, "Received schedule",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                    loadSchedule(message);
+
+                    //send that this message was recieved, conver to base 64 and add the end splitter first
+                    this.out.write((toBase64("RECEIVED") + endSplitter).getBytes(Charset.forName("UTF-8")));
+                } else if (message.contains("REQUEST DATA")) { //received a request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -67,8 +97,7 @@ public class ConnectionThread implements Runnable {
                         }
                     });
                     sendData();
-                    data = "";
-                }else if (message.contains("REQUEST LABELS")){ //received request
+                } else if (message.contains("REQUEST LABELS")) { //received a request
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -77,8 +106,7 @@ public class ConnectionThread implements Runnable {
                         }
                     });
                     sendLabels();
-                    data = "";
-                }else if (message.contains("RECEIVED")) {
+                } else if (message.contains("RECEIVED")) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -92,9 +120,10 @@ public class ConnectionThread implements Runnable {
                     mainActivity.listenerThread.run();
                     new Thread(mainActivity.listenerThread).start();
                     break;
-                } else {
-                    data += message;
                 }
+
+                //message has been fully sent and dealt with, reset data
+                data = "";
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -108,59 +137,145 @@ public class ConnectionThread implements Runnable {
 
     }
 
-    public void sendLabels(){
+    public void loadSchedule(String schedule) {
+        String allUserSchedules = schedule.split(":::")[1];
+        allUserSchedules = new String(Base64.decode(allUserSchedules, Base64.DEFAULT), Charset.forName("UTF-8"));
+        String[] userSchedules = allUserSchedules.split("::");
+
+
+        String matchSchedule = schedule.split(":::")[2];
+        matchSchedule = new String(Base64.decode(matchSchedule, Base64.DEFAULT), Charset.forName("UTF-8"));
+        String[] matches = matchSchedule.split("::");
+
+        //reset schedules
+        mainActivity.schedules = new ArrayList<>();
+
+        //go through the user schedule and assign robots based on the match schedule
+        for (int userID = 0; userID < userSchedules.length; userID++) {
+            String name = userSchedules[userID].split(":")[0];
+            String[] userSchedule = userSchedules[userID].split(":")[1].split(",");
+
+            UserData currentUserData = new UserData(userID, name);
+
+            mainActivity.schedules.add(currentUserData);
+
+            for (int matchNum = 0; matchNum < userSchedule.length; matchNum++) {
+                String[] robotNumbers = matches[matchNum].split(",");
+
+                int robotIndex = Integer.parseInt(userSchedule[matchNum]);
+                if (robotIndex != -1) {
+                    currentUserData.robots.add(Integer.parseInt(robotNumbers[robotIndex]));
+                } else {
+                    currentUserData.robots.add(-1);
+                }
+                currentUserData.alliances.add(robotIndex >= 3);
+            }
+        }
+
+        if (mainActivity.userIDSpinner != null) {
+            mainActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //update the userIDSpinner if the alert is open
+                    mainActivity.updateUserIDSpinner();
+
+                    //update the UI with the time remaining
+                    mainActivity.updateMatchesLeft();
+                }
+            });
+        }
+
+        //update the shared preferences
+        SharedPreferences prefs = mainActivity.getSharedPreferences("userSchedule", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        //set size
+        editor.putInt("userAmount", mainActivity.schedules.size());
+
+        //go through each user and add the data
+        for (int i = 0; i < mainActivity.schedules.size(); i++) {
+            UserData user = mainActivity.schedules.get(i);
+
+            String robots = "";
+            for (int s = 0; s < user.robots.size(); s++) {
+                robots += user.robots.get(s);
+
+                if (s < user.robots.size() - 1) {
+                    robots += ",";
+                }
+            }
+
+            String alliances = "";
+            for (int s = 0; s < user.robots.size(); s++) {
+                alliances += user.alliances.get(s);
+
+                if (s < user.alliances.size() - 1) {
+                    alliances += ",";
+                }
+            }
+
+            editor.putString("robots" + i, robots);
+            editor.putString("alliances" + i, alliances);
+            editor.putString("userName" + i, user.userName);
+        }
+
+        editor.apply();
+    }
+
+    public void sendLabels() {
         try {
-            System.out.println(mainActivity.labels + " sadsadsad");
-            this.out.write((mainActivity.versionCode + ":::" + mainActivity.labels).getBytes(Charset.forName("UTF-8")));
+            String outString = mainActivity.versionCode + ":::" + mainActivity.savedLabels;
+            //convert to base 64 bytes
+            String outBase64 = Base64.encodeToString(outString.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT) + endSplitter;
+
+            this.out.write(outBase64.getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void sendData(){
+    public void sendData() {
         try {
-            String fullmessage = mainActivity.versionCode + ":::";
-            for(String message : mainActivity.pendingmessages){
-//                this.out.write((mainActivity.robotNum + ":" + mainActivity.getData()[0]).getBytes(Charset.forName("UTF-8")));
-                if(!fullmessage.equals(mainActivity.versionCode + ":::")){
-                    fullmessage += "::";
+            String fullMessage = mainActivity.versionCode + ":::";
+            for (String message : mainActivity.pendingMessages) {
+                if (!fullMessage.equals(mainActivity.versionCode + ":::")) {
+                    fullMessage += "::";
                 }
-                fullmessage += message;
+                fullMessage += message;
 
                 sentPendingMessages.add(message);
             }
 
-            if(mainActivity.pendingmessages.isEmpty()){
-                fullmessage += "nodata::end";
+            if (mainActivity.pendingMessages.isEmpty()) {
+                fullMessage += "nodata";
             }
 
-            this.out.write((fullmessage + "\n").getBytes(Charset.forName("UTF-8")));
+            this.out.write((toBase64(fullMessage) + endSplitter).getBytes(Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void deleteData(){ //deleted items that are in sent pending messages (because they now have been sent
+    public void deleteData() { //deleted items that are in sent pending messages (because they now have been sent)
 
-        SharedPreferences prefs2 = mainActivity.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+        SharedPreferences prefs2 = mainActivity.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefs2.edit();
-        if( prefs2.getInt("messageAmount", 0) - sentPendingMessages.size() >= 0){
+        if (prefs2.getInt("messageAmount", 0) - sentPendingMessages.size() >= 0) {
             editor2.putInt("messageAmount", prefs2.getInt("messageAmount", 0) - sentPendingMessages.size());
         } else {
             editor2.putInt("messageAmount", 0);
         }
         editor2.apply();
 
-        for(String message: new ArrayList<>(sentPendingMessages)){
-            mainActivity.pendingmessages.remove(message);
+        for (String message : new ArrayList<>(sentPendingMessages)) {
+            mainActivity.pendingMessages.remove(message);
             sentPendingMessages.remove(message);
 
             int loc = mainActivity.getLocationInSharedMessages(message);
 
-            if(loc != -1){
-                SharedPreferences prefs = mainActivity.getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+            if (loc != -1) {
+                SharedPreferences prefs = mainActivity.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("message"+loc, null);
+                editor.putString("message" + loc, null);
                 editor.apply();
             }
         }
@@ -169,8 +284,12 @@ public class ConnectionThread implements Runnable {
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((TextView) ((RelativeLayout) mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingmessages.size() + "");
+                ((TextView) (mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingMessages.size() + "");
             }
         });
+    }
+
+    public String toBase64(String string) {
+        return Base64.encodeToString(string.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
     }
 }

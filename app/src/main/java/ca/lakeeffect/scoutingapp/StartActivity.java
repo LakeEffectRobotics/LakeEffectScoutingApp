@@ -52,8 +52,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        startScouting = (Button) findViewById(R.id.startScouting);
-        moreOptions = (Button) findViewById(R.id.moreOptionsStartScreen);
+        startScouting = findViewById(R.id.startScouting);
+        moreOptions = findViewById(R.id.moreOptionsStartScreen);
 
         startScouting.setOnClickListener(this);
         moreOptions.setOnClickListener(this);
@@ -66,18 +66,15 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         }
 
         //Set Unsent Messages Text
-        TextView unsentMessages = (TextView) findViewById(R.id.startUnsentMessages);
+        TextView unsentMessages = findViewById(R.id.startUnsentMessages);
         assert unsentMessages != null;
-        unsentMessages.setText("Unsent Messages: " + getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE).getInt("messageAmount", 0));
+        unsentMessages.setText("Unsent Messages: " + getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE).getInt("messageAmount", 0));
 
         //Set Version Text
-        TextView versionNum = (TextView) findViewById(R.id.versionNum);
-        try {
-            assert versionNum != null;
-            versionNum.setText("Version: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        TextView buildNum = findViewById(R.id.buildNum);
+        TextView versionNum = findViewById(R.id.versionNum);
+        buildNum.setText("Build: " +  + BuildConfig.VERSION_CODE + " " + (BuildConfig.DEBUG ? "Debug" : "Release"));
+        versionNum.setText("Version: " + BuildConfig.VERSION_NAME);
 
         Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(turnOn, 0);
@@ -95,7 +92,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
                     if (item.getItemId() == R.id.resetPendingMessages) {
-                        SharedPreferences prefs = getSharedPreferences("pendingmessages", Activity.MODE_PRIVATE);
+                        SharedPreferences prefs = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt("messageAmount", 0);
                         editor.apply();
