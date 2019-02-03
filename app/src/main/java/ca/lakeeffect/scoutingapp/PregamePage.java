@@ -25,34 +25,6 @@ public class PregamePage extends Fragment {
 
         view.setTag("page1");
 
-        Spinner spinner = view.findViewById(R.id.autoStartLocation);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.startPosition, R.layout.spinner);
-        spinner.setAdapter(adapter);
-
-        spinner = view.findViewById(R.id.firstAutoCubeLocation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
-        spinner.setAdapter(adapter);
-
-        spinner = view.findViewById(R.id.secondAutoCubeLocation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
-        spinner.setAdapter(adapter);
-
-        spinner = view.findViewById(R.id.thirdAutoCubeLocation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.places, R.layout.spinner);
-        spinner.setAdapter(adapter);
-
-        spinner = view.findViewById(R.id.firstAutoCubeOrientation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.orientations, R.layout.spinner);
-        spinner.setAdapter(adapter);
-
-        spinner = view.findViewById(R.id.secondAutoCubeOrientation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.orientations, R.layout.spinner);
-        spinner.setAdapter(adapter);
-
-        spinner = view.findViewById(R.id.thirdAutoCubeOrientation);
-        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.orientations, R.layout.spinner);
-        spinner.setAdapter(adapter);
-
 
         return view;
 
