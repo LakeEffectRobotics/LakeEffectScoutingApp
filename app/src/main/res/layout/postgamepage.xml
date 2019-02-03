@@ -163,29 +163,6 @@
 
             </LinearLayout>
 
-            <EditText
-                android:imeOptions="flagNoExtractUi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="70dp"
-                android:layout_row="7"
-                android:layout_column="0"
-                android:layout_columnSpan="5"
-                android:hint="Comments"
-                android:id="@+id/endgameComments"
-                android:textSize="@dimen/text_small" />
-
-            <Button
-                android:text="Submit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_row="8"
-                android:layout_column="0"
-                android:layout_columnSpan="5"
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/submit"
-                android:textSize="50sp" />
-
         </GridLayout>
 
 
