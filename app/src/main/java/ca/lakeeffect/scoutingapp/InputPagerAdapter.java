@@ -52,11 +52,11 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch(position){
             case 0:
-                return "Autonomous Round";
+                return "Pre-Game";
             case 1:
                 return "TeleOp Round";
             case 2:
-                return "Endgame";
+                return "Post-Game";
         }
         return "";
     }
