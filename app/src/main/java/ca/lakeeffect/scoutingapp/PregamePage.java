@@ -15,7 +15,7 @@ import android.widget.TextView;
 /**
  * Created by Ajay on 9/25/2016.
  */
-public class AutoPage extends Fragment {
+public class PregamePage extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,35 +25,13 @@ public class AutoPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflator.inflate(R.layout.autopage, container, false);
+        View view = inflator.inflate(R.layout.pregamepage, container, false);
 
         view.setTag("page1");
 
         Spinner spinner = view.findViewById(R.id.autoStartLocation);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.startPosition, R.layout.spinner);
         spinner.setAdapter(adapter);
-
-        final RadioButton success = (RadioButton) view.findViewById(R.id.leftHabSuccess);
-
-        final RadioButton fail = (RadioButton) view.findViewById(R.id.leftHabFail);
-
-        success.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    fail.setChecked(false);
-                }
-            }
-        });
-
-        fail.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    success.setChecked(false);
-                }
-            }
-        });
 
         final CheckBox cargo = (CheckBox) view.findViewById(R.id.startingObjectsCargo);
 
