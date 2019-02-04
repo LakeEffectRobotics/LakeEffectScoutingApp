@@ -33,28 +33,6 @@ public class PregamePage extends Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.startPosition, R.layout.spinner);
         spinner.setAdapter(adapter);
 
-        final RadioButton success = (RadioButton) view.findViewById(R.id.leftHabSuccess);
-
-        final RadioButton fail = (RadioButton) view.findViewById(R.id.leftHabFail);
-
-        success.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    fail.setChecked(false);
-                }
-            }
-        });
-
-        fail.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    success.setChecked(false);
-                }
-            }
-        });
-
         final CheckBox cargo = (CheckBox) view.findViewById(R.id.startingObjectsCargo);
 
         final CheckBox hatch = (CheckBox) view.findViewById(R.id.startingObjectsHatch);
