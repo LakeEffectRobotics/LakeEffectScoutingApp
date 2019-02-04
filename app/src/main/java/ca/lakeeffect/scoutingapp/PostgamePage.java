@@ -17,7 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PostgamePage extends Fragment implements View.OnClickListener {
+public class PostgamePage extends Fragment {
 
     Spinner climb;
 

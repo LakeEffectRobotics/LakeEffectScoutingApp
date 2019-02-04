@@ -23,6 +23,10 @@ public class PregamePage extends Fragment {
 
         View view = inflator.inflate(R.layout.pregamepage, container, false);
 
+        Spinner startSpinner = view.findViewById(R.id.startPositionSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.startPosition, R.layout.spinner);
+        startSpinner.setAdapter(adapter);
+
         view.setTag("page1");
 
 

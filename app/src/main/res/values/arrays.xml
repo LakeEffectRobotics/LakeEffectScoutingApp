@@ -37,9 +37,7 @@
     <string-array name="startPosition">
         <item>Choose One</item>
         <item>Left</item>
-        <item>Left platform</item>
         <item>Center</item>
         <item>Right</item>
-        <item>Right platform</item>
     </string-array>
 </resources>
