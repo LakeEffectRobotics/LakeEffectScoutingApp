@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class QualitativePage  extends Fragment {
+public class QualitativePage  extends Fragment implements View.OnClickListener {
 
     Button submit;
 
@@ -27,6 +27,7 @@ public class QualitativePage  extends Fragment {
         view.setTag("page4");
 
         submit = view.findViewById(R.id.submit);
+        submit.setOnClickListener(this);
 
         return view;
 

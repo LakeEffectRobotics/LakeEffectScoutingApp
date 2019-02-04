@@ -54,7 +54,6 @@ public class PostgamePage extends Fragment {
 
         final CheckBox defence = (CheckBox) view.findViewById(R.id.defense);
 
-
         view.setTag("page3");
 
         defence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){

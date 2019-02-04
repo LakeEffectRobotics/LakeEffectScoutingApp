@@ -1,131 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/autoPageLayout"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:id = "@+id/autoPageLayout">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-        <TableLayout
-            android:id="@+id/pregameTableLayout"
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true">
-
-            <TableRow
-                android:id="@+id/startPosition"
-                android:layout_width="fill_parent"
-                android:layout_marginBottom="17dp"
-                android:weightSum="4">
-
-                <TextView
-                    android:id="@+id/pregame0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/tableLayout"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Start Position: "
-                    android:textSize="@dimen/text_medium" />
-
-                <RadioGroup
-                    android:id="@+id/startPositionGroup"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/hab1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_weight="1"
-                        android:checked="false"
-                        android:text="HAB 1"
-                        android:textSize="@dimen/text_small" />
-
-                    <RadioButton
-                        android:id="@+id/hab2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_weight="1"
-                        android:text="HAB 2"
-                        android:textSize="@dimen/text_small" />
+            android:layout_alignParentStart="true"
+            android:rowCount="4"
+            android:columnCount="3"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
 
 
-                </RadioGroup>
-            </TableRow>
+            <TextView
+                android:text="Start Position: "
+                android:textSize="@dimen/text_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:paddingRight="50dp"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_columnSpan="1"
+                />
 
-            <TableRow
-                android:id="@+id/preload"
-                android:layout_width="fill_parent"
-                android:layout_marginBottom="17dp"
-                android:weightSum="4">
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize = "@dimen/text_small"
+                android:id="@+id/autoStartLocation"
+                android:spinnerMode="dropdown"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal"/>
 
-                <TextView
-                    android:id="@+id/pregame1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/tableLayout"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Preload: "
-                    android:textSize="@dimen/text_medium" />
+            <TextView
+                android:text="Started with:  "
+                android:textSize="@dimen/text_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_columnSpan="1" />
 
-                <RadioGroup
-                    android:id="@+id/preloadGroup"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+            <CheckBox
+                android:layout_weight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:id="@+id/startingObjectsCargo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:checked="false"
+                android:text="Cargo"
+                android:textSize="@dimen/text_small" />
 
-                    <RadioButton
-                        android:id="@+id/preloadCargo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_weight="1"
-                        android:checked="false"
-                        android:text="Cargo"
-                        android:textSize="@dimen/text_small" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_row="1"
+                android:layout_column="2"
+                android:id="@+id/startingObjectsHatch"
+                android:layout_columnWeight="1"
+                android:text="Hatch"
+                android:textSize="@dimen/text_small"/>
 
-                    <RadioButton
-                        android:id="@+id/preloadHatch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignTop="@+id/tableLayout"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_weight="1"
-                        android:text="Hatch"
-                        android:textSize="@dimen/text_small" />
+        </GridLayout>
 
-
-                </RadioGroup>
-            </TableRow>
-
-        </TableLayout>
     </ScrollView>
 
 </android.support.percent.PercentRelativeLayout>

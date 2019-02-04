@@ -393,23 +393,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-            if (((RadioGroup) pagerAdapter.pregamePage.getView().findViewById(R.id.startPositionGroup)).getCheckedRadioButtonId() == -1) {
-                runOnUiThread(new Thread() {
-                    public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to where it started! Go back to the pregame page!", Toast.LENGTH_LONG).show();
-                    }
-                });
-                return null;
-            }
-
-            if (((RadioGroup) pagerAdapter.pregamePage.getView().findViewById(R.id.preloadGroup)).getCheckedRadioButtonId() == -1) {
-                runOnUiThread(new Thread() {
-                    public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to what is started with! Go back to the pregame page!", Toast.LENGTH_LONG).show();
-                    }
-                });
-                return null;
-            }
 
             if (((Spinner) pagerAdapter.postgamePage.getView().findViewById(R.id.endgameClimbType)).getSelectedItem().toString().equals("Where did it climb?")) {
                 runOnUiThread(new Thread() {
@@ -431,7 +414,14 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-
+            if (((Spinner) pagerAdapter.pregamePage.getView().findViewById(R.id.autoStartLocation)).getSelectedItem().toString().equals("Choose One")) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify where it started!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
 
         }
 
