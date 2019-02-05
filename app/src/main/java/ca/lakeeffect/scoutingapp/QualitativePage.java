@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class QualitativePage  extends Fragment implements View.OnClickListener {
@@ -23,6 +27,27 @@ public class QualitativePage  extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflator.inflate(R.layout.qualitativepage, container, false);
+
+        final RatingBar defenceRating = view.findViewById(R.id.defenceRating);
+        final TextView defenceText = view.findViewById(R.id.defenceText);
+
+        defenceRating.setVisibility(View.INVISIBLE);
+        defenceText.setVisibility(View.INVISIBLE);
+
+        final CheckBox defence = (CheckBox) view.findViewById(R.id.defense);
+
+        defence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked){
+                    defenceRating.setVisibility(View.VISIBLE);
+                    defenceText.setVisibility(View.VISIBLE);
+                }else{
+                    defenceRating.setVisibility(View.INVISIBLE);
+                    defenceText.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
         view.setTag("page4");
 

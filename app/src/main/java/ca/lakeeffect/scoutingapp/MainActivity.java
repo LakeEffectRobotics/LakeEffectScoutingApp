@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String[] getData(boolean bypassChecks) {
         if (!bypassChecks) {
-            if (((RatingBar) pagerAdapter.postgamePage.getView().findViewById(R.id.driveRating)).getRating() <= 0) {
+            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.driveRating)).getRating() <= 0) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the drive ability!", Toast.LENGTH_LONG).show();
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-            if (((RatingBar) pagerAdapter.postgamePage.getView().findViewById(R.id.intakeRating)).getRating() <= 0) {
+            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.intakeRating)).getRating() <= 0) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the intake ability!", Toast.LENGTH_LONG).show();
@@ -386,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
 
             //if the defence rating is visible and it is <= 0
             //TODO: make this work
-            if (((RatingBar) pagerAdapter.postgamePage.getView().findViewById(R.id.defenceRating)).getRating() <= 0 && ((RatingBar) pagerAdapter.postgamePage.getView().findViewById(R.id.defenceRating)).getVisibility() == View.VISIBLE) {
+            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getRating() <= 0 && ((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getVisibility() == View.VISIBLE) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the defence ability!", Toast.LENGTH_LONG).show();
@@ -418,6 +418,15 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify where it started!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+
+            if (((Spinner) pagerAdapter.pregamePage.getView().findViewById(R.id.autoStartPlatform)).getSelectedItem().toString().equals("Choose One")) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify which platform it started on!", Toast.LENGTH_LONG).show();
                     }
                 });
                 return null;

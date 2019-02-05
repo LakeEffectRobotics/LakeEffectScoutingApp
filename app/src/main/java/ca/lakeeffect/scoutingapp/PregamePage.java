@@ -33,6 +33,10 @@ public class PregamePage extends Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.startPosition, R.layout.spinner);
         spinner.setAdapter(adapter);
 
+        spinner = view.findViewById(R.id.autoStartPlatform);
+        adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.startPlatform, R.layout.spinner);
+        spinner.setAdapter(adapter);
+
         final CheckBox cargo = (CheckBox) view.findViewById(R.id.startingObjectsCargo);
 
         final CheckBox hatch = (CheckBox) view.findViewById(R.id.startingObjectsHatch);

@@ -10,22 +10,138 @@
         android:fillViewport="true"
         android:orientation="vertical">
 
-        <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
-        android:hint="Comments"
-        android:id="@+id/qualitativeComments"
-        android:textSize="@dimen/text_small"/>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/endgameTableLayout"
+            android:layout_margin="20dp"
+            android:rowCount="9"
+            android:columnCount="3">
 
-        <Button
-        android:text="Submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/qualitativeComments"
-        android:id="@+id/submit"
-        android:textSize="50sp"
-        android:layout_centerHorizontal="true"/>
+            <CheckBox
+                android:layout_row="3"
+                android:layout_column="0"
+                android:text="Defense"
+                android:textSize="@dimen/text_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="20dp"
+                android:id="@+id/defense" />
 
+            <CheckBox
+                android:layout_row="3"
+                android:layout_column="1"
+                android:text="Died"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:id="@+id/died"
+                android:textSize="@dimen/text_small" />
+            <CheckBox
+                android:layout_row="3"
+                android:layout_column="2"
+                android:text="Tipped"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:id="@+id/tipped"
+                android:textSize="@dimen/text_small" />
+
+            <TextView
+                android:text="Drive Ability:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_medium"
+                android:layout_row="4"
+                android:layout_column="0"
+                android:layout_gravity="center_vertical"/>
+
+            <LinearLayout
+                android:layout_row="4"
+                android:layout_column="1"
+                android:layout_columnSpan="2">
+                <!--This is a workaround to make #109 work as seen in https://stackoverflow.com/a/39653856/1985387-->
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/driveRating"
+                    android:numStars="4"
+                    android:stepSize="0.5"
+                    android:isIndicator="false"/>
+            </LinearLayout>
+
+            <TextView
+                android:text="Intake Ability:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_medium"
+                android:layout_row="5"
+                android:layout_column="0"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="20dp"/>
+
+            <LinearLayout
+                android:layout_row="5"
+                android:layout_column="1"
+                android:layout_columnSpan="2">
+                <!--This is a workaround to make #109 work as seen in https://stackoverflow.com/a/39653856/1985387-->
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/intakeRating"
+                    android:numStars="4"
+                    android:stepSize="0.5"
+                    android:isIndicator="false"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:text="Defence Ability:"
+                android:id="@+id/defenceText"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_medium"
+                android:layout_row="6"
+                android:layout_column="0"
+                android:layout_gravity="center_vertical"/>
+
+            <LinearLayout
+                android:layout_row="6"
+                android:layout_column="1"
+                android:layout_columnSpan="2">
+                <!--This is a workaround to make #109 work as seen in https://stackoverflow.com/a/39653856/1985387-->
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defenceRating"
+                    android:numStars="4"
+                    android:stepSize="0.5"
+                    android:isIndicator="false"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_row="7"
+                android:layout_column="0"
+                android:layout_columnSpan="3"
+                android:layout_marginTop="75dp"
+                android:hint="Comments"
+                android:id="@+id/qualitativeComments"
+                android:textSize="@dimen/text_small"/>
+
+            <Button
+                android:text="Submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="8"
+                android:layout_column="0"
+                android:layout_columnSpan="3"
+                android:id="@+id/submit"
+                android:textSize="50sp"
+                android:layout_gravity="center_horizontal"/>
+        </GridLayout>
     </android.support.percent.PercentRelativeLayout>
 </ScrollView>

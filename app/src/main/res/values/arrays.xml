@@ -40,4 +40,10 @@
         <item>Center</item>
         <item>Right</item>
     </string-array>
+
+    <string-array name="startPlatform">
+        <item>Choose One</item>
+        <item>Level 1</item>
+        <item>Level 2</item>
+    </string-array>
 </resources>

@@ -42,32 +42,14 @@ public class PostgamePage extends Fragment {
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.climbType, R.layout.spinner);
         climb.setAdapter(adapter);
 
-        final RatingBar defenceRating = view.findViewById(R.id.defenceRating);
-        final TextView defenceText = view.findViewById(R.id.defenceText);
+
 
         final Spinner endgameClimbType = (Spinner) view.findViewById(R.id.endgameClimbType);
         final Spinner endgameClimb = (Spinner) view.findViewById(R.id.endgameClimb);
 
-        defenceRating.setVisibility(View.INVISIBLE);
-        defenceText.setVisibility(View.INVISIBLE);
         endgameClimb.setVisibility(View.INVISIBLE);
 
-        final CheckBox defence = (CheckBox) view.findViewById(R.id.defense);
 
-        view.setTag("page3");
-
-        defence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    defenceRating.setVisibility(View.VISIBLE);
-                    defenceText.setVisibility(View.VISIBLE);
-                }else{
-                    defenceRating.setVisibility(View.INVISIBLE);
-                    defenceText.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
 
         endgameClimbType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
