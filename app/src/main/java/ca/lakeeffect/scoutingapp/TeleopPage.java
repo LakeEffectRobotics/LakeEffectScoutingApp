@@ -15,7 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * Created by Ajay on 9/25/2016.
@@ -242,13 +245,81 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         int vaultHit=0;
         int vaultMiss=0;
 
+        //hatchHit, hatchMiss, cargoHit, cargoMiss
+        int[] cargoShip = new int[4];
+        int[] levelOneRocket = new int[4];
+        int[] levelTwoRocket = new int[4];
+        int[] levelThreeRocket = new int[4];
+        int[] fullRocket = new int[4];
+
+        int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18, 19};
+        int[] levelOneRocketLocations = {4, 5, 10, 11};
+        int[] levelTwoRocketLocations = {2, 3, 8, 9};
+        int[] levelThreeRocketLocations = {0, 1, 6, 7};
+
+        String[] labelActions = {"hatch hit", "hatch miss", "cargo hit", "cargo miss"};
+
         for(Event e : events){
             int location = e.location;
 
+            //Don't think we need anymore
+            /*
             if((!MainActivity.side && MainActivity.alliance) || (MainActivity.side && !MainActivity.alliance)){
                 location = MainActivity.flipLocation(location);
             }
+            */
+            int id = 0;
+            switch(e.eventType){
+                case 2:
+                    //eventType 2: dropHatch
+                    id=0;
+                    System.out.println("2");
+                    break;
 
+                case 3:
+                    //eventType 3: failDropHatch
+                    id=1;
+                    System.out.println("3");
+                    break;
+
+                case 6:
+                    //eventType 6: dropCargo
+                    System.out.println("6");
+                    id=2;
+                    break;
+
+                case 7:
+                    //eventType 7: failDropCargo
+                    System.out.println("7");
+                    id=3;
+                    break;
+
+                default:
+                    System.out.println(e.eventType);
+                    break;
+            }
+
+            if(MainActivity.arrayContains(cargoShipLocations, location)){
+                cargoShip[id] ++;
+                System.out.println("cargoShip");
+            }
+            if(MainActivity.arrayContains(levelOneRocketLocations, location)){
+                levelOneRocket[id] ++;
+                fullRocket[id] ++;
+                System.out.println("levelOne");
+            }
+            if(MainActivity.arrayContains(levelTwoRocketLocations, location)){
+                levelTwoRocket[id] ++;
+                fullRocket[id] ++;
+                System.out.println("levelTwo");
+            }
+            if(MainActivity.arrayContains(levelThreeRocketLocations, location)){
+                levelThreeRocket[id] ++;
+                fullRocket[id] ++;
+                System.out.println("LevelThree");
+            }
+
+            /*
             if(e.eventType==1){
                 if(location==1){
                     vaultHit++;
@@ -277,8 +348,26 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
                     otherSwitchMiss++;
                 }
             }
+            */
         }
 
+
+
+        for(int i = 0; i<labelActions.length; i++){
+            labels.append("Cargo ship " + labelActions[i] + ",");
+            data.append(cargoShip[i] + ",");
+            labels.append("Level 1 rocket " + labelActions[i] + ",");
+            data.append(levelOneRocket[i] + ",");
+            labels.append("Level 2 rocket " + labelActions[i] + ",");
+            data.append(levelTwoRocket[i] + ",");
+            labels.append("Level 3 rocket" + labelActions[i] + ",");
+            data.append(levelThreeRocket[i] + ",");
+            labels.append("Full rocket " + labelActions[i] + ",");
+            data.append(fullRocket[i] + ",");
+
+        }
+
+        /*
         labels.append("Own Switch Cubes,");
         data.append(ownSwitchHit+",");
         labels.append("Own Switch Miss,");
@@ -295,8 +384,10 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         data.append(vaultHit+",");
         labels.append("Vault Miss,");
         data.append(vaultMiss+",");
-
+        *.
+        */
         return(new String[] {labels.toString(), data.toString()});
+
     }
 
 }

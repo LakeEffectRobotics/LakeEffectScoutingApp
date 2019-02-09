@@ -34,7 +34,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
@@ -463,7 +462,10 @@ public class MainActivity extends AppCompatActivity {
         data.append(tele[1]);
 
         //Endgame page
-        layout = pagerAdapter.postgamePage.getView().findViewById(R.id.endgamePageLayout);
+        layout = pagerAdapter.postgamePage.getView().findViewById(R.id.postgamePageLayout);
+        enterLayout(layout);
+
+        layout = pagerAdapter.qualitativePage.getView().findViewById(R.id.qualitativePageLayout);
         enterLayout(layout);
 
         labels.append("Scout");
@@ -814,7 +816,11 @@ public class MainActivity extends AppCompatActivity {
         pagerAdapter.teleopPage.reset();
 
         //Endgame page
-        layout = pagerAdapter.postgamePage.getView().findViewById(R.id.endgamePageLayout);
+        layout = pagerAdapter.postgamePage.getView().findViewById(R.id.postgamePageLayout);
+        clearData(layout);
+
+        //Qualitative page
+        layout = pagerAdapter.qualitativePage.getView().findViewById(R.id.qualitativePageLayout);
         clearData(layout);
     }
 
@@ -1259,11 +1265,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public boolean arrayContains(String[] array, String search){
+    public static boolean arrayContains(String[] array, String search){
         for(String string : array){
-            System.out.println(string + "vs" + search);
-            System.out.println(string.length() + "vs" + search.length());
+            //hi
             if(string.equals(search)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean arrayContains(int[] array, int search){
+        for(int num : array){
+            if(num == search){
                 return true;
             }
         }

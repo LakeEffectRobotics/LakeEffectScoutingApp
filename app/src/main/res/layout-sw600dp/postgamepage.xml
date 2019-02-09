@@ -6,7 +6,7 @@
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:id = "@+id/endgamePageLayout">
+        android:id = "@+id/postgamePageLayout">
 
         <GridLayout
             android:layout_width="match_parent"

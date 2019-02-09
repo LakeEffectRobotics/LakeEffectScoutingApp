@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/endgamePageLayout"
+        android:id="@+id/qualitativePageLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -13,7 +13,7 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/endgameTableLayout"
+            android:id="@+id/qualitativeTableLayout"
             android:layout_margin="20dp"
             android:rowCount="9"
             android:columnCount="3">

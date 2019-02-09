@@ -63,6 +63,7 @@ public class PostgamePage extends Fragment {
                     endgameClimb.setVisibility(View.VISIBLE);
                 }else{
                     endgameClimb.setVisibility(View.INVISIBLE);
+                    endgameClimb.setSelection(0);
                 }
 
             }
