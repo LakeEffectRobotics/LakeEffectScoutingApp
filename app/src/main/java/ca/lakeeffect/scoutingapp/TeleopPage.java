@@ -2,6 +2,7 @@ package ca.lakeeffect.scoutingapp;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -14,7 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * Created by Ajay on 9/25/2016.
@@ -24,11 +28,15 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
     SurfaceView surface;
     Field field;
 
-    Button pickup;
-    Button drop;
+    Button pickupHatch;
+    Button pickupCargo;
+    Button failPickupHatch;
+    Button failPickupCargo;
     Button undo;
-    Button fail;
-    Button failedDropOff;
+    Button dropHatch;
+    Button dropCargo;
+    Button failDropHatch;
+    Button failDropCargo;
 
 
     //All the events made by the person this matchNumber
@@ -48,19 +56,39 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         View view = inflator.inflate(R.layout.teleoppage, container, false);
 
         surface = view.findViewById(R.id.fieldCanvas);
-        field = new Field(surface, BitmapFactory.decodeResource(getResources(), R.drawable.field));
+        Bitmap fieldRed = BitmapFactory.decodeResource(getResources(), R.drawable.fieldred);
+        Bitmap fieldBlue = BitmapFactory.decodeResource(getResources(), R.drawable.fieldblue);
+        field = new Field(surface, fieldRed, fieldBlue);
         surface.setOnTouchListener(field);
 
-        pickup = view.findViewById(R.id.pickupButton);
-        pickup.setOnClickListener(this);
-        drop = view.findViewById(R.id.dropButton);
-        drop.setOnClickListener(this);
+
+        pickupHatch = view.findViewById(R.id.pickupHatch);
+        pickupHatch.setOnClickListener(this);
+
+        pickupCargo = view.findViewById(R.id.pickupCargo);
+        pickupCargo.setOnClickListener(this);
+
+        failPickupHatch = view.findViewById(R.id.failPickupHatch);
+        failPickupHatch.setOnClickListener(this);
+
+        failPickupCargo = view.findViewById(R.id.failPickupCargo);
+        failPickupCargo.setOnClickListener(this);
+
         undo = view.findViewById(R.id.undo);
         undo.setOnClickListener(this);
-        fail = view.findViewById(R.id.failButton);
-        fail.setOnClickListener(this);
-        failedDropOff = view.findViewById(R.id.failDropOffButton);
-        failedDropOff.setOnClickListener(this);
+
+        dropHatch = view.findViewById(R.id.dropHatch);
+        dropHatch.setOnClickListener(this);
+
+        dropCargo = view.findViewById(R.id.dropCargo);
+        dropCargo.setOnClickListener(this);
+
+        failDropHatch = view.findViewById(R.id.failDropHatch);
+        failDropHatch.setOnClickListener(this);
+
+        failDropCargo = view.findViewById(R.id.failDropCargo);
+        failDropCargo.setOnClickListener(this);
+
 
         view.setTag("page2");
 
@@ -117,16 +145,24 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
         String action = "";
 
-        if(v == pickup) {
+        //hatch eventTypes are from 0-3, cargo eventTypes are from 4-7
+        if(v == pickupHatch) {
             eventType = 0;
-        } else if(v == drop) {
+        } else if(v == failPickupHatch) {
             eventType = 1;
-        } else if(v == fail) {
+        } else if(v == dropHatch){
             eventType = 2;
-        }else if(v == failedDropOff) {
+        } else if(v == failDropHatch) {
             eventType = 3;
+        } else if(v == pickupCargo) {
+            eventType = 4;
+        } else if(v == failPickupCargo) {
+            eventType = 5;
+        } else if(v == dropCargo) {
+            eventType = 6;
+        } else if(v == failDropCargo) {
+            eventType = 7;
         }
-
 
 
 
@@ -171,15 +207,23 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
 
     public String getActionText(int eventType){
+        String item = "hatch";
+        if(eventType > 3){
+            //this converts it to as if it was a hatch event, as they have the same
+            // messages other than the different item
+            eventType -= 4;
+            item = "cargo";
+        }
+
         switch (eventType){
             case 0:
-                return "that the robot picked up from ";
+                return "that the robot picked up a " + item + " from ";
             case 1:
-                return "that the robot dropped onto ";
+                return "that the robot failed picking up a " + item + " in ";
             case 2:
-                return "that the robot failed picking up in ";
+                return "that the robot failed dropping off a " + item + " in ";
             case 3:
-                return "that the robot failed dropping off in ";
+                return "that the robot dropped a " + item + " onto ";
         }
         return "invalid event";
     }
@@ -201,61 +245,87 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         int vaultHit=0;
         int vaultMiss=0;
 
+        //hatchHit, hatchMiss, cargoHit, cargoMiss
+        int[] cargoShip = new int[4];
+        int[] levelOneRocket = new int[4];
+        int[] levelTwoRocket = new int[4];
+        int[] levelThreeRocket = new int[4];
+        int[] fullRocket = new int[4];
+
+        int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18, 19};
+        int[] levelOneRocketLocations = {4, 5, 10, 11};
+        int[] levelTwoRocketLocations = {2, 3, 8, 9};
+        int[] levelThreeRocketLocations = {0, 1, 6, 7};
+
+        String[] labelActions = {"Hatch Hit", "Hatch Miss", "Cargo Hit", "Cargo Miss"};
+
         for(Event e : events){
             int location = e.location;
 
-            if((!MainActivity.side && MainActivity.alliance) || (MainActivity.side && !MainActivity.alliance)){
-                location = MainActivity.flipLocation(location);
+            int id = 0;
+            switch(e.eventType){
+                case 2:
+                    //eventType 2: dropHatch
+                    id=0;
+                    System.out.println("2");
+                    break;
+
+                case 3:
+                    //eventType 3: failDropHatch
+                    id=1;
+                    System.out.println("3");
+                    break;
+
+                case 6:
+                    //eventType 6: dropCargo
+                    System.out.println("6");
+                    id=2;
+                    break;
+
+                case 7:
+                    //eventType 7: failDropCargo
+                    System.out.println("7");
+                    id=3;
+                    break;
+
+                default:
+                    System.out.println(e.eventType);
+                    break;
             }
 
-            if(e.eventType==1){
-                if(location==1){
-                    vaultHit++;
-                }
-                if(location==4||location==5){
-                    ownSwitchHit++;
-                }
-                if(location==6||location==7){
-                    scaleHit++;
-                }
-                if(location==8||location==9){
-                    otherSwitchHit++;
-                }
+            if(MainActivity.arrayContains(cargoShipLocations, location)){
+                cargoShip[id] ++;
             }
-            if(e.eventType==3){
-                if(location==1){
-                    vaultMiss++;
-                }
-                if(location==4||location==5){
-                    ownSwitchMiss++;
-                }
-                if(location==6||location==7){
-                    scaleMiss++;
-                }
-                if(location==8||location==9){
-                    otherSwitchMiss++;
-                }
+            if(MainActivity.arrayContains(levelOneRocketLocations, location)){
+                levelOneRocket[id] ++;
+                fullRocket[id] ++;
+            }
+            if(MainActivity.arrayContains(levelTwoRocketLocations, location)){
+                levelTwoRocket[id] ++;
+                fullRocket[id] ++;
+            }
+            if(MainActivity.arrayContains(levelThreeRocketLocations, location)){
+                levelThreeRocket[id] ++;
+                fullRocket[id] ++;
             }
         }
 
-        labels.append("Own Switch Cubes,");
-        data.append(ownSwitchHit+",");
-        labels.append("Own Switch Miss,");
-        data.append(ownSwitchMiss+",");
-        labels.append("Scale Cubes,");
-        data.append(scaleHit+",");
-        labels.append("Scale Miss,");
-        data.append(scaleMiss+",");
-        labels.append("Other Switch Cubes,");
-        data.append(otherSwitchHit+",");
-        labels.append("Other Switch Miss,");
-        data.append(otherSwitchMiss+",");
-        labels.append("Vault Cubes,");
-        data.append(vaultHit+",");
-        labels.append("Vault Miss,");
-        data.append(vaultMiss+",");
+        for(int i = 0; i<labelActions.length; i++){
+            labels.append("Cargo ship " + labelActions[i] + ",");
+            data.append(cargoShip[i] + ",");
+            labels.append("Level 1 rocket " + labelActions[i] + ",");
+            data.append(levelOneRocket[i] + ",");
+            labels.append("Level 2 rocket " + labelActions[i] + ",");
+            data.append(levelTwoRocket[i] + ",");
+            labels.append("Level 3 rocket " + labelActions[i] + ",");
+            data.append(levelThreeRocket[i] + ",");
+            labels.append("Full rocket " + labelActions[i] + ",");
+            data.append(fullRocket[i] + ",");
+
+        }
 
         return(new String[] {labels.toString(), data.toString()});
+
     }
 
 }

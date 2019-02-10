@@ -1,62 +1,61 @@
 package ca.lakeeffect.scoutingapp;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.RadioGroup;
-import android.widget.ScrollView;
-import android.widget.SeekBar;
-import android.widget.Spinner;
+import android.widget.CompoundButton;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-public class EndgamePage extends Fragment implements View.OnClickListener {
+public class QualitativePage  extends Fragment implements View.OnClickListener {
 
     Button submit;
-    Spinner climb;
-
-    public EndgamePage() {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflator.inflate(R.layout.endgamepage, container, false);
+
+        View view = inflator.inflate(R.layout.qualitativepage, container, false);
+
+        final RatingBar defenceRating = view.findViewById(R.id.defenceRating);
+        final TextView defenceText = view.findViewById(R.id.defenceText);
+
+        defenceRating.setVisibility(View.INVISIBLE);
+        defenceText.setVisibility(View.INVISIBLE);
+
+        final CheckBox defence = (CheckBox) view.findViewById(R.id.defense);
+
+        defence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked){
+                    defenceRating.setVisibility(View.VISIBLE);
+                    defenceText.setVisibility(View.VISIBLE);
+                }else{
+                    defenceRating.setVisibility(View.INVISIBLE);
+                    defenceText.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        view.setTag("page4");
 
         submit = view.findViewById(R.id.submit);
         submit.setOnClickListener(this);
 
-        climb = view.findViewById(R.id.endgameClimb);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.climb, R.layout.spinner);
-        climb.setAdapter(adapter);
-
-        view.setTag("page3");
-
         return view;
+
     }
 
     public void onClick(View v) {

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id = "@+id/autoPageLayout">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:rowCount="4"
+            android:columnCount="3"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+
+
+            <TextView
+                android:text="Start Position: "
+                android:textSize="@dimen/text_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="50dp"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_columnSpan="1"
+                />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize = "@dimen/text_small"
+                android:id="@+id/autoStartLocation"
+                android:spinnerMode="dropdown"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal"/>
+
+            <TextView
+                android:text="Start Platform: "
+                android:textSize="@dimen/text_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="50dp"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_columnSpan="1"
+                />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize = "@dimen/text_small"
+                android:id="@+id/autoStartPlatform"
+                android:spinnerMode="dropdown"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal"/>
+
+            <TextView
+                android:text="Started with:  "
+                android:textSize="@dimen/text_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_alignTop="@+id/tableLayout"
+                android:layout_row="2"
+                android:layout_column="0"
+                android:layout_columnSpan="1" />
+
+            <CheckBox
+                android:layout_weight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:id="@+id/startingObjectsCargo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_row="2"
+                android:layout_column="1"
+                android:checked="false"
+                android:text="Cargo"
+                android:textSize="@dimen/text_small" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_row="2"
+                android:layout_column="2"
+                android:id="@+id/startingObjectsHatch"
+                android:layout_columnWeight="1"
+                android:text="Hatch"
+                android:textSize="@dimen/text_small"/>
+
+        </GridLayout>
+
+    </ScrollView>
+
+</android.support.percent.PercentRelativeLayout>

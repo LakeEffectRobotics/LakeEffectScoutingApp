@@ -6,35 +6,45 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import java.util.ArrayList;
-
 public class Field implements View.OnTouchListener {
 
 
     SurfaceView surface;
-    Bitmap field;
+    Bitmap fieldRed, fieldBlue;
 
+    final int WIDTH = 80;
+    final int HEIGHT = 80;
+    
     Rect[] fieldPlacements = new Rect[]{
-            new Rect(37, 9, 183, 155),
-            new Rect(44, 288, 190, 435),
-            new Rect(37, 748, 183, 894),
-            new Rect(303, 379, 431, 526),
-            new Rect(426, 244, 572, 390),
-            new Rect(426, 513, 572, 659),
-            new Rect(816, 200, 961, 345),
-            new Rect(816, 558, 961, 703),
-            new Rect(1206, 244, 1351, 390),
-            new Rect(1206, 513, 1351, 659),
-            new Rect(1347, 379, 1474, 526),
-            new Rect(1594, 9, 1740, 155),
-            new Rect(1587, 469, 1733, 614),
-            new Rect(1594, 748, 1740, 894)
+            makeRect(400, 18),
+            makeRect(480, 18),
+            makeRect(400, 98),
+            makeRect(480, 98),
+            makeRect(400, 178),
+            makeRect(480, 178),
+            makeRect(400, 271),
+            makeRect(480, 271),
+            makeRect(400, 351),
+            makeRect(480, 351),
+            makeRect(400, 431),
+            makeRect(480, 431),
+            makeRect(664, 206),
+            makeRect(744, 206),
+            makeRect(824, 206),
+            makeRect(584, 225),
+            makeRect(584, 305),
+            makeRect(664, 328),
+            makeRect(744, 328),
+            makeRect(824, 328)
     };
+    
+    
 
     //the normal paint for the boxes
     Paint normal = new Paint();
@@ -52,11 +62,12 @@ public class Field implements View.OnTouchListener {
     //code in surfacecreated can only be called once
     boolean alreadyCreated = false;
 
-    public Field(SurfaceView s, Bitmap field) {
+    public Field(SurfaceView s, Bitmap fieldRed, Bitmap fieldBlue) {
         surface = s;
-        this.field = field;
+        this.fieldRed = fieldRed;
+        this.fieldBlue = fieldBlue;
 
-        normal.setColor(Color.RED);
+        normal.setColor(ResourcesCompat.getColor(s.getResources(), R.color.colorPrimary, null));
         normal.setStyle(Paint.Style.STROKE);
 
         highlited.setColor(Color.YELLOW);
@@ -76,10 +87,10 @@ public class Field implements View.OnTouchListener {
                 boolean scaleByHeight = false;
 
                 //scaled with height
-                float scaledWidth = (Field.this.field.getWidth() / (float) Field.this.field.getHeight()) * surface.getHeight();
+                float scaledWidth = (Field.this.fieldRed.getWidth() / (float) Field.this.fieldRed.getHeight()) * surface.getHeight();
 
                 //scaled with width
-                float scaledHeight = (Field.this.field.getHeight() / (float) Field.this.field.getWidth()) * surface.getWidth();
+                float scaledHeight = (Field.this.fieldRed.getHeight() / (float) Field.this.fieldRed.getWidth()) * surface.getWidth();
 
                 if(scaledWidth > surface.getWidth()){ //scale by width
                     android.view.ViewGroup.LayoutParams lp = surface.getLayoutParams();
@@ -98,10 +109,10 @@ public class Field implements View.OnTouchListener {
 
                 Canvas canvas = holder.lockCanvas();
 
-                scale = (float) Field.this.field.getHeight() / ((float) canvas.getHeight());
+                scale = (float) Field.this.fieldRed.getHeight() / ((float) canvas.getHeight());
 
                 if(!scaleByHeight) {
-                    scale = (float) Field.this.field.getWidth() / ((float) canvas.getWidth());
+                    scale = (float) Field.this.fieldRed.getWidth() / ((float) canvas.getWidth());
                 }
 
                     //set paint stroke based on screen size
@@ -109,9 +120,11 @@ public class Field implements View.OnTouchListener {
                 highlited.setStrokeWidth(canvas.getHeight()/100);
 
                 if(!scaleByHeight){
-                    Field.this.field = Bitmap.createScaledBitmap(Field.this.field, canvas.getWidth(), (int) (scaledHeight), true);
-                }else{
-                    Field.this.field = Bitmap.createScaledBitmap(Field.this.field, (int) (scaledWidth), canvas.getHeight(), true);
+                    Field.this.fieldRed = Bitmap.createScaledBitmap(Field.this.fieldRed, canvas.getWidth(), (int) (scaledHeight), true);
+                    Field.this.fieldBlue = Bitmap.createScaledBitmap(Field.this.fieldBlue, canvas.getWidth(), (int) (scaledHeight), true);
+                } else {
+                    Field.this.fieldRed = Bitmap.createScaledBitmap(Field.this.fieldRed, (int) (scaledWidth), canvas.getHeight(), true);
+                    Field.this.fieldBlue = Bitmap.createScaledBitmap(Field.this.fieldBlue, (int) (scaledWidth), canvas.getHeight(), true);
                 }
 
                 canvas.drawColor(Color.BLACK);
@@ -148,28 +161,41 @@ public class Field implements View.OnTouchListener {
 
     }
 
+    public Rect makeRect (int x, int y){
+        return new Rect(x, y, x + WIDTH, y + HEIGHT);
+    }
+
     //when the user specifies they are on a certain side, the field needs to flip to accomodate
-    public void switchSides(boolean side){
-        if((side && !currentScale) || (!side && currentScale)){
+    public void updateField(MainActivity mainActivity, boolean side){
+        //side false is red on the left, blue on the right
+        //alliance false is red alliance, true is blue alliance
+        //if alliance == false && side == true, flip image
+        //if alliance == true && side == false, flip image
+        //XOR alliance and side, somehow
+        //alliance^side
+        //boolean imageShouldBeFlipped = MainActivity.alliance ^ side;
+        // ^ means XOR
+
+        boolean imageShouldBeFlipped = (!MainActivity.alliance && side) || (MainActivity.alliance && !side);
+        if ((imageShouldBeFlipped && !currentScale) || (!imageShouldBeFlipped && currentScale)){
             Matrix matrix = new Matrix();
-            matrix.postScale(-1, -1, field.getWidth(), field.getHeight());
+            matrix.postScale(-1, 1, fieldRed.getWidth(), fieldRed.getHeight());
 
-            field = Bitmap.createBitmap(field, 0, 0, field.getWidth(), field.getHeight(), matrix, true);
+            fieldRed = Bitmap.createBitmap(fieldRed, 0, 0, fieldRed.getWidth(), fieldRed.getHeight(), matrix, true);
+            fieldBlue = Bitmap.createBitmap(fieldBlue, 0, 0, fieldBlue.getWidth(), fieldBlue.getHeight(), matrix, true);
 
-//            int top = fieldPlacements[12].top;
-//            int bottom = fieldPlacements[12].bottom;
-//
-//            fieldPlacements[12].top = fieldPlacements[1].top;
-//            fieldPlacements[12].bottom = fieldPlacements[1].bottom;
-//
-//            fieldPlacements[1].top = top;
-//            fieldPlacements[1].bottom = bottom;
-
-            redraw();
-
-            currentScale = side;
+            currentScale = imageShouldBeFlipped;
+            
+            //Flip rectangles
+            for (int i=0; i<fieldPlacements.length; i++){
+                int fieldWidth = (int)(fieldRed.getWidth() * scale);
+                int rectWidth = (int) (fieldPlacements[i].right - fieldPlacements[i].left);
+                fieldPlacements[i] = new Rect(fieldWidth - fieldPlacements[i].left - rectWidth, fieldPlacements[i].top, fieldWidth - fieldPlacements[i].right + rectWidth, fieldPlacements[i].bottom);
+            }
         }
 
+        //this redraw() down here because if just the alliance colour changes, then the if statement won't run
+        redraw();
     }
 
     @Override
@@ -187,8 +213,8 @@ public class Field implements View.OnTouchListener {
                 paint.setColor(Color.RED);
 
                 //adds the offset position
-                float xpos = event.getX() - (c.getWidth() / 2 - field.getWidth() / 2);
-                if (xpos > 0 && xpos < field.getWidth()) {
+                float xpos = event.getX() - (c.getWidth() / 2 - fieldRed.getWidth() / 2);
+                if (xpos > 0 && xpos < fieldRed.getWidth()) {
                     //send toast
 
                     for (Rect rect : fieldPlacements) {
@@ -227,6 +253,11 @@ public class Field implements View.OnTouchListener {
     }
 
     public void drawImage(Canvas c, int selected) {
+        Bitmap field = fieldRed;
+        if (MainActivity.alliance) {
+            field = fieldBlue;
+        }
+
         c.drawBitmap(field, 0, 0, null);
 
         for (Rect rect : fieldPlacements) {

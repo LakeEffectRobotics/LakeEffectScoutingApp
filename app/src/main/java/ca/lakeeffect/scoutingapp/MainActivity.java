@@ -36,7 +36,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,7 +46,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -367,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String[] getData(boolean bypassChecks) {
         if (!bypassChecks) {
-            if (((RatingBar) pagerAdapter.endgamePage.getView().findViewById(R.id.driveRating)).getRating() <= 0) {
+            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.driveRating)).getRating() <= 0) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the drive ability!", Toast.LENGTH_LONG).show();
@@ -376,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-            if (((RatingBar) pagerAdapter.endgamePage.getView().findViewById(R.id.intakeRating)).getRating() <= 0) {
+            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.intakeRating)).getRating() <= 0) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the intake ability!", Toast.LENGTH_LONG).show();
@@ -385,23 +383,54 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-            if (((RadioGroup) pagerAdapter.autoPage.getView().findViewById(R.id.autoBaselineGroup)).getCheckedRadioButtonId() == -1) {
+            //if the defence rating is visible and it is <= 0
+            //TODO: make this work
+            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getRating() <= 0 && ((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getVisibility() == View.VISIBLE) {
                 runOnUiThread(new Thread() {
                     public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it crossed the baseline! Go back to the auto page!", Toast.LENGTH_LONG).show();
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the defence ability!", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            if (((Spinner) pagerAdapter.postgamePage.getView().findViewById(R.id.endgameClimbType)).getSelectedItem().toString().equals("Where did it climb?")) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify where it climbed!", Toast.LENGTH_LONG).show();
                     }
                 });
                 return null;
             }
 
-            if (((Spinner) pagerAdapter.endgamePage.getView().findViewById(R.id.endgameClimb)).getSelectedItem().toString().equals("Choose One")) {
+            //if the second spinner is visible and it is "Choose One"
+            //TODO: make this work
+            if (((Spinner) pagerAdapter.postgamePage.getView().findViewById(R.id.endgameClimb)).getSelectedItem().toString().equals("Choose One") && ((Spinner) pagerAdapter.postgamePage.getView().findViewById(R.id.endgameClimb)).getVisibility() == View.VISIBLE) {
                 runOnUiThread(new Thread() {
                     public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify if it climbed!", Toast.LENGTH_LONG).show();
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify how it climbed!", Toast.LENGTH_LONG).show();
                     }
                 });
                 return null;
             }
+
+            if (((Spinner) pagerAdapter.pregamePage.getView().findViewById(R.id.autoStartLocation)).getSelectedItem().toString().equals("Choose One")) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify where it started!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+
+            if (((Spinner) pagerAdapter.pregamePage.getView().findViewById(R.id.autoStartPlatform)).getSelectedItem().toString().equals("Choose One")) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify which platform it started on!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+
         }
 
         data = new StringBuilder();
@@ -420,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
         PercentRelativeLayout layout;
 
         //Auto page
-        layout = pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
+        layout = pagerAdapter.pregamePage.getView().findViewById(R.id.autoPageLayout);
         enterLayout(layout);
 
 //        //Tele page
@@ -433,10 +462,13 @@ public class MainActivity extends AppCompatActivity {
         data.append(tele[1]);
 
         //Endgame page
-        layout = pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
+        layout = pagerAdapter.postgamePage.getView().findViewById(R.id.postgamePageLayout);
         enterLayout(layout);
 
-        labels.append("Scout");
+        layout = pagerAdapter.qualitativePage.getView().findViewById(R.id.qualitativePageLayout);
+        enterLayout(layout);
+
+        labels.append("Scout Name,");
         if (userID >= 0) {
             data.append(schedules.get(userID).userName);
         } else {
@@ -777,14 +809,18 @@ public class MainActivity extends AppCompatActivity {
         PercentRelativeLayout layout;
 
         //Auto page
-        layout = pagerAdapter.autoPage.getView().findViewById(R.id.autoPageLayout);
+        layout = pagerAdapter.pregamePage.getView().findViewById(R.id.autoPageLayout);
         clearData(layout);
 
         //Tele page
         pagerAdapter.teleopPage.reset();
 
         //Endgame page
-        layout = pagerAdapter.endgamePage.getView().findViewById(R.id.endgamePageLayout);
+        layout = pagerAdapter.postgamePage.getView().findViewById(R.id.postgamePageLayout);
+        clearData(layout);
+
+        //Qualitative page
+        layout = pagerAdapter.qualitativePage.getView().findViewById(R.id.qualitativePageLayout);
         clearData(layout);
     }
 
@@ -812,7 +848,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 
     public void alert() {
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -1162,7 +1197,7 @@ public class MainActivity extends AppCompatActivity {
             side = viewingSide.getSelectedItemPosition() == 2;
 
             //adjust the field image according to selection
-            pagerAdapter.teleopPage.field.switchSides(side);
+            pagerAdapter.teleopPage.field.updateField(this, side);
 
             SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
@@ -1227,13 +1262,22 @@ public class MainActivity extends AppCompatActivity {
         updateMatchesLeft();
 
         dialog.dismiss();
+
     }
 
-    public boolean arrayContains(String[] array, String search){
+    public static boolean arrayContains(String[] array, String search){
         for(String string : array){
-            System.out.println(string + "vs" + search);
-            System.out.println(string.length() + "vs" + search.length());
+            //hi
             if(string.equals(search)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean arrayContains(int[] array, int search){
+        for(int num : array){
+            if(num == search){
                 return true;
             }
         }
