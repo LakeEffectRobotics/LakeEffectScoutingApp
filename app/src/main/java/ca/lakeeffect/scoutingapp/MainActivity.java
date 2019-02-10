@@ -468,7 +468,7 @@ public class MainActivity extends AppCompatActivity {
         layout = pagerAdapter.qualitativePage.getView().findViewById(R.id.qualitativePageLayout);
         enterLayout(layout);
 
-        labels.append("Scout");
+        labels.append("Scout Name,");
         if (userID >= 0) {
             data.append(schedules.get(userID).userName);
         } else {

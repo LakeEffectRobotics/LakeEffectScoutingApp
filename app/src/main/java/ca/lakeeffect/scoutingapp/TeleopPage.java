@@ -317,7 +317,7 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
             data.append(levelOneRocket[i] + ",");
             labels.append("Level 2 rocket " + labelActions[i] + ",");
             data.append(levelTwoRocket[i] + ",");
-            labels.append("Level 3 rocket" + labelActions[i] + ",");
+            labels.append("Level 3 rocket " + labelActions[i] + ",");
             data.append(levelThreeRocket[i] + ",");
             labels.append("Full rocket " + labelActions[i] + ",");
             data.append(fullRocket[i] + ",");
