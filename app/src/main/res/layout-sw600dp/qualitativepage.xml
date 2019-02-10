@@ -26,7 +26,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
-                android:paddingVertical="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:id="@+id/defense" />
 
             <CheckBox
@@ -99,7 +100,7 @@
             <TextView
                 android:text="Defence Ability:"
                 android:id="@+id/defenceText"
-                android:layout_width="130dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_medium"
                 android:layout_row="6"
@@ -127,7 +128,7 @@
                 android:layout_row="7"
                 android:layout_column="0"
                 android:layout_columnSpan="3"
-                android:layout_marginTop="75dp"
+                android:layout_marginTop="15dp"
                 android:hint="Comments"
                 android:id="@+id/qualitativeComments"
                 android:textSize="@dimen/text_small"/>
