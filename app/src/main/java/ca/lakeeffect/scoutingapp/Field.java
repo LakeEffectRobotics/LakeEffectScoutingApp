@@ -1,18 +1,16 @@
 package ca.lakeeffect.scoutingapp;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-
-import java.util.ArrayList;
 
 public class Field implements View.OnTouchListener {
 
@@ -69,7 +67,7 @@ public class Field implements View.OnTouchListener {
         this.fieldRed = fieldRed;
         this.fieldBlue = fieldBlue;
 
-        normal.setColor(s.getResources().getColor(R.color.colorPrimary));
+        normal.setColor(ResourcesCompat.getColor(s.getResources(), R.color.colorPrimary, null));
         normal.setStyle(Paint.Style.STROKE);
 
         highlited.setColor(Color.YELLOW);
