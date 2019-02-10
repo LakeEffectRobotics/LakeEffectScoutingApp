@@ -257,17 +257,11 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         int[] levelTwoRocketLocations = {2, 3, 8, 9};
         int[] levelThreeRocketLocations = {0, 1, 6, 7};
 
-        String[] labelActions = {"hatch hit", "hatch miss", "cargo hit", "cargo miss"};
+        String[] labelActions = {"Hatch Hit", "Hatch Miss", "Cargo Hit", "Cargo Miss"};
 
         for(Event e : events){
             int location = e.location;
 
-            //Don't think we need anymore
-            /*
-            if((!MainActivity.side && MainActivity.alliance) || (MainActivity.side && !MainActivity.alliance)){
-                location = MainActivity.flipLocation(location);
-            }
-            */
             int id = 0;
             switch(e.eventType){
                 case 2:
@@ -301,57 +295,20 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
             if(MainActivity.arrayContains(cargoShipLocations, location)){
                 cargoShip[id] ++;
-                System.out.println("cargoShip");
             }
             if(MainActivity.arrayContains(levelOneRocketLocations, location)){
                 levelOneRocket[id] ++;
                 fullRocket[id] ++;
-                System.out.println("levelOne");
             }
             if(MainActivity.arrayContains(levelTwoRocketLocations, location)){
                 levelTwoRocket[id] ++;
                 fullRocket[id] ++;
-                System.out.println("levelTwo");
             }
             if(MainActivity.arrayContains(levelThreeRocketLocations, location)){
                 levelThreeRocket[id] ++;
                 fullRocket[id] ++;
-                System.out.println("LevelThree");
             }
-
-            /*
-            if(e.eventType==1){
-                if(location==1){
-                    vaultHit++;
-                }
-                if(location==4||location==5){
-                    ownSwitchHit++;
-                }
-                if(location==6||location==7){
-                    scaleHit++;
-                }
-                if(location==8||location==9){
-                    otherSwitchHit++;
-                }
-            }
-            if(e.eventType==3){
-                if(location==1){
-                    vaultMiss++;
-                }
-                if(location==4||location==5){
-                    ownSwitchMiss++;
-                }
-                if(location==6||location==7){
-                    scaleMiss++;
-                }
-                if(location==8||location==9){
-                    otherSwitchMiss++;
-                }
-            }
-            */
         }
-
-
 
         for(int i = 0; i<labelActions.length; i++){
             labels.append("Cargo ship " + labelActions[i] + ",");
@@ -367,25 +324,6 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
         }
 
-        /*
-        labels.append("Own Switch Cubes,");
-        data.append(ownSwitchHit+",");
-        labels.append("Own Switch Miss,");
-        data.append(ownSwitchMiss+",");
-        labels.append("Scale Cubes,");
-        data.append(scaleHit+",");
-        labels.append("Scale Miss,");
-        data.append(scaleMiss+",");
-        labels.append("Other Switch Cubes,");
-        data.append(otherSwitchHit+",");
-        labels.append("Other Switch Miss,");
-        data.append(otherSwitchMiss+",");
-        labels.append("Vault Cubes,");
-        data.append(vaultHit+",");
-        labels.append("Vault Miss,");
-        data.append(vaultMiss+",");
-        *.
-        */
         return(new String[] {labels.toString(), data.toString()});
 
     }
