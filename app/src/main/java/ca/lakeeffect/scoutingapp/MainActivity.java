@@ -384,13 +384,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //if the defence rating is visible and it is <= 0
-            //TODO: make this work
             if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getRating() <= 0 && ((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getVisibility() == View.VISIBLE) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the defence ability!", Toast.LENGTH_LONG).show();
                     }
                 });
+                return null;
             }
 
             if (((Spinner) pagerAdapter.postgamePage.getView().findViewById(R.id.endgameClimbType)).getSelectedItem().toString().equals("Where did it climb?")) {
@@ -403,7 +403,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //if the second spinner is visible and it is "Choose One"
-            //TODO: make this work
             if (((Spinner) pagerAdapter.postgamePage.getView().findViewById(R.id.endgameClimb)).getSelectedItem().toString().equals("Choose One") && ((Spinner) pagerAdapter.postgamePage.getView().findViewById(R.id.endgameClimb)).getVisibility() == View.VISIBLE) {
                 runOnUiThread(new Thread() {
                     public void run() {
