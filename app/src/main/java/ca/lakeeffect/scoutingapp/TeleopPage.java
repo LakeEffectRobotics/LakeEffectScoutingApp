@@ -46,12 +46,12 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
     boolean hasVibrator;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflator.inflate(R.layout.teleoppage, container, false);
 
@@ -101,20 +101,15 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
-
-
-        if(v == undo){
-
-            if(events.size() > 0){
-
-                Event event = events.get(events.size()-1);
+        if (v == undo) {
+            if (events.size() > 0) {
+                Event event = events.get(events.size() - 1);
 
                 String location = "";
 
-                if(field.selected != -1) {
+                if (field.selected != -1) {
                     location += "location " + field.selected;
-                } else{
+                } else {
                     location += "the field";
                 }
 
@@ -123,7 +118,7 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
                         .setMessage("Are you sure you would like to undo the action that said " + getActionText(event.eventType) + location + "?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                events.remove(events.size()-1);
+                                events.remove(events.size() - 1);
                             }
                         })
                         .setNegativeButton("No", null)
@@ -136,9 +131,8 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
             return; //only have to undo, not add an event
         }
 
-
         //Vibrate the vibrator to notify scout
-        if(hasVibrator) vibrator.vibrate(new long[] {0, 100, 25, 100}, -1);
+        if (hasVibrator) vibrator.vibrate(new long[]{0, 100, 25, 100}, -1);
 
         final Event event;
         int eventType = -1;
@@ -146,41 +140,38 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         String action = "";
 
         //hatch eventTypes are from 0-3, cargo eventTypes are from 4-7
-        if(v == pickupHatch) {
+        if (v == pickupHatch) {
             eventType = 0;
-        } else if(v == failPickupHatch) {
+        } else if (v == failPickupHatch) {
             eventType = 1;
-        } else if(v == dropHatch){
+        } else if (v == dropHatch) {
             eventType = 2;
-        } else if(v == failDropHatch) {
+        } else if (v == failDropHatch) {
             eventType = 3;
-        } else if(v == pickupCargo) {
+        } else if (v == pickupCargo) {
             eventType = 4;
-        } else if(v == failPickupCargo) {
+        } else if (v == failPickupCargo) {
             eventType = 5;
-        } else if(v == dropCargo) {
+        } else if (v == dropCargo) {
             eventType = 6;
-        } else if(v == failDropCargo) {
+        } else if (v == failDropCargo) {
             eventType = 7;
         }
 
-
-
         action = getActionText(eventType);
 
-        if(field.selected != -1) {
+        if (field.selected != -1) {
             action += "location " + field.selected;
-        } else{
+        } else {
             action += "the field";
         }
 
-        if(eventType != -1) {
+        if (eventType != -1) {
             final String a = action;
             event = new Event(eventType, field.selected, System.currentTimeMillis(), 0);
             if (hasVibrator) {
                 addEvent(event, action, true);
-            }
-            else{
+            } else {
                 addEvent(event, a, false);
                 new AlertDialog.Builder(getContext())
                         .setTitle("You just clicked a button!")
@@ -197,25 +188,24 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void addEvent(Event e, String action, boolean makeToast){
+    private void addEvent(Event e, String action, boolean makeToast) {
         events.add(e);
 
-        if(makeToast){
-            Toast.makeText(getContext(), "Event "+action+" recorded", Toast.LENGTH_SHORT).show();
+        if (makeToast) {
+            Toast.makeText(getContext(), "Event " + action + " recorded", Toast.LENGTH_SHORT).show();
         }
     }
 
-
-    public String getActionText(int eventType){
+    public String getActionText(int eventType) {
         String item = "hatch";
-        if(eventType > 3){
+        if (eventType > 3) {
             //this converts it to as if it was a hatch event, as they have the same
             // messages other than the different item
             eventType -= 4;
             item = "cargo";
         }
 
-        switch (eventType){
+        switch (eventType) {
             case 0:
                 return "that the robot picked up a " + item + " from ";
             case 1:
@@ -228,22 +218,13 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         return "invalid event";
     }
 
-    public void reset(){
+    public void reset() {
         events.clear();
     }
 
-    public String[] getData(){
+    public String[] getData() {
         StringBuilder labels = new StringBuilder();
         StringBuilder data = new StringBuilder();
-
-        int scaleHit=0;
-        int scaleMiss=0;
-        int ownSwitchHit=0;
-        int ownSwitchMiss=0;
-        int otherSwitchHit=0;
-        int otherSwitchMiss=0;
-        int vaultHit=0;
-        int vaultMiss=0;
 
         //hatchHit, hatchMiss, cargoHit, cargoMiss
         int[] cargoShip = new int[4];
@@ -259,33 +240,33 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
 
         String[] labelActions = {"Hatch Hit", "Hatch Miss", "Cargo Hit", "Cargo Miss"};
 
-        for(Event e : events){
+        for (Event e : events) {
             int location = e.location;
 
             int id = 0;
-            switch(e.eventType){
+            switch (e.eventType) {
                 case 2:
                     //eventType 2: dropHatch
-                    id=0;
+                    id = 0;
                     System.out.println("2");
                     break;
 
                 case 3:
                     //eventType 3: failDropHatch
-                    id=1;
+                    id = 1;
                     System.out.println("3");
                     break;
 
                 case 6:
                     //eventType 6: dropCargo
                     System.out.println("6");
-                    id=2;
+                    id = 2;
                     break;
 
                 case 7:
                     //eventType 7: failDropCargo
                     System.out.println("7");
-                    id=3;
+                    id = 3;
                     break;
 
                 default:
@@ -293,24 +274,24 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
                     break;
             }
 
-            if(MainActivity.arrayContains(cargoShipLocations, location)){
-                cargoShip[id] ++;
+            if (MainActivity.arrayContains(cargoShipLocations, location)) {
+                cargoShip[id]++;
             }
-            if(MainActivity.arrayContains(levelOneRocketLocations, location)){
-                levelOneRocket[id] ++;
-                fullRocket[id] ++;
+            if (MainActivity.arrayContains(levelOneRocketLocations, location)) {
+                levelOneRocket[id]++;
+                fullRocket[id]++;
             }
-            if(MainActivity.arrayContains(levelTwoRocketLocations, location)){
-                levelTwoRocket[id] ++;
-                fullRocket[id] ++;
+            if (MainActivity.arrayContains(levelTwoRocketLocations, location)) {
+                levelTwoRocket[id]++;
+                fullRocket[id]++;
             }
-            if(MainActivity.arrayContains(levelThreeRocketLocations, location)){
-                levelThreeRocket[id] ++;
-                fullRocket[id] ++;
+            if (MainActivity.arrayContains(levelThreeRocketLocations, location)) {
+                levelThreeRocket[id]++;
+                fullRocket[id]++;
             }
         }
 
-        for(int i = 0; i<labelActions.length; i++){
+        for (int i = 0; i < labelActions.length; i++) {
             labels.append("Cargo ship " + labelActions[i] + ",");
             data.append(cargoShip[i] + ",");
             labels.append("Level 1 rocket " + labelActions[i] + ",");
@@ -321,10 +302,9 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
             data.append(levelThreeRocket[i] + ",");
             labels.append("Full rocket " + labelActions[i] + ",");
             data.append(fullRocket[i] + ",");
-
         }
 
-        return(new String[] {labels.toString(), data.toString()});
+        return (new String[]{labels.toString(), data.toString()});
 
     }
 
