@@ -146,7 +146,7 @@ public class Field implements View.OnTouchListener {
         });
     }
 
-    // called by the TeleopPage class when the deselect button is hit
+    // called by the FieldUIPage class when the deselect button is hit
     public void deselect(){
         Canvas c = surface.getHolder().lockCanvas();
 

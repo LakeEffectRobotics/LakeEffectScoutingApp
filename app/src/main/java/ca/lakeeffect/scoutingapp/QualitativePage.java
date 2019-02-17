@@ -14,7 +14,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class QualitativePage  extends Fragment implements View.OnClickListener {
+public class QualitativePage extends Fragment implements View.OnClickListener {
 
     Button submit;
 
@@ -25,7 +25,6 @@ public class QualitativePage  extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflator.inflate(R.layout.qualitativepage, container, false);
 
         final RatingBar defenceRating = view.findViewById(R.id.defenceRating);
@@ -36,26 +35,25 @@ public class QualitativePage  extends Fragment implements View.OnClickListener {
 
         final CheckBox defence = (CheckBox) view.findViewById(R.id.defense);
 
-        defence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+        defence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
+                if (checked) {
                     defenceRating.setVisibility(View.VISIBLE);
                     defenceText.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     defenceRating.setVisibility(View.INVISIBLE);
                     defenceText.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        view.setTag("page4");
+        view.setTag("page5");
 
         submit = view.findViewById(R.id.submit);
         submit.setOnClickListener(this);
 
         return view;
-
     }
 
     public void onClick(View v) {

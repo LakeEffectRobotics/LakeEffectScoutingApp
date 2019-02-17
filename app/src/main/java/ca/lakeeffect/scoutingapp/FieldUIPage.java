@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
 /**
  * Created by Ajay on 9/25/2016.
  */
-public class TeleopPage extends Fragment implements View.OnClickListener {
+public class FieldUIPage extends Fragment implements View.OnClickListener {
 
     SurfaceView surface;
     Field field;
@@ -53,14 +53,13 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflator.inflate(R.layout.teleoppage, container, false);
+        View view = inflator.inflate(R.layout.field_ui_page, container, false);
 
         surface = view.findViewById(R.id.fieldCanvas);
         Bitmap fieldRed = BitmapFactory.decodeResource(getResources(), R.drawable.fieldred);
         Bitmap fieldBlue = BitmapFactory.decodeResource(getResources(), R.drawable.fieldblue);
         field = new Field(surface, fieldRed, fieldBlue);
         surface.setOnTouchListener(field);
-
 
         pickupHatch = view.findViewById(R.id.pickupHatch);
         pickupHatch.setOnClickListener(this);
@@ -89,8 +88,7 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         failDropCargo = view.findViewById(R.id.failDropCargo);
         failDropCargo.setOnClickListener(this);
 
-
-        view.setTag("page2");
+//        view.setTag("page2");
 
         vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
 

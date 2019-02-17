@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.scrollingview);
         pagerAdapter = new InputPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(pagerAdapter.PAGENUM);
 
         robotNumText = findViewById(R.id.robotNum);
 
