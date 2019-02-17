@@ -171,17 +171,6 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                 addEvent(event, action, true);
             } else {
                 addEvent(event, a, false);
-                new AlertDialog.Builder(getContext())
-                        .setTitle("You just clicked a button!")
-                        .setMessage("You said that " + action + "\n\nThe even has already been registered, to undo it hit the ok button and then undo.")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setCancelable(false)
-                        .create()
-                        .show();
             }
         }
     }

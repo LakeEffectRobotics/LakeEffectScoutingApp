@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         matchesLeftText = findViewById(R.id.matchesLeft);
 
         //call alert (asking scout name and robot number)
-        alert();
+        alert(false);
 
         //add all buttons and counters etc.
 
@@ -760,7 +760,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setMessage("Continuing will reset current data.")
                                 .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        reset();
+                                        reset(false);
 
                                     }
                                 })
@@ -769,7 +769,7 @@ public class MainActivity extends AppCompatActivity {
                                 .show();
                     }
                     if (item.getItemId() == R.id.changeNum) {
-                        alert();
+                        alert(false);
                     }
                     if (item.getItemId() == R.id.resetPendingMessages) {
                         for(int i = 0; i< pendingMessages.size(); i++){
@@ -822,9 +822,9 @@ public class MainActivity extends AppCompatActivity {
         return;
     }
 
-    public void reset() {
+    public void reset(boolean incrementMatchNumber) {
         //setup scrolling viewpager
-        alert();
+        alert(incrementMatchNumber);
 
 
         viewPager.setAdapter(pagerAdapter);
@@ -872,7 +872,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void alert() {
+    public void alert(final boolean incrementMatchNumber) {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(R.layout.dialog)
                 .setTitle("Enter Info")
@@ -957,6 +957,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+                if (incrementMatchNumber) {
+                    ((EditText) linearLayout.findViewById(R.id.matchNumber)).setText(matchNumber + 1 + "");
+                }
 
                 overriddenScoutName = new EditText(MainActivity.this);
                 overriddenScoutName.setHint("Scout Name");
