@@ -255,11 +255,15 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder data;
     StringBuilder labels;
 
-    public String getEventData(){
+    public String getEventData(int page){
         StringBuilder events = new StringBuilder();
 
-        for(Event event : pagerAdapter.teleopPage.events){
+        ArrayList<Event> allEvents = pagerAdapter.autoPage.events;
+        if (page == 1) {
+            allEvents = pagerAdapter.teleopPage.events;
+        }
 
+        for(Event event : pagerAdapter.teleopPage.events){
             int location = event.location;
 
             //if reds on the left, and the robot is on blue alliance, or blue is on the left, and the robot is on the blue alliance
@@ -269,8 +273,6 @@ public class MainActivity extends AppCompatActivity {
 
             events.append(matchNumber + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
         }
-
-
 
         return Base64.encodeToString(events.toString().getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
     }
@@ -607,32 +609,54 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
-            String events = getEventData();
+            //save auto events
+            String autoEvents = getEventData(0);
+            File autoEventsFile = new File(sdCard.getPath() + "/#ScoutingData/AutoEventData/" + robotNum + ".csv");
 
-            File eventsFile = new File(sdCard.getPath() + "/#ScoutingData/EventData/" + robotNum + ".csv");
-
-            eventsFile.getParentFile().mkdirs();
-            if (!eventsFile.exists()) {
-                eventsFile.createNewFile();
+            autoEventsFile.getParentFile().mkdirs();
+            if (!autoEventsFile.exists()) {
+                autoEventsFile.createNewFile();
             }
 
-            FileOutputStream eventsF = new FileOutputStream(eventsFile, true);
+            FileOutputStream autoEventsF = new FileOutputStream(autoEventsFile, true);
 
-            OutputStreamWriter eventsOut = new OutputStreamWriter(eventsF);
+            OutputStreamWriter autoEventsOut = new OutputStreamWriter(autoEventsF);
 
-            eventsOut.append(new String(Base64.decode(events, Base64.DEFAULT), Charset.forName("UTF-8")));
-            eventsOut.close();
-            eventsF.close();
+            autoEventsOut.append(new String(Base64.decode(autoEvents, Base64.DEFAULT), Charset.forName("UTF-8")));
+            autoEventsOut.close();
+            autoEventsF.close();
+
+            //save tele op events
+            String teleOpEvents = getEventData(1);
+            File teleOpEventsFile = new File(sdCard.getPath() + "/#ScoutingData/EventData/" + robotNum + ".csv");
+
+            teleOpEventsFile.getParentFile().mkdirs();
+            if (!teleOpEventsFile.exists()) {
+                teleOpEventsFile.createNewFile();
+            }
+
+            FileOutputStream teleOpEventsF = new FileOutputStream(teleOpEventsFile, true);
+
+            OutputStreamWriter teleOpEventsOut = new OutputStreamWriter(teleOpEventsF);
+
+            teleOpEventsOut.append(new String(Base64.decode(teleOpEvents, Base64.DEFAULT), Charset.forName("UTF-8")));
+            teleOpEventsOut.close();
+            teleOpEventsF.close();
 
             //save to file
             if (newfile) out.append(new String(Base64.decode(data[1], Base64.DEFAULT), Charset.forName("UTF-8")));
             out.append(new String(Base64.decode(data[0], Base64.DEFAULT), Charset.forName("UTF-8")));
 
             String fulldata = "";
-            if (events.equals("")) {
+            if (!teleOpEvents.equals("")) {
+                if (autoEvents.equals("")) {
+                    autoEvents = "nodata";
+                }
+                fulldata = robotNum + ":" + data[0] + ":" + autoEvents + ":" + teleOpEvents;
+            } else if(!autoEvents.equals("")) {
+                fulldata = robotNum + ":" + data[0] + ":" + autoEvents;
+            }else {
                 fulldata = robotNum + ":" + data[0];
-            } else {
-                fulldata = robotNum + ":" + data[0] + ":" + events;
             }
 
             //encode to base64
