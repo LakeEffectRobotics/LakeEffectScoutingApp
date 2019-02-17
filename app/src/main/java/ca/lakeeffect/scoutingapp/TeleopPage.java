@@ -236,15 +236,6 @@ public class TeleopPage extends Fragment implements View.OnClickListener {
         StringBuilder labels = new StringBuilder();
         StringBuilder data = new StringBuilder();
 
-        int scaleHit=0;
-        int scaleMiss=0;
-        int ownSwitchHit=0;
-        int ownSwitchMiss=0;
-        int otherSwitchHit=0;
-        int otherSwitchMiss=0;
-        int vaultHit=0;
-        int vaultMiss=0;
-
         //hatchHit, hatchMiss, cargoHit, cargoMiss
         int[] cargoShip = new int[4];
         int[] levelOneRocket = new int[4];
