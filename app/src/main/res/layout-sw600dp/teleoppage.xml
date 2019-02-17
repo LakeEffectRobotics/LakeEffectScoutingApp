@@ -32,7 +32,7 @@
                 android:text="Pickup"
                 android:layout_weight="1"
                 android:id="@+id/pickupHatch"
-                android:backgroundTint="#ffff84"
+                app:backgroundTint="#ffff84"
                 android:textColor="@color/black"/>
             <Button
                 android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:text="Failed Pickup"
                 android:layout_weight="1"
                 android:id="@+id/failPickupHatch"
-                android:backgroundTint="#ffff84"
+                app:backgroundTint="#ffff84"
                 android:textColor="@color/black"/>
             <Button
                 android:layout_width="match_parent"
@@ -56,7 +56,7 @@
                 android:text="Failed dropoff"
                 android:layout_weight="1"
                 android:id="@+id/dropHatch"
-                android:backgroundTint="#ffff84"
+                app:backgroundTint="#ffff84"
                 android:textColor="@color/black"/>
         </LinearLayout>
 
@@ -103,7 +103,7 @@
                 android:text="Pickup"
                 android:layout_weight="1"
                 android:id="@+id/pickupCargo"
-                android:backgroundTint="#ffd38e"
+                app:backgroundTint="#ffd38e"
                 android:textColor="@color/black"/>
             <Button
                 android:layout_width="match_parent"
@@ -111,7 +111,7 @@
                 android:text="Failed Pickup"
                 android:layout_weight="1"
                 android:id="@+id/failPickupCargo"
-                android:backgroundTint="#ffd38e"
+                app:backgroundTint="#ffd38e"
                 android:textColor="@color/black"/>
             <Button
                 android:layout_width="match_parent"
@@ -119,7 +119,7 @@
                 android:text="Drop off"
                 android:layout_weight="1"
                 android:id="@+id/failDropCargo"
-                android:backgroundTint="#ffd38e"
+                app:backgroundTint="#ffd38e"
                 android:textColor="@color/black"/>
             <Button
                 android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                 android:text="Failed dropoff"
                 android:layout_weight="1"
                 android:id="@+id/dropCargo"
-                android:backgroundTint="#ffd38e"
+                app:backgroundTint="#ffd38e"
                 android:textColor="@color/black"/>
         </LinearLayout>
     </LinearLayout>
