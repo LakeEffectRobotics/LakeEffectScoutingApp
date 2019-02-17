@@ -82,9 +82,9 @@ public class QualitativePage  extends Fragment implements View.OnClickListener {
                             //Save the data
                             if (((MainActivity) getActivity()).saveData()) {
                                 Toast.makeText(getActivity(),
-                                        "Saving", Toast.LENGTH_LONG).show();
+                                        "Saved", Toast.LENGTH_LONG).show();
                                 //Reset the inputs
-                                ((MainActivity) getActivity()).reset();
+                                ((MainActivity) getActivity()).reset(true);
                             }
 
                         }
