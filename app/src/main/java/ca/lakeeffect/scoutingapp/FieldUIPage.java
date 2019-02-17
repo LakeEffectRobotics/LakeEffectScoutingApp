@@ -88,8 +88,6 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         failDropCargo = view.findViewById(R.id.failDropCargo);
         failDropCargo.setOnClickListener(this);
 
-//        view.setTag("page2");
-
         vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
         hasVibrator = vibrator.hasVibrator();
