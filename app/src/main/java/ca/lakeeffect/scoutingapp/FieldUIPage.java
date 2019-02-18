@@ -168,7 +168,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
             if (hasVibrator) {
                 addEvent(event, action, true);
             } else {
-                addEvent(event, a, false);
+                addEvent(event, a, true);
             }
         }
     }
