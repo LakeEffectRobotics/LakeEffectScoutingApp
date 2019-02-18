@@ -1224,6 +1224,7 @@ public class MainActivity extends AppCompatActivity {
             side = viewingSide.getSelectedItemPosition() == 2;
 
             //adjust the field image according to selection
+            pagerAdapter.autoPage.field.updateField(this, side);
             pagerAdapter.teleopPage.field.updateField(this, side);
 
             SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
