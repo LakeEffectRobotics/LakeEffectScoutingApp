@@ -11,10 +11,11 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 public class InputPagerAdapter extends FragmentStatePagerAdapter {
 
-    final int PAGENUM = 4;
+    final int PAGENUM = 5;
 
     public PregamePage pregamePage;
-    public TeleopPage teleopPage;
+    public FieldUIPage autoPage;
+    public FieldUIPage teleopPage;
     public PostgamePage postgamePage;
     public QualitativePage qualitativePage;
 
@@ -22,7 +23,8 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
     public InputPagerAdapter(FragmentManager fm) {
         super(fm);
         pregamePage = new PregamePage();
-        teleopPage = new TeleopPage();
+        autoPage = new FieldUIPage();
+        teleopPage = new FieldUIPage();
         postgamePage = new PostgamePage();
         qualitativePage = new QualitativePage();
     }
@@ -35,12 +37,15 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
                 pregamePage = new PregamePage();
                 return pregamePage;
             case 1:
-                teleopPage = new TeleopPage();
-                return teleopPage;
+                autoPage = new FieldUIPage();
+                return autoPage;
             case 2:
+                teleopPage = new FieldUIPage();
+                return teleopPage;
+            case 3:
                 postgamePage = new PostgamePage();
                 return postgamePage;
-            case 3:
+            case 4:
                 qualitativePage = new QualitativePage();
                 return qualitativePage;
         }
@@ -59,10 +64,12 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return "Pre-Game";
             case 1:
-                return "TeleOp Round";
+                return "Autonomous Period";
             case 2:
-                return "Post-Game";
+                return "TeleOp Period";
             case 3:
+                return "Post-Game";
+            case 4:
                 return "Qualitative";
         }
         return "";
