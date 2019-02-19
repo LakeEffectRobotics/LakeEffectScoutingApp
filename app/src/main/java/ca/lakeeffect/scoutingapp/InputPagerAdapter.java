@@ -38,6 +38,7 @@ public class InputPagerAdapter extends FragmentStatePagerAdapter {
                 return pregamePage;
             case 1:
                 autoPage = new FieldUIPage();
+                autoPage.autoPage = true;
                 return autoPage;
             case 2:
                 teleopPage = new FieldUIPage();
