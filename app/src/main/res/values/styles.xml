@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-
+        <item name="colorAuto">@color/colorAutoDark</item>
 
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
@@ -14,6 +14,8 @@
     </style>
 
     <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="colorAuto">@color/colorAutoLight</item>
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">#6b3ab7</item>

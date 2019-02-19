@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.View;
@@ -45,6 +46,9 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     Vibrator vibrator;
     boolean hasVibrator;
 
+    //is this the auto page, if so a different background color will be shown
+    boolean autoPage;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,12 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflator.inflate(R.layout.field_ui_page, container, false);
+
+        if (autoPage) {
+            TypedValue typedValue = new TypedValue();
+            inflator.getContext().getTheme().resolveAttribute(R.attr.colorAuto, typedValue, true);
+            view.setBackgroundColor(typedValue.data);
+        }
 
         surface = view.findViewById(R.id.fieldCanvas);
         Bitmap fieldRed = BitmapFactory.decodeResource(getResources(), R.drawable.fieldred);
