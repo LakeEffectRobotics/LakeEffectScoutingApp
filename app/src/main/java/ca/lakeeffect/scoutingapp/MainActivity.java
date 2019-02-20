@@ -1182,7 +1182,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         userIDSpinner.setSelection(selectedIndex);
-        userID = selectedIndex;
     }
 
     //when the ok button on the alert is pressed
