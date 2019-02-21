@@ -32,7 +32,7 @@ public class PostgamePage extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflator.inflate(R.layout.postgamepage, container, false);
+        View view = inflator.inflate(R.layout.postgame_page, container, false);
 
         climb = view.findViewById(R.id.endgameClimb);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.climb, R.layout.spinner);

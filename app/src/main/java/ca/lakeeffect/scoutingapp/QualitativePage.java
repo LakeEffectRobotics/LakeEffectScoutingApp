@@ -25,7 +25,7 @@ public class QualitativePage extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflator.inflate(R.layout.qualitativepage, container, false);
+        View view = inflator.inflate(R.layout.qualitative_page, container, false);
 
         final RatingBar defenceRating = view.findViewById(R.id.defenceRating);
         final TextView defenceText = view.findViewById(R.id.defenceText);
