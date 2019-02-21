@@ -49,6 +49,11 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     //is this the auto page, if so a different background color will be shown
     boolean autoPage;
 
+    //only used if this is the auto page
+    //if so, it will use this to determine if it is has been 20 seconds
+    //if so, it will warn the user
+    long firstPress = -1;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +111,25 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
+        if (firstPress == -1 && autoPage) {
+            firstPress = System.currentTimeMillis();
+        } else if (autoPage && System.currentTimeMillis() - firstPress > 20000) {
+            //it has been 20 seconds, they should be done auto by now
+            new AlertDialog.Builder(getContext())
+                    .setTitle("It has been 20 seconds since your last press! Auto should be done by now!")
+                    .setMessage("Are you sure you would like to put an even?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            FieldUIPage.this.onClick(v);
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .create()
+                    .show();
+            return;
+        }
+
         if (v == undo) {
             if (events.size() > 0) {
                 Event event = events.get(events.size() - 1);
