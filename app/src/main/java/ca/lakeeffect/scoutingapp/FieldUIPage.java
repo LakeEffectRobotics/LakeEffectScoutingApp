@@ -112,16 +112,18 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(final View v) {
-        if (firstPress == -1 && autoPage) {
+        if (firstPress == -1 && autoPage && v != undo) {
             firstPress = System.currentTimeMillis();
-        } else if (autoPage && System.currentTimeMillis() - firstPress > 20000) {
+        } else if (autoPage && System.currentTimeMillis() - firstPress > 20000 && v != undo) {
             //it has been 20 seconds, they should be done auto by now
             new AlertDialog.Builder(getContext())
-                    .setTitle("It has been 20 seconds since your last press! Auto should be done by now!")
-                    .setMessage("Are you sure you would like to put an even?")
+                    .setTitle("YOU ARE ON THE SANDSTORM PAGE! It has been 20 seconds since your last press! " +
+                            "SANDSTORM should be done by now!")
+                    .setMessage("Are you sure you would like to put an event?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             FieldUIPage.this.onClick(v);
+                            firstPress = -1;
                         }
                     })
                     .setNegativeButton("No", null)
@@ -148,6 +150,11 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 events.remove(events.size() - 1);
+
+                                if (events.size() == 0 && autoPage) {
+                                    //reset first press time, nothing has happened
+                                    firstPress = -1;
+                                }
                             }
                         })
                         .setNegativeButton("No", null)
