@@ -251,14 +251,21 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         StringBuilder labels = new StringBuilder();
         StringBuilder data = new StringBuilder();
 
+        String fieldPeriod = "TeleOp ";
+        if (autoPage) {
+            fieldPeriod = "Auto ";
+        }
+
         //hatchHit, hatchMiss, cargoHit, cargoMiss
         int[] cargoShip = new int[4];
+        int[] sideCargoShip = new int[4];
         int[] levelOneRocket = new int[4];
         int[] levelTwoRocket = new int[4];
         int[] levelThreeRocket = new int[4];
         int[] fullRocket = new int[4];
 
         int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18, 19};
+        int[] sideCargoShipLocations = {12, 13, 14, 17, 18, 19};
         int[] levelOneRocketLocations = {4, 5, 10, 11};
         int[] levelTwoRocketLocations = {2, 3, 8, 9};
         int[] levelThreeRocketLocations = {0, 1, 6, 7};
@@ -273,34 +280,32 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                 case 2:
                     //eventType 2: dropHatch
                     id = 0;
-                    System.out.println("2");
                     break;
 
                 case 3:
                     //eventType 3: failDropHatch
                     id = 1;
-                    System.out.println("3");
                     break;
 
                 case 6:
                     //eventType 6: dropCargo
-                    System.out.println("6");
                     id = 2;
                     break;
 
                 case 7:
                     //eventType 7: failDropCargo
-                    System.out.println("7");
                     id = 3;
                     break;
 
                 default:
-                    System.out.println(e.eventType);
                     break;
             }
 
             if (MainActivity.arrayContains(cargoShipLocations, location)) {
                 cargoShip[id]++;
+            }
+            if (MainActivity.arrayContains(sideCargoShipLocations, location)) {
+                sideCargoShip[id]++;
             }
             if (MainActivity.arrayContains(levelOneRocketLocations, location)) {
                 levelOneRocket[id]++;
@@ -317,15 +322,17 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         }
 
         for (int i = 0; i < labelActions.length; i++) {
-            labels.append("Cargo ship " + labelActions[i] + ",");
+            labels.append(fieldPeriod + "Cargo Ship " + labelActions[i] + ",");
             data.append(cargoShip[i] + ",");
-            labels.append("Level 1 rocket " + labelActions[i] + ",");
+            labels.append(fieldPeriod + "Side Cargo Ship " + labelActions[i] + ",");
+            data.append(sideCargoShip[i] + ",");
+            labels.append(fieldPeriod + "Level 1 Rocket " + labelActions[i] + ",");
             data.append(levelOneRocket[i] + ",");
-            labels.append("Level 2 rocket " + labelActions[i] + ",");
+            labels.append(fieldPeriod + "Level 2 Rocket " + labelActions[i] + ",");
             data.append(levelTwoRocket[i] + ",");
-            labels.append("Level 3 rocket " + labelActions[i] + ",");
+            labels.append(fieldPeriod + "Level 3 Rocket " + labelActions[i] + ",");
             data.append(levelThreeRocket[i] + ",");
-            labels.append("Full rocket " + labelActions[i] + ",");
+            labels.append(fieldPeriod + "Full Rocket " + labelActions[i] + ",");
             data.append(fullRocket[i] + ",");
         }
 
