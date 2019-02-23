@@ -122,8 +122,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                     .setMessage("Are you sure you would like to put an event?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            FieldUIPage.this.onClick(v);
                             firstPress = -1;
+                            FieldUIPage.this.onClick(v);
                         }
                     })
                     .setNegativeButton("No", null)
