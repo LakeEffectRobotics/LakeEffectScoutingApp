@@ -47,7 +47,7 @@
                 android:layout_height="match_parent"
                 android:text="Drop off"
                 android:layout_weight="1"
-                android:id="@+id/failDropHatch"
+                android:id="@+id/dropHatch"
                 android:backgroundTint="#ffff84"
                 android:textColor="@color/black"/>
             <Button
@@ -55,7 +55,7 @@
                 android:layout_height="match_parent"
                 android:text="Failed dropoff"
                 android:layout_weight="1"
-                android:id="@+id/dropHatch"
+                android:id="@+id/failDropHatch"
                 android:backgroundTint="#ffff84"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -118,7 +118,7 @@
                 android:layout_height="match_parent"
                 android:text="Drop off"
                 android:layout_weight="1"
-                android:id="@+id/failDropCargo"
+                android:id="@+id/dropCargo"
                 android:backgroundTint="#ffd38e"
                 android:textColor="@color/black"/>
             <Button
@@ -126,7 +126,7 @@
                 android:layout_height="match_parent"
                 android:text="Failed dropoff"
                 android:layout_weight="1"
-                android:id="@+id/dropCargo"
+                android:id="@+id/failDropCargo"
                 android:backgroundTint="#ffd38e"
                 android:textColor="@color/black"/>
         </LinearLayout>
