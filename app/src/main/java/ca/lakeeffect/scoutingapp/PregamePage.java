@@ -25,7 +25,7 @@ public class PregamePage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflator.inflate(R.layout.pregamepage, container, false);
+        View view = inflator.inflate(R.layout.pregame_page, container, false);
 
         view.setTag("page1");
 

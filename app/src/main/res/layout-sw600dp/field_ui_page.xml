@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hatch"
-                android:textSize="@dimen/text_small"
+                android:textSize="@dimen/text_medium"
                 android:layout_weight="0"
                 android:layout_gravity="center"
                 android:id="@+id/hatchLabel"/>
@@ -33,6 +33,7 @@
                 android:layout_weight="1"
                 android:id="@+id/pickupHatch"
                 android:backgroundTint="#ffff84"
+                android:textSize="@dimen/text_small"
                 android:textColor="@color/black"/>
             <Button
                 android:layout_width="match_parent"
@@ -41,6 +42,7 @@
                 android:layout_weight="1"
                 android:id="@+id/failPickupHatch"
                 android:backgroundTint="#ffff84"
+                android:textSize="@dimen/text_small"
                 android:textColor="@color/black"/>
             <Button
                 android:layout_width="match_parent"
@@ -49,6 +51,7 @@
                 android:layout_weight="1"
                 android:id="@+id/failDropHatch"
                 android:backgroundTint="#ffff84"
+                android:textSize="@dimen/text_small"
                 android:textColor="@color/black"/>
             <Button
                 android:layout_width="match_parent"
@@ -56,6 +59,7 @@
                 android:text="Failed dropoff"
                 android:layout_weight="1"
                 android:id="@+id/dropHatch"
+                android:textSize="@dimen/text_small"
                 android:backgroundTint="#ffff84"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -80,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
-                android:layout_weight="2"
+                android:textSize="@dimen/text_small"
                 android:text="Undo" />
         </LinearLayout>
         <LinearLayout
@@ -93,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cargo"
-                android:textSize="@dimen/text_small"
+                android:textSize="@dimen/text_medium"
                 android:layout_weight="0"
                 android:layout_gravity="center"
                 android:id="@+id/cargoLabel"/>
@@ -104,6 +108,7 @@
                 android:layout_weight="1"
                 android:id="@+id/pickupCargo"
                 android:backgroundTint="#ffd38e"
+                android:textSize="@dimen/text_small"
                 android:textColor="@color/black"/>
             <Button
                 android:layout_width="match_parent"
@@ -112,6 +117,7 @@
                 android:layout_weight="1"
                 android:id="@+id/failPickupCargo"
                 android:backgroundTint="#ffd38e"
+                android:textSize="@dimen/text_small"
                 android:textColor="@color/black"/>
             <Button
                 android:layout_width="match_parent"
@@ -120,6 +126,7 @@
                 android:layout_weight="1"
                 android:id="@+id/failDropCargo"
                 android:backgroundTint="#ffd38e"
+                android:textSize="@dimen/text_small"
                 android:textColor="@color/black"/>
             <Button
                 android:layout_width="match_parent"
@@ -128,6 +135,7 @@
                 android:layout_weight="1"
                 android:id="@+id/dropCargo"
                 android:backgroundTint="#ffd38e"
+                android:textSize="@dimen/text_small"
                 android:textColor="@color/black"/>
         </LinearLayout>
     </LinearLayout>

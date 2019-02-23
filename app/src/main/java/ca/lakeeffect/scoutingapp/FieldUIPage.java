@@ -49,6 +49,11 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     //is this the auto page, if so a different background color will be shown
     boolean autoPage;
 
+    //only used if this is the auto page
+    //if so, it will use this to determine if it is has been 15 seconds
+    //if so, it will warn the user
+    long firstPress = -1;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +111,27 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
+        if (firstPress == -1 && autoPage && v != undo) {
+            firstPress = System.currentTimeMillis();
+        } else if (autoPage && System.currentTimeMillis() - firstPress > 15000 && v != undo) {
+            //it has been 15 seconds, they should be done auto by now
+            new AlertDialog.Builder(getContext())
+                    .setTitle("YOU ARE ON THE SANDSTORM PAGE! It has been 15 seconds since your last press! " +
+                            "SANDSTORM should be done by now!")
+                    .setMessage("Are you sure you would like to put an event?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            FieldUIPage.this.onClick(v);
+                            firstPress = -1;
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .create()
+                    .show();
+            return;
+        }
+
         if (v == undo) {
             if (events.size() > 0) {
                 Event event = events.get(events.size() - 1);
@@ -125,6 +150,11 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 events.remove(events.size() - 1);
+
+                                if (events.size() == 0 && autoPage) {
+                                    //reset first press time, nothing has happened
+                                    firstPress = -1;
+                                }
                             }
                         })
                         .setNegativeButton("No", null)
@@ -221,14 +251,21 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         StringBuilder labels = new StringBuilder();
         StringBuilder data = new StringBuilder();
 
+        String fieldPeriod = "TeleOp ";
+        if (autoPage) {
+            fieldPeriod = "Auto ";
+        }
+
         //hatchHit, hatchMiss, cargoHit, cargoMiss
         int[] cargoShip = new int[4];
+        int[] sideCargoShip = new int[4];
         int[] levelOneRocket = new int[4];
         int[] levelTwoRocket = new int[4];
         int[] levelThreeRocket = new int[4];
         int[] fullRocket = new int[4];
 
         int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18, 19};
+        int[] sideCargoShipLocations = {12, 13, 14, 17, 18, 19};
         int[] levelOneRocketLocations = {4, 5, 10, 11};
         int[] levelTwoRocketLocations = {2, 3, 8, 9};
         int[] levelThreeRocketLocations = {0, 1, 6, 7};
@@ -243,34 +280,32 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                 case 2:
                     //eventType 2: dropHatch
                     id = 0;
-                    System.out.println("2");
                     break;
 
                 case 3:
                     //eventType 3: failDropHatch
                     id = 1;
-                    System.out.println("3");
                     break;
 
                 case 6:
                     //eventType 6: dropCargo
-                    System.out.println("6");
                     id = 2;
                     break;
 
                 case 7:
                     //eventType 7: failDropCargo
-                    System.out.println("7");
                     id = 3;
                     break;
 
                 default:
-                    System.out.println(e.eventType);
                     break;
             }
 
             if (MainActivity.arrayContains(cargoShipLocations, location)) {
                 cargoShip[id]++;
+            }
+            if (MainActivity.arrayContains(sideCargoShipLocations, location)) {
+                sideCargoShip[id]++;
             }
             if (MainActivity.arrayContains(levelOneRocketLocations, location)) {
                 levelOneRocket[id]++;
@@ -287,15 +322,17 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         }
 
         for (int i = 0; i < labelActions.length; i++) {
-            labels.append("Cargo ship " + labelActions[i] + ",");
+            labels.append(fieldPeriod + "Cargo Ship " + labelActions[i] + ",");
             data.append(cargoShip[i] + ",");
-            labels.append("Level 1 rocket " + labelActions[i] + ",");
+            labels.append(fieldPeriod + "Side Cargo Ship " + labelActions[i] + ",");
+            data.append(sideCargoShip[i] + ",");
+            labels.append(fieldPeriod + "Level 1 Rocket " + labelActions[i] + ",");
             data.append(levelOneRocket[i] + ",");
-            labels.append("Level 2 rocket " + labelActions[i] + ",");
+            labels.append(fieldPeriod + "Level 2 Rocket " + labelActions[i] + ",");
             data.append(levelTwoRocket[i] + ",");
-            labels.append("Level 3 rocket " + labelActions[i] + ",");
+            labels.append(fieldPeriod + "Level 3 Rocket " + labelActions[i] + ",");
             data.append(levelThreeRocket[i] + ",");
-            labels.append("Full rocket " + labelActions[i] + ",");
+            labels.append(fieldPeriod + "Full Rocket " + labelActions[i] + ",");
             data.append(fullRocket[i] + ",");
         }
 

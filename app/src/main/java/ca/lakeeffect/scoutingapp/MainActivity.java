@@ -449,23 +449,27 @@ public class MainActivity extends AppCompatActivity {
 
         PercentRelativeLayout layout;
 
-        //Auto page
-        layout = pagerAdapter.pregamePage.getView().findViewById(R.id.autoPageLayout);
+        //Pregame page
+        layout = pagerAdapter.pregamePage.getView().findViewById(R.id.preGamePageLayout);
         enterLayout(layout);
 
-//        //Tele page
-//        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
-//        enterLayout(layout);
-
+        //tele field
         String[] tele = pagerAdapter.teleopPage.getData();
 
         labels.append(tele[0]);
         data.append(tele[1]);
 
-        //Endgame page
+        //auto field
+        String[] auto = pagerAdapter.autoPage.getData();
+
+        labels.append(auto[0]);
+        data.append(auto[1]);
+
+        //Postgame page
         layout = pagerAdapter.postgamePage.getView().findViewById(R.id.postgamePageLayout);
         enterLayout(layout);
 
+        //Qualitative Page
         layout = pagerAdapter.qualitativePage.getView().findViewById(R.id.qualitativePageLayout);
         enterLayout(layout);
 
@@ -832,7 +836,7 @@ public class MainActivity extends AppCompatActivity {
         PercentRelativeLayout layout;
 
         //Auto page
-        layout = pagerAdapter.pregamePage.getView().findViewById(R.id.autoPageLayout);
+        layout = pagerAdapter.pregamePage.getView().findViewById(R.id.preGamePageLayout);
         clearData(layout);
 
         //Tele page
@@ -1182,7 +1186,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         userIDSpinner.setSelection(selectedIndex);
-        userID = selectedIndex;
     }
 
     //when the ok button on the alert is pressed

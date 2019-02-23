@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id = "@+id/autoPageLayout">
+    android:id = "@+id/preGamePageLayout">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                 android:layout_column="1"
                 android:checked="false"
                 android:text="Cargo"
-                android:textSize="@dimen/text_small" />
+                android:textSize="@dimen/text_medium" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
                 android:id="@+id/startingObjectsHatch"
                 android:layout_columnWeight="1"
                 android:text="Hatch"
-                android:textSize="@dimen/text_small"/>
+                android:textSize="@dimen/text_medium"/>
 
         </GridLayout>
 
