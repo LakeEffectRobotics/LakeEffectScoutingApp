@@ -266,11 +266,6 @@ public class MainActivity extends AppCompatActivity {
         for(Event event : pagerAdapter.teleopPage.events){
             int location = event.location;
 
-            //if reds on the left, and the robot is on blue alliance, or blue is on the left, and the robot is on the blue alliance
-            if((!side && alliance) || (side && !alliance)){
-                location = flipLocation(location);
-            }
-
             events.append(matchNumber + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
         }
 
@@ -692,7 +687,6 @@ public class MainActivity extends AppCompatActivity {
         Thread thread = new Thread() {
             public void run() {
                 while (true) {
-                    System.out.println("aaaa");
                     byte[] bytes = new byte[1000];
                     try {
                         if (!connected) {
