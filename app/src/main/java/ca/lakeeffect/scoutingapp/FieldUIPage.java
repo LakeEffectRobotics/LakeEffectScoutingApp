@@ -262,6 +262,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         int[] levelOneRocket = new int[4];
         int[] levelTwoRocket = new int[4];
         int[] levelThreeRocket = new int[4];
+        int[] farRocket = new int[4];
+        int[] closeRocket = new int[4];
         int[] fullRocket = new int[4];
 
         int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18, 19};
@@ -269,6 +271,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         int[] levelOneRocketLocations = {4, 5, 10, 11};
         int[] levelTwoRocketLocations = {2, 3, 8, 9};
         int[] levelThreeRocketLocations = {0, 1, 6, 7};
+        int[] farRocketLocations = {1, 3, 5, 7, 9, 11};
+        int[] closeRocketLocations = {0, 2, 4, 6, 8, 10};
 
         String[] labelActions = {"Hatch Hit", "Hatch Miss", "Cargo Hit", "Cargo Miss"};
 
@@ -301,12 +305,15 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                     break;
             }
 
+            //cargo ship
             if (MainActivity.arrayContains(cargoShipLocations, location)) {
                 cargoShip[id]++;
             }
             if (MainActivity.arrayContains(sideCargoShipLocations, location)) {
                 sideCargoShip[id]++;
             }
+
+            //rocket levels
             if (MainActivity.arrayContains(levelOneRocketLocations, location)) {
                 levelOneRocket[id]++;
                 fullRocket[id]++;
@@ -318,6 +325,14 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
             if (MainActivity.arrayContains(levelThreeRocketLocations, location)) {
                 levelThreeRocket[id]++;
                 fullRocket[id]++;
+            }
+
+            //far and close rocket
+            if (MainActivity.arrayContains(farRocketLocations, location)) {
+                farRocket[id]++;
+            }
+            if (MainActivity.arrayContains(closeRocketLocations, location)) {
+                closeRocket[id]++;
             }
         }
 
@@ -332,6 +347,15 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
             data.append(levelTwoRocket[i] + ",");
             labels.append(fieldPeriod + "Level 3 Rocket " + labelActions[i] + ",");
             data.append(levelThreeRocket[i] + ",");
+
+            if (i == 0 || i == 1) {
+                //only for hatch, not for cargo
+                labels.append(fieldPeriod + "Far Rocket " + labelActions[i] + ",");
+                data.append(farRocket[i] + ",");
+                labels.append(fieldPeriod + "Close Rocket " + labelActions[i] + ",");
+                data.append(closeRocket[i] + ",");
+            }
+
             labels.append(fieldPeriod + "Full Rocket " + labelActions[i] + ",");
             data.append(fullRocket[i] + ",");
         }
