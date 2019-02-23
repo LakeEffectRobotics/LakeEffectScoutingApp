@@ -50,7 +50,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     boolean autoPage;
 
     //only used if this is the auto page
-    //if so, it will use this to determine if it is has been 20 seconds
+    //if so, it will use this to determine if it is has been 15 seconds
     //if so, it will warn the user
     long firstPress = -1;
 
@@ -114,10 +114,10 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     public void onClick(final View v) {
         if (firstPress == -1 && autoPage && v != undo) {
             firstPress = System.currentTimeMillis();
-        } else if (autoPage && System.currentTimeMillis() - firstPress > 20000 && v != undo) {
-            //it has been 20 seconds, they should be done auto by now
+        } else if (autoPage && System.currentTimeMillis() - firstPress > 15000 && v != undo) {
+            //it has been 15 seconds, they should be done auto by now
             new AlertDialog.Builder(getContext())
-                    .setTitle("YOU ARE ON THE SANDSTORM PAGE! It has been 20 seconds since your last press! " +
+                    .setTitle("YOU ARE ON THE SANDSTORM PAGE! It has been 15 seconds since your last press! " +
                             "SANDSTORM should be done by now!")
                     .setMessage("Are you sure you would like to put an event?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
