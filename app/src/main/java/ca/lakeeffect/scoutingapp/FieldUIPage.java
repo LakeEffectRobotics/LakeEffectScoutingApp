@@ -236,9 +236,9 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
             case 1:
                 return "that the robot failed picking up a " + item + " in ";
             case 2:
-                return "that the robot failed dropping off a " + item + " in ";
+                return "that the robot dropped a " + item + " in ";
             case 3:
-                return "that the robot dropped a " + item + " onto ";
+                return "that the robot failed dropping off a " + item + " onto ";
         }
         return "invalid event";
     }
