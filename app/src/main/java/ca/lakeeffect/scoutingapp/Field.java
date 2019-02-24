@@ -200,9 +200,7 @@ public class Field implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(final View v, MotionEvent event) {
-        System.out.println(event.getX() + "\t" + event.getY());
         if (v == surface) {
-            System.out.println("Field tapped");
             Canvas c = surface.getHolder().lockCanvas();
 
             if (c != null) {

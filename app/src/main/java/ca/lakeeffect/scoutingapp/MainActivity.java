@@ -263,54 +263,13 @@ public class MainActivity extends AppCompatActivity {
             allEvents = pagerAdapter.teleopPage.events;
         }
 
-        for(Event event : pagerAdapter.teleopPage.events){
+        for(Event event : allEvents){
             int location = event.location;
-
-            //if reds on the left, and the robot is on blue alliance, or blue is on the left, and the robot is on the blue alliance
-            if((!side && alliance) || (side && !alliance)){
-                location = flipLocation(location);
-            }
 
             events.append(matchNumber + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
         }
 
         return Base64.encodeToString(events.toString().getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
-    }
-
-    //will return the same location but on the other side of the field
-    public static int flipLocation(int location){
-        switch (location){
-            case 0:
-                return 11;
-            case 1:
-                return 12;
-            case 2:
-                return 13;
-            case 3:
-                return 10;
-            case 4:
-                return 8;
-            case 5:
-                return 9;
-            case 6:
-                return 6;
-            case 7:
-                return 7;
-            case 8:
-                return 4;
-            case 9:
-                return 5;
-            case 10:
-                return 3;
-            case 11:
-                return 0;
-            case 12:
-                return 1;
-            case 13:
-                return 2;
-        }
-
-        return 0;
     }
 
     //updates the view showing the matches left until this scout is off
@@ -654,7 +613,7 @@ public class MainActivity extends AppCompatActivity {
             String fulldata = "";
             if (!teleOpEvents.equals("")) {
                 if (autoEvents.equals("")) {
-                    autoEvents = "nodata";
+                    autoEvents = Base64.encodeToString("nodata".getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
                 }
                 fulldata = robotNum + ":" + data[0] + ":" + autoEvents + ":" + teleOpEvents;
             } else if(!autoEvents.equals("")) {
@@ -692,7 +651,6 @@ public class MainActivity extends AppCompatActivity {
         Thread thread = new Thread() {
             public void run() {
                 while (true) {
-                    System.out.println("aaaa");
                     byte[] bytes = new byte[1000];
                     try {
                         if (!connected) {

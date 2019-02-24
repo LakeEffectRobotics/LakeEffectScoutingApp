@@ -45,7 +45,7 @@ public class ListenerThread implements Runnable{
             BluetoothServerSocket bss = null;
             try {
                 System.out.println("started search");
-                bss = ba.listenUsingRfcommWithServiceRecord("SteamworksScoutingApp", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
+                bss = ba.listenUsingRfcommWithServiceRecord("LakeEffectScoutingApp", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
                 bluetoothSocket = bss.accept();
                 System.out.println("accepted");
                 out = bluetoothSocket.getOutputStream();
