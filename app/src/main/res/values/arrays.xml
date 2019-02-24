@@ -8,9 +8,9 @@
     </string-array>
 
     <string-array name="climbType">
-        <item>Where did it climb?</item>
-        <item>Did not climb</item>
-        <item>Returned to hab</item>
+        <item>Where did it attempt to climb to or reach?</item>
+        <item>Did not return</item>
+        <item>Returned to hab (Level 1)</item>
         <item>Level 2</item>
         <item>Level 3</item>
     </string-array>
@@ -43,7 +43,7 @@
 
     <string-array name="startPlatform">
         <item>Choose One</item>
-        <item>Level 1</item>
+        <item>Level 1 (HAB)</item>
         <item>Level 2</item>
     </string-array>
 </resources>
