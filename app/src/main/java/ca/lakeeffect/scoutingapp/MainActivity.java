@@ -56,8 +56,6 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    //TODO: Redo text sizes
-
     List<Counter> counters = new ArrayList<>();
     List<CheckBox> checkboxes = new ArrayList<>();
     List<RadioGroup> radiogroups = new ArrayList<>();
