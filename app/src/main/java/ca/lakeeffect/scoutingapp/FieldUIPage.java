@@ -73,7 +73,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         surface = view.findViewById(R.id.fieldCanvas);
         Bitmap fieldRed = BitmapFactory.decodeResource(getResources(), R.drawable.fieldred);
         Bitmap fieldBlue = BitmapFactory.decodeResource(getResources(), R.drawable.fieldblue);
-        field = new Field(surface, fieldRed, fieldBlue);
+        field = new Field(this, surface, fieldRed, fieldBlue);
         surface.setOnTouchListener(field);
 
         pickupHatch = view.findViewById(R.id.pickupHatch);
