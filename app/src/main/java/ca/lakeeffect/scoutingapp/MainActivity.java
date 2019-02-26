@@ -371,6 +371,16 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
+            //if the confidence rating is visible and it is <= 0
+            if (((RatingBar) pagerAdapter.postgamePage.getView().findViewById(R.id.dataConfidence)).getRating() <= 0) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the confidence in your data!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+
             if (((Spinner) pagerAdapter.pregamePage.getView().findViewById(R.id.autoStartLocation)).getSelectedItem().toString().equals("Choose One")) {
                 runOnUiThread(new Thread() {
                     public void run() {
