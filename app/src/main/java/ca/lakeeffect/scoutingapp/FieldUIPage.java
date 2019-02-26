@@ -117,9 +117,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         } else if (autoPage && System.currentTimeMillis() - firstPress > 15000 && v != undo) {
             //it has been 15 seconds, they should be done auto by now
             new AlertDialog.Builder(getContext())
-                    .setTitle("YOU ARE ON THE SANDSTORM PAGE! It has been 15 seconds since your last press! " +
-                            "SANDSTORM should be done by now!")
-                    .setMessage("Are you sure you would like to put an event?")
+                    .setTitle("YOU ARE ON THE SANDSTORM PAGE! It has been 15 seconds since your last press!")
+                    .setMessage("Are you sure you would like to put an event? SANDSTORM should be done by now!")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             firstPress = -1;
