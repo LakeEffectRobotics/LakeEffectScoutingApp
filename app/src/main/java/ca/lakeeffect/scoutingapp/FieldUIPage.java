@@ -265,8 +265,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         int[] closeRocket = new int[4];
         int[] fullRocket = new int[4];
 
-        int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18, 19};
-        int[] sideCargoShipLocations = {12, 13, 14, 17, 18, 19};
+        int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18};
+        int[] sideCargoShipLocations = {12, 13, 14, 16, 17, 18};
         int[] levelOneRocketLocations = {4, 5, 10, 11};
         int[] levelTwoRocketLocations = {2, 3, 8, 9};
         int[] levelThreeRocketLocations = {0, 1, 6, 7};

@@ -14,7 +14,7 @@ import android.view.SurfaceView;
 import android.view.View;
 
 public class Field implements View.OnTouchListener {
-    
+
     FieldUIPage fieldUIPage;
 
     SurfaceView surface;
@@ -39,8 +39,7 @@ public class Field implements View.OnTouchListener {
             makeRect(664, 206),
             makeRect(744, 206),
             makeRect(824, 206),
-            makeRect(584, 225),
-            makeRect(584, 305),
+            makeRect(584, 267),
             makeRect(664, 328),
             makeRect(744, 328),
             makeRect(824, 328)
