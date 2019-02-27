@@ -113,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
     //if the schedule has been overridden
     boolean overrideSchedule;
 
+    //if the scout has confirmed that the robot has no starting object
+    boolean noStartingObject;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -399,6 +402,24 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
+            //check if the robot is starting with hatch or cargo
+            if (!noStartingObject && !((CheckBox) pagerAdapter.pregamePage.getView().findViewById(R.id.startingObjectsHatch)).isChecked()
+                    && !((CheckBox) pagerAdapter.pregamePage.getView().findViewById(R.id.startingObjectsCargo)).isChecked()) {
+                //double check the user meant this
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("No starting Object?")
+                        .setMessage("Are you sure the robot started with no object?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                noStartingObject = true;
+                                pagerAdapter.qualitativePage.getView().findViewById(R.id.submit).performClick();
+                            }
+                        })
+                        .setNegativeButton("No, let me go change that", null)
+                        .create()
+                        .show();
+                return null;
+            }
         }
 
         data = new StringBuilder();
@@ -796,7 +817,6 @@ public class MainActivity extends AppCompatActivity {
         //setup scrolling viewpager
         alert(incrementMatchNumber);
 
-
         viewPager.setAdapter(pagerAdapter);
 
         PercentRelativeLayout layout;
@@ -815,6 +835,8 @@ public class MainActivity extends AppCompatActivity {
         //Qualitative page
         layout = pagerAdapter.qualitativePage.getView().findViewById(R.id.qualitativePageLayout);
         clearData(layout);
+
+        noStartingObject = false;
     }
 
     public void clearData(ViewGroup top) {
