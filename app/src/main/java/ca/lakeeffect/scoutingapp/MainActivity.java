@@ -56,8 +56,6 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    //TODO: Redo text sizes
-
     List<Counter> counters = new ArrayList<>();
     List<CheckBox> checkboxes = new ArrayList<>();
     List<RadioGroup> radiogroups = new ArrayList<>();
@@ -368,6 +366,16 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify how it climbed!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+
+            //if the confidence rating is visible and it is <= 0
+            if (((RatingBar) pagerAdapter.postgamePage.getView().findViewById(R.id.dataConfidence)).getRating() <= 0) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the confidence in your data!", Toast.LENGTH_LONG).show();
                     }
                 });
                 return null;

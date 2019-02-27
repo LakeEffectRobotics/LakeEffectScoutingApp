@@ -73,7 +73,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         surface = view.findViewById(R.id.fieldCanvas);
         Bitmap fieldRed = BitmapFactory.decodeResource(getResources(), R.drawable.fieldred);
         Bitmap fieldBlue = BitmapFactory.decodeResource(getResources(), R.drawable.fieldblue);
-        field = new Field(surface, fieldRed, fieldBlue);
+        field = new Field(this, surface, fieldRed, fieldBlue);
         surface.setOnTouchListener(field);
 
         pickupHatch = view.findViewById(R.id.pickupHatch);
@@ -117,9 +117,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         } else if (autoPage && System.currentTimeMillis() - firstPress > 15000 && v != undo) {
             //it has been 15 seconds, they should be done auto by now
             new AlertDialog.Builder(getContext())
-                    .setTitle("YOU ARE ON THE SANDSTORM PAGE! It has been 15 seconds since your last press! " +
-                            "SANDSTORM should be done by now!")
-                    .setMessage("Are you sure you would like to put an event?")
+                    .setTitle("YOU ARE ON THE SANDSTORM PAGE! It has been 15 seconds since your last press!")
+                    .setMessage("Are you sure you would like to put an event? SANDSTORM should be done by now!")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             firstPress = -1;
@@ -266,8 +265,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         int[] closeRocket = new int[4];
         int[] fullRocket = new int[4];
 
-        int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18, 19};
-        int[] sideCargoShipLocations = {12, 13, 14, 17, 18, 19};
+        int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18};
+        int[] sideCargoShipLocations = {12, 13, 14, 16, 17, 18};
         int[] levelOneRocketLocations = {4, 5, 10, 11};
         int[] levelTwoRocketLocations = {2, 3, 8, 9};
         int[] levelThreeRocketLocations = {0, 1, 6, 7};

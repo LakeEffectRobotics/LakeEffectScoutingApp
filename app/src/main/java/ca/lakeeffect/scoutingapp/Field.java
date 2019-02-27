@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v4.content.res.ResourcesCompat;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,6 +15,7 @@ import android.view.View;
 
 public class Field implements View.OnTouchListener {
 
+    FieldUIPage fieldUIPage;
 
     SurfaceView surface;
     Bitmap fieldRed, fieldBlue;
@@ -37,14 +39,11 @@ public class Field implements View.OnTouchListener {
             makeRect(664, 206),
             makeRect(744, 206),
             makeRect(824, 206),
-            makeRect(584, 225),
-            makeRect(584, 305),
+            makeRect(584, 267),
             makeRect(664, 328),
             makeRect(744, 328),
             makeRect(824, 328)
     };
-    
-    
 
     //the normal paint for the boxes
     Paint normal = new Paint();
@@ -62,7 +61,11 @@ public class Field implements View.OnTouchListener {
     //code in surfacecreated can only be called once
     boolean alreadyCreated = false;
 
-    public Field(SurfaceView s, Bitmap fieldRed, Bitmap fieldBlue) {
+    Rect backgroundRect;
+    Paint backgroundPaint;
+
+    public Field(final FieldUIPage fieldUIPage, SurfaceView s, Bitmap fieldRed, Bitmap fieldBlue) {
+        this.fieldUIPage = fieldUIPage;
         surface = s;
         this.fieldRed = fieldRed;
         this.fieldBlue = fieldBlue;
@@ -77,12 +80,25 @@ public class Field implements View.OnTouchListener {
         surface.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-
                 if(alreadyCreated){
                     redraw();
                     return;
                 }
                 alreadyCreated = true;
+
+                backgroundRect = new Rect(0, 0, surface.getWidth(), surface.getHeight());
+
+                //get theme background color
+                backgroundPaint = new Paint();
+                if (fieldUIPage.autoPage) {
+                    TypedValue typedValue = new TypedValue();
+                    Field.this.fieldUIPage.getContext().getTheme().resolveAttribute(R.attr.colorAuto, typedValue, true);
+                    backgroundPaint.setColor(typedValue.data);
+                } else {
+                    TypedValue typedValue = new TypedValue();
+                    Field.this.fieldUIPage.getContext().getTheme().resolveAttribute(android.R.attr.colorBackground, typedValue, true);
+                    backgroundPaint.setColor(typedValue.data);
+                }
 
                 boolean scaleByHeight = false;
 
@@ -144,6 +160,7 @@ public class Field implements View.OnTouchListener {
 
             }
         });
+
     }
 
     // called by the FieldUIPage class when the deselect button is hit
@@ -256,10 +273,12 @@ public class Field implements View.OnTouchListener {
             field = fieldBlue;
         }
 
+        //clear screen
+        c.drawRect(backgroundRect, backgroundPaint);
+
         c.drawBitmap(field, 0, 0, null);
 
         for (Rect rect : fieldPlacements) {
-
             Rect scaledRect = scaleRect(rect, c);
 
             if(java.util.Arrays.asList(fieldPlacements).indexOf(rect) == selected){
@@ -267,8 +286,6 @@ public class Field implements View.OnTouchListener {
             }else {
                 c.drawRect(scaledRect.left, scaledRect.top, scaledRect.right, scaledRect.bottom, normal);
             }
-
-
         }
     }
 

@@ -8,8 +8,8 @@ android {
         applicationId "ca.lakeeffect.scoutingapp"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 32
-        versionName "Deep Space - 2.2.0"
+        versionCode 33
+        versionName "Deep Space - 2.3.0"
     }
     buildTypes {
         release {

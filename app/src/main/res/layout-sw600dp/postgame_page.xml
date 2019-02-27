@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/endgameTableLayout"
             android:layout_margin="10dp"
-            android:rowCount="3"
+            android:rowCount="5"
             android:columnCount="5">
 
         <TextView
@@ -24,7 +24,7 @@
                 android:text="Climb: "
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:textSize="@dimen/text_medium"/>
+                android:textSize="@dimen/text_large"/>
 
             <Spinner
                 android:id="@+id/endgameClimbType"
@@ -46,9 +46,9 @@
 
             <TextView
                 android:text="Robots Carried:"
-                android:layout_width="210dp"
+                android:layout_width="260dp"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_medium"
+                android:textSize="@dimen/text_large"
                 android:layout_row="2"
                 android:layout_column="0"
                 android:layout_gravity="center_vertical"/>
@@ -61,6 +61,42 @@
                 android:layout_row="2"
                 android:layout_column="1"
                 android:layout_columnSpan="4"/>
+
+            <TextView
+                android:text="Confidence:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_large"
+                android:layout_row="3"
+                android:layout_column="0"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="20dp"/>
+
+            <LinearLayout
+                android:layout_row="3"
+                android:layout_column="1"
+                android:layout_columnSpan="2">
+                <!--This is a workaround to make #109 work as seen in https://stackoverflow.com/a/39653856/1985387-->
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dataConfidence"
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    android:isIndicator="false"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:text="Your confidence in the data you colllected this match."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="4"
+                android:textSize="@dimen/text_small"
+                android:layout_column="0"
+                android:layout_columnSpan="3"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="20dp"/>
 
         </GridLayout>
 
