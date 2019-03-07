@@ -58,7 +58,7 @@
                 android:layout_height="match_parent"
                 android:text="Failed dropoff"
                 android:layout_weight="1"
-                android:id="@+id/failedDropHatch"
+                android:id="@+id/failDropHatch"
                 android:textSize="@dimen/text_small"
                 android:backgroundTint="#ffff84"
                 android:textColor="@color/black"/>
@@ -133,7 +133,7 @@
                 android:layout_height="match_parent"
                 android:text="Failed dropoff"
                 android:layout_weight="1"
-                android:id="@+id/failedDropCargo"
+                android:id="@+id/failDropCargo"
                 android:backgroundTint="#ffd38e"
                 android:textSize="@dimen/text_small"
                 android:textColor="@color/black"/>
