@@ -54,7 +54,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ListeningActitivty {
 
     List<Counter> counters = new ArrayList<>();
     List<CheckBox> checkboxes = new ArrayList<>();
@@ -64,19 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
     TextView timer;
     TextView robotNumText; //robotnum and matchNumber
-    TextView matchesLeftText; //text that shows the matches left until off
 
     int robotNum = 2708;
-    int matchNumber = -1;
-
-    //Robot schedule for each user (by user ID)
-    //the username selection screen will show a spinner with all the names in this list
-    //FUTURE: Maybe pull these names from the server? Grab them from a text file?
-    //Add one to the index as there is one placeholder default value
-    ArrayList<UserData> schedules = new ArrayList<>();
-
-    //the id of the user currently scouting. This decides when they must switch on and off from scouting
-    int userID = -1;
 
     //only used if the schedule is being overridden
     String scoutName = "";
@@ -90,23 +79,14 @@ public class MainActivity extends AppCompatActivity {
     InputPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
-    ArrayList<String> pendingMessages = new ArrayList<>();
     boolean connected;
 
-    ListenerThread listenerThread;
-    Thread listenerThreadThreadClass;
-
     String savedLabels = null; //generated at the beginning
-
-    int versionCode;
 
     //the last time submit has been pressed
     //used to see if "are you still here" messages should be placed
     public static long lastSubmit = -1;
 
-    //the userIDSpinner on the alert menu
-    //null if alert is not open
-    Spinner userIDSpinner = null;
     //toast displayed in the alert panel for errors when typing certain match numbers
     Toast matchNumAlertToast = null;
 
@@ -243,7 +223,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startListenerThread() {
-        if (savedLabels == null) savedLabels = getData(true)[1];
+        if (savedLabels == null){
+            savedLabels = getData(true)[1];
+            SharedPreferences prefs = getSharedPreferences("savedLabels", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("savedLabels", savedLabels);
+            editor.putInt("versionNumber", BuildConfig.VERSION_CODE);
+            editor.apply();
+        }
 
         //start listening
         if (listenerThread == null) {
@@ -271,58 +258,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return Base64.encodeToString(events.toString().getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
-    }
-
-    //updates the view showing the matches left until this scout is off
-    public void updateMatchesLeft() {
-        int nextMatchOff = getNextMatchOff();
-        int matchesLeft = nextMatchOff - matchNumber;
-
-        if (nextMatchOff == -1) {
-            matchesLeftText.setText("Never");
-        } else {
-            matchesLeftText.setText(matchesLeft + "");
-        }
-    }
-
-    //this will return the match number when they have can stop scouting
-    public int getNextMatchOff() {
-        int matchBack = -1;
-
-        //there is no schedule
-        if (userID == -1) return -1;
-
-        //find next match number
-        int matchNumber = this.matchNumber;
-        if (matchNumber <= 0) matchNumber = 1;
-        for (int i = matchNumber - 1; i < schedules.get(userID).robots.size(); i++) {
-            if (schedules.get(userID).robots.get(i) == -1) {
-                matchBack = i + 1;
-                break;
-            }
-        }
-
-        return matchBack;
-    }
-
-    //this will return the match number when they have have to start scouting again
-    public int getNextMatchOn() {
-        int matchBack = -1;
-
-        //there is no schedule
-        if (userID == -1) return -1;
-
-        //find next match number
-        int matchNumber = this.matchNumber;
-        if (matchNumber <= 0) matchNumber = 1;
-        for (int i = matchNumber - 1; i < schedules.get(userID).robots.size(); i++) {
-            if (schedules.get(userID).robots.get(i) != -1) {
-                matchBack = i + 1;
-                break;
-            }
-        }
-
-        return matchBack;
     }
 
     public String[] getData(boolean bypassChecks) {
@@ -710,16 +645,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-    }
-
-    public int getLocationInSharedMessages(String message) {
-        SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
-        for (int i = 0; i < prefs.getInt("messageAmount", 0); i++) {
-            if (prefs.getString("message" + i, "").equals(message)) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     @Override
@@ -1151,29 +1076,6 @@ public class MainActivity extends AppCompatActivity {
             robotAlliance.setSelection(2);
         }
 
-    }
-
-    public void updateUserIDSpinner() {
-        String oldSelection = ((String) userIDSpinner.getSelectedItem());
-
-        ArrayList<String> userNames = new ArrayList<>();
-        userNames.add("Please choose a name");
-        for (UserData userData : schedules){
-            userNames.add(userData.userName);
-        }
-
-        ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner, userNames);
-        userIDSpinner.setAdapter(userIDAdapter);
-        int selectedIndex = 0;
-
-        for (int i = 0; i < userNames.size(); i++) {
-            if (userNames.get(i).equals(oldSelection)) {
-                selectedIndex = i;
-                break;
-            }
-        }
-
-        userIDSpinner.setSelection(selectedIndex);
     }
 
     //when the ok button on the alert is pressed
