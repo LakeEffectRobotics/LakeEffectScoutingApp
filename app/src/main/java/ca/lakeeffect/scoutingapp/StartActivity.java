@@ -75,12 +75,10 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
         TextView versionNum = findViewById(R.id.versionNum);
         String buildNumText = "Build: " +  + BuildConfig.VERSION_CODE + " " + (BuildConfig.DEBUG ? "Debug" : "Release");
         //check if it is the first open on this version of the app
-        {
-            SharedPreferences savedLabelsPrefs = getSharedPreferences("savedLabels", MODE_PRIVATE);
-            if (savedLabelsPrefs.getInt("versionNum", -1) != BuildConfig.VERSION_CODE) {
-                //first app open on this new version
-                buildNumText += " | First Open";
-            }
+        SharedPreferences savedLabelsPrefs = getSharedPreferences("savedLabels", MODE_PRIVATE);
+        if (savedLabelsPrefs.getInt("versionNum", -1) != BuildConfig.VERSION_CODE) {
+            //first app open on this new version
+            buildNumText += " | First Open";
         }
         buildNum.setText(buildNumText);
         versionNum.setText("Version: " + BuildConfig.VERSION_NAME);
