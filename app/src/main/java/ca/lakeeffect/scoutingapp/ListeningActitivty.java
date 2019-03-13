@@ -39,23 +39,29 @@ public class ListeningActitivty extends AppCompatActivity {
         String oldSelection = ((String) userIDSpinner.getSelectedItem());
 
         ArrayList<String> userNames = new ArrayList<>();
-        userNames.add("Please choose a name");
-        for (UserData userData : schedules){
-            userNames.add(userData.userName);
-        }
 
-        ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(ListeningActitivty.this, R.layout.spinner, userNames);
-        userIDSpinner.setAdapter(userIDAdapter);
-        int selectedIndex = 0;
-
-        for (int i = 0; i < userNames.size(); i++) {
-            if (userNames.get(i).equals(oldSelection)) {
-                selectedIndex = i;
-                break;
+        if (userNames.size() > 0) {
+            userNames.add("Please choose a name");
+            for (UserData userData : schedules){
+                userNames.add(userData.userName);
             }
+
+            int selectedIndex = 0;
+
+            for (int i = 0; i < userNames.size(); i++) {
+                if (userNames.get(i).equals(oldSelection)) {
+                    selectedIndex = i;
+                    break;
+                }
+            }
+
+            userIDSpinner.setSelection(selectedIndex);
+        } else {
+            userNames.add("Please ask the person running the scouting server to send a schedule");
         }
 
-        userIDSpinner.setSelection(selectedIndex);
+        ArrayAdapter<String> userIDAdapter = new ArrayAdapter<String>(ListeningActitivty.this, R.layout.spinner, userNames);
+        userIDSpinner.setAdapter(userIDAdapter);
     }
 
     //updates the view showing the matches left until this scout is off
