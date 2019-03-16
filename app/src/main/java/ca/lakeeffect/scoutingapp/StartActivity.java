@@ -36,6 +36,8 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class StartActivity extends ListeningActitivty implements View.OnClickListener {
 
@@ -98,6 +100,47 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
 
     public void openScheduleViewer() {
         LinearLayout scheduleViewer = (LinearLayout) getLayoutInflater().inflate(R.layout.schedule_viewer, null);
+
+        //figure out when the schedule was last updated
+        TextView lastUpdated = scheduleViewer.findViewById(R.id.scheduleViewerLastUpdate);
+        String lastUpdatedMessage = "";
+        SharedPreferences lastUpdatedPrefs = getSharedPreferences("lastScheduleUpdate", MODE_PRIVATE);
+        int year = lastUpdatedPrefs.getInt("year", -1);
+        int month = lastUpdatedPrefs.getInt("month", -1);
+        int day = lastUpdatedPrefs.getInt("day", -1);
+        int hour = lastUpdatedPrefs.getInt("hour", -1);
+        int minute = lastUpdatedPrefs.getInt("minute", -1);
+
+        //get current dates to compare with
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int currentHour = Calendar.getInstance().get(Calendar.HOUR);
+        int currentMinute = Calendar.getInstance().get(Calendar.MINUTE);
+
+        if (year == currentYear) {
+            if (month == currentMonth) {
+                if (day == currentDay) {
+                    if (hour == currentHour) {
+                        lastUpdatedMessage = (currentMinute - minute) + " minutes ago";
+                    } else {
+                        lastUpdatedMessage = (currentHour - hour) + " hours ago";
+                    }
+                } else {
+                    lastUpdatedMessage = (currentDay - day) + " days ago";
+                }
+            } else {
+                lastUpdatedMessage = (currentMonth - month) + " months ago";
+            }
+        } else {
+            lastUpdatedMessage = (currentYear - year) + " years ago";
+        }
+        if (year == -1) {
+            lastUpdatedMessage = "Never";
+        }
+
+        //set the message onto the label
+        lastUpdated.setText("Last Updated " + lastUpdatedMessage);
 
         userIDSpinner = scheduleViewer.findViewById(R.id.scheduleViewerUserIDSpinner);
         updateUserIDSpinner();

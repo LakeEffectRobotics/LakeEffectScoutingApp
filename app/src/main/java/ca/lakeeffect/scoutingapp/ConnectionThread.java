@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
 /**
  * Created by Ajay on 02/10/2017.
@@ -85,7 +86,7 @@ public class ConnectionThread implements Runnable {
 
                     loadSchedule(message);
 
-                    //send that this message was recieved, conver to base 64 and add the end splitter first
+                    //send that this message was received, convert to base 64 and add the end splitter first
                     this.out.write((toBase64("RECEIVED") + endSplitter).getBytes(Charset.forName("UTF-8")));
                 } else if (message.contains("REQUEST DATA")) { //received a request
                     listeningActitivty.runOnUiThread(new Runnable() {
@@ -219,6 +220,24 @@ public class ConnectionThread implements Runnable {
         }
 
         editor.apply();
+
+        //get current dates to store the last date updated
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int currentHour = Calendar.getInstance().get(Calendar.HOUR);
+        int currentMinute = Calendar.getInstance().get(Calendar.MINUTE);
+        SharedPreferences lastUpdatedPrefs = listeningActitivty.getSharedPreferences("lastScheduleUpdate", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor lastUpdatedEditor = lastUpdatedPrefs.edit();
+
+        //store it in the shared preferences
+        lastUpdatedEditor.putInt("year", currentYear);
+        lastUpdatedEditor.putInt("month", currentMonth);
+        lastUpdatedEditor.putInt("day", currentDay);
+        lastUpdatedEditor.putInt("hour", currentHour);
+        lastUpdatedEditor.putInt("minute", currentMinute);
+
+        lastUpdatedEditor.apply();
     }
 
     public void sendLabels() {
