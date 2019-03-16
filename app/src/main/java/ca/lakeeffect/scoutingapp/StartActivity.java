@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -28,14 +29,17 @@ import android.widget.ListAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class StartActivity extends ListeningActitivty implements View.OnClickListener {
 
-    Button startScouting, moreOptions;
+    Button startScouting, viewSchedule, moreOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +57,11 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
         setContentView(R.layout.activity_start);
 
         startScouting = findViewById(R.id.startScouting);
+        viewSchedule = findViewById(R.id.viewSchedule);
         moreOptions = findViewById(R.id.moreOptionsStartScreen);
 
         startScouting.setOnClickListener(this);
+        viewSchedule.setOnClickListener(this);
         moreOptions.setOnClickListener(this);
 
         //Ask for permissions
@@ -88,6 +94,77 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
 
         //startup bluetooth threads
         startListenerThread();
+    }
+
+    public void openScheduleViewer() {
+        LinearLayout scheduleViewer = (LinearLayout) getLayoutInflater().inflate(R.layout.schedule_viewer, null);
+
+        userIDSpinner = scheduleViewer.findViewById(R.id.scheduleViewerUserIDSpinner);
+        updateUserIDSpinner();
+
+        SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
+        int userID = prefs.getInt("userID", -1);
+
+        if (userID != -1) {
+            //set the spinner to this value
+            userIDSpinner.setSelection(userID + 1);
+
+            //update the schedule view
+            updateScheduleDialog((Spinner) userIDSpinner, userID);
+        }
+
+        //add listener to the spinner
+        userIDSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    //if it is not on the "Choose one" selection
+                    updateScheduleDialog(view, position - 1);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //create the dialog box
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("View Schedule")
+                .setView(scheduleViewer)
+                .setPositiveButton("Dismiss", null)
+                .show();
+
+    }
+
+    public void updateScheduleDialog(View view, int userID) {
+        TextView scheduleTextView = view.findViewById(R.id.scheduleViewerTextView);
+
+        //show all the times the scout is switching on or off
+        StringBuilder scheduleMessage = new StringBuilder();
+
+        //the current match number being checked for
+        int matchNumber = 0;
+
+        while (matchNumber < schedules.get(userID).robots.size()) {
+            if (!schedules.get(userID).isOff(matchNumber)) {
+                //add the next match off
+                int nextMatchOff = getNextMatchOff(matchNumber, userID);
+                scheduleMessage.append("Off at match " + nextMatchOff + "\n\n");
+
+                //set the match number to check to the match number reached
+                matchNumber = nextMatchOff;
+            } else {
+                //add the next match on
+                int nextMatchOn = getNextMatchOn(matchNumber, userID);
+                scheduleMessage.append("On at match " + nextMatchOn + "\n\n");
+
+                //set the match number to check to the match number reached
+                matchNumber = nextMatchOn;
+            }
+        }
+
+        scheduleTextView.setText(scheduleMessage.toString());
     }
 
     public void startListenerThread() {
@@ -228,6 +305,8 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
                 }
             });
             menu.show();
+        } else if (v == viewSchedule) {
+            openScheduleViewer();
         }
     }
 

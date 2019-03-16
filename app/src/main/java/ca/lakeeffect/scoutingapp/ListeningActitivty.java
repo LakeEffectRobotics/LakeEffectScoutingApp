@@ -24,10 +24,6 @@ public class ListeningActitivty extends AppCompatActivity {
     ArrayList<UserData> schedules = new ArrayList<>();
 
     int versionCode;
-    int matchNumber = -1;
-
-    //the id of the user currently scouting. This decides when they must switch on and off from scouting
-    int userID = -1;
 
     TextView matchesLeftText; //text that shows the matches left until off
 
@@ -64,29 +60,14 @@ public class ListeningActitivty extends AppCompatActivity {
         userIDSpinner.setAdapter(userIDAdapter);
     }
 
-    //updates the view showing the matches left until this scout is off
-    public void updateMatchesLeft() {
-        int nextMatchOff = getNextMatchOff();
-        int matchesLeft = nextMatchOff - matchNumber;
-
-        if (matchesLeftText != null) {
-            if (nextMatchOff == -1) {
-                matchesLeftText.setText("Never");
-            } else {
-                matchesLeftText.setText(matchesLeft + "");
-            }
-        }
-    }
-
     //this will return the match number when they have can stop scouting
-    public int getNextMatchOff() {
+    public int getNextMatchOff(int matchNumber, int userID) {
         int matchBack = -1;
 
         //there is no schedule
         if (userID == -1) return -1;
 
         //find next match number
-        int matchNumber = this.matchNumber;
         if (matchNumber <= 0) matchNumber = 1;
         for (int i = matchNumber - 1; i < schedules.get(userID).robots.size(); i++) {
             if (schedules.get(userID).robots.get(i) == -1) {
@@ -99,14 +80,13 @@ public class ListeningActitivty extends AppCompatActivity {
     }
 
     //this will return the match number when they have have to start scouting again
-    public int getNextMatchOn() {
+    public int getNextMatchOn(int matchNumber, int userID) {
         int matchBack = -1;
 
         //there is no schedule
         if (userID == -1) return -1;
 
         //find next match number
-        int matchNumber = this.matchNumber;
         if (matchNumber <= 0) matchNumber = 1;
         for (int i = matchNumber - 1; i < schedules.get(userID).robots.size(); i++) {
             if (schedules.get(userID).robots.get(i) != -1) {

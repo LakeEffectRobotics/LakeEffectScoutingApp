@@ -96,6 +96,10 @@ public class MainActivity extends ListeningActitivty {
     //if the scout has confirmed that the robot has no starting object
     boolean noStartingObject;
 
+    //the id of the user currently scouting. This decides when they must switch on and off from scouting
+    int userID = -1;
+    int matchNumber = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -1185,6 +1189,29 @@ public class MainActivity extends ListeningActitivty {
 
         dialog.dismiss();
 
+    }
+
+    //updates the view showing the matches left until this scout is off
+    public void updateMatchesLeft() {
+        int nextMatchOff = getNextMatchOff();
+        int matchesLeft = nextMatchOff - matchNumber;
+
+        if (matchesLeftText != null) {
+            if (nextMatchOff == -1) {
+                matchesLeftText.setText("Never");
+            } else {
+                matchesLeftText.setText(matchesLeft + "");
+            }
+        }
+    }
+
+    //short form functions from the functions in ListeningActivity
+    public int getNextMatchOff() {
+        return getNextMatchOff(matchNumber, userID);
+    }
+
+    public int getNextMatchOn() {
+        return getNextMatchOn(matchNumber, userID);
     }
 
     public static boolean arrayContains(String[] array, String search){

@@ -178,7 +178,9 @@ public class ConnectionThread implements Runnable {
                     listeningActitivty.updateUserIDSpinner();
 
                     //update the UI with the time remaining
-                    listeningActitivty.updateMatchesLeft();
+                    if (listeningActitivty instanceof MainActivity) {
+                        ((MainActivity) listeningActitivty).updateMatchesLeft();
+                    }
                 }
             });
         }
