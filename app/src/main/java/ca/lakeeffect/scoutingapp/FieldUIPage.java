@@ -336,16 +336,15 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         }
 
         for (int i = 0; i < labelActions.length; i++) {
-            labels.append(fieldPeriod + "Cargo Ship " + labelActions[i] + ",");
+            //most important data
+            labels.append(fieldPeriod + "Full Cargo Ship " + labelActions[i] + ",");
             data.append(cargoShip[i] + ",");
+            labels.append(fieldPeriod + "Full Rocket " + labelActions[i] + ",");
+            data.append(fullRocket[i] + ",");
+
+            //extra more detailed information
             labels.append(fieldPeriod + "Side Cargo Ship " + labelActions[i] + ",");
             data.append(sideCargoShip[i] + ",");
-            labels.append(fieldPeriod + "Level 1 Rocket " + labelActions[i] + ",");
-            data.append(levelOneRocket[i] + ",");
-            labels.append(fieldPeriod + "Level 2 Rocket " + labelActions[i] + ",");
-            data.append(levelTwoRocket[i] + ",");
-            labels.append(fieldPeriod + "Level 3 Rocket " + labelActions[i] + ",");
-            data.append(levelThreeRocket[i] + ",");
 
             if (i == 0 || i == 1) {
                 //only for hatch, not for cargo
@@ -354,9 +353,13 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                 labels.append(fieldPeriod + "Close Rocket " + labelActions[i] + ",");
                 data.append(closeRocket[i] + ",");
             }
-
-            labels.append(fieldPeriod + "Full Rocket " + labelActions[i] + ",");
-            data.append(fullRocket[i] + ",");
+            
+            labels.append(fieldPeriod + "Level 1 Rocket " + labelActions[i] + ",");
+            data.append(levelOneRocket[i] + ",");
+            labels.append(fieldPeriod + "Level 2 Rocket " + labelActions[i] + ",");
+            data.append(levelTwoRocket[i] + ",");
+            labels.append(fieldPeriod + "Level 3 Rocket " + labelActions[i] + ",");
+            data.append(levelThreeRocket[i] + ",");
         }
 
         return (new String[]{labels.toString(), data.toString()});
