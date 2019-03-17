@@ -32,7 +32,7 @@ public class PostgamePage extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflator.inflate(R.layout.postgamepage, container, false);
+        View view = inflator.inflate(R.layout.postgame_page, container, false);
 
         climb = view.findViewById(R.id.endgameClimb);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.climb, R.layout.spinner);
@@ -42,38 +42,30 @@ public class PostgamePage extends Fragment {
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.climbType, R.layout.spinner);
         climb.setAdapter(adapter);
 
-
-
         final Spinner endgameClimbType = (Spinner) view.findViewById(R.id.endgameClimbType);
         final Spinner endgameClimb = (Spinner) view.findViewById(R.id.endgameClimb);
 
         endgameClimb.setVisibility(View.INVISIBLE);
 
-
-
-        endgameClimbType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
-            {
+        endgameClimbType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 Object item = parent.getItemAtPosition(pos);
 
                 System.out.println(pos);
 
-                if(pos >= 3){
+                if (pos >= 3) {
                     endgameClimb.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     endgameClimb.setVisibility(View.INVISIBLE);
                     endgameClimb.setSelection(0);
                 }
 
             }
 
-            public void onNothingSelected(AdapterView<?> parent)
-            {
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-
 
         return view;
     }

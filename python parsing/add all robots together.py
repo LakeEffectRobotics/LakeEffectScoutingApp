@@ -23,6 +23,7 @@ files = os.listdir(foldername)
 
 files.remove("results")
 files.remove("EventData")
+files.remove("AutoEventData")
 
 for i in range(len(files)):
     getdataforfile(foldername + files[i], i, files[i])

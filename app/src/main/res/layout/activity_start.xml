@@ -18,13 +18,21 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Schedule"
+        android:id="@+id/viewSchedule"
+        android:layout_below="@id/startScouting"
+        android:layout_centerHorizontal="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Unsent Data: "
         android:id="@+id/startUnsentMessages"
-        android:layout_below="@+id/startScouting"
+        android:layout_below="@+id/viewSchedule"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -59,36 +67,12 @@
         android:layout_centerVertical="true">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/swirly"
             android:id="@+id/logo"
-            android:layout_marginBottom="10dp"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Welcome to the Scouting App!"
-            android:id="@+id/introTextView1"
-            android:textSize="25dp"
-            android:textIsSelectable="true"
-            android:textColor="@color/primary_text_material_dark"
+            android:layout_width="219dp"
+            android:layout_height="33dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/logo" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Scouting options are shown below"
-            android:id="@+id/introTextView3"
-            android:textSize="25dp"
-            android:textIsSelectable="true"
-            android:textColor="@color/primary_text_material_dark"
-            android:layout_below="@+id/introTextView2"
-            android:layout_centerHorizontal="true"/>
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/swirly" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -96,10 +80,10 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="To start scouting press the button"
             android:id="@+id/introTextView2"
-            android:textSize="25dp"
+            android:textSize="14dp"
             android:textIsSelectable="true"
             android:textColor="@color/primary_text_material_dark"
-            android:layout_below="@+id/introTextView1"
+            android:layout_below="@+id/logo"
             android:layout_centerHorizontal="true" />
 
     </android.support.percent.PercentRelativeLayout>

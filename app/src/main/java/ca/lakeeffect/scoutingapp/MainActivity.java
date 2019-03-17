@@ -54,9 +54,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
-
-    //TODO: Redo text sizes
+public class MainActivity extends ListeningActitivty {
 
     List<Counter> counters = new ArrayList<>();
     List<CheckBox> checkboxes = new ArrayList<>();
@@ -66,19 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
     TextView timer;
     TextView robotNumText; //robotnum and matchNumber
-    TextView matchesLeftText; //text that shows the matches left until off
 
     int robotNum = 2708;
-    int matchNumber = -1;
-
-    //Robot schedule for each user (by user ID)
-    //the username selection screen will show a spinner with all the names in this list
-    //FUTURE: Maybe pull these names from the server? Grab them from a text file?
-    //Add one to the index as there is one placeholder default value
-    ArrayList<UserData> schedules = new ArrayList<>();
-
-    //the id of the user currently scouting. This decides when they must switch on and off from scouting
-    int userID = -1;
 
     //only used if the schedule is being overridden
     String scoutName = "";
@@ -92,28 +79,26 @@ public class MainActivity extends AppCompatActivity {
     InputPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
-    ArrayList<String> pendingMessages = new ArrayList<>();
     boolean connected;
 
-    ListenerThread listenerThread;
-    Thread listenerThreadThreadClass;
-
     String savedLabels = null; //generated at the beginning
-
-    int versionCode;
 
     //the last time submit has been pressed
     //used to see if "are you still here" messages should be placed
     public static long lastSubmit = -1;
 
-    //the userIDSpinner on the alert menu
-    //null if alert is not open
-    Spinner userIDSpinner = null;
     //toast displayed in the alert panel for errors when typing certain match numbers
     Toast matchNumAlertToast = null;
 
     //if the schedule has been overridden
     boolean overrideSchedule;
+
+    //if the scout has confirmed that the robot has no starting object
+    boolean noStartingObject;
+
+    //the id of the user currently scouting. This decides when they must switch on and off from scouting
+    int userID = -1;
+    int matchNumber = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         matchesLeftText = findViewById(R.id.matchesLeft);
 
         //call alert (asking scout name and robot number)
-        alert();
+        alert(false);
 
         //add all buttons and counters etc.
 
@@ -182,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.scrollingview);
         pagerAdapter = new InputPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(pagerAdapter.PAGENUM);
 
         robotNumText = findViewById(R.id.robotNum);
 
@@ -242,7 +227,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startListenerThread() {
-        if (savedLabels == null) savedLabels = getData(true)[1];
+        if (savedLabels == null){
+            savedLabels = getData(true)[1];
+            SharedPreferences prefs = getSharedPreferences("savedLabels", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("savedLabels", savedLabels);
+            editor.putInt("versionNumber", BuildConfig.VERSION_CODE);
+            editor.apply();
+        }
 
         //start listening
         if (listenerThread == null) {
@@ -255,112 +247,21 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder data;
     StringBuilder labels;
 
-    public String getEventData(){
+    public String getEventData(int page){
         StringBuilder events = new StringBuilder();
 
-        for(Event event : pagerAdapter.teleopPage.events){
+        ArrayList<Event> allEvents = pagerAdapter.autoPage.events;
+        if (page == 1) {
+            allEvents = pagerAdapter.teleopPage.events;
+        }
 
+        for(Event event : allEvents){
             int location = event.location;
-
-            //if reds on the left, and the robot is on blue alliance, or blue is on the left, and the robot is on the blue alliance
-            if((!side && alliance) || (side && !alliance)){
-                location = flipLocation(location);
-            }
 
             events.append(matchNumber + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
         }
 
-
-
         return Base64.encodeToString(events.toString().getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
-    }
-
-    //will return the same location but on the other side of the field
-    public static int flipLocation(int location){
-        switch (location){
-            case 0:
-                return 11;
-            case 1:
-                return 12;
-            case 2:
-                return 13;
-            case 3:
-                return 10;
-            case 4:
-                return 8;
-            case 5:
-                return 9;
-            case 6:
-                return 6;
-            case 7:
-                return 7;
-            case 8:
-                return 4;
-            case 9:
-                return 5;
-            case 10:
-                return 3;
-            case 11:
-                return 0;
-            case 12:
-                return 1;
-            case 13:
-                return 2;
-        }
-
-        return 0;
-    }
-
-    //updates the view showing the matches left until this scout is off
-    public void updateMatchesLeft() {
-        int nextMatchOff = getNextMatchOff();
-        int matchesLeft = nextMatchOff - matchNumber;
-
-        if (nextMatchOff == -1) {
-            matchesLeftText.setText("Never");
-        } else {
-            matchesLeftText.setText(matchesLeft + "");
-        }
-    }
-
-    //this will return the match number when they have can stop scouting
-    public int getNextMatchOff() {
-        int matchBack = -1;
-
-        //there is no schedule
-        if (userID == -1) return -1;
-
-        //find next match number
-        int matchNumber = this.matchNumber;
-        if (matchNumber <= 0) matchNumber = 1;
-        for (int i = matchNumber - 1; i < schedules.get(userID).robots.size(); i++) {
-            if (schedules.get(userID).robots.get(i) == -1) {
-                matchBack = i + 1;
-                break;
-            }
-        }
-
-        return matchBack;
-    }
-
-    //this will return the match number when they have have to start scouting again
-    public int getNextMatchOn() {
-        int matchBack = -1;
-
-        //there is no schedule
-        if (userID == -1) return -1;
-
-        //find next match number
-        int matchNumber = this.matchNumber;
-        if (matchNumber <= 0) matchNumber = 1;
-        for (int i = matchNumber - 1; i < schedules.get(userID).robots.size(); i++) {
-            if (schedules.get(userID).robots.get(i) != -1) {
-                matchBack = i + 1;
-                break;
-            }
-        }
-
-        return matchBack;
     }
 
     public String[] getData(boolean bypassChecks) {
@@ -384,13 +285,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //if the defence rating is visible and it is <= 0
-            //TODO: make this work
             if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getRating() <= 0 && ((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getVisibility() == View.VISIBLE) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the defence ability!", Toast.LENGTH_LONG).show();
                     }
                 });
+                return null;
             }
 
             if (((Spinner) pagerAdapter.postgamePage.getView().findViewById(R.id.endgameClimbType)).getSelectedItem().toString().equals("Where did it climb?")) {
@@ -403,11 +304,20 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //if the second spinner is visible and it is "Choose One"
-            //TODO: make this work
             if (((Spinner) pagerAdapter.postgamePage.getView().findViewById(R.id.endgameClimb)).getSelectedItem().toString().equals("Choose One") && ((Spinner) pagerAdapter.postgamePage.getView().findViewById(R.id.endgameClimb)).getVisibility() == View.VISIBLE) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify how it climbed!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+
+            //if the confidence rating is visible and it is <= 0
+            if (((RatingBar) pagerAdapter.postgamePage.getView().findViewById(R.id.dataConfidence)).getRating() <= 0) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the confidence in your data!", Toast.LENGTH_LONG).show();
                     }
                 });
                 return null;
@@ -431,6 +341,24 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
+            //check if the robot is starting with hatch or cargo
+            if (!noStartingObject && !((CheckBox) pagerAdapter.pregamePage.getView().findViewById(R.id.startingObjectsHatch)).isChecked()
+                    && !((CheckBox) pagerAdapter.pregamePage.getView().findViewById(R.id.startingObjectsCargo)).isChecked()) {
+                //double check the user meant this
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("No starting Object?")
+                        .setMessage("Are you sure the robot started with no object?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                noStartingObject = true;
+                                pagerAdapter.qualitativePage.getView().findViewById(R.id.submit).performClick();
+                            }
+                        })
+                        .setNegativeButton("No, let me go change that", null)
+                        .create()
+                        .show();
+                return null;
+            }
         }
 
         data = new StringBuilder();
@@ -448,23 +376,27 @@ public class MainActivity extends AppCompatActivity {
 
         PercentRelativeLayout layout;
 
-        //Auto page
-        layout = pagerAdapter.pregamePage.getView().findViewById(R.id.autoPageLayout);
+        //Pregame page
+        layout = pagerAdapter.pregamePage.getView().findViewById(R.id.preGamePageLayout);
         enterLayout(layout);
 
-//        //Tele page
-//        layout = (PercentRelativeLayout) pagerAdapter.teleopPage.getView().findViewById(R.id.telePageLayout);
-//        enterLayout(layout);
-
+        //tele field
         String[] tele = pagerAdapter.teleopPage.getData();
 
         labels.append(tele[0]);
         data.append(tele[1]);
 
-        //Endgame page
+        //auto field
+        String[] auto = pagerAdapter.autoPage.getData();
+
+        labels.append(auto[0]);
+        data.append(auto[1]);
+
+        //Postgame page
         layout = pagerAdapter.postgamePage.getView().findViewById(R.id.postgamePageLayout);
         enterLayout(layout);
 
+        //Qualitative Page
         layout = pagerAdapter.qualitativePage.getView().findViewById(R.id.qualitativePageLayout);
         enterLayout(layout);
 
@@ -608,32 +540,54 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
-            String events = getEventData();
+            //save auto events
+            String autoEvents = getEventData(0);
+            File autoEventsFile = new File(sdCard.getPath() + "/#ScoutingData/AutoEventData/" + robotNum + ".csv");
 
-            File eventsFile = new File(sdCard.getPath() + "/#ScoutingData/EventData/" + robotNum + ".csv");
-
-            eventsFile.getParentFile().mkdirs();
-            if (!eventsFile.exists()) {
-                eventsFile.createNewFile();
+            autoEventsFile.getParentFile().mkdirs();
+            if (!autoEventsFile.exists()) {
+                autoEventsFile.createNewFile();
             }
 
-            FileOutputStream eventsF = new FileOutputStream(eventsFile, true);
+            FileOutputStream autoEventsF = new FileOutputStream(autoEventsFile, true);
 
-            OutputStreamWriter eventsOut = new OutputStreamWriter(eventsF);
+            OutputStreamWriter autoEventsOut = new OutputStreamWriter(autoEventsF);
 
-            eventsOut.append(new String(Base64.decode(events, Base64.DEFAULT), Charset.forName("UTF-8")));
-            eventsOut.close();
-            eventsF.close();
+            autoEventsOut.append(new String(Base64.decode(autoEvents, Base64.DEFAULT), Charset.forName("UTF-8")));
+            autoEventsOut.close();
+            autoEventsF.close();
+
+            //save tele op events
+            String teleOpEvents = getEventData(1);
+            File teleOpEventsFile = new File(sdCard.getPath() + "/#ScoutingData/EventData/" + robotNum + ".csv");
+
+            teleOpEventsFile.getParentFile().mkdirs();
+            if (!teleOpEventsFile.exists()) {
+                teleOpEventsFile.createNewFile();
+            }
+
+            FileOutputStream teleOpEventsF = new FileOutputStream(teleOpEventsFile, true);
+
+            OutputStreamWriter teleOpEventsOut = new OutputStreamWriter(teleOpEventsF);
+
+            teleOpEventsOut.append(new String(Base64.decode(teleOpEvents, Base64.DEFAULT), Charset.forName("UTF-8")));
+            teleOpEventsOut.close();
+            teleOpEventsF.close();
 
             //save to file
             if (newfile) out.append(new String(Base64.decode(data[1], Base64.DEFAULT), Charset.forName("UTF-8")));
             out.append(new String(Base64.decode(data[0], Base64.DEFAULT), Charset.forName("UTF-8")));
 
             String fulldata = "";
-            if (events.equals("")) {
+            if (!teleOpEvents.equals("")) {
+                if (autoEvents.equals("")) {
+                    autoEvents = Base64.encodeToString("nodata".getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
+                }
+                fulldata = robotNum + ":" + data[0] + ":" + autoEvents + ":" + teleOpEvents;
+            } else if(!autoEvents.equals("")) {
+                fulldata = robotNum + ":" + data[0] + ":" + autoEvents;
+            }else {
                 fulldata = robotNum + ":" + data[0];
-            } else {
-                fulldata = robotNum + ":" + data[0] + ":" + events;
             }
 
             //encode to base64
@@ -665,7 +619,6 @@ public class MainActivity extends AppCompatActivity {
         Thread thread = new Thread() {
             public void run() {
                 while (true) {
-                    System.out.println("aaaa");
                     byte[] bytes = new byte[1000];
                     try {
                         if (!connected) {
@@ -698,16 +651,6 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    public int getLocationInSharedMessages(String message) {
-        SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
-        for (int i = 0; i < prefs.getInt("messageAmount", 0); i++) {
-            if (prefs.getString("message" + i, "").equals(message)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -737,7 +680,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setMessage("Continuing will reset current data.")
                                 .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        reset();
+                                        reset(false);
 
                                     }
                                 })
@@ -746,7 +689,7 @@ public class MainActivity extends AppCompatActivity {
                                 .show();
                     }
                     if (item.getItemId() == R.id.changeNum) {
-                        alert();
+                        alert(false);
                     }
                     if (item.getItemId() == R.id.resetPendingMessages) {
                         for(int i = 0; i< pendingMessages.size(); i++){
@@ -799,17 +742,16 @@ public class MainActivity extends AppCompatActivity {
         return;
     }
 
-    public void reset() {
+    public void reset(boolean incrementMatchNumber) {
         //setup scrolling viewpager
-        alert();
-
+        alert(incrementMatchNumber);
 
         viewPager.setAdapter(pagerAdapter);
 
         PercentRelativeLayout layout;
 
         //Auto page
-        layout = pagerAdapter.pregamePage.getView().findViewById(R.id.autoPageLayout);
+        layout = pagerAdapter.pregamePage.getView().findViewById(R.id.preGamePageLayout);
         clearData(layout);
 
         //Tele page
@@ -822,6 +764,8 @@ public class MainActivity extends AppCompatActivity {
         //Qualitative page
         layout = pagerAdapter.qualitativePage.getView().findViewById(R.id.qualitativePageLayout);
         clearData(layout);
+
+        noStartingObject = false;
     }
 
     public void clearData(ViewGroup top) {
@@ -849,7 +793,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void alert() {
+    public void alert(final boolean incrementMatchNumber) {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(R.layout.dialog)
                 .setTitle("Enter Info")
@@ -934,6 +878,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+                if (incrementMatchNumber) {
+                    ((EditText) linearLayout.findViewById(R.id.matchNumber)).setText(matchNumber + 1 + "");
+                }
 
                 overriddenScoutName = new EditText(MainActivity.this);
                 overriddenScoutName.setHint("Scout Name");
@@ -1134,29 +1082,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void updateUserIDSpinner() {
-        String oldSelection = ((String) userIDSpinner.getSelectedItem());
-
-        ArrayList<String> userNames = new ArrayList<>();
-        userNames.add("Please choose a name");
-        for (UserData userData : schedules){
-            userNames.add(userData.userName);
-        }
-
-        ArrayAdapter<String> userIDAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.spinner, userNames);
-        userIDSpinner.setAdapter(userIDAdapter);
-        int selectedIndex = 0;
-
-        for (int i = 0; i < userNames.size(); i++) {
-            if (userNames.get(i).equals(oldSelection)) {
-                selectedIndex = i;
-                break;
-            }
-        }
-
-        userIDSpinner.setSelection(selectedIndex);
-    }
-
     //when the ok button on the alert is pressed
     public void onClickOkButton(DialogInterface dialog, boolean overrideRobotNumberCheck){
         //get date details
@@ -1197,6 +1122,7 @@ public class MainActivity extends AppCompatActivity {
             side = viewingSide.getSelectedItemPosition() == 2;
 
             //adjust the field image according to selection
+            pagerAdapter.autoPage.field.updateField(this, side);
             pagerAdapter.teleopPage.field.updateField(this, side);
 
             SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
@@ -1263,6 +1189,29 @@ public class MainActivity extends AppCompatActivity {
 
         dialog.dismiss();
 
+    }
+
+    //updates the view showing the matches left until this scout is off
+    public void updateMatchesLeft() {
+        int nextMatchOff = getNextMatchOff();
+        int matchesLeft = nextMatchOff - matchNumber;
+
+        if (matchesLeftText != null) {
+            if (nextMatchOff == -1) {
+                matchesLeftText.setText("Never");
+            } else {
+                matchesLeftText.setText(matchesLeft + "");
+            }
+        }
+    }
+
+    //short form functions from the functions in ListeningActivity
+    public int getNextMatchOff() {
+        return getNextMatchOff(matchNumber, userID);
+    }
+
+    public int getNextMatchOn() {
+        return getNextMatchOn(matchNumber, userID);
     }
 
     public static boolean arrayContains(String[] array, String search){

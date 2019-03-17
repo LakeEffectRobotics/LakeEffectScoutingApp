@@ -4,22 +4,22 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id = "@+id/autoPageLayout">
+    android:id = "@+id/preGamePageLayout">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-        <GridLayout
+        <android.support.v7.widget.GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:rowCount="4"
-            android:columnCount="3"
-            android:orientation="vertical"
+            app:rowCount="3"
+            app:columnCount="3"
+            app:orientation="vertical"
             android:layout_margin="10dp">
 
 
@@ -32,10 +32,9 @@
                 android:paddingBottom="10dp"
                 android:paddingRight="50dp"
                 android:layout_alignTop="@+id/tableLayout"
-                android:layout_row="0"
-                android:layout_column="0"
-                android:layout_columnSpan="1"
-                />
+                app:layout_row="0"
+                app:layout_column="0"
+                app:layout_columnSpan="1"/>
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -43,10 +42,10 @@
                 android:textSize = "@dimen/text_small"
                 android:id="@+id/autoStartLocation"
                 android:spinnerMode="dropdown"
-                android:layout_row="0"
-                android:layout_column="1"
-                android:layout_columnSpan="2"
-                android:layout_gravity="fill_horizontal"/>
+                app:layout_row="0"
+                app:layout_column="1"
+                app:layout_columnSpan="2"
+                app:layout_gravity="fill_horizontal"/>
 
             <TextView
                 android:text="Start Platform: "
@@ -57,9 +56,9 @@
                 android:paddingBottom="10dp"
                 android:paddingRight="50dp"
                 android:layout_alignTop="@+id/tableLayout"
-                android:layout_row="1"
-                android:layout_column="0"
-                android:layout_columnSpan="1"
+                app:layout_row="1"
+                app:layout_column="0"
+                app:layout_columnSpan="1"
                 />
 
             <Spinner
@@ -68,10 +67,10 @@
                 android:textSize = "@dimen/text_small"
                 android:id="@+id/autoStartPlatform"
                 android:spinnerMode="dropdown"
-                android:layout_row="1"
-                android:layout_column="1"
-                android:layout_columnSpan="2"
-                android:layout_gravity="fill_horizontal"/>
+                app:layout_row="1"
+                app:layout_column="1"
+                app:layout_columnSpan="2"
+                app:layout_gravity="fill_horizontal"/>
 
             <TextView
                 android:text="Started with:  "
@@ -81,34 +80,34 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:layout_alignTop="@+id/tableLayout"
-                android:layout_row="2"
-                android:layout_column="0"
-                android:layout_columnSpan="1" />
+                app:layout_row="2"
+                app:layout_column="0"
+                app:layout_columnSpan="1" />
 
             <CheckBox
                 android:layout_weight="1"
-                android:layout_columnWeight="1"
-                android:layout_gravity="fill_horizontal"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
                 android:id="@+id/startingObjectsCargo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_row="2"
-                android:layout_column="1"
+                app:layout_row="2"
+                app:layout_column="1"
                 android:checked="false"
                 android:text="Cargo"
-                android:textSize="@dimen/text_small" />
+                android:textSize="@dimen/text_medium" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_row="2"
-                android:layout_column="2"
+                app:layout_row="2"
+                app:layout_column="2"
                 android:id="@+id/startingObjectsHatch"
-                android:layout_columnWeight="1"
+                app:layout_columnWeight="1"
                 android:text="Hatch"
-                android:textSize="@dimen/text_small"/>
+                android:textSize="@dimen/text_medium"/>
 
-        </GridLayout>
+        </android.support.v7.widget.GridLayout>
 
     </ScrollView>
 

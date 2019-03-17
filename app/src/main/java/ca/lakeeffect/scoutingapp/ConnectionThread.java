@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +15,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
 /**
  * Created by Ajay on 02/10/2017.
@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 public class ConnectionThread implements Runnable {
 
-    MainActivity mainActivity;
+    ListeningActitivty listeningActitivty;
 
     BluetoothSocket bluetoothSocket;
     BluetoothServerSocket bss;
@@ -37,8 +37,8 @@ public class ConnectionThread implements Runnable {
 
     final String endSplitter = "{e}";
 
-    public ConnectionThread(MainActivity mainActivity, BluetoothSocket bluetoothSocket, OutputStream out, InputStream in, BluetoothServerSocket bss) {
-        this.mainActivity = mainActivity;
+    public ConnectionThread(ListeningActitivty listeningActitivty, BluetoothSocket bluetoothSocket, OutputStream out, InputStream in, BluetoothServerSocket bss) {
+        this.listeningActitivty = listeningActitivty;
         this.bluetoothSocket = bluetoothSocket;
         this.out = out;
         this.in = in;
@@ -76,32 +76,32 @@ public class ConnectionThread implements Runnable {
                 message = new String(Base64.decode(message, Base64.DEFAULT), Charset.forName("UTF-8"));
 
                 if (message.contains("SEND SCHEDULE")) { //received data about the schedule
-                    mainActivity.runOnUiThread(new Runnable() {
+                    listeningActitivty.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mainActivity, "Received schedule",
+                            Toast.makeText(listeningActitivty, "Received schedule",
                                     Toast.LENGTH_LONG).show();
                         }
                     });
 
                     loadSchedule(message);
 
-                    //send that this message was recieved, conver to base 64 and add the end splitter first
+                    //send that this message was received, convert to base 64 and add the end splitter first
                     this.out.write((toBase64("RECEIVED") + endSplitter).getBytes(Charset.forName("UTF-8")));
                 } else if (message.contains("REQUEST DATA")) { //received a request
-                    mainActivity.runOnUiThread(new Runnable() {
+                    listeningActitivty.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mainActivity, "Sending Data",
+                            Toast.makeText(listeningActitivty, "Sending Data",
                                     Toast.LENGTH_LONG).show();
                         }
                     });
                     sendData();
                 } else if (message.contains("REQUEST LABELS")) { //received a request
-                    mainActivity.runOnUiThread(new Runnable() {
+                    listeningActitivty.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mainActivity, "Sending Labels",
+                            Toast.makeText(listeningActitivty, "Sending Labels",
                                     Toast.LENGTH_LONG).show();
                         }
                     });
@@ -117,8 +117,7 @@ public class ConnectionThread implements Runnable {
                     bluetoothSocket.close();
                     bss.close();
                     deleteData();
-                    mainActivity.listenerThread.run();
-                    new Thread(mainActivity.listenerThread).start();
+                    new Thread(listeningActitivty.listenerThread).start();
                     break;
                 }
 
@@ -127,8 +126,8 @@ public class ConnectionThread implements Runnable {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                mainActivity.listenerThread = new ListenerThread(mainActivity);
-                new Thread(mainActivity.listenerThread).start();
+                listeningActitivty.listenerThread = new ListenerThread(listeningActitivty);
+                new Thread(listeningActitivty.listenerThread).start();
                 break;
             }
 
@@ -148,7 +147,7 @@ public class ConnectionThread implements Runnable {
         String[] matches = matchSchedule.split("::");
 
         //reset schedules
-        mainActivity.schedules = new ArrayList<>();
+        listeningActitivty.schedules = new ArrayList<>();
 
         //go through the user schedule and assign robots based on the match schedule
         for (int userID = 0; userID < userSchedules.length; userID++) {
@@ -157,7 +156,7 @@ public class ConnectionThread implements Runnable {
 
             UserData currentUserData = new UserData(userID, name);
 
-            mainActivity.schedules.add(currentUserData);
+            listeningActitivty.schedules.add(currentUserData);
 
             for (int matchNum = 0; matchNum < userSchedule.length; matchNum++) {
                 String[] robotNumbers = matches[matchNum].split(",");
@@ -172,28 +171,30 @@ public class ConnectionThread implements Runnable {
             }
         }
 
-        if (mainActivity.userIDSpinner != null) {
-            mainActivity.runOnUiThread(new Runnable() {
+        if (listeningActitivty.userIDSpinner != null) {
+            listeningActitivty.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     //update the userIDSpinner if the alert is open
-                    mainActivity.updateUserIDSpinner();
+                    listeningActitivty.updateUserIDSpinner();
 
                     //update the UI with the time remaining
-                    mainActivity.updateMatchesLeft();
+                    if (listeningActitivty instanceof MainActivity) {
+                        ((MainActivity) listeningActitivty).updateMatchesLeft();
+                    }
                 }
             });
         }
 
         //update the shared preferences
-        SharedPreferences prefs = mainActivity.getSharedPreferences("userSchedule", Context.MODE_PRIVATE);
+        SharedPreferences prefs = listeningActitivty.getSharedPreferences("userSchedule", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         //set size
-        editor.putInt("userAmount", mainActivity.schedules.size());
+        editor.putInt("userAmount", listeningActitivty.schedules.size());
 
         //go through each user and add the data
-        for (int i = 0; i < mainActivity.schedules.size(); i++) {
-            UserData user = mainActivity.schedules.get(i);
+        for (int i = 0; i < listeningActitivty.schedules.size(); i++) {
+            UserData user = listeningActitivty.schedules.get(i);
 
             String robots = "";
             for (int s = 0; s < user.robots.size(); s++) {
@@ -219,11 +220,29 @@ public class ConnectionThread implements Runnable {
         }
 
         editor.apply();
+
+        //get current dates to store the last date updated
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int currentHour = Calendar.getInstance().get(Calendar.HOUR);
+        int currentMinute = Calendar.getInstance().get(Calendar.MINUTE);
+        SharedPreferences lastUpdatedPrefs = listeningActitivty.getSharedPreferences("lastScheduleUpdate", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor lastUpdatedEditor = lastUpdatedPrefs.edit();
+
+        //store it in the shared preferences
+        lastUpdatedEditor.putInt("year", currentYear);
+        lastUpdatedEditor.putInt("month", currentMonth);
+        lastUpdatedEditor.putInt("day", currentDay);
+        lastUpdatedEditor.putInt("hour", currentHour);
+        lastUpdatedEditor.putInt("minute", currentMinute);
+
+        lastUpdatedEditor.apply();
     }
 
     public void sendLabels() {
         try {
-            String outString = mainActivity.versionCode + ":::" + mainActivity.savedLabels;
+            String outString = listeningActitivty.versionCode + ":::" + listeningActitivty.savedLabels;
             //convert to base 64 bytes
             String outBase64 = Base64.encodeToString(outString.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT) + endSplitter;
 
@@ -235,9 +254,9 @@ public class ConnectionThread implements Runnable {
 
     public void sendData() {
         try {
-            String fullMessage = mainActivity.versionCode + ":::";
-            for (String message : mainActivity.pendingMessages) {
-                if (!fullMessage.equals(mainActivity.versionCode + ":::")) {
+            String fullMessage = listeningActitivty.versionCode + ":::";
+            for (String message : listeningActitivty.pendingMessages) {
+                if (!fullMessage.equals(listeningActitivty.versionCode + ":::")) {
                     fullMessage += "::";
                 }
                 fullMessage += message;
@@ -245,7 +264,7 @@ public class ConnectionThread implements Runnable {
                 sentPendingMessages.add(message);
             }
 
-            if (mainActivity.pendingMessages.isEmpty()) {
+            if (listeningActitivty.pendingMessages.isEmpty()) {
                 fullMessage += "nodata";
             }
 
@@ -257,7 +276,7 @@ public class ConnectionThread implements Runnable {
 
     public void deleteData() { //deleted items that are in sent pending messages (because they now have been sent)
 
-        SharedPreferences prefs2 = mainActivity.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
+        SharedPreferences prefs2 = listeningActitivty.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefs2.edit();
         if (prefs2.getInt("messageAmount", 0) - sentPendingMessages.size() >= 0) {
             editor2.putInt("messageAmount", prefs2.getInt("messageAmount", 0) - sentPendingMessages.size());
@@ -267,13 +286,13 @@ public class ConnectionThread implements Runnable {
         editor2.apply();
 
         for (String message : new ArrayList<>(sentPendingMessages)) {
-            mainActivity.pendingMessages.remove(message);
+            listeningActitivty.pendingMessages.remove(message);
             sentPendingMessages.remove(message);
 
-            int loc = mainActivity.getLocationInSharedMessages(message);
+            int loc = listeningActitivty.getLocationInSharedMessages(message);
 
             if (loc != -1) {
-                SharedPreferences prefs = mainActivity.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
+                SharedPreferences prefs = listeningActitivty.getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("message" + loc, null);
                 editor.apply();
@@ -281,10 +300,10 @@ public class ConnectionThread implements Runnable {
         }
 
         //set pending messages number on ui
-        mainActivity.runOnUiThread(new Runnable() {
+        listeningActitivty.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((TextView) (mainActivity.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(mainActivity.pendingMessages.size() + "");
+                ((TextView) (listeningActitivty.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(listeningActitivty.pendingMessages.size() + "");
             }
         });
     }

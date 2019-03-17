@@ -3,12 +3,10 @@ package ca.lakeeffect.scoutingapp;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.content.SharedPreferences;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.util.UUID;
 
 /**
@@ -20,7 +18,7 @@ import java.util.UUID;
 
 public class ListenerThread implements Runnable{
 
-    MainActivity mainActivity;
+    ListeningActitivty listeningActitivty;
 
     BluetoothSocket bluetoothSocket;
     BluetoothAdapter ba;
@@ -32,12 +30,17 @@ public class ListenerThread implements Runnable{
 
     Thread connectionThreadThreadClass;
 
-    public ListenerThread(MainActivity mainActivity){
-        this.mainActivity = mainActivity;
+    //if currently connected to a device
+    boolean connected = false;
+
+    public ListenerThread(ListeningActitivty listeningActitivty){
+        this.listeningActitivty = listeningActitivty;
     }
 
     @Override
     public void run() {
+        //not connected to a device
+        connected = false;
 
         ba = BluetoothAdapter.getDefaultAdapter();
 
@@ -45,7 +48,7 @@ public class ListenerThread implements Runnable{
             BluetoothServerSocket bss = null;
             try {
                 System.out.println("started search");
-                bss = ba.listenUsingRfcommWithServiceRecord("SteamworksScoutingApp", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
+                bss = ba.listenUsingRfcommWithServiceRecord("LakeEffectScoutingApp", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
                 bluetoothSocket = bss.accept();
                 System.out.println("accepted");
                 out = bluetoothSocket.getOutputStream();
@@ -55,9 +58,11 @@ public class ListenerThread implements Runnable{
             }
 
             if (bluetoothSocket.isConnected()) {
-                //call connection thread and break;
+                //now connected to a device
+                connected = true;
 
-                connectionThread = new ConnectionThread(mainActivity, bluetoothSocket, out, in, bss);
+                //call connection thread and break;
+                connectionThread = new ConnectionThread(listeningActitivty, bluetoothSocket, out, in, bss);
                 connectionThreadThreadClass = new Thread(connectionThread);
                 connectionThreadThreadClass.start();
                 break;
