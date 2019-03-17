@@ -5,16 +5,18 @@ if not foldername.endswith("\\"):
 
 alllines = []
 
+
 def getdataforfile(filename, index, robotnumber):
-    robotnumber = robotnumber.replace(".csv","")
-    lines = tuple(open(filename, 'r'))
-    lines = list(lines)
-    lines.pop(0)
-    for line in lines:
-        line = line.replace(";"," ")
-        line = robotnumber + "," + line
-        alllines.append(line)
-    
+    if filename.endswith(".csv"):  # Don't open directories
+        robotnumber = robotnumber.replace(".csv", "")
+        lines = tuple(open(filename, 'r'))
+        lines = list(lines)
+        lines.pop(0)
+        for line in lines:
+            line = line.replace(";", " ")
+            line = robotnumber + "," + line
+            alllines.append(line)
+
 
 if not os.path.exists(foldername + '\\results\\'):
     os.makedirs(foldername + '\\results\\')
@@ -37,4 +39,4 @@ f.write("Robot Number," + lines[0])
 for line in alllines:
     f.write(line)
 
-f.close()  
+f.close()
