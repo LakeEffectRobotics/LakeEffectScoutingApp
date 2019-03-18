@@ -303,7 +303,12 @@ public class ConnectionThread implements Runnable {
         listeningActitivty.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((TextView) (listeningActitivty.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(listeningActitivty.pendingMessages.size() + "");
+                if (listeningActitivty instanceof MainActivity) {
+                    ((TextView) (listeningActitivty.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(listeningActitivty.pendingMessages.size() + "");
+                } else if (listeningActitivty instanceof StartActivity) {
+                    //for the start screen layout
+                    ((TextView) listeningActitivty.findViewById(R.id.numberOfPendingMessages)).setText("Unsent Data: " + listeningActitivty.pendingMessages.size());
+                }
             }
         });
     }

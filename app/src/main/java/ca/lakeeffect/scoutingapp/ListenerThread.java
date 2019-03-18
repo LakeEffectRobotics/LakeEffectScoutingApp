@@ -33,6 +33,10 @@ public class ListenerThread implements Runnable{
     //if currently connected to a device
     boolean connected = false;
 
+    boolean running = true;
+
+    BluetoothServerSocket bss = null;
+
     public ListenerThread(ListeningActitivty listeningActitivty){
         this.listeningActitivty = listeningActitivty;
     }
@@ -44,8 +48,7 @@ public class ListenerThread implements Runnable{
 
         ba = BluetoothAdapter.getDefaultAdapter();
 
-        while (true) {
-            BluetoothServerSocket bss = null;
+        while (running) {
             try {
                 System.out.println("started search");
                 bss = ba.listenUsingRfcommWithServiceRecord("LakeEffectScoutingApp", UUID.fromString("6ba6afdc-6a0a-4b1d-a2bf-f71ac108b636"));
@@ -57,7 +60,7 @@ public class ListenerThread implements Runnable{
                 e.printStackTrace();
             }
 
-            if (bluetoothSocket.isConnected()) {
+            if (bluetoothSocket != null && bluetoothSocket.isConnected()) {
                 //now connected to a device
                 connected = true;
 

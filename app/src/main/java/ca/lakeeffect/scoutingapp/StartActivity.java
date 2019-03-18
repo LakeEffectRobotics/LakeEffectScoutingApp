@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -74,7 +75,7 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
         }
 
         //Set Unsent Messages Text
-        TextView unsentMessages = findViewById(R.id.startUnsentMessages);
+        TextView unsentMessages = findViewById(R.id.numberOfPendingMessages);
         assert unsentMessages != null;
         unsentMessages.setText("Unsent Messages: " + getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE).getInt("messageAmount", 0));
 
@@ -238,15 +239,24 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
         if (listenerThread != null) {
             if(listenerThread.connectionThreadThreadClass != null){
                 try {
+                    listenerThread.connectionThread.in.close();
+                    listenerThread.connectionThreadThreadClass.interrupt();
                     listenerThread.connectionThreadThreadClass.join();
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else{
                 if(listenerThreadThreadClass != null) {
                     try {
+                        listenerThread.running = false;
+                        listenerThread.bss.close();
+                        listenerThreadThreadClass.interrupt();
                         listenerThreadThreadClass.join();
                     } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -302,7 +312,7 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ((TextView) findViewById(R.id.startUnsentMessages)).setText("Unsent Data: 0");
+                                ((TextView) findViewById(R.id.numberOfPendingMessages)).setText("Unsent Data: 0");
                             }
                         });
                     }
