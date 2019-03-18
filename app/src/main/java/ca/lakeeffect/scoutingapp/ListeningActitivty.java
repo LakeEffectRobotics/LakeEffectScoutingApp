@@ -36,7 +36,7 @@ public class ListeningActitivty extends AppCompatActivity {
 
         ArrayList<String> userNames = new ArrayList<>();
 
-        if (userNames.size() > 0) {
+        if (schedules.size() > 0) {
             userNames.add("Please choose a name");
             for (UserData userData : schedules){
                 userNames.add(userData.userName);
