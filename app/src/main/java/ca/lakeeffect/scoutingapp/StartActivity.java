@@ -74,6 +74,10 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
             }
         }
 
+        //load data
+        loadUnsentData();
+        loadSchedule();
+
         //Set Unsent Messages Text
         TextView unsentMessages = findViewById(R.id.numberOfPendingMessages);
         assert unsentMessages != null;
@@ -191,6 +195,11 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
         int matchNumber = 0;
 
         while (matchNumber < schedules.get(userID).robots.size()) {
+            if (matchNumber == -1) {
+                //no more switches on or off, this user is done for the day
+                return;
+            }
+
             if (!schedules.get(userID).isOff(matchNumber)) {
                 //add the next match off
                 int nextMatchOff = getNextMatchOff(matchNumber, userID);

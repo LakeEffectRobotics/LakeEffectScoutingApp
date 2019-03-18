@@ -17,7 +17,6 @@ import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -132,35 +131,14 @@ public class MainActivity extends ListeningActitivty {
         //call alert (asking scout name and robot number)
         alert(false);
 
-        //add all buttons and counters etc.
-
-        //go through all saved pending messages and add them to the variable
-        SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
-        int messageAmount = prefs.getInt("messageAmount", 0);
-        for (int i = 0; i < messageAmount; i++) {
-            if (prefs.getString("message" + i, null) == null) {
-                messageAmount ++;
-                i++;
-                if(i > 150){
-                    break;
-                }
-            } else {
-                pendingMessages.add(prefs.getString("message" + i, ""));
-            }
-        }
-
-        //reset the amount of pending messages
-        SharedPreferences prefs2 = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor2 = prefs2.edit();
-        editor2.putInt("messageAmount", pendingMessages.size());
-        editor2.apply();
+        loadUnsentData();
 
         //set device name
         BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
         ((TextView) findViewById(R.id.deviceNameLayout).findViewById(R.id.deviceName)).setText(ba.getName()); //if this method ends up not working refer to https://stackoverflow.com/a/6662271/1985387
 
         //set pending messages number on ui
-        ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
+        ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(unsentData.size() + "");
 
 
         //setup scrolling viewpager
@@ -173,27 +151,8 @@ public class MainActivity extends ListeningActitivty {
 
         robotNumText.setText("Round: " + matchNumber + "  Robot: " + robotNum);
 
-        //load the saved schedule
-        SharedPreferences schedulePrefs = getSharedPreferences("userSchedule", Context.MODE_PRIVATE);
-        int userAmount = schedulePrefs.getInt("userAmount", 0);
+        loadSchedule();
 
-        for (int i = 0; i < userAmount; i++) {
-            String[] robotNumbers = schedulePrefs.getString("robots" + i, "").split(",");
-            String[] alliances = schedulePrefs.getString("alliances" + i, "").split(",");
-            String userName = schedulePrefs.getString("userName" + i, "");
-
-            UserData user = new UserData(i, userName);
-
-            for (String robotNum : robotNumbers) {
-                user.robots.add(Integer.parseInt(robotNum));
-            }
-            for (String alliance : alliances) {
-                user.alliances.add(Boolean.parseBoolean(alliance));
-            }
-
-            //add the user data to the list of schedules
-            schedules.add(user);
-        }
         //update the UI if necessary
         if (userIDSpinner != null) {
             updateUserIDSpinner();
@@ -594,7 +553,7 @@ public class MainActivity extends ListeningActitivty {
             fulldata = Base64.encodeToString(fulldata.getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
 
             //add to pending messages
-            pendingMessages.add(fulldata);
+            unsentData.add(fulldata);
             //add to sharedprefs
             SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
@@ -603,7 +562,7 @@ public class MainActivity extends ListeningActitivty {
             editor.apply();
 
             //set pending messages number on ui
-            ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
+            ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(unsentData.size() + "");
 
             out.close();
 
@@ -622,7 +581,7 @@ public class MainActivity extends ListeningActitivty {
                     byte[] bytes = new byte[1000];
                     try {
                         if (!connected) {
-                            pendingMessages.add(robotNum + ":" + labels.toString() + ":" + data.toString());
+                            unsentData.add(robotNum + ":" + labels.toString() + ":" + data.toString());
                             SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("message" + prefs.getInt("messageAmount", 0), robotNum + ":" + labels.toString() + ":" + data.toString());
@@ -635,7 +594,7 @@ public class MainActivity extends ListeningActitivty {
                             return;
                         }
                         if (!connected) {
-                            pendingMessages.add(robotNum + ":" + labels.toString() + ":" + data.toString());
+                            unsentData.add(robotNum + ":" + labels.toString() + ":" + data.toString());
                             SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("message" + prefs.getInt("messageAmount", 0), robotNum + ":" + labels.toString() + ":" + data.toString());
@@ -692,8 +651,8 @@ public class MainActivity extends ListeningActitivty {
                         alert(false);
                     }
                     if (item.getItemId() == R.id.resetPendingMessages) {
-                        for(int i = 0; i< pendingMessages.size(); i++){
-                            pendingMessages.remove(i);
+                        for(int i = 0; i< unsentData.size(); i++){
+                            unsentData.remove(i);
                         }
 
                         SharedPreferences prefs = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
@@ -705,7 +664,7 @@ public class MainActivity extends ListeningActitivty {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(pendingMessages.size() + "");
+                                ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(unsentData.size() + "");
                             }
                         });
                     }
