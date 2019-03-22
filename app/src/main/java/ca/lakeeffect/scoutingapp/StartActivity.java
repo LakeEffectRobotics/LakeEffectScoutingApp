@@ -29,12 +29,14 @@ import android.widget.ListAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -73,8 +75,12 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
             }
         }
 
+        //load data
+        loadUnsentData();
+        loadSchedule();
+
         //Set Unsent Messages Text
-        TextView unsentMessages = findViewById(R.id.startUnsentMessages);
+        TextView unsentMessages = findViewById(R.id.numberOfPendingMessages);
         assert unsentMessages != null;
         unsentMessages.setText("Unsent Messages: " + getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE).getInt("messageAmount", 0));
 
@@ -99,10 +105,12 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
     }
 
     public void openScheduleViewer() {
-        LinearLayout scheduleViewer = (LinearLayout) getLayoutInflater().inflate(R.layout.schedule_viewer, null);
+        ScrollView scheduleViewer = new ScrollView(this);
+
+        final LinearLayout scheduleViewerLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.schedule_viewer, null);
 
         //figure out when the schedule was last updated
-        TextView lastUpdated = scheduleViewer.findViewById(R.id.scheduleViewerLastUpdate);
+        TextView lastUpdated = scheduleViewerLayout.findViewById(R.id.scheduleViewerLastUpdate);
         String lastUpdatedMessage = "";
         SharedPreferences lastUpdatedPrefs = getSharedPreferences("lastScheduleUpdate", MODE_PRIVATE);
         int year = lastUpdatedPrefs.getInt("year", -1);
@@ -142,7 +150,7 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
         //set the message onto the label
         lastUpdated.setText("Last Updated " + lastUpdatedMessage);
 
-        userIDSpinner = scheduleViewer.findViewById(R.id.scheduleViewerUserIDSpinner);
+        userIDSpinner = scheduleViewerLayout.findViewById(R.id.scheduleViewerUserIDSpinner);
         updateUserIDSpinner();
 
         SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
@@ -153,7 +161,7 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
             userIDSpinner.setSelection(userID + 1);
 
             //update the schedule view
-            updateScheduleDialog((Spinner) userIDSpinner, userID);
+            updateScheduleDialog(scheduleViewerLayout, userID);
         }
 
         //add listener to the spinner
@@ -162,7 +170,7 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
                     //if it is not on the "Choose one" selection
-                    updateScheduleDialog(view, position - 1);
+                    updateScheduleDialog(scheduleViewerLayout, position - 1);
                 }
             }
             @Override
@@ -170,6 +178,9 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
 
             }
         });
+
+        //add the layout to the scroll view (the entire view)
+        scheduleViewer.addView(scheduleViewerLayout);
 
         //create the dialog box
         new android.app.AlertDialog.Builder(this)
@@ -193,6 +204,12 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
             if (!schedules.get(userID).isOff(matchNumber)) {
                 //add the next match off
                 int nextMatchOff = getNextMatchOff(matchNumber, userID);
+
+                if (nextMatchOff == -1) {
+                    //no more switches on or off, this user is done for the day
+                    break;
+                }
+
                 scheduleMessage.append("Off at match " + nextMatchOff + "\n\n");
 
                 //set the match number to check to the match number reached
@@ -200,6 +217,12 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
             } else {
                 //add the next match on
                 int nextMatchOn = getNextMatchOn(matchNumber, userID);
+
+                if (nextMatchOn == -1) {
+                    //no more switches on or off, this user is done for the day
+                    break;
+                }
+
                 scheduleMessage.append("On at match " + nextMatchOn + "\n\n");
 
                 //set the match number to check to the match number reached
@@ -238,15 +261,24 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
         if (listenerThread != null) {
             if(listenerThread.connectionThreadThreadClass != null){
                 try {
+                    listenerThread.connectionThread.in.close();
+                    listenerThread.connectionThreadThreadClass.interrupt();
                     listenerThread.connectionThreadThreadClass.join();
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else{
                 if(listenerThreadThreadClass != null) {
                     try {
+                        listenerThread.running = false;
+                        listenerThread.bss.close();
+                        listenerThreadThreadClass.interrupt();
                         listenerThreadThreadClass.join();
                     } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -302,7 +334,7 @@ public class StartActivity extends ListeningActitivty implements View.OnClickLis
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ((TextView) findViewById(R.id.startUnsentMessages)).setText("Unsent Data: 0");
+                                ((TextView) findViewById(R.id.numberOfPendingMessages)).setText("Unsent Data: 0");
                             }
                         });
                     }

@@ -1,5 +1,7 @@
 package ca.lakeeffect.scoutingapp;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
@@ -27,16 +29,64 @@ public class ListeningActitivty extends AppCompatActivity {
 
     TextView matchesLeftText; //text that shows the matches left until off
 
-    ArrayList<String> pendingMessages = new ArrayList<>();
+    ArrayList<String> unsentData = new ArrayList<>();
 
     String savedLabels = null; //generated at the beginning
+
+    public void loadUnsentData() {
+        //go through all saved pending messages and add them to the variable
+        //called pendingMessages for legacy reasons
+        SharedPreferences prefs = getSharedPreferences("pendingMessages", MODE_PRIVATE);
+        int messageAmount = prefs.getInt("messageAmount", 0);
+        for (int i = 0; i < messageAmount; i++) {
+            if (prefs.getString("message" + i, null) == null) {
+                messageAmount ++;
+                i++;
+                if(i > 150){
+                    break;
+                }
+            } else {
+                unsentData.add(prefs.getString("message" + i, ""));
+            }
+        }
+
+        //reset the amount of pending messages
+        SharedPreferences prefs2 = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = prefs2.edit();
+        editor2.putInt("messageAmount", unsentData.size());
+        editor2.apply();
+    }
+
+    public void loadSchedule() {
+        //load the saved schedule
+        SharedPreferences schedulePrefs = getSharedPreferences("userSchedule", Context.MODE_PRIVATE);
+        int userAmount = schedulePrefs.getInt("userAmount", 0);
+
+        for (int i = 0; i < userAmount; i++) {
+            String[] robotNumbers = schedulePrefs.getString("robots" + i, "").split(",");
+            String[] alliances = schedulePrefs.getString("alliances" + i, "").split(",");
+            String userName = schedulePrefs.getString("userName" + i, "");
+
+            UserData user = new UserData(i, userName);
+
+            for (String robotNum : robotNumbers) {
+                user.robots.add(Integer.parseInt(robotNum));
+            }
+            for (String alliance : alliances) {
+                user.alliances.add(Boolean.parseBoolean(alliance));
+            }
+
+            //add the user data to the list of schedules
+            schedules.add(user);
+        }
+    }
 
     public void updateUserIDSpinner() {
         String oldSelection = ((String) userIDSpinner.getSelectedItem());
 
         ArrayList<String> userNames = new ArrayList<>();
 
-        if (userNames.size() > 0) {
+        if (schedules.size() > 0) {
             userNames.add("Please choose a name");
             for (UserData userData : schedules){
                 userNames.add(userData.userName);

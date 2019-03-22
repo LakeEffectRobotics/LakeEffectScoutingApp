@@ -255,7 +255,7 @@ public class ConnectionThread implements Runnable {
     public void sendData() {
         try {
             String fullMessage = listeningActitivty.versionCode + ":::";
-            for (String message : listeningActitivty.pendingMessages) {
+            for (String message : listeningActitivty.unsentData) {
                 if (!fullMessage.equals(listeningActitivty.versionCode + ":::")) {
                     fullMessage += "::";
                 }
@@ -264,7 +264,7 @@ public class ConnectionThread implements Runnable {
                 sentPendingMessages.add(message);
             }
 
-            if (listeningActitivty.pendingMessages.isEmpty()) {
+            if (listeningActitivty.unsentData.isEmpty()) {
                 fullMessage += "nodata";
             }
 
@@ -286,7 +286,7 @@ public class ConnectionThread implements Runnable {
         editor2.apply();
 
         for (String message : new ArrayList<>(sentPendingMessages)) {
-            listeningActitivty.pendingMessages.remove(message);
+            listeningActitivty.unsentData.remove(message);
             sentPendingMessages.remove(message);
 
             int loc = listeningActitivty.getLocationInSharedMessages(message);
@@ -303,7 +303,12 @@ public class ConnectionThread implements Runnable {
         listeningActitivty.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((TextView) (listeningActitivty.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(listeningActitivty.pendingMessages.size() + "");
+                if (listeningActitivty instanceof MainActivity) {
+                    ((TextView) (listeningActitivty.findViewById(R.id.numberOfPendingMessagesLayout)).findViewById(R.id.numberOfPendingMessages)).setText(listeningActitivty.unsentData.size() + "");
+                } else if (listeningActitivty instanceof StartActivity) {
+                    //for the start screen layout
+                    ((TextView) listeningActitivty.findViewById(R.id.numberOfPendingMessages)).setText("Unsent Data: " + listeningActitivty.unsentData.size());
+                }
             }
         });
     }

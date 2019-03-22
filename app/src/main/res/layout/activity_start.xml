@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Unsent Data: "
-        android:id="@+id/startUnsentMessages"
+        android:id="@+id/numberOfPendingMessages"
         android:layout_below="@+id/viewSchedule"
         android:layout_centerHorizontal="true" />
 
