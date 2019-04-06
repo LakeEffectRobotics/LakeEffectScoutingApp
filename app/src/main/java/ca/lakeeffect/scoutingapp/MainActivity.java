@@ -23,6 +23,7 @@ import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -786,6 +787,17 @@ public class MainActivity extends ListeningActitivty {
                 .setPositiveButton(android.R.string.yes, null)
                 .setCancelable(false)
                 .create();
+
+        //make the back button trigger the options menu
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    showOptionsMenu(((AlertDialog) dialog).findViewById(R.id.alertOptions));
+                }
+                return false;
+            }
+        });
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
