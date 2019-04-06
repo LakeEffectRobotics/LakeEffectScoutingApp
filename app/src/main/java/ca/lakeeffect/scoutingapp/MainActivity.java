@@ -232,7 +232,9 @@ public class MainActivity extends ListeningActitivty {
                 return null;
             }
 
-            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.intakeRating)).getRating() <= 0) {
+            //if the intake rating is enabled and it is <= 0 (did not intake not checked)
+            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.intakeRating)).getRating() <= 0
+                    && !((CheckBox) pagerAdapter.qualitativePage.getView().findViewById(R.id.didNotIntake)).isChecked()) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the intake ability!", Toast.LENGTH_LONG).show();
@@ -242,7 +244,8 @@ public class MainActivity extends ListeningActitivty {
             }
 
             //if the defence rating is visible and it is <= 0
-            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getRating() <= 0 && ((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getVisibility() == View.VISIBLE) {
+            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getRating() <= 0
+                    && ((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getVisibility() == View.VISIBLE) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the defence ability!", Toast.LENGTH_LONG).show();
@@ -270,7 +273,7 @@ public class MainActivity extends ListeningActitivty {
                 return null;
             }
 
-            //if the confidence rating is visible and it is <= 0
+            //if the confidence rating is <= 0
             if (((RatingBar) pagerAdapter.postgamePage.getView().findViewById(R.id.dataConfidence)).getRating() <= 0) {
                 runOnUiThread(new Thread() {
                     public void run() {

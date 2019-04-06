@@ -34,7 +34,6 @@ public class QualitativePage extends Fragment implements View.OnClickListener {
         defenceText.setVisibility(View.INVISIBLE);
 
         final CheckBox defence = (CheckBox) view.findViewById(R.id.defense);
-
         defence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -44,6 +43,21 @@ public class QualitativePage extends Fragment implements View.OnClickListener {
                 } else {
                     defenceRating.setVisibility(View.INVISIBLE);
                     defenceText.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        final RatingBar intakeRating = view.findViewById(R.id.intakeRating);
+
+        final CheckBox didNotIntake = (CheckBox) view.findViewById(R.id.didNotIntake);
+        didNotIntake.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    intakeRating.setRating(0);
+                    intakeRating.setEnabled(false);
+                } else {
+                    intakeRating.setEnabled(true);
                 }
             }
         });

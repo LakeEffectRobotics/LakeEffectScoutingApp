@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/qualitativeTableLayout"
             android:layout_margin="20dp"
-            android:rowCount="9"
+            android:rowCount="10"
             android:columnCount="3">
 
             <CheckBox
@@ -72,18 +72,27 @@
                     android:isIndicator="false"/>
             </LinearLayout>
 
+            <CheckBox
+                android:text="Did Not Intake"
+                android:id="@+id/didNotIntake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_medium"
+                android:layout_row="5"
+                android:layout_column="0"/>
+
             <TextView
                 android:text="Intake Ability:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_medium"
-                android:layout_row="5"
+                android:layout_row="6"
                 android:layout_column="0"
                 android:layout_gravity="center_vertical"
                 android:paddingRight="20dp"/>
 
             <LinearLayout
-                android:layout_row="5"
+                android:layout_row="6"
                 android:layout_column="1"
                 android:layout_columnSpan="2">
                 <!--This is a workaround to make #109 work as seen in https://stackoverflow.com/a/39653856/1985387-->
@@ -94,7 +103,6 @@
                     android:numStars="5"
                     android:stepSize="0.5"
                     android:isIndicator="false"/>
-
             </LinearLayout>
 
             <TextView
@@ -103,12 +111,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_medium"
-                android:layout_row="6"
+                android:layout_row="7"
                 android:layout_column="0"
                 android:layout_gravity="center_vertical"/>
 
             <LinearLayout
-                android:layout_row="6"
+                android:layout_row="7"
                 android:layout_column="1"
                 android:layout_columnSpan="2">
                 <!--This is a workaround to make #109 work as seen in https://stackoverflow.com/a/39653856/1985387-->
@@ -125,7 +133,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_row="7"
+                android:layout_row="8"
                 android:layout_column="0"
                 android:layout_columnSpan="3"
                 android:layout_marginTop="15dp"
@@ -137,7 +145,7 @@
                 android:text="Submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="8"
+                android:layout_row="9"
                 android:layout_column="0"
                 android:layout_columnSpan="3"
                 android:id="@+id/submit"
