@@ -647,7 +647,6 @@ public class MainActivity extends ListeningActitivty {
     @Override
     public void onBackPressed() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            System.out.println("Showing menu");
             PopupMenu menu = new PopupMenu(MainActivity.this, findViewById(R.id.deviceNameLayout), Gravity.CENTER_HORIZONTAL);
             menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
             menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -709,6 +708,10 @@ public class MainActivity extends ListeningActitivty {
 
                     if (item.getItemId() == R.id.stopBluetooth) {
                         stopListenerThread();
+                    }
+
+                    if (item.getItemId() == R.id.viewScheduleInApp) {
+                        openScheduleViewer();
                     }
 
                     Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
