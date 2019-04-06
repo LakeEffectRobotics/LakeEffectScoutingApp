@@ -483,6 +483,12 @@ public class MainActivity extends ListeningActitivty {
         File file = new File(sdCard.getPath() + "/#ScoutingData/" + robotNum + ".csv");
 
         try {
+            ///gets the data first in case the save data call should be cancelled
+            //before it was creating a file, then canceling, causing an empty file to be created
+            String[] data = getData(false);
+            if (data == null) {
+                return false;
+            }
 
             boolean newfile = false;
             file.getParentFile().mkdirs();
@@ -494,10 +500,6 @@ public class MainActivity extends ListeningActitivty {
             FileOutputStream f = new FileOutputStream(file, true);
 
             OutputStreamWriter out = new OutputStreamWriter(f);
-            String[] data = getData(false);
-            if (data == null) {
-                return false;
-            }
 
             //save auto events
             String autoEvents = getEventData(0);
