@@ -703,7 +703,7 @@ public class MainActivity extends ListeningActitivty {
                     stopListenerThread();
                 }
 
-                if (item.getItemId() == R.id.returnToStartActivity || item.getItemId() == R.id.changeTheme) {
+                if (item.getItemId() == R.id.returnToStartActivity) {
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Confirm")
                             .setMessage("Continuing will reset current data.")

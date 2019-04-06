@@ -9,10 +9,6 @@
         android:title="Change robot/round number"/>
 
     <item
-        android:id="@+id/changeTheme"
-        android:title="Change Theme"/>
-
-    <item
         android:id="@+id/resetPendingMessages"
         android:title="Delete Unsent Data"/>
 
