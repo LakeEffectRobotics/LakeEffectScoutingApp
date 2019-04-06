@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.Gravity;
@@ -646,81 +647,85 @@ public class MainActivity extends ListeningActitivty {
 
     @Override
     public void onBackPressed() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            PopupMenu menu = new PopupMenu(MainActivity.this, findViewById(R.id.deviceNameLayout), Gravity.CENTER_HORIZONTAL);
-            menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
-            menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getItemId() == R.id.reset) {
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Confirm")
-                                .setMessage("Continuing will reset current data.")
-                                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        reset(false);
-
-                                    }
-                                })
-                                .setNegativeButton("Cancel", null)
-                                .create()
-                                .show();
-                    }
-                    if (item.getItemId() == R.id.changeNum) {
-                        alert(false);
-                    }
-                    if (item.getItemId() == R.id.resetPendingMessages) {
-                        for(int i = 0; i< unsentData.size(); i++){
-                            unsentData.remove(i);
-                        }
-
-                        SharedPreferences prefs = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt("messageAmount", 0);
-                        editor.apply();
-
-                        //set pending messages number on ui
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(unsentData.size() + "");
-                            }
-                        });
-                    }
-
-                    if (item.getItemId() == R.id.changeTheme) {
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Confirm")
-                                .setMessage("Continuing will reset current data.")
-                                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(MainActivity.this, StartActivity.class);
-                                        startActivity(intent);
-                                    }
-                                })
-                                .setNegativeButton("Cancel", null)
-                                .create()
-                                .show();
-                    }
-
-                    if (item.getItemId() == R.id.restartBluetooth) {
-                        restartListenerThread();
-                    }
-
-                    if (item.getItemId() == R.id.stopBluetooth) {
-                        stopListenerThread();
-                    }
-
-                    if (item.getItemId() == R.id.viewScheduleInApp) {
-                        openScheduleViewer();
-                    }
-
-                    Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-            });
-            menu.show();
-        }
+        showOptionsMenu(findViewById(R.id.deviceNameLayout));
         return;
+    }
+
+    public void showOptionsMenu(View view) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) return;
+
+        PopupMenu menu = new PopupMenu(this, view, Gravity.CENTER_HORIZONTAL);
+        menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
+        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.reset) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Confirm")
+                            .setMessage("Continuing will reset current data.")
+                            .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    reset(false);
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .create()
+                            .show();
+                }
+                if (item.getItemId() == R.id.changeNum) {
+                    alert(false);
+                }
+                if (item.getItemId() == R.id.resetPendingMessages) {
+                    for(int i = 0; i< unsentData.size(); i++){
+                        unsentData.remove(i);
+                    }
+
+                    SharedPreferences prefs = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("messageAmount", 0);
+                    editor.apply();
+
+                    //set pending messages number on ui
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(unsentData.size() + "");
+                        }
+                    });
+                }
+
+                if (item.getItemId() == R.id.changeTheme) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Confirm")
+                            .setMessage("Continuing will reset current data.")
+                            .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .create()
+                            .show();
+                }
+
+                if (item.getItemId() == R.id.restartBluetooth) {
+                    restartListenerThread();
+                }
+
+                if (item.getItemId() == R.id.stopBluetooth) {
+                    stopListenerThread();
+                }
+
+                if (item.getItemId() == R.id.viewScheduleInApp) {
+                    openScheduleViewer();
+                }
+
+                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        menu.show();
     }
 
     public void reset(boolean incrementMatchNumber) {
@@ -932,6 +937,13 @@ public class MainActivity extends ListeningActitivty {
                     }
                 });
 
+                //add options listener
+                linearLayout.findViewById(R.id.alertOptions).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showOptionsMenu(v);
+                    }
+                });
             }
         });
 
