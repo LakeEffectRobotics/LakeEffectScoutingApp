@@ -1155,17 +1155,6 @@ public class MainActivity extends ListeningActitivty {
             editor.putInt("day", day);
             editor.apply();
 
-            if (matchNumber > 99) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(MainActivity.this, "Invalid Match Number",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-                return;
-            }
-
             if (userID.getSelectedItemPosition() == 0 && !overrideSchedule) {
                 runOnUiThread(new Runnable() {
                     @Override
