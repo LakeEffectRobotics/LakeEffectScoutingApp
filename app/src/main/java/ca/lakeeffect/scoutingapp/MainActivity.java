@@ -80,8 +80,6 @@ public class MainActivity extends ListeningActitivty {
 
     boolean connected;
 
-    String savedLabels = null; //generated at the beginning
-
     //the last time submit has been pressed
     //used to see if "are you still here" messages should be placed
     public static long lastSubmit = -1;
