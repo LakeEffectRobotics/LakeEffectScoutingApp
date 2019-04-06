@@ -254,6 +254,22 @@ public class MainActivity extends ListeningActitivty {
                 return null;
             }
 
+            //if the robot was not on the field, they should not be submitting
+            if (((CheckBox) pagerAdapter.qualitativePage.getView().findViewById(R.id.didNotShow)).isChecked()) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("The robot didn't go on the field?")
+                                .setMessage("If the robot didn't play this match, please don't submit any data.\n\n" +
+                                        "Click the back button and click reset to get ready for the next match")
+                                .setPositiveButton("Ok", null)
+                                .create()
+                                .show();
+                    }
+                });
+                return null;
+            }
+
             if (((Spinner) pagerAdapter.postgamePage.getView().findViewById(R.id.endgameClimbType)).getSelectedItem().toString().equals("Where did it climb?")) {
                 runOnUiThread(new Thread() {
                     public void run() {
