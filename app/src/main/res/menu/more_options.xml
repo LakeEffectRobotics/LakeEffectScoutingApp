@@ -25,6 +25,10 @@
         android:title="Stop Bluetooth Threads"/>
 
     <item
+        android:id="@+id/returnToStartActivity"
+        android:title="Main Menu"/>
+
+    <item
         android:id="@+id/viewScheduleInApp"
         android:title="View Schedule"/>
 

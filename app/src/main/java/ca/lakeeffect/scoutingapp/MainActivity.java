@@ -694,7 +694,15 @@ public class MainActivity extends ListeningActitivty {
                     });
                 }
 
-                if (item.getItemId() == R.id.changeTheme) {
+                if (item.getItemId() == R.id.restartBluetooth) {
+                    restartListenerThread();
+                }
+
+                if (item.getItemId() == R.id.stopBluetooth) {
+                    stopListenerThread();
+                }
+
+                if (item.getItemId() == R.id.returnToStartActivity || item.getItemId() == R.id.changeTheme) {
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Confirm")
                             .setMessage("Continuing will reset current data.")
@@ -707,14 +715,6 @@ public class MainActivity extends ListeningActitivty {
                             .setNegativeButton("Cancel", null)
                             .create()
                             .show();
-                }
-
-                if (item.getItemId() == R.id.restartBluetooth) {
-                    restartListenerThread();
-                }
-
-                if (item.getItemId() == R.id.stopBluetooth) {
-                    stopListenerThread();
                 }
 
                 if (item.getItemId() == R.id.viewScheduleInApp) {
