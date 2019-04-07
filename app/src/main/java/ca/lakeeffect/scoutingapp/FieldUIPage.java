@@ -264,6 +264,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         int[] farRocket = new int[4];
         int[] closeRocket = new int[4];
         int[] fullRocket = new int[4];
+        //the robot scored into any position
+        int[] everything = new int[4];
 
         int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18};
         int[] sideCargoShipLocations = {12, 13, 14, 16, 17, 18};
@@ -333,9 +335,16 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
             if (MainActivity.arrayContains(closeRocketLocations, location)) {
                 closeRocket[id]++;
             }
+
+            //totals for everything
+            everything[id]++;
         }
 
         for (int i = 0; i < labelActions.length; i++) {
+            //overall data
+            labels.append(fieldPeriod + "Total " + labelActions[i] + ",");
+            data.append(everything[i] + ",");
+
             //most important data
             labels.append(fieldPeriod + "Full Cargo Ship " + labelActions[i] + ",");
             data.append(cargoShip[i] + ",");

@@ -16,7 +16,7 @@
             android:id="@+id/qualitativeTableLayout"
             android:layout_margin="20dp"
             android:rowCount="9"
-            android:columnCount="3">
+            android:columnCount="4">
 
             <CheckBox
                 android:layout_row="3"
@@ -28,8 +28,8 @@
                 android:paddingHorizontal="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:id="@+id/defense" />
-
+                android:id="@+id/defense"
+                android:layout_gravity="center"/>
             <CheckBox
                 android:layout_row="3"
                 android:layout_column="1"
@@ -38,7 +38,8 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
                 android:id="@+id/died"
-                android:textSize="@dimen/text_small" />
+                android:textSize="@dimen/text_small"
+                android:layout_gravity="center"/>
             <CheckBox
                 android:layout_row="3"
                 android:layout_column="2"
@@ -47,7 +48,18 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
                 android:id="@+id/tipped"
-                android:textSize="@dimen/text_small" />
+                android:textSize="@dimen/text_small"
+                android:layout_gravity="center"/>
+            <CheckBox
+                android:layout_row="3"
+                android:layout_column="3"
+                android:text="Not On Field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:id="@+id/didNotShow"
+                android:textSize="@dimen/text_small"
+                android:layout_gravity="center"/>
 
             <TextView
                 android:text="Drive Ability:"
@@ -94,8 +106,17 @@
                     android:numStars="5"
                     android:stepSize="0.5"
                     android:isIndicator="false"/>
-
             </LinearLayout>
+
+            <CheckBox
+                android:text="Did Not Intake"
+                android:id="@+id/didNotIntake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_medium"
+                android:layout_row="5"
+                android:layout_column="3"
+                android:layout_gravity="center"/>
 
             <TextView
                 android:text="Defence Ability:"
@@ -127,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:layout_row="7"
                 android:layout_column="0"
-                android:layout_columnSpan="3"
+                android:layout_columnSpan="4"
                 android:layout_marginTop="15dp"
                 android:hint="Comments"
                 android:id="@+id/qualitativeComments"
@@ -139,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_row="8"
                 android:layout_column="0"
-                android:layout_columnSpan="3"
+                android:layout_columnSpan="4"
                 android:id="@+id/submit"
                 android:textSize="50sp"
                 android:layout_gravity="center_horizontal"/>

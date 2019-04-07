@@ -19,9 +19,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,8 +81,6 @@ public class MainActivity extends ListeningActitivty {
     ViewPager viewPager;
 
     boolean connected;
-
-    String savedLabels = null; //generated at the beginning
 
     //the last time submit has been pressed
     //used to see if "are you still here" messages should be placed
@@ -234,7 +234,9 @@ public class MainActivity extends ListeningActitivty {
                 return null;
             }
 
-            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.intakeRating)).getRating() <= 0) {
+            //if the intake rating is enabled and it is <= 0 (did not intake not checked)
+            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.intakeRating)).getRating() <= 0
+                    && !((CheckBox) pagerAdapter.qualitativePage.getView().findViewById(R.id.didNotIntake)).isChecked()) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the intake ability!", Toast.LENGTH_LONG).show();
@@ -244,10 +246,27 @@ public class MainActivity extends ListeningActitivty {
             }
 
             //if the defence rating is visible and it is <= 0
-            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getRating() <= 0 && ((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getVisibility() == View.VISIBLE) {
+            if (((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getRating() <= 0
+                    && ((RatingBar) pagerAdapter.qualitativePage.getView().findViewById(R.id.defenceRating)).getVisibility() == View.VISIBLE) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the defence ability!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
+
+            //if the robot was not on the field, they should not be submitting
+            if (((CheckBox) pagerAdapter.qualitativePage.getView().findViewById(R.id.didNotShow)).isChecked()) {
+                runOnUiThread(new Thread() {
+                    public void run() {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("The robot didn't go on the field?")
+                                .setMessage("If the robot didn't play this match, please don't submit any data.\n\n" +
+                                        "Click the back button and click reset to get ready for the next match")
+                                .setPositiveButton("Ok", null)
+                                .create()
+                                .show();
                     }
                 });
                 return null;
@@ -272,7 +291,7 @@ public class MainActivity extends ListeningActitivty {
                 return null;
             }
 
-            //if the confidence rating is visible and it is <= 0
+            //if the confidence rating is <= 0
             if (((RatingBar) pagerAdapter.postgamePage.getView().findViewById(R.id.dataConfidence)).getRating() <= 0) {
                 runOnUiThread(new Thread() {
                     public void run() {
@@ -483,6 +502,12 @@ public class MainActivity extends ListeningActitivty {
         File file = new File(sdCard.getPath() + "/#ScoutingData/" + robotNum + ".csv");
 
         try {
+            ///gets the data first in case the save data call should be cancelled
+            //before it was creating a file, then canceling, causing an empty file to be created
+            String[] data = getData(false);
+            if (data == null) {
+                return false;
+            }
 
             boolean newfile = false;
             file.getParentFile().mkdirs();
@@ -494,10 +519,6 @@ public class MainActivity extends ListeningActitivty {
             FileOutputStream f = new FileOutputStream(file, true);
 
             OutputStreamWriter out = new OutputStreamWriter(f);
-            String[] data = getData(false);
-            if (data == null) {
-                return false;
-            }
 
             //save auto events
             String autoEvents = getEventData(0);
@@ -627,78 +648,85 @@ public class MainActivity extends ListeningActitivty {
 
     @Override
     public void onBackPressed() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            System.out.println("Showing menu");
-            PopupMenu menu = new PopupMenu(MainActivity.this, findViewById(R.id.deviceNameLayout), Gravity.CENTER_HORIZONTAL);
-            menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
-            menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getItemId() == R.id.reset) {
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Confirm")
-                                .setMessage("Continuing will reset current data.")
-                                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        reset(false);
-
-                                    }
-                                })
-                                .setNegativeButton("Cancel", null)
-                                .create()
-                                .show();
-                    }
-                    if (item.getItemId() == R.id.changeNum) {
-                        alert(false);
-                    }
-                    if (item.getItemId() == R.id.resetPendingMessages) {
-                        for(int i = 0; i< unsentData.size(); i++){
-                            unsentData.remove(i);
-                        }
-
-                        SharedPreferences prefs = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt("messageAmount", 0);
-                        editor.apply();
-
-                        //set pending messages number on ui
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(unsentData.size() + "");
-                            }
-                        });
-                    }
-
-                    if (item.getItemId() == R.id.changeTheme) {
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Confirm")
-                                .setMessage("Continuing will reset current data.")
-                                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(MainActivity.this, StartActivity.class);
-                                        startActivity(intent);
-                                    }
-                                })
-                                .setNegativeButton("Cancel", null)
-                                .create()
-                                .show();
-                    }
-
-                    if (item.getItemId() == R.id.restartBluetooth) {
-                        restartListenerThread();
-                    }
-
-                    if (item.getItemId() == R.id.stopBluetooth) {
-                        stopListenerThread();
-                    }
-
-                    Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-            });
-            menu.show();
-        }
+        showOptionsMenu(findViewById(R.id.deviceNameLayout));
         return;
+    }
+
+    public void showOptionsMenu(View view) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) return;
+
+        PopupMenu menu = new PopupMenu(this, view, Gravity.CENTER_HORIZONTAL);
+        menu.getMenuInflater().inflate(R.menu.more_options, menu.getMenu());
+        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.reset) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Confirm")
+                            .setMessage("Continuing will reset current data.")
+                            .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    reset(false);
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .create()
+                            .show();
+                }
+                if (item.getItemId() == R.id.changeNum) {
+                    alert(false);
+                }
+                if (item.getItemId() == R.id.resetPendingMessages) {
+                    for(int i = 0; i< unsentData.size(); i++){
+                        unsentData.remove(i);
+                    }
+
+                    SharedPreferences prefs = getSharedPreferences("pendingMessages", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("messageAmount", 0);
+                    editor.apply();
+
+                    //set pending messages number on ui
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((TextView) findViewById(R.id.numberOfPendingMessagesLayout).findViewById(R.id.numberOfPendingMessages)).setText(unsentData.size() + "");
+                        }
+                    });
+                }
+
+                if (item.getItemId() == R.id.restartBluetooth) {
+                    restartListenerThread();
+                }
+
+                if (item.getItemId() == R.id.stopBluetooth) {
+                    stopListenerThread();
+                }
+
+                if (item.getItemId() == R.id.returnToStartActivity) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Confirm")
+                            .setMessage("Continuing will reset current data.")
+                            .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .create()
+                            .show();
+                }
+
+                if (item.getItemId() == R.id.viewScheduleInApp) {
+                    openScheduleViewer();
+                }
+
+                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        menu.show();
     }
 
     public void reset(boolean incrementMatchNumber) {
@@ -759,6 +787,17 @@ public class MainActivity extends ListeningActitivty {
                 .setPositiveButton(android.R.string.yes, null)
                 .setCancelable(false)
                 .create();
+
+        //make the back button trigger the options menu
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    showOptionsMenu(((AlertDialog) dialog).findViewById(R.id.alertOptions));
+                }
+                return false;
+            }
+        });
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
@@ -910,6 +949,13 @@ public class MainActivity extends ListeningActitivty {
                     }
                 });
 
+                //add options listener
+                linearLayout.findViewById(R.id.alertOptions).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showOptionsMenu(v);
+                    }
+                });
             }
         });
 
@@ -1108,17 +1154,6 @@ public class MainActivity extends ListeningActitivty {
             editor.putInt("month", month);
             editor.putInt("day", day);
             editor.apply();
-
-            if (matchNumber > 99) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(MainActivity.this, "Invalid Match Number",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-                return;
-            }
 
             if (userID.getSelectedItemPosition() == 0 && !overrideSchedule) {
                 runOnUiThread(new Runnable() {

@@ -53,6 +53,13 @@
             android:textSize = "@dimen/text_small"
             android:layout_gravity="top"/>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Options"
+            android:id="@+id/alertOptions"
+            android:textSize = "@dimen/text_small"/>
+
     </LinearLayout>
 
 </ScrollView>

@@ -9,10 +9,6 @@
         android:title="Change robot/round number"/>
 
     <item
-        android:id="@+id/changeTheme"
-        android:title="Change Theme"/>
-
-    <item
         android:id="@+id/resetPendingMessages"
         android:title="Delete Unsent Data"/>
 
@@ -23,6 +19,15 @@
     <item
         android:id="@+id/stopBluetooth"
         android:title="Stop Bluetooth Threads"/>
+
+    <item
+        android:id="@+id/returnToStartActivity"
+        android:title="Main Menu"/>
+
+    <item
+        android:id="@+id/viewScheduleInApp"
+        android:title="View Schedule"/>
+
 
 
 </menu>
