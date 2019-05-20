@@ -35,6 +35,16 @@
         android:layout_below="@+id/viewSchedule"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="aJaYdrIvE"
+        android:textSize="2dp"
+        android:id="@+id/soLong"
+        android:layout_below="@+id/numberOfPendingMessages"
+        android:layout_centerHorizontal="true" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -6,7 +6,12 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.content.res.ResourcesCompat;
+import android.test.mock.MockDialogInterface;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -64,11 +69,16 @@ public class Field implements View.OnTouchListener {
     Rect backgroundRect;
     Paint backgroundPaint;
 
+    MediaPlayer fish;
+
     public Field(final FieldUIPage fieldUIPage, SurfaceView s, Bitmap fieldRed, Bitmap fieldBlue) {
         this.fieldUIPage = fieldUIPage;
         surface = s;
         this.fieldRed = fieldRed;
         this.fieldBlue = fieldBlue;
+
+        fish = MediaPlayer.create(s.getContext(), R.raw.f42);
+        fish.setLooping(true);
 
         normal.setColor(ResourcesCompat.getColor(s.getResources(), R.color.colorPrimary, null));
         normal.setStyle(Paint.Style.STROKE);
@@ -220,6 +230,11 @@ public class Field implements View.OnTouchListener {
         if (v == surface) {
             Canvas c = surface.getHolder().lockCanvas();
 
+            //play a bit
+            if (fieldUIPage.autoPage) {
+                playSoundForXSeconds(fish, 250);
+            }
+
             if (c != null) {
                 // the place selected, -1 if none
                 selected = -1;
@@ -299,6 +314,26 @@ public class Field implements View.OnTouchListener {
         scaledRect.bottom /= scale;
 
         return scaledRect;
+    }
+
+    //modified from: https://stackoverflow.com/questions/7383808/android-how-can-play-song-for-30-seconds-only-in-mediaplayer
+    private void playSoundForXSeconds(final MediaPlayer mediaPlayer, int millis) {
+        try {
+            mediaPlayer.start();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                try {
+                    mediaPlayer.pause();
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, millis);
     }
 
 }
