@@ -38,8 +38,6 @@ You can contact @ajayyy or make an issue.
 
 https://play.google.com/store/apps/details?id=ca.lakeeffect.scoutingapp
 
-This build might contain team specific data (like lists of robots attending our event. To remove this, please clone this repository and build it yourself.
+This build might contain team specific data (like logos). To remove this, please clone this repository and build it yourself.
 
-It is planned to remove all team specific data from the client app and move it to the server.
-
-At this time, there is no pre-built version of the server, but it is easy to build from source, the same as building this repository.
+Scheuduling and robot lists are all sent from the server.
