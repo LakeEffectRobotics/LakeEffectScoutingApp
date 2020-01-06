@@ -19,39 +19,54 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="150dp"
-                android:layout_row="0"
+                android:layout_row="1"
                 android:layout_column="0"
                 android:text="Climb: "
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:textSize="@dimen/text_medium"/>
+                android:textSize="@dimen/text_medium"
+                android:id="@+id/climbText"/>
+
+            <Spinner
+                android:id="@+id/endgameClimb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal|center_vertical"  />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_row="1"
+                android:layout_column="3"
+                android:text="at"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingHorizontal="20dp"
+                android:textSize="@dimen/text_medium"
+                android:id="@+id/climbAtText"/>
 
             <Spinner
                 android:id="@+id/endgameClimbType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="0"
-                android:layout_column="1"
-                android:layout_columnSpan="4"
-                android:layout_gravity="center_vertical" />
-
-            <Spinner
-                android:id="@+id/endgameClimb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_row="1"
-                android:layout_column="0"
-                android:layout_columnSpan="4"
-                android:layout_gravity="center_vertical" />
+                android:layout_column="4"
+                android:layout_columnSpan="1"
+                android:layout_gravity="fill_horizontal|center_vertical" />
 
             <TextView
                 android:text="Robots Carried:"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_medium"
                 android:layout_row="2"
                 android:layout_column="0"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:paddingVertical="10dp"/>
+
             <ca.lakeeffect.scoutingapp.Counter
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,25 +85,17 @@
                 android:layout_row="3"
                 android:layout_column="0"
                 android:layout_gravity="center_vertical"
-                android:paddingRight="20dp"/>
+                android:paddingRight="20dp"
+                android:paddingVertical="10dp"/>
 
-            <LinearLayout
-                android:layout_row="3"
-                android:layout_column="1"
-                android:layout_columnSpan="2">
-                <!--This is a workaround to make #109 work as seen in https://stackoverflow.com/a/39653856/1985387-->
-                <RatingBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/dataConfidence"
-                    android:numStars="5"
-                    android:stepSize="0.5"
-                    android:isIndicator="false"/>
-
-            </LinearLayout>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/dataConfidence"
+                android:layout_gravity="center_vertical"/>
 
             <TextView
-                android:text="Your confidence in the data you colllected this match."
+                android:text="Are you confident in the data you collected this match?"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_row="4"

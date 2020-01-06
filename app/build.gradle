@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 27
         versionCode 36
-        versionName "Deep Space - 2.5.0"
+        versionName "Rise - 1.0.0"
     }
     buildTypes {
         release {

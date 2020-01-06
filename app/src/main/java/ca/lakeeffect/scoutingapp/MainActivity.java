@@ -291,50 +291,12 @@ public class MainActivity extends ListeningActitivty {
                 return null;
             }
 
-            //if the confidence rating is <= 0
-            if (((RatingBar) pagerAdapter.postgamePage.getView().findViewById(R.id.dataConfidence)).getRating() <= 0) {
-                runOnUiThread(new Thread() {
-                    public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the confidence in your data!", Toast.LENGTH_LONG).show();
-                    }
-                });
-                return null;
-            }
-
             if (((Spinner) pagerAdapter.pregamePage.getView().findViewById(R.id.autoStartLocation)).getSelectedItem().toString().equals("Choose One")) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify where it started!", Toast.LENGTH_LONG).show();
                     }
                 });
-                return null;
-            }
-
-            if (((Spinner) pagerAdapter.pregamePage.getView().findViewById(R.id.autoStartPlatform)).getSelectedItem().toString().equals("Choose One")) {
-                runOnUiThread(new Thread() {
-                    public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify which platform it started on!", Toast.LENGTH_LONG).show();
-                    }
-                });
-                return null;
-            }
-
-            //check if the robot is starting with hatch or cargo
-            if (!noStartingObject && !((CheckBox) pagerAdapter.pregamePage.getView().findViewById(R.id.startingObjectsHatch)).isChecked()
-                    && !((CheckBox) pagerAdapter.pregamePage.getView().findViewById(R.id.startingObjectsCargo)).isChecked()) {
-                //double check the user meant this
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("No starting Object?")
-                        .setMessage("Are you sure the robot started with no object?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                noStartingObject = true;
-                                pagerAdapter.qualitativePage.getView().findViewById(R.id.submit).performClick();
-                            }
-                        })
-                        .setNegativeButton("No, let me go change that", null)
-                        .create()
-                        .show();
                 return null;
             }
         }

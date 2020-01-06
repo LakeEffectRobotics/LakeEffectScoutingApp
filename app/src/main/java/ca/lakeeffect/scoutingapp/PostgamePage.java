@@ -21,6 +21,7 @@ public class PostgamePage extends Fragment {
 
     Spinner climb;
 
+    //why is this here
     public PostgamePage() {
 
     }
@@ -42,24 +43,27 @@ public class PostgamePage extends Fragment {
         adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.climbType, R.layout.spinner);
         climb.setAdapter(adapter);
 
-        final Spinner endgameClimbType = (Spinner) view.findViewById(R.id.endgameClimbType);
-        final Spinner endgameClimb = (Spinner) view.findViewById(R.id.endgameClimb);
+        final Spinner endgameClimbType = view.findViewById(R.id.endgameClimbType);
 
-        endgameClimb.setVisibility(View.INVISIBLE);
+        final Spinner endgameClimb = view.findViewById(R.id.endgameClimb);
 
-        endgameClimbType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final TextView atClimbText = view.findViewById(R.id.climbAtText);
+
+        endgameClimb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 Object item = parent.getItemAtPosition(pos);
 
                 System.out.println(pos);
 
-                if (pos >= 3) {
-                    endgameClimb.setVisibility(View.VISIBLE);
-                } else {
-                    endgameClimb.setVisibility(View.INVISIBLE);
-                    endgameClimb.setSelection(0);
+                //if it parked
+                if (pos == 1) {
+                    endgameClimbType.setSelection(0);
+                    endgameClimbType.setVisibility(View.INVISIBLE);
+                    atClimbText.setVisibility(View.INVISIBLE);
+                }else{
+                    endgameClimbType.setVisibility(View.VISIBLE);
+                    atClimbText.setVisibility(View.VISIBLE);
                 }
-
             }
 
             public void onNothingSelected(AdapterView<?> parent) {

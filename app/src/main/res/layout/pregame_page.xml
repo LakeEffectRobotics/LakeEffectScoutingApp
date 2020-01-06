@@ -18,7 +18,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             app:rowCount="3"
-            app:columnCount="3"
+            app:columnCount="4"
             app:orientation="vertical"
             android:layout_margin="10dp">
 
@@ -34,7 +34,7 @@
                 android:layout_alignTop="@+id/tableLayout"
                 app:layout_row="0"
                 app:layout_column="0"
-                app:layout_columnSpan="1"
+                app:layout_columnSpan="2"
                 />
 
             <Spinner
@@ -44,69 +44,41 @@
                 android:id="@+id/autoStartLocation"
                 android:spinnerMode="dropdown"
                 app:layout_row="0"
-                app:layout_column="1"
+                app:layout_column="2"
                 app:layout_columnSpan="2"
-                app:layout_gravity="fill_horizontal"/>
-
-            <TextView
-                android:text="Start Platform: "
-                android:textSize="@dimen/text_medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingRight="50dp"
-                android:layout_alignTop="@+id/tableLayout"
-                app:layout_row="1"
-                app:layout_column="0"
-                app:layout_columnSpan="1"
-                />
-
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize = "@dimen/text_small"
-                android:id="@+id/autoStartPlatform"
-                android:spinnerMode="dropdown"
-                app:layout_row="1"
-                app:layout_column="1"
-                app:layout_columnSpan="2"
-                app:layout_gravity="fill_horizontal"/>
+                app:layout_gravity="fill_horizontal|center_vertical"/>
 
             <TextView
                 android:text="Started with:  "
                 android:textSize="@dimen/text_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:layout_alignTop="@+id/tableLayout"
+                app:layout_gravity="center_vertical"
                 app:layout_row="2"
                 app:layout_column="0"
                 app:layout_columnSpan="1" />
 
-            <CheckBox
-                android:layout_weight="1"
-                app:layout_columnWeight="1"
-                app:layout_gravity="fill_horizontal"
-                android:id="@+id/startingObjectsCargo"
+            <ca.lakeeffect.scoutingapp.Counter
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:layout_row="2"
+                android:layout_height="wrap_content"
+                android:id="@+id/startingBallCount"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                app:layout_gravity="center_vertical"
                 app:layout_column="1"
-                android:checked="false"
-                android:text="Cargo"
-                android:textSize="@dimen/text_small" />
+                app:layout_columnSpan="1"
+                app:layout_row="2"/>
 
-            <CheckBox
+            <TextView
+                android:text="Balls"
+                android:textSize="@dimen/text_medium"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                app:layout_gravity="center_vertical"
                 app:layout_row="2"
-                app:layout_column="2"
-                android:id="@+id/startingObjectsHatch"
-                app:layout_columnWeight="1"
-                android:text="Hatch"
-                android:textSize="@dimen/text_small"/>
+                app:layout_column="3"
+                app:layout_columnSpan="1" />
 
         </android.support.v7.widget.GridLayout>
 
