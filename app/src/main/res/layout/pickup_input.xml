@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rowCount="4"
+    android:columnCount="2"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Failed:"
+        android:textSize="@dimen/text_large"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:paddingRight="20dp" />
+
+    <RatingBar
+        android:id="@+id/missedPickups"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="0"
+        android:layout_column="1"
+        android:numStars="5"
+        android:progressDrawable="@drawable/circleratingbar"
+        android:stepSize="1" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pickup:"
+        android:textSize="@dimen/text_large"
+        android:layout_row="1"
+        android:layout_column="0"
+        android:paddingRight="20dp" />
+
+    <RatingBar
+        android:id="@+id/pickups"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:numStars="5"
+        android:progressDrawable="@drawable/circleratingbar"
+        android:stepSize="1" />
+</GridLayout>

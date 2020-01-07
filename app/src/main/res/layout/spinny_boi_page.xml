@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:rowCount="3"
+    android:columnCount="2"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rotation:"
+        android:textSize="@dimen/text_large"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:paddingRight="20dp" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rotationButton"
+        android:layout_row="0"
+        android:layout_column="1"
+        android:layout_gravity="center_vertical"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Colour:"
+        android:textSize="@dimen/text_large"
+        android:layout_row="1"
+        android:layout_column="0"
+        android:paddingRight="20dp" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/colourButton"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:layout_gravity="center_vertical"/>
+
+</GridLayout>
