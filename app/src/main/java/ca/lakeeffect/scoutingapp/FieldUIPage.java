@@ -1,5 +1,6 @@
 package ca.lakeeffect.scoutingapp;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
