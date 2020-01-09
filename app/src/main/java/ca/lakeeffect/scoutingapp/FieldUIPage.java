@@ -1,6 +1,6 @@
 package ca.lakeeffect.scoutingapp;
 
-import android.app.Fragment;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -15,6 +15,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
@@ -72,11 +73,11 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         }
 
         surface = view.findViewById(R.id.fieldCanvas);
-        Bitmap fieldRed = BitmapFactory.decodeResource(getResources(), R.drawable.fieldred);
-        Bitmap fieldBlue = BitmapFactory.decodeResource(getResources(), R.drawable.fieldblue);
-        field = new Field(this, surface, fieldRed, fieldBlue);
+        Bitmap fieldBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.field);
+        field = new Field(this, surface, fieldBitmap);
         surface.setOnTouchListener(field);
 
+        /*
         pickupHatch = view.findViewById(R.id.pickupHatch);
         pickupHatch.setOnClickListener(this);
 
@@ -89,8 +90,12 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         failPickupCargo = view.findViewById(R.id.failPickupCargo);
         failPickupCargo.setOnClickListener(this);
 
+         */
+
         undo = view.findViewById(R.id.undo);
         undo.setOnClickListener(this);
+
+        /*
 
         dropHatch = view.findViewById(R.id.dropHatch);
         dropHatch.setOnClickListener(this);
@@ -103,6 +108,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
         failDropCargo = view.findViewById(R.id.failDropCargo);
         failDropCargo.setOnClickListener(this);
+
+         */
 
         vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
 

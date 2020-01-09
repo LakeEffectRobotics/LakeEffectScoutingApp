@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "ca.lakeeffect.scoutingapp"
-        minSdkVersion 14
+        minSdkVersion 23
         targetSdkVersion 27
         versionCode 36
         versionName "Rise - 1.0.0"
