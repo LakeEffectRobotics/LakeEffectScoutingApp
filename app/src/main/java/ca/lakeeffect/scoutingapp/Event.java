@@ -6,15 +6,15 @@ package ca.lakeeffect.scoutingapp;
 
 public class Event {
 
-    int eventType = -1;
+    float[] eventType = {-1, -1, -1, -1, -1, -1};
 
-    int location = -1;
+    float[] location = {-1, -1};
 
     long timestamp = -1;
 
     int metadata = -1; //high or low for the switch
 
-    public Event(int eventType, int location, long timestamp, int metadata){
+    public Event(float[] eventType, float[] location, long timestamp, int metadata){
         this.eventType = eventType;
         this.location = location;
         this.timestamp = timestamp;

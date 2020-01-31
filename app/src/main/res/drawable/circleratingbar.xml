@@ -3,7 +3,7 @@
     <item android:id="@android:id/background">
         <bitmap
             android:src="@drawable/circle"
-            android:tint="@color/colorAccent" />
+            android:tint="@android:color/darker_gray" />
     </item>
     <item android:id="@android:id/secondaryProgress">
         <bitmap

@@ -1089,8 +1089,8 @@ public class MainActivity extends ListeningActitivty {
             side = viewingSide.getSelectedItemPosition() == 2;
 
             //adjust the field image according to selection
-            pagerAdapter.autoPage.field.updateField(this, side);
-            pagerAdapter.teleopPage.field.updateField(this, side);
+            pagerAdapter.autoPage.field.updateField(this, side, alliance);
+            pagerAdapter.teleopPage.field.updateField(this, side, alliance);
 
             SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();

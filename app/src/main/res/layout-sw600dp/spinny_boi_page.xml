@@ -14,7 +14,7 @@
         android:layout_column="0"
         android:paddingRight="20dp" />
 
-    <RadioButton
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/rotationButton"
@@ -31,7 +31,7 @@
         android:layout_column="0"
         android:paddingRight="20dp" />
 
-    <RadioButton
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/colourButton"

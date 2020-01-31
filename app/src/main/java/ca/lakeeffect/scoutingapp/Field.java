@@ -1,5 +1,8 @@
 package ca.lakeeffect.scoutingapp;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,10 +16,13 @@ import android.provider.MediaStore;
 import android.support.v4.content.res.ResourcesCompat;
 import android.test.mock.MockDialogInterface;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.RatingBar;
+import android.widget.Toast;
 
 public class Field implements View.OnTouchListener {
 
@@ -25,11 +31,15 @@ public class Field implements View.OnTouchListener {
     SurfaceView surface;
     Bitmap field;
 
+    //there's probably a better way of doing this
+    Context context;
+    LayoutInflater layoutInflater;
+
     final int WIDTH = 320;
     final int HEIGHT = 320;
     
     Rect[] fieldPlacements = new Rect[]{
-            makeRect(500, 350),
+            //makeRect(500, 350),
             makeRect(2090, 50)
     };
 
@@ -54,10 +64,13 @@ public class Field implements View.OnTouchListener {
 
     MediaPlayer fish;
 
-    public Field(final FieldUIPage fieldUIPage, SurfaceView s, Bitmap field) {
+    public Field(final FieldUIPage fieldUIPage, SurfaceView s, Bitmap field, Context c, LayoutInflater l) {
         this.fieldUIPage = fieldUIPage;
         surface = s;
         this.field = field;
+
+        this.context = c;
+        this.layoutInflater = l;
 
         fish = MediaPlayer.create(s.getContext(), R.raw.f42);
         fish.setLooping(true);
@@ -172,31 +185,48 @@ public class Field implements View.OnTouchListener {
         return new Rect(x, y, x + WIDTH, y + HEIGHT);
     }
 
-    //if the user says that blue starts on the left, the field should flip
-    public void updateField(MainActivity mainActivity, boolean side){
+    //if the user says that blue starts on the left, the field should rotate 180
+    //also if the user says that they are the blue alliance, then the rectangle rotate 180 again
+    private boolean lastside = false;
+    private boolean lastalliance = false;
+    public void updateField(MainActivity mainActivity, boolean side, boolean alliance){
 
-        if(side){
+        if(side != lastside){
 
-            //this all flips the image
+            //this all rotates the image
             Matrix matrix = new Matrix();
-            matrix.postScale(-1, 1, field.getWidth(), field.getHeight());
+            matrix.postScale(-1, -1, field.getWidth(), field.getHeight());
 
             field = Bitmap.createBitmap(field, 0, 0, field.getWidth(), field.getHeight(), matrix, true);
             
             //Flip rectangles
-            for (int i=0; i<fieldPlacements.length; i++){
-                int fieldWidth = (int)(field.getWidth() * scale);
-                int rectWidth = (int) (fieldPlacements[i].right - fieldPlacements[i].left);
-                fieldPlacements[i] = new Rect(fieldWidth - fieldPlacements[i].left - rectWidth, fieldPlacements[i].top, fieldWidth - fieldPlacements[i].right + rectWidth, fieldPlacements[i].bottom);
-            }
+            rotateRectangles(field);
+
+            lastside = side;
+        }
+        if(alliance != lastalliance){
+            //Rotate rectangles rectangles
+            rotateRectangles(field);
+
+            lastalliance = alliance;
         }
 
         //this redraw() down here because if just the alliance colour changes, then the if statement won't run
         redraw();
     }
 
+    private void rotateRectangles(Bitmap field){
+        for (int i=0; i<fieldPlacements.length; i++){
+            int fieldWidth = (int)(field.getWidth() * scale);
+            int fieldHeight = (int)(field.getHeight() * scale);
+            int rectWidth = (int) (fieldPlacements[i].right - fieldPlacements[i].left);
+            int rectHeight = (int) (fieldPlacements[i].bottom - fieldPlacements[i].top);
+            fieldPlacements[i] = new Rect(fieldWidth - fieldPlacements[i].left - rectWidth, fieldHeight - fieldPlacements[i].top - rectHeight, fieldWidth - fieldPlacements[i].right + rectWidth, fieldHeight - fieldPlacements[i].bottom + rectHeight);
+        }
+    }
+
     @Override
-    public boolean onTouch(final View v, MotionEvent event) {
+    public boolean onTouch(final View v, final MotionEvent event) {
         if (v == surface) {
             Canvas c = surface.getHolder().lockCanvas();
 
@@ -236,6 +266,52 @@ public class Field implements View.OnTouchListener {
                 //just print it out for debugging purposes
                 System.out.println(event.getX());
                 System.out.println(event.getY());
+
+                if (selected == -1){
+                    System.out.println("Making a dialog");
+                    //FieldUIPage.openMainInput();
+
+                    final View mainInputView = layoutInflater.inflate(R.layout.main_input, null);
+                    new android.app.AlertDialog.Builder(context)
+                            .setTitle("Input")
+                            .setView(mainInputView)
+                            .setPositiveButton("Ok", (new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    //make a new event
+                                    float[] data = {
+                                            ((RatingBar) mainInputView.findViewById(R.id.missedShots)).getRating(),
+                                            ((RatingBar) mainInputView.findViewById(R.id.level1Shots)).getRating(),
+                                            ((RatingBar) mainInputView.findViewById(R.id.level2Shots)).getRating(),
+                                            ((RatingBar) mainInputView.findViewById(R.id.level3Shots)).getRating(),
+                                            ((RatingBar) mainInputView.findViewById(R.id.pickups)).getRating(),
+                                            ((RatingBar) mainInputView.findViewById(R.id.missedPickups)).getRating()};
+
+                                    float[] location = {event.getX(), event.getY()};
+                                    //change this so location saves actual location
+                                    fieldUIPage.addEvent(new Event(data, location, System.currentTimeMillis(), 0), "", false);
+                                    Toast.makeText(context, "Event recorded", Toast.LENGTH_SHORT).show();
+                                }
+                            }))
+                            .setNegativeButton("Cancel", null)
+                    .create()
+                    .show();
+
+                }else{
+                    new android.app.AlertDialog.Builder(context)
+                        .setTitle("Input")
+                        .setView(layoutInflater.inflate(R.layout.spinny_boi_page, null))
+                        .setPositiveButton("Ok", (new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //basically save what happened
+                                Toast.makeText(context, "TODO: change this", Toast.LENGTH_SHORT).show();
+                            }
+                        }))
+                        .setNegativeButton("Cancel", null)
+                        .create()
+                        .show();
+                }
             }
 
         }

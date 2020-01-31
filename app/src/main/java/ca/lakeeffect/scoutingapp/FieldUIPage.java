@@ -41,9 +41,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     Button failDropHatch;
     Button failDropCargo;
 
-
     //All the events made by the person this matchNumber
-    ArrayList<Event> events = new ArrayList<Event>();
+    static ArrayList<Event> events = new ArrayList<Event>();
 
     Vibrator vibrator;
     boolean hasVibrator;
@@ -74,7 +73,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
         surface = view.findViewById(R.id.fieldCanvas);
         Bitmap fieldBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.field);
-        field = new Field(this, surface, fieldBitmap);
+        field = new Field(this, surface, fieldBitmap, getContext(), getLayoutInflater());
         surface.setOnTouchListener(field);
 
         /*
@@ -120,6 +119,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(final View v) {
+        System.out.println("onClick");
         if (firstPress == -1 && autoPage && v != undo) {
             firstPress = System.currentTimeMillis();
         } else if (autoPage && System.currentTimeMillis() - firstPress > 15000 && v != undo) {
@@ -153,7 +153,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
                 new AlertDialog.Builder(getContext())
                         .setTitle("Confirm")
-                        .setMessage("Are you sure you would like to undo the action that said " + getActionText(event.eventType) + location + "?")
+                        .setMessage("Are you sure you would like to undo the last action?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 events.remove(events.size() - 1);
@@ -177,6 +177,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         //Vibrate the vibrator to notify scout
         if (hasVibrator) vibrator.vibrate(new long[]{0, 100, 25, 100}, -1);
 
+        /*
         final Event event;
         int eventType = -1;
 
@@ -218,9 +219,16 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                 addEvent(event, a, true);
             }
         }
+
+        System.out.println("Hit the field");
+        System.out.println(field.selected);
+
+
+         */
+
     }
 
-    private void addEvent(Event e, String action, boolean makeToast) {
+    public void addEvent(Event e, String action, boolean makeToast) {
         events.add(e);
 
         if (makeToast) {
@@ -286,8 +294,9 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         String[] labelActions = {"Hatch Hit", "Hatch Miss", "Cargo Hit", "Cargo Miss"};
 
         for (Event e : events) {
-            int location = e.location;
+            float[] location = e.location;
 
+            /*
             int id = 0;
             switch (e.eventType) {
                 case 2:
@@ -314,6 +323,9 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                     break;
             }
 
+             */
+            
+            /*
             //cargo ship
             if (MainActivity.arrayContains(cargoShipLocations, location)) {
                 cargoShip[id]++;
@@ -346,6 +358,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
             //totals for everything
             everything[id]++;
+
+             */
         }
 
         for (int i = 0; i < labelActions.length; i++) {
