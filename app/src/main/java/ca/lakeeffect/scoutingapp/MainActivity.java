@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -215,7 +216,7 @@ public class MainActivity extends ListeningActitivty {
         }
 
         for(Event event : allEvents){
-            int location = event.location;
+            float[] location = event.location;
 
             events.append(matchNumber + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
         }
@@ -1187,6 +1188,14 @@ public class MainActivity extends ListeningActitivty {
             }
         }
         return false;
+    }
+
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
      public static void startNotificationAlarm(Context context) {

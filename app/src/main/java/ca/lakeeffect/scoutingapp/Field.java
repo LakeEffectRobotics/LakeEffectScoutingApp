@@ -3,6 +3,7 @@ package ca.lakeeffect.scoutingapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -272,7 +273,8 @@ public class Field implements View.OnTouchListener {
                     //FieldUIPage.openMainInput();
 
                     final View mainInputView = layoutInflater.inflate(R.layout.main_input, null);
-                    new android.app.AlertDialog.Builder(context)
+                    final long windowOpenedTime = System.currentTimeMillis();
+                    AlertDialog alertDialog = new android.app.AlertDialog.Builder(context)
                             .setTitle("Input")
                             .setView(mainInputView)
                             .setPositiveButton("Ok", (new DialogInterface.OnClickListener() {
@@ -288,14 +290,18 @@ public class Field implements View.OnTouchListener {
                                             ((RatingBar) mainInputView.findViewById(R.id.missedPickups)).getRating()};
 
                                     float[] location = {event.getX(), event.getY()};
-                                    //change this so location saves actual location
-                                    fieldUIPage.addEvent(new Event(data, location, System.currentTimeMillis(), 0), "", false);
+
+                                    long[] time = {windowOpenedTime, System.currentTimeMillis()};
+
+                                    fieldUIPage.addEvent(new Event(data, location, time, 0), "", false);
                                     Toast.makeText(context, "Event recorded", Toast.LENGTH_SHORT).show();
                                 }
                             }))
                             .setNegativeButton("Cancel", null)
-                    .create()
-                    .show();
+                        .create();
+
+                    alertDialog.show();
+                    alertDialog.getWindow().setLayout(MainActivity.getScreenWidth() - 10, MainActivity.getScreenHeight() - 10);
 
                 }else{
                     new android.app.AlertDialog.Builder(context)

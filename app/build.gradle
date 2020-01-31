@@ -9,7 +9,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 27
         versionCode 36
-        versionName "Rise - 1.0.0"
+        versionName "Rise - 1.0.1"
     }
     buildTypes {
         release {
