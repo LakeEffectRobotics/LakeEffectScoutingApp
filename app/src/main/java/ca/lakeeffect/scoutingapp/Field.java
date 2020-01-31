@@ -228,100 +228,106 @@ public class Field implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(final View v, final MotionEvent event) {
-        if (v == surface) {
-            Canvas c = surface.getHolder().lockCanvas();
+        System.out.println(event.getAction());
+        if(event.getAction() == MotionEvent.ACTION_CANCEL){
+            return false;
+        }
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            if (v == surface) {
+                Canvas c = surface.getHolder().lockCanvas();
 
-            //play a bit
-            if (fieldUIPage.autoPage) {
-                playSoundForXSeconds(fish, 250);
-            }
+                //play a bit
+                if (fieldUIPage.autoPage) {
+                    playSoundForXSeconds(fish, 250);
+                }
 
-            if (c != null) {
-                // the place selected, -1 if none
-                selected = -1;
+                if (c != null) {
+                    // the place selected, -1 if none
+                    selected = -1;
 
-                Paint paint = new Paint();
-                paint.setColor(Color.RED);
+                    Paint paint = new Paint();
+                    paint.setColor(Color.RED);
 
-                //adds the offset position
-                float xpos = event.getX() - (c.getWidth() / 2 - field.getWidth() / 2);
-                if (xpos > 0 && xpos < field.getWidth()) {
-                    //send toast
+                    //adds the offset position
+                    float xpos = event.getX() - (c.getWidth() / 2 - field.getWidth() / 2);
+                    if (xpos > 0 && xpos < field.getWidth()) {
+                        //send toast
 
-                    for (Rect rect : fieldPlacements) {
-                        float unScaledXPos = xpos * scale;
-                        float unScaledYPos = event.getY() * scale;
+                        for (Rect rect : fieldPlacements) {
+                            float unScaledXPos = xpos * scale;
+                            float unScaledYPos = event.getY() * scale;
 
-                        if (unScaledXPos > rect.left && unScaledXPos < rect.right && unScaledYPos > rect.top && unScaledYPos < rect.bottom) {
+                            if (unScaledXPos > rect.left && unScaledXPos < rect.right && unScaledYPos > rect.top && unScaledYPos < rect.bottom) {
 
-                            selected = java.util.Arrays.asList(fieldPlacements).indexOf(rect);
+                                selected = java.util.Arrays.asList(fieldPlacements).indexOf(rect);
+                            }
                         }
+                    }
+
+                    drawImage(c, selected);
+
+                    c.drawCircle(event.getX(), event.getY(), 15, paint);
+                    surface.getHolder().unlockCanvasAndPost(c);
+
+                    //just print it out for debugging purposes
+                    System.out.println(event.getX());
+                    System.out.println(event.getY());
+
+                    if (selected == -1) {
+                        System.out.println("Making a dialog");
+                        //FieldUIPage.openMainInput();
+
+                        final View mainInputView = layoutInflater.inflate(R.layout.main_input, null);
+                        final long windowOpenedTime = System.currentTimeMillis();
+                        AlertDialog alertDialog = new android.app.AlertDialog.Builder(context)
+                                .setTitle("Input")
+                                .setView(mainInputView)
+                                .setPositiveButton("Ok", (new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        //make a new event
+                                        float[] data = {
+                                                ((RatingBar) mainInputView.findViewById(R.id.missedShots)).getRating(),
+                                                ((RatingBar) mainInputView.findViewById(R.id.level1Shots)).getRating(),
+                                                ((RatingBar) mainInputView.findViewById(R.id.level2Shots)).getRating(),
+                                                ((RatingBar) mainInputView.findViewById(R.id.level3Shots)).getRating(),
+                                                ((RatingBar) mainInputView.findViewById(R.id.pickups)).getRating(),
+                                                ((RatingBar) mainInputView.findViewById(R.id.missedPickups)).getRating()};
+
+                                        float[] location = {event.getX(), event.getY()};
+
+                                        long[] time = {windowOpenedTime, System.currentTimeMillis()};
+
+                                        fieldUIPage.addEvent(new Event(data, location, time, 0), "", false);
+                                        Toast.makeText(context, "Event recorded", Toast.LENGTH_SHORT).show();
+                                    }
+                                }))
+                                .setNegativeButton("Cancel", null)
+                                .create();
+
+                        alertDialog.show();
+                        alertDialog.getWindow().setLayout(MainActivity.getScreenWidth() - 10, MainActivity.getScreenHeight() - 10);
+
+                    } else {
+                        new android.app.AlertDialog.Builder(context)
+                                .setTitle("Input")
+                                .setView(layoutInflater.inflate(R.layout.spinny_boi_page, null))
+                                .setPositiveButton("Ok", (new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        //basically save what happened
+                                        Toast.makeText(context, "TODO: change this", Toast.LENGTH_SHORT).show();
+                                    }
+                                }))
+                                .setNegativeButton("Cancel", null)
+                                .create()
+                                .show();
                     }
                 }
 
-                drawImage(c, selected);
-
-                c.drawCircle(event.getX(), event.getY(), 15, paint);
-                surface.getHolder().unlockCanvasAndPost(c);
-
-                //just print it out for debugging purposes
-                System.out.println(event.getX());
-                System.out.println(event.getY());
-
-                if (selected == -1){
-                    System.out.println("Making a dialog");
-                    //FieldUIPage.openMainInput();
-
-                    final View mainInputView = layoutInflater.inflate(R.layout.main_input, null);
-                    final long windowOpenedTime = System.currentTimeMillis();
-                    AlertDialog alertDialog = new android.app.AlertDialog.Builder(context)
-                            .setTitle("Input")
-                            .setView(mainInputView)
-                            .setPositiveButton("Ok", (new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    //make a new event
-                                    float[] data = {
-                                            ((RatingBar) mainInputView.findViewById(R.id.missedShots)).getRating(),
-                                            ((RatingBar) mainInputView.findViewById(R.id.level1Shots)).getRating(),
-                                            ((RatingBar) mainInputView.findViewById(R.id.level2Shots)).getRating(),
-                                            ((RatingBar) mainInputView.findViewById(R.id.level3Shots)).getRating(),
-                                            ((RatingBar) mainInputView.findViewById(R.id.pickups)).getRating(),
-                                            ((RatingBar) mainInputView.findViewById(R.id.missedPickups)).getRating()};
-
-                                    float[] location = {event.getX(), event.getY()};
-
-                                    long[] time = {windowOpenedTime, System.currentTimeMillis()};
-
-                                    fieldUIPage.addEvent(new Event(data, location, time, 0), "", false);
-                                    Toast.makeText(context, "Event recorded", Toast.LENGTH_SHORT).show();
-                                }
-                            }))
-                            .setNegativeButton("Cancel", null)
-                        .create();
-
-                    alertDialog.show();
-                    alertDialog.getWindow().setLayout(MainActivity.getScreenWidth() - 10, MainActivity.getScreenHeight() - 10);
-
-                }else{
-                    new android.app.AlertDialog.Builder(context)
-                        .setTitle("Input")
-                        .setView(layoutInflater.inflate(R.layout.spinny_boi_page, null))
-                        .setPositiveButton("Ok", (new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //basically save what happened
-                                Toast.makeText(context, "TODO: change this", Toast.LENGTH_SHORT).show();
-                            }
-                        }))
-                        .setNegativeButton("Cancel", null)
-                        .create()
-                        .show();
-                }
             }
-
         }
-        return false;
+        return true;
     }
 
     public void redraw(){
