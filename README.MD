@@ -6,7 +6,7 @@ Scouts must download this app and record data about each match played. The data 
 
 The releases tab contains releases for each FIRST Robotics season.
 
-Each year more and more features have been added, so releases for older seasons might not have as many features or be MUCH more buggy as they are not needed anymore (the first year, FIRST Stronghold mainly). Only use these for testing purposes or if you really need to simulate an old event.
+Each year more and more features have been added, so releases for older seasons might not have as many features or be MUCH more buggy as they are not needed anymore (the first year, FIRST Stronghold, especially). Only use these for testing purposes or if you really need to simulate an old event.
 
 # Building
 
