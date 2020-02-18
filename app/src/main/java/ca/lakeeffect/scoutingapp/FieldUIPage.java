@@ -340,10 +340,10 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         labels.append(fieldPeriod + "Inner Shots,");
         data.append(innerShots + ",");
 
-        labels.append(fieldPeriod + "Missed Shots,");
+        labels.append(fieldPeriod + "Missed Pickups,");
         data.append(failedPickups + ",");
 
-        labels.append(fieldPeriod + "Successful Shots,");
+        labels.append(fieldPeriod + "Successful Pickups,");
         data.append(successfulPickups + ",");
 
         //control panel data
