@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -273,12 +274,13 @@ public class Field implements View.OnTouchListener {
                     System.out.println(event.getX());
                     System.out.println(event.getY());
 
+                    final long windowOpenedTime = System.currentTimeMillis();
                     if (selected == -1) {
                         System.out.println("Making a dialog");
                         //FieldUIPage.openMainInput();
 
                         final View mainInputView = layoutInflater.inflate(R.layout.main_input, null);
-                        final long windowOpenedTime = System.currentTimeMillis();
+
                         AlertDialog alertDialog = new android.app.AlertDialog.Builder(context)
                                 .setTitle("Input")
                                 .setView(mainInputView)
@@ -291,8 +293,8 @@ public class Field implements View.OnTouchListener {
                                                 ((RatingBar) mainInputView.findViewById(R.id.level1Shots)).getRating(),
                                                 ((RatingBar) mainInputView.findViewById(R.id.level2Shots)).getRating(),
                                                 ((RatingBar) mainInputView.findViewById(R.id.level3Shots)).getRating(),
-                                                ((RatingBar) mainInputView.findViewById(R.id.pickups)).getRating(),
-                                                ((RatingBar) mainInputView.findViewById(R.id.missedPickups)).getRating()};
+                                                ((RatingBar) mainInputView.findViewById(R.id.missedPickups)).getRating(),
+                                                ((RatingBar) mainInputView.findViewById(R.id.pickups)).getRating()};
 
                                         float[] location = {event.getX(), event.getY()};
 
@@ -309,13 +311,36 @@ public class Field implements View.OnTouchListener {
                         alertDialog.getWindow().setLayout(MainActivity.getScreenWidth() - 10, MainActivity.getScreenHeight() - 10);
 
                     } else {
+                        final View spinnyPageView = layoutInflater.inflate(R.layout.spinny_boi_page, null);
                         new android.app.AlertDialog.Builder(context)
                                 .setTitle("Input")
-                                .setView(layoutInflater.inflate(R.layout.spinny_boi_page, null))
+                                .setView(spinnyPageView)
                                 .setPositiveButton("Ok", (new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        //basically save what happened
+                                        //basically save what happened, but as an event too
+
+                                        float[] data = {-1, -1, -1, -1, -1, -1};
+                                        float[] location = {-1, -1};
+                                        long[] time = {windowOpenedTime, System.currentTimeMillis()};
+
+                                        //woah, repetitive code!
+                                        //fixing this would be nice, but I don't know how
+                                        int metadata = -1;
+                                        if(((CheckBox) spinnyPageView.findViewById(R.id.rotationButtonSuccess)).isChecked()){
+                                            metadata = 1;
+                                        }
+                                        if(((CheckBox) spinnyPageView.findViewById(R.id.rotationButtonFail)).isChecked()){
+                                            metadata = 2;
+                                        }
+                                        if(((CheckBox) spinnyPageView.findViewById(R.id.colourButtonSuccess)).isChecked()){
+                                            metadata = 3;
+                                        }
+                                        if(((CheckBox) spinnyPageView.findViewById(R.id.colourButtonFail)).isChecked()){
+                                            metadata = 4;
+                                        }
+
+                                        fieldUIPage.addEvent(new Event(data, location, time, metadata), "", false);
                                         Toast.makeText(context, "TODO: change this", Toast.LENGTH_SHORT).show();
                                     }
                                 }))

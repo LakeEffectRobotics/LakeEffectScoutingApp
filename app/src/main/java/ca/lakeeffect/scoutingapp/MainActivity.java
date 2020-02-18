@@ -217,11 +217,37 @@ public class MainActivity extends ListeningActitivty {
 
         for(Event event : allEvents){
             float[] location = event.location;
-
-            events.append(matchNumber + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
+            if(location[0] != -1.0){
+                events.append(matchNumber + "," + numsToString(event.eventData) + "," + numsToString(location) + "," + numsToString(event.timestamp) + "," + event.metadata + "\n");
+            }
         }
 
+        System.out.println("events");
+        System.out.println(events);
+
         return Base64.encodeToString(events.toString().getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
+    }
+
+    public String numsToString(float[] floats){
+        String output = "";
+
+        for(float i: floats){
+            output += i;
+            output += " ";
+        }
+
+        return(output);
+    }
+
+    public String numsToString(long[] longs){
+        String output = "";
+
+        for(long i: longs){
+            output += i;
+            output += " ";
+        }
+
+        return(output);
     }
 
     public String[] getData(boolean bypassChecks) {

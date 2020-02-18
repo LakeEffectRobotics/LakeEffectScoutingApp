@@ -42,7 +42,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     Button failDropCargo;
 
     //All the events made by the person this matchNumber
-    static ArrayList<Event> events = new ArrayList<Event>();
+    ArrayList<Event> events = new ArrayList<Event>();
 
     Vibrator vibrator;
     boolean hasVibrator;
@@ -141,6 +141,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
         if (v == undo) {
             if (events.size() > 0) {
+                /*
                 Event event = events.get(events.size() - 1);
 
                 String location = "";
@@ -150,6 +151,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                 } else {
                     location += "the field";
                 }
+
+                 */
 
                 new AlertDialog.Builder(getContext())
                         .setTitle("Confirm")
@@ -162,6 +165,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                                     //reset first press time, nothing has happened
                                     firstPress = -1;
                                 }
+                                Toast.makeText(getContext(), "Undid the last action", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setNegativeButton("No", null)
@@ -234,6 +238,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         if (makeToast) {
             Toast.makeText(getContext(), "Event " + action + " recorded", Toast.LENGTH_SHORT).show();
         }
+
+        System.out.println(events.size());
     }
 
     public String getActionText(int eventType) {
@@ -262,6 +268,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         events.clear();
     }
 
+    //what this basically does is summarises the data, so that it can be put in the main data file
+    //the individual events are got in MainActivity.getEventData, and saved seperately
     public String[] getData() {
         StringBuilder labels = new StringBuilder();
         StringBuilder data = new StringBuilder();
@@ -271,127 +279,89 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
             fieldPeriod = "Auto ";
         }
 
-        //hatchHit, hatchMiss, cargoHit, cargoMiss
-        int[] cargoShip = new int[4];
-        int[] sideCargoShip = new int[4];
-        int[] levelOneRocket = new int[4];
-        int[] levelTwoRocket = new int[4];
-        int[] levelThreeRocket = new int[4];
-        int[] farRocket = new int[4];
-        int[] closeRocket = new int[4];
-        int[] fullRocket = new int[4];
-        //the robot scored into any position
-        int[] everything = new int[4];
+        int missedShots = 0;
+        int lowerShots = 0;
+        int outerShots = 0;
+        int innerShots = 0;
 
-        int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18};
-        int[] sideCargoShipLocations = {12, 13, 14, 16, 17, 18};
-        int[] levelOneRocketLocations = {4, 5, 10, 11};
-        int[] levelTwoRocketLocations = {2, 3, 8, 9};
-        int[] levelThreeRocketLocations = {0, 1, 6, 7};
-        int[] farRocketLocations = {1, 3, 5, 7, 9, 11};
-        int[] closeRocketLocations = {0, 2, 4, 6, 8, 10};
+        int failedPickups = 0;
+        int successfulPickups = 0;
 
-        String[] labelActions = {"Hatch Hit", "Hatch Miss", "Cargo Hit", "Cargo Miss"};
+        int rotation = 0;
+        int failedRotation = 0;
+        int selection = 0;
+        int failedSelection = 0;
 
         for (Event e : events) {
             float[] location = e.location;
 
-            /*
-            int id = 0;
-            switch (e.eventType) {
-                case 2:
-                    //eventType 2: dropHatch
-                    id = 0;
-                    break;
+            //float[] controlPanelLocation = {-1, -1};
+            System.out.println("location");
+            System.out.println(e.location[0]);
+            if (e.location[0] == -1.0) {
+                //this is a controlPanelEvent
+                //TODO: this doesn't work
+                switch(e.metadata){
+                    case 1:
+                        rotation++;
+                        break;
+                    case 2:
+                        failedRotation++;
+                        break;
+                    case 3:
+                        selection++;
+                        break;
+                    case 4:
+                        failedSelection++;
+                        break;
+                    default:
+                        break;
+                }
+            }else{
+                missedShots += e.eventData[0];
+                lowerShots += e.eventData[1];
+                outerShots += e.eventData[2];
+                innerShots += e.eventData[3];
 
-                case 3:
-                    //eventType 3: failDropHatch
-                    id = 1;
-                    break;
-
-                case 6:
-                    //eventType 6: dropCargo
-                    id = 2;
-                    break;
-
-                case 7:
-                    //eventType 7: failDropCargo
-                    id = 3;
-                    break;
-
-                default:
-                    break;
+                failedPickups += e.eventData[4];
+                successfulPickups += e.eventData[5];
             }
+        }
+        //data
+        labels.append(fieldPeriod + "Missed Shots,");
+        data.append(missedShots + ",");
 
-             */
-            
-            /*
-            //cargo ship
-            if (MainActivity.arrayContains(cargoShipLocations, location)) {
-                cargoShip[id]++;
-            }
-            if (MainActivity.arrayContains(sideCargoShipLocations, location)) {
-                sideCargoShip[id]++;
-            }
+        labels.append(fieldPeriod + "Low Shots,");
+        data.append(lowerShots + ",");
 
-            //rocket levels
-            if (MainActivity.arrayContains(levelOneRocketLocations, location)) {
-                levelOneRocket[id]++;
-                fullRocket[id]++;
-            }
-            if (MainActivity.arrayContains(levelTwoRocketLocations, location)) {
-                levelTwoRocket[id]++;
-                fullRocket[id]++;
-            }
-            if (MainActivity.arrayContains(levelThreeRocketLocations, location)) {
-                levelThreeRocket[id]++;
-                fullRocket[id]++;
-            }
+        labels.append(fieldPeriod + "Outer Shots,");
+        data.append(outerShots + ",");
 
-            //far and close rocket
-            if (MainActivity.arrayContains(farRocketLocations, location)) {
-                farRocket[id]++;
-            }
-            if (MainActivity.arrayContains(closeRocketLocations, location)) {
-                closeRocket[id]++;
-            }
+        labels.append(fieldPeriod + "Inner Shots,");
+        data.append(innerShots + ",");
 
-            //totals for everything
-            everything[id]++;
+        labels.append(fieldPeriod + "Missed Shots,");
+        data.append(failedPickups + ",");
 
-             */
+        labels.append(fieldPeriod + "Successful Shots,");
+        data.append(successfulPickups + ",");
+
+        //control panel data
+        //only on teleop though
+        if(!autoPage){
+            labels.append("Rotation,");
+            data.append(rotation + ",");
+
+            labels.append("Failed Rotation,");
+            data.append(failedRotation + ",");
+
+            labels.append("Selection,");
+            data.append(selection + ",");
+
+            labels.append("Failed Selection,");
+            data.append(failedSelection + ",");
         }
 
-        for (int i = 0; i < labelActions.length; i++) {
-            //overall data
-            labels.append(fieldPeriod + "Total " + labelActions[i] + ",");
-            data.append(everything[i] + ",");
-
-            //most important data
-            labels.append(fieldPeriod + "Full Cargo Ship " + labelActions[i] + ",");
-            data.append(cargoShip[i] + ",");
-            labels.append(fieldPeriod + "Full Rocket " + labelActions[i] + ",");
-            data.append(fullRocket[i] + ",");
-
-            //extra more detailed information
-            labels.append(fieldPeriod + "Side Cargo Ship " + labelActions[i] + ",");
-            data.append(sideCargoShip[i] + ",");
-
-            if (i == 0 || i == 1) {
-                //only for hatch, not for cargo
-                labels.append(fieldPeriod + "Far Rocket " + labelActions[i] + ",");
-                data.append(farRocket[i] + ",");
-                labels.append(fieldPeriod + "Close Rocket " + labelActions[i] + ",");
-                data.append(closeRocket[i] + ",");
-            }
-            
-            labels.append(fieldPeriod + "Level 1 Rocket " + labelActions[i] + ",");
-            data.append(levelOneRocket[i] + ",");
-            labels.append(fieldPeriod + "Level 2 Rocket " + labelActions[i] + ",");
-            data.append(levelTwoRocket[i] + ",");
-            labels.append(fieldPeriod + "Level 3 Rocket " + labelActions[i] + ",");
-            data.append(levelThreeRocket[i] + ",");
-        }
 
         return (new String[]{labels.toString(), data.toString()});
 
