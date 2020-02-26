@@ -42,7 +42,7 @@ public class Field implements View.OnTouchListener {
     
     Rect[] fieldPlacements = new Rect[]{
             //makeRect(500, 350),
-            makeRect(2090, 50)
+            //makeRect(2090, 50)
     };
 
     //the normal paint for the boxes

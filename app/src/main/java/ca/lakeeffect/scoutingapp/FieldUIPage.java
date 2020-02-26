@@ -15,6 +15,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     Button failPickupHatch;
     Button failPickupCargo;
     Button undo;
+    Button controlPanel;
     Button dropHatch;
     Button dropCargo;
     Button failDropHatch;
@@ -69,6 +71,10 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
             TypedValue typedValue = new TypedValue();
             inflator.getContext().getTheme().resolveAttribute(R.attr.colorAuto, typedValue, true);
             view.setBackgroundColor(typedValue.data);
+
+            //remove the control panel button if it's in auto
+            View controlPanel = view.findViewById(R.id.controlPanel);
+            ((ViewGroup) controlPanel.getParent()).removeView(controlPanel);
         }
 
         surface = view.findViewById(R.id.fieldCanvas);
@@ -93,6 +99,12 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
         undo = view.findViewById(R.id.undo);
         undo.setOnClickListener(this);
+
+        //button doesn't exist during autopage
+        if(!autoPage){
+            controlPanel = view.findViewById(R.id.controlPanel);
+            controlPanel.setOnClickListener(this);
+        }
 
         /*
 
@@ -176,6 +188,45 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
             }
 
             return; //only have to undo, not add an event
+        }
+        else if(v==controlPanel){
+            final View spinnyPageView = getLayoutInflater().inflate(R.layout.spinny_boi_page, null);
+            final long windowOpenedTime = System.currentTimeMillis();
+            new android.app.AlertDialog.Builder(getContext())
+                    .setTitle("Input")
+                    .setView(spinnyPageView)
+                    .setPositiveButton("Ok", (new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //basically save what happened, but as an event too
+
+                            float[] data = {-1, -1, -1, -1, -1, -1};
+                            float[] location = {-1, -1};
+                            long[] time = {windowOpenedTime, System.currentTimeMillis()};
+
+                            //woah, repetitive code!
+                            //fixing this would be nice, but I don't know how
+                            int metadata = -1;
+                            if(((CheckBox) spinnyPageView.findViewById(R.id.rotationButtonSuccess)).isChecked()){
+                                metadata = 1;
+                            }
+                            if(((CheckBox) spinnyPageView.findViewById(R.id.rotationButtonFail)).isChecked()){
+                                metadata = 2;
+                            }
+                            if(((CheckBox) spinnyPageView.findViewById(R.id.colourButtonSuccess)).isChecked()){
+                                metadata = 3;
+                            }
+                            if(((CheckBox) spinnyPageView.findViewById(R.id.colourButtonFail)).isChecked()){
+                                metadata = 4;
+                            }
+
+                            addEvent(new Event(data, location, time, metadata), "", false);
+                            Toast.makeText(getContext(), "Made control panel event", Toast.LENGTH_SHORT).show();
+                        }
+                    }))
+                    .setNegativeButton("Cancel", null)
+                    .create()
+                    .show();
         }
 
         //Vibrate the vibrator to notify scout
