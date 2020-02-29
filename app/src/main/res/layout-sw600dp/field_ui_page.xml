@@ -10,65 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:layout_weight="0"
-        android:weightSum="3">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="bottom">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hatch"
-                android:textSize="@dimen/text_medium"
-                android:layout_weight="0"
-                android:layout_gravity="center"
-                android:id="@+id/hatchLabel"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Pickup"
-                android:layout_weight="1"
-                android:id="@+id/pickupHatch"
-                android:backgroundTint="#ffff84"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/black"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Failed Pickup"
-                android:layout_weight="1"
-                android:id="@+id/failPickupHatch"
-                android:backgroundTint="#ffff84"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/black"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Drop off"
-                android:layout_weight="1"
-                android:id="@+id/dropHatch"
-                android:backgroundTint="#ffff84"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/black"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Failed dropoff"
-                android:layout_weight="1"
-                android:id="@+id/failDropHatch"
-                android:textSize="@dimen/text_small"
-                android:backgroundTint="#ffff84"
-                android:textColor="@color/black"/>
-        </LinearLayout>
+        android:layout_gravity="bottom">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="3">
+            android:orientation="vertical">
 
             <SurfaceView
                 android:layout_width = "match_parent"
@@ -79,64 +26,28 @@
 
             </SurfaceView>
 
-            <Button
-                android:id="@+id/undo"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:textSize="@dimen/text_small"
-                android:text="Undo" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="bottom"
-            android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cargo"
-                android:textSize="@dimen/text_medium"
-                android:layout_weight="0"
-                android:layout_gravity="center"
-                android:id="@+id/cargoLabel"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Pickup"
-                android:layout_weight="1"
-                android:id="@+id/pickupCargo"
-                android:backgroundTint="#ffd38e"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/black"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Failed Pickup"
-                android:layout_weight="1"
-                android:id="@+id/failPickupCargo"
-                android:backgroundTint="#ffd38e"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/black"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Drop off"
-                android:layout_weight="1"
-                android:id="@+id/dropCargo"
-                android:backgroundTint="#ffd38e"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/black"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Failed dropoff"
-                android:layout_weight="1"
-                android:id="@+id/failDropCargo"
-                android:backgroundTint="#ffd38e"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/black"/>
+                android:orientation="horizontal"
+                android:weightSum="4">
+                <Button
+                    android:id="@+id/undo"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="Undo" />
+
+                <Button
+                    android:id="@+id/controlPanel"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="3"
+                    android:text="Control Panel"
+                    android:backgroundTint="@color/colorPrimary"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

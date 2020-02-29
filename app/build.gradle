@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "ca.lakeeffect.scoutingapp"
-        minSdkVersion 14
+        minSdkVersion 23
         targetSdkVersion 27
         versionCode 36
-        versionName "Deep Space - 2.5.0"
+        versionName "Rise - 1.0.1"
     }
     buildTypes {
         release {

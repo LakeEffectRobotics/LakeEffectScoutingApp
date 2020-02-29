@@ -1,5 +1,6 @@
 package ca.lakeeffect.scoutingapp;
 
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -14,6 +15,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
@@ -34,11 +37,11 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     Button failPickupHatch;
     Button failPickupCargo;
     Button undo;
+    Button controlPanel;
     Button dropHatch;
     Button dropCargo;
     Button failDropHatch;
     Button failDropCargo;
-
 
     //All the events made by the person this matchNumber
     ArrayList<Event> events = new ArrayList<Event>();
@@ -68,14 +71,18 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
             TypedValue typedValue = new TypedValue();
             inflator.getContext().getTheme().resolveAttribute(R.attr.colorAuto, typedValue, true);
             view.setBackgroundColor(typedValue.data);
+
+            //remove the control panel button if it's in auto
+            View controlPanel = view.findViewById(R.id.controlPanel);
+            ((ViewGroup) controlPanel.getParent()).removeView(controlPanel);
         }
 
         surface = view.findViewById(R.id.fieldCanvas);
-        Bitmap fieldRed = BitmapFactory.decodeResource(getResources(), R.drawable.fieldred);
-        Bitmap fieldBlue = BitmapFactory.decodeResource(getResources(), R.drawable.fieldblue);
-        field = new Field(this, surface, fieldRed, fieldBlue);
+        Bitmap fieldBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.field);
+        field = new Field(this, surface, fieldBitmap, getContext(), getLayoutInflater());
         surface.setOnTouchListener(field);
 
+        /*
         pickupHatch = view.findViewById(R.id.pickupHatch);
         pickupHatch.setOnClickListener(this);
 
@@ -88,8 +95,18 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         failPickupCargo = view.findViewById(R.id.failPickupCargo);
         failPickupCargo.setOnClickListener(this);
 
+         */
+
         undo = view.findViewById(R.id.undo);
         undo.setOnClickListener(this);
+
+        //button doesn't exist during autopage
+        if(!autoPage){
+            controlPanel = view.findViewById(R.id.controlPanel);
+            controlPanel.setOnClickListener(this);
+        }
+
+        /*
 
         dropHatch = view.findViewById(R.id.dropHatch);
         dropHatch.setOnClickListener(this);
@@ -103,6 +120,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         failDropCargo = view.findViewById(R.id.failDropCargo);
         failDropCargo.setOnClickListener(this);
 
+         */
+
         vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
         hasVibrator = vibrator.hasVibrator();
@@ -112,6 +131,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(final View v) {
+        System.out.println("onClick");
         if (firstPress == -1 && autoPage && v != undo) {
             firstPress = System.currentTimeMillis();
         } else if (autoPage && System.currentTimeMillis() - firstPress > 15000 && v != undo) {
@@ -133,6 +153,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
         if (v == undo) {
             if (events.size() > 0) {
+                /*
                 Event event = events.get(events.size() - 1);
 
                 String location = "";
@@ -143,9 +164,11 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                     location += "the field";
                 }
 
+                 */
+
                 new AlertDialog.Builder(getContext())
                         .setTitle("Confirm")
-                        .setMessage("Are you sure you would like to undo the action that said " + getActionText(event.eventType) + location + "?")
+                        .setMessage("Are you sure you would like to undo the last action?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 events.remove(events.size() - 1);
@@ -154,6 +177,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                                     //reset first press time, nothing has happened
                                     firstPress = -1;
                                 }
+                                Toast.makeText(getContext(), "Undid the last action", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setNegativeButton("No", null)
@@ -165,10 +189,50 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
             return; //only have to undo, not add an event
         }
+        else if(v==controlPanel){
+            final View spinnyPageView = getLayoutInflater().inflate(R.layout.spinny_boi_page, null);
+            final long windowOpenedTime = System.currentTimeMillis();
+            new android.app.AlertDialog.Builder(getContext())
+                    .setTitle("Input")
+                    .setView(spinnyPageView)
+                    .setPositiveButton("Ok", (new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //basically save what happened, but as an event too
+
+                            float[] data = {-1, -1, -1, -1, -1, -1};
+                            float[] location = {-1, -1};
+                            long[] time = {windowOpenedTime, System.currentTimeMillis()};
+
+                            //woah, repetitive code!
+                            //fixing this would be nice, but I don't know how
+                            int metadata = -1;
+                            if(((CheckBox) spinnyPageView.findViewById(R.id.rotationButtonSuccess)).isChecked()){
+                                metadata = 1;
+                            }
+                            if(((CheckBox) spinnyPageView.findViewById(R.id.rotationButtonFail)).isChecked()){
+                                metadata = 2;
+                            }
+                            if(((CheckBox) spinnyPageView.findViewById(R.id.colourButtonSuccess)).isChecked()){
+                                metadata = 3;
+                            }
+                            if(((CheckBox) spinnyPageView.findViewById(R.id.colourButtonFail)).isChecked()){
+                                metadata = 4;
+                            }
+
+                            addEvent(new Event(data, location, time, metadata), "", false);
+                            Toast.makeText(getContext(), "Made control panel event", Toast.LENGTH_SHORT).show();
+                        }
+                    }))
+                    .setNegativeButton("Cancel", null)
+                    .create()
+                    .show();
+        }
 
         //Vibrate the vibrator to notify scout
         if (hasVibrator) vibrator.vibrate(new long[]{0, 100, 25, 100}, -1);
 
+        /*
         final Event event;
         int eventType = -1;
 
@@ -210,14 +274,23 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                 addEvent(event, a, true);
             }
         }
+
+        System.out.println("Hit the field");
+        System.out.println(field.selected);
+
+
+         */
+
     }
 
-    private void addEvent(Event e, String action, boolean makeToast) {
+    public void addEvent(Event e, String action, boolean makeToast) {
         events.add(e);
 
         if (makeToast) {
             Toast.makeText(getContext(), "Event " + action + " recorded", Toast.LENGTH_SHORT).show();
         }
+
+        System.out.println(events.size());
     }
 
     public String getActionText(int eventType) {
@@ -246,6 +319,8 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         events.clear();
     }
 
+    //what this basically does is summarises the data, so that it can be put in the main data file
+    //the individual events are got in MainActivity.getEventData, and saved seperately
     public String[] getData() {
         StringBuilder labels = new StringBuilder();
         StringBuilder data = new StringBuilder();
@@ -255,121 +330,89 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
             fieldPeriod = "Auto ";
         }
 
-        //hatchHit, hatchMiss, cargoHit, cargoMiss
-        int[] cargoShip = new int[4];
-        int[] sideCargoShip = new int[4];
-        int[] levelOneRocket = new int[4];
-        int[] levelTwoRocket = new int[4];
-        int[] levelThreeRocket = new int[4];
-        int[] farRocket = new int[4];
-        int[] closeRocket = new int[4];
-        int[] fullRocket = new int[4];
-        //the robot scored into any position
-        int[] everything = new int[4];
+        int missedShots = 0;
+        int lowerShots = 0;
+        int outerShots = 0;
+        int innerShots = 0;
 
-        int[] cargoShipLocations = {12, 13, 14, 15, 16, 17, 18};
-        int[] sideCargoShipLocations = {12, 13, 14, 16, 17, 18};
-        int[] levelOneRocketLocations = {4, 5, 10, 11};
-        int[] levelTwoRocketLocations = {2, 3, 8, 9};
-        int[] levelThreeRocketLocations = {0, 1, 6, 7};
-        int[] farRocketLocations = {1, 3, 5, 7, 9, 11};
-        int[] closeRocketLocations = {0, 2, 4, 6, 8, 10};
+        int failedPickups = 0;
+        int successfulPickups = 0;
 
-        String[] labelActions = {"Hatch Hit", "Hatch Miss", "Cargo Hit", "Cargo Miss"};
+        int rotation = 0;
+        int failedRotation = 0;
+        int selection = 0;
+        int failedSelection = 0;
 
         for (Event e : events) {
-            int location = e.location;
+            float[] location = e.location;
 
-            int id = 0;
-            switch (e.eventType) {
-                case 2:
-                    //eventType 2: dropHatch
-                    id = 0;
-                    break;
+            //float[] controlPanelLocation = {-1, -1};
+            System.out.println("location");
+            System.out.println(e.location[0]);
+            if (e.location[0] == -1.0) {
+                //this is a controlPanelEvent
+                //TODO: this doesn't work
+                switch(e.metadata){
+                    case 1:
+                        rotation++;
+                        break;
+                    case 2:
+                        failedRotation++;
+                        break;
+                    case 3:
+                        selection++;
+                        break;
+                    case 4:
+                        failedSelection++;
+                        break;
+                    default:
+                        break;
+                }
+            }else{
+                missedShots += e.eventData[0];
+                lowerShots += e.eventData[1];
+                outerShots += e.eventData[2];
+                innerShots += e.eventData[3];
 
-                case 3:
-                    //eventType 3: failDropHatch
-                    id = 1;
-                    break;
-
-                case 6:
-                    //eventType 6: dropCargo
-                    id = 2;
-                    break;
-
-                case 7:
-                    //eventType 7: failDropCargo
-                    id = 3;
-                    break;
-
-                default:
-                    break;
+                failedPickups += e.eventData[4];
+                successfulPickups += e.eventData[5];
             }
+        }
+        //data
+        labels.append(fieldPeriod + "Missed Shots,");
+        data.append(missedShots + ",");
 
-            //cargo ship
-            if (MainActivity.arrayContains(cargoShipLocations, location)) {
-                cargoShip[id]++;
-            }
-            if (MainActivity.arrayContains(sideCargoShipLocations, location)) {
-                sideCargoShip[id]++;
-            }
+        labels.append(fieldPeriod + "Low Shots,");
+        data.append(lowerShots + ",");
 
-            //rocket levels
-            if (MainActivity.arrayContains(levelOneRocketLocations, location)) {
-                levelOneRocket[id]++;
-                fullRocket[id]++;
-            }
-            if (MainActivity.arrayContains(levelTwoRocketLocations, location)) {
-                levelTwoRocket[id]++;
-                fullRocket[id]++;
-            }
-            if (MainActivity.arrayContains(levelThreeRocketLocations, location)) {
-                levelThreeRocket[id]++;
-                fullRocket[id]++;
-            }
+        labels.append(fieldPeriod + "Outer Shots,");
+        data.append(outerShots + ",");
 
-            //far and close rocket
-            if (MainActivity.arrayContains(farRocketLocations, location)) {
-                farRocket[id]++;
-            }
-            if (MainActivity.arrayContains(closeRocketLocations, location)) {
-                closeRocket[id]++;
-            }
+        labels.append(fieldPeriod + "Inner Shots,");
+        data.append(innerShots + ",");
 
-            //totals for everything
-            everything[id]++;
+        labels.append(fieldPeriod + "Missed Pickups,");
+        data.append(failedPickups + ",");
+
+        labels.append(fieldPeriod + "Successful Pickups,");
+        data.append(successfulPickups + ",");
+
+        //control panel data
+        //only on teleop though
+        if(!autoPage){
+            labels.append("Rotation,");
+            data.append(rotation + ",");
+
+            labels.append("Failed Rotation,");
+            data.append(failedRotation + ",");
+
+            labels.append("Selection,");
+            data.append(selection + ",");
+
+            labels.append("Failed Selection,");
+            data.append(failedSelection + ",");
         }
 
-        for (int i = 0; i < labelActions.length; i++) {
-            //overall data
-            labels.append(fieldPeriod + "Total " + labelActions[i] + ",");
-            data.append(everything[i] + ",");
-
-            //most important data
-            labels.append(fieldPeriod + "Full Cargo Ship " + labelActions[i] + ",");
-            data.append(cargoShip[i] + ",");
-            labels.append(fieldPeriod + "Full Rocket " + labelActions[i] + ",");
-            data.append(fullRocket[i] + ",");
-
-            //extra more detailed information
-            labels.append(fieldPeriod + "Side Cargo Ship " + labelActions[i] + ",");
-            data.append(sideCargoShip[i] + ",");
-
-            if (i == 0 || i == 1) {
-                //only for hatch, not for cargo
-                labels.append(fieldPeriod + "Far Rocket " + labelActions[i] + ",");
-                data.append(farRocket[i] + ",");
-                labels.append(fieldPeriod + "Close Rocket " + labelActions[i] + ",");
-                data.append(closeRocket[i] + ",");
-            }
-            
-            labels.append(fieldPeriod + "Level 1 Rocket " + labelActions[i] + ",");
-            data.append(levelOneRocket[i] + ",");
-            labels.append(fieldPeriod + "Level 2 Rocket " + labelActions[i] + ",");
-            data.append(levelTwoRocket[i] + ",");
-            labels.append(fieldPeriod + "Level 3 Rocket " + labelActions[i] + ",");
-            data.append(levelThreeRocket[i] + ",");
-        }
 
         return (new String[]{labels.toString(), data.toString()});
 

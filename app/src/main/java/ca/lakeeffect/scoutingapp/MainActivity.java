@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -215,12 +216,38 @@ public class MainActivity extends ListeningActitivty {
         }
 
         for(Event event : allEvents){
-            int location = event.location;
-
-            events.append(matchNumber + "," + event.eventType + "," + location + "," + event.timestamp + "," + event.metadata + "\n");
+            float[] location = event.location;
+            if(location[0] != -1.0){
+                events.append(matchNumber + "," + numsToString(event.eventData) + "," + numsToString(location) + "," + numsToString(event.timestamp) + "," + event.metadata + "\n");
+            }
         }
 
+        System.out.println("events");
+        System.out.println(events);
+
         return Base64.encodeToString(events.toString().getBytes(Charset.forName("UTF-8")), Base64.DEFAULT);
+    }
+
+    public String numsToString(float[] floats){
+        String output = "";
+
+        for(float i: floats){
+            output += i;
+            output += " ";
+        }
+
+        return(output);
+    }
+
+    public String numsToString(long[] longs){
+        String output = "";
+
+        for(long i: longs){
+            output += i;
+            output += " ";
+        }
+
+        return(output);
     }
 
     public String[] getData(boolean bypassChecks) {
@@ -291,50 +318,12 @@ public class MainActivity extends ListeningActitivty {
                 return null;
             }
 
-            //if the confidence rating is <= 0
-            if (((RatingBar) pagerAdapter.postgamePage.getView().findViewById(R.id.dataConfidence)).getRating() <= 0) {
-                runOnUiThread(new Thread() {
-                    public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You didn't rate the confidence in your data!", Toast.LENGTH_LONG).show();
-                    }
-                });
-                return null;
-            }
-
             if (((Spinner) pagerAdapter.pregamePage.getView().findViewById(R.id.autoStartLocation)).getSelectedItem().toString().equals("Choose One")) {
                 runOnUiThread(new Thread() {
                     public void run() {
                         new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify where it started!", Toast.LENGTH_LONG).show();
                     }
                 });
-                return null;
-            }
-
-            if (((Spinner) pagerAdapter.pregamePage.getView().findViewById(R.id.autoStartPlatform)).getSelectedItem().toString().equals("Choose One")) {
-                runOnUiThread(new Thread() {
-                    public void run() {
-                        new Toast(MainActivity.this).makeText(MainActivity.this, "You forgot to specify which platform it started on!", Toast.LENGTH_LONG).show();
-                    }
-                });
-                return null;
-            }
-
-            //check if the robot is starting with hatch or cargo
-            if (!noStartingObject && !((CheckBox) pagerAdapter.pregamePage.getView().findViewById(R.id.startingObjectsHatch)).isChecked()
-                    && !((CheckBox) pagerAdapter.pregamePage.getView().findViewById(R.id.startingObjectsCargo)).isChecked()) {
-                //double check the user meant this
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("No starting Object?")
-                        .setMessage("Are you sure the robot started with no object?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                noStartingObject = true;
-                                pagerAdapter.qualitativePage.getView().findViewById(R.id.submit).performClick();
-                            }
-                        })
-                        .setNegativeButton("No, let me go change that", null)
-                        .create()
-                        .show();
                 return null;
             }
         }
@@ -1127,8 +1116,8 @@ public class MainActivity extends ListeningActitivty {
             side = viewingSide.getSelectedItemPosition() == 2;
 
             //adjust the field image according to selection
-            pagerAdapter.autoPage.field.updateField(this, side);
-            pagerAdapter.teleopPage.field.updateField(this, side);
+            pagerAdapter.autoPage.field.updateField(this, side, alliance);
+            pagerAdapter.teleopPage.field.updateField(this, side, alliance);
 
             SharedPreferences prefs = getSharedPreferences("userID", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
@@ -1225,6 +1214,14 @@ public class MainActivity extends ListeningActitivty {
             }
         }
         return false;
+    }
+
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
      public static void startNotificationAlarm(Context context) {

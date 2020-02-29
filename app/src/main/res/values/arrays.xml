@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="climb">
-        <item>Choose One</item>
+        <item>How?</item>
+        <item>Parked</item>
         <item>Got carried</item>
         <item>Attempted climb</item>
         <item>Climbed</item>
     </string-array>
 
     <string-array name="climbType">
-        <item>Where did it attempt to climb to or reach?</item>
-        <item>Did not return</item>
-        <item>Returned to hab (Level 1)</item>
-        <item>Level 2</item>
-        <item>Level 3</item>
+        <item>Where?</item>
+        <item>Edge</item>
+        <item>Middle</item>
+        <item>Center</item>
     </string-array>
 
     <string-array name="alliances">

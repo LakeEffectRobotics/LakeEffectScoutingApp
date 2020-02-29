@@ -6,16 +6,17 @@ package ca.lakeeffect.scoutingapp;
 
 public class Event {
 
-    int eventType = -1;
+    //missed, lower, outer, inner, missed pickups, pickups
+    float[] eventData = {-1, -1, -1, -1, -1, -1};
 
-    int location = -1;
+    float[] location = {-1, -1};
 
-    long timestamp = -1;
+    long[] timestamp = {-1, -1};
 
-    int metadata = -1; //high or low for the switch
+    int metadata = -1; //for the spinny wheel, the eventData will all be -1 and this will be 1 for successful rotation, 2 for failed rotation, 3 for successful colour, 4 for failed colour
 
-    public Event(int eventType, int location, long timestamp, int metadata){
-        this.eventType = eventType;
+    public Event(float[] eventData, float[] location, long[] timestamp, int metadata){
+        this.eventData = eventData;
         this.location = location;
         this.timestamp = timestamp;
         this.metadata = metadata;
