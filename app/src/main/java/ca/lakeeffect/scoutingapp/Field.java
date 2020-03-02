@@ -15,7 +15,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.res.ResourcesCompat;
-import android.test.mock.MockDialogInterface;
+//import android.test.mock.MockDialogInterface;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
