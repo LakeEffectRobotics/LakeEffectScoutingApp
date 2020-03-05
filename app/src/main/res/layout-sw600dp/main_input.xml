@@ -14,24 +14,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shooting:"
-            android:textSize="@dimen/text_large"
-            android:layout_row="0"
-            android:layout_column="0"
-            android:layout_columnSpan="2"
-            android:layout_gravity="top|left"
-            android:paddingBottom="10dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Miss:"
+            android:text="Missed:"
             android:textSize="@dimen/text_medium"
             android:layout_row="1"
             android:layout_column="0"
-            android:paddingRight="20dp" />
+            android:paddingRight="20dp"
+            android:layout_gravity="center_vertical"/>
 
         <RatingBar
+            android:layout_margin="5dp"
+
             android:id="@+id/missedShots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,17 +31,23 @@
             android:layout_column="1"
             android:numStars="5"
             android:progressDrawable="@drawable/circleratingbar"
-            android:stepSize="1" />
+            android:stepSize="1"
+            android:scaleX="1.7"
+            android:scaleY="1.7"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Level 1:"
+            android:text="Lower:"
             android:textSize="@dimen/text_medium"
             android:layout_row="2"
             android:layout_column="0"
-            android:paddingRight="20dp" />
+            android:paddingRight="20dp"
+            android:layout_gravity="center_vertical"/>
 
         <RatingBar
+            android:layout_margin="5dp"
             android:id="@+id/level1Shots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,17 +55,24 @@
             android:layout_column="1"
             android:numStars="5"
             android:progressDrawable="@drawable/circleratingbar"
-            android:stepSize="1" />
+            android:stepSize="1"
+            android:scaleX="1.7"
+            android:scaleY="1.7"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Level 2:"
+            android:text="Outer:"
             android:textSize="@dimen/text_medium"
             android:layout_row="3"
             android:layout_column="0"
-            android:paddingRight="20dp" />
+            android:paddingRight="20dp"
+            android:layout_gravity="center_vertical"/>
 
         <RatingBar
+            android:layout_margin="5dp"
+
             android:id="@+id/level2Shots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,17 +80,24 @@
             android:layout_column="1"
             android:numStars="5"
             android:progressDrawable="@drawable/circleratingbar"
-            android:stepSize="1" />
+            android:stepSize="1"
+            android:scaleX="1.7"
+            android:scaleY="1.7"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Level 3:"
+            android:text="Inner:"
             android:textSize="@dimen/text_medium"
             android:layout_row="4"
             android:layout_column="0"
-            android:paddingRight="20dp" />
+            android:paddingRight="20dp"
+            android:layout_gravity="center_vertical"/>
 
         <RatingBar
+            android:layout_margin="5dp"
+
             android:id="@+id/level3Shots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,66 +105,13 @@
             android:layout_column="1"
             android:numStars="5"
             android:progressDrawable="@drawable/circleratingbar"
-            android:stepSize="1" />
+            android:stepSize="1"
+            android:scaleX="1.7"
+            android:scaleY="1.7"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"/>
 
         <!--just a spacer-->
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"
-            android:layout_gravity="fill_vertical"
-            android:layout_row="0"
-            android:layout_column="2"
-            android:layout_rowSpan="5"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Failed:"
-            android:textSize="@dimen/text_medium"
-            android:layout_row="1"
-            android:layout_column="3"
-            android:paddingRight="20dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pickup:"
-            android:textSize="@dimen/text_large"
-            android:layout_row="0"
-            android:layout_column="3"
-            android:layout_columnSpan="2"
-            android:layout_gravity="top|left"/>
-
-        <RatingBar
-            android:id="@+id/missedPickups"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_row="1"
-            android:layout_column="4"
-            android:numStars="5"
-            android:progressDrawable="@drawable/circleratingbar"
-            android:stepSize="1" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pickup:"
-            android:textSize="@dimen/text_medium"
-            android:layout_row="2"
-            android:layout_column="3"
-            android:paddingRight="20dp" />
-
-        <RatingBar
-            android:id="@+id/pickups"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_row="2"
-            android:layout_column="4"
-            android:numStars="5"
-            android:progressDrawable="@drawable/circleratingbar"
-            android:stepSize="1" />
 
     </GridLayout>
 </ScrollView>

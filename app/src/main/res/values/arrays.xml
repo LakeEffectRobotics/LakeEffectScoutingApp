@@ -2,6 +2,7 @@
 <resources>
     <string-array name="climb">
         <item>How?</item>
+        <item>Did not attempt</item>
         <item>Parked</item>
         <item>Got carried</item>
         <item>Attempted climb</item>
@@ -11,7 +12,7 @@
     <string-array name="climbType">
         <item>Where?</item>
         <item>Edge</item>
-        <item>Middle</item>
+        <item>Between</item>
         <item>Center</item>
     </string-array>
 

@@ -66,6 +66,9 @@ public class Field implements View.OnTouchListener {
 
     MediaPlayer fish;
 
+    private static float x;
+    private static float y;
+
     public Field(final FieldUIPage fieldUIPage, SurfaceView s, Bitmap field, Context c, LayoutInflater l) {
         this.fieldUIPage = fieldUIPage;
         surface = s;
@@ -83,6 +86,9 @@ public class Field implements View.OnTouchListener {
         highlited.setColor(Color.YELLOW);
         highlited.setStyle(Paint.Style.FILL);
         highlited.setAlpha(125);
+
+        x = 0;
+        y = 0;
 
         surface.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -229,6 +235,8 @@ public class Field implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(final View v, final MotionEvent event) {
+        x = event.getX();
+        y = event.getY();
         System.out.println(event.getAction());
         if(event.getAction() == MotionEvent.ACTION_CANCEL){
             return false;
@@ -271,9 +279,13 @@ public class Field implements View.OnTouchListener {
                     surface.getHolder().unlockCanvasAndPost(c);
 
                     //just print it out for debugging purposes
+                    /*
                     System.out.println(event.getX());
                     System.out.println(event.getY());
 
+                     */
+
+                    /*
                     final long windowOpenedTime = System.currentTimeMillis();
                     if (selected == -1) {
                         System.out.println("Making a dialog");
@@ -289,12 +301,11 @@ public class Field implements View.OnTouchListener {
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         //make a new event
                                         float[] data = {
+                                                0,
                                                 ((RatingBar) mainInputView.findViewById(R.id.missedShots)).getRating(),
                                                 ((RatingBar) mainInputView.findViewById(R.id.level1Shots)).getRating(),
                                                 ((RatingBar) mainInputView.findViewById(R.id.level2Shots)).getRating(),
-                                                ((RatingBar) mainInputView.findViewById(R.id.level3Shots)).getRating(),
-                                                ((RatingBar) mainInputView.findViewById(R.id.missedPickups)).getRating(),
-                                                ((RatingBar) mainInputView.findViewById(R.id.pickups)).getRating()};
+                                                ((RatingBar) mainInputView.findViewById(R.id.level3Shots)).getRating()};
 
                                         float[] location = {event.getX(), event.getY()};
 
@@ -348,6 +359,8 @@ public class Field implements View.OnTouchListener {
                                 .create()
                                 .show();
                     }
+                    *
+                     */
                 }
 
             }
@@ -420,4 +433,11 @@ public class Field implements View.OnTouchListener {
         }, millis);
     }
 
+    public static float getX(){
+        return x;
+    }
+
+    public static float getY(){
+        return y;
+    }
 }
