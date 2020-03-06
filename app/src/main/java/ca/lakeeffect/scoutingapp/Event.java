@@ -6,8 +6,8 @@ package ca.lakeeffect.scoutingapp;
 
 public class Event {
 
-    //missed, lower, outer, inner, missed pickups, pickups
-    float[] eventData = {-1, -1, -1, -1, -1, -1};
+    //pickup, missed, lower, outer, inner
+    float[] eventData = {-1, -1, -1, -1, -1};
 
     float[] location = {-1, -1};
 

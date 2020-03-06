@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
@@ -32,16 +33,10 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     SurfaceView surface;
     Field field;
 
-    Button pickupHatch;
-    Button pickupCargo;
-    Button failPickupHatch;
-    Button failPickupCargo;
     Button undo;
     Button controlPanel;
-    Button dropHatch;
-    Button dropCargo;
-    Button failDropHatch;
-    Button failDropCargo;
+    Button pickupButton;
+    Button shootingButton;
 
     //All the events made by the person this matchNumber
     ArrayList<Event> events = new ArrayList<Event>();
@@ -100,11 +95,30 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         undo = view.findViewById(R.id.undo);
         undo.setOnClickListener(this);
 
+        pickupButton = view.findViewById(R.id.pickup);
+        pickupButton.setOnClickListener(this);
+
+        shootingButton = view.findViewById(R.id.shootButton);
+        shootingButton.setOnClickListener(this);
+
         //button doesn't exist during autopage
         if(!autoPage){
             controlPanel = view.findViewById(R.id.controlPanel);
             controlPanel.setOnClickListener(this);
+        }else{
+            //set weight
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)
+                    pickupButton.getLayoutParams();
+            params.weight = 3;
+            pickupButton.setLayoutParams(params);
+
+            params = (LinearLayout.LayoutParams)
+                    shootingButton.getLayoutParams();
+            params.weight = 3;
+            shootingButton.setLayoutParams(params);
         }
+
+
 
         /*
 
@@ -132,10 +146,14 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(final View v) {
         System.out.println("onClick");
+        System.out.println(firstPress);
+        System.out.println(Field.getX());
+        System.out.println(Field.getY());
         if (firstPress == -1 && autoPage && v != undo) {
             firstPress = System.currentTimeMillis();
         } else if (autoPage && System.currentTimeMillis() - firstPress > 15000 && v != undo) {
             //it has been 15 seconds, they should be done auto by now
+            System.out.println("it's been 15 seconds");
             new AlertDialog.Builder(getContext())
                     .setTitle("YOU ARE ON THE SANDSTORM PAGE! It has been 15 seconds since your last press!")
                     .setMessage("Are you sure you would like to put an event? SANDSTORM should be done by now!")
@@ -189,6 +207,47 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
 
             return; //only have to undo, not add an event
         }
+        else if(v==pickupButton){
+            float[] data = {1, 0, 0, 0, 0};
+            float[] location = {Field.getX(), Field.getY()};
+            long[] time = {System.currentTimeMillis(), System.currentTimeMillis()};
+            addEvent(new Event(data, location, time, 0), "", false);
+            Toast.makeText(getContext(), "Robot picked up ball", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(v==shootingButton){
+            final long windowOpenedTime = System.currentTimeMillis();
+
+            final View mainInputView = getLayoutInflater().inflate(R.layout.main_input, null);
+
+            android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(getContext())
+                    .setTitle("Input")
+                    .setView(mainInputView)
+                    .setPositiveButton("Ok", (new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //make a new event
+                            float[] data = {
+                                    0,
+                                    ((RatingBar) mainInputView.findViewById(R.id.missedShots)).getRating(),
+                                    ((RatingBar) mainInputView.findViewById(R.id.level1Shots)).getRating(),
+                                    ((RatingBar) mainInputView.findViewById(R.id.level2Shots)).getRating(),
+                                    ((RatingBar) mainInputView.findViewById(R.id.level3Shots)).getRating()};
+
+                            float[] location = {Field.getX(), Field.getY()};
+
+                            long[] time = {windowOpenedTime, System.currentTimeMillis()};
+
+                            addEvent(new Event(data, location, time, 0), "", false);
+                            Toast.makeText(getContext(), "Event recorded", Toast.LENGTH_SHORT).show();
+                        }
+                    }))
+                    .setNegativeButton("Cancel", null)
+                    .create();
+
+            alertDialog.show();
+            alertDialog.getWindow().setLayout(MainActivity.getScreenWidth() - 10, MainActivity.getScreenHeight() - 10);
+        }
         else if(v==controlPanel){
             final View spinnyPageView = getLayoutInflater().inflate(R.layout.spinny_boi_page, null);
             final long windowOpenedTime = System.currentTimeMillis();
@@ -200,7 +259,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //basically save what happened, but as an event too
 
-                            float[] data = {-1, -1, -1, -1, -1, -1};
+                            float[] data = {-1, -1, -1, -1, -1};
                             float[] location = {-1, -1};
                             long[] time = {windowOpenedTime, System.currentTimeMillis()};
 
@@ -228,6 +287,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                     .create()
                     .show();
         }
+
 
         //Vibrate the vibrator to notify scout
         if (hasVibrator) vibrator.vibrate(new long[]{0, 100, 25, 100}, -1);
@@ -335,7 +395,6 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         int outerShots = 0;
         int innerShots = 0;
 
-        int failedPickups = 0;
         int successfulPickups = 0;
 
         int rotation = 0;
@@ -369,13 +428,12 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
                         break;
                 }
             }else{
-                missedShots += e.eventData[0];
-                lowerShots += e.eventData[1];
-                outerShots += e.eventData[2];
-                innerShots += e.eventData[3];
+                missedShots += e.eventData[1];
+                lowerShots += e.eventData[2];
+                outerShots += e.eventData[3];
+                innerShots += e.eventData[4];
 
-                failedPickups += e.eventData[4];
-                successfulPickups += e.eventData[5];
+                successfulPickups += e.eventData[0];
             }
         }
         //data
@@ -391,10 +449,7 @@ public class FieldUIPage extends Fragment implements View.OnClickListener {
         labels.append(fieldPeriod + "Inner Shots,");
         data.append(innerShots + ",");
 
-        labels.append(fieldPeriod + "Missed Pickups,");
-        data.append(failedPickups + ",");
-
-        labels.append(fieldPeriod + "Successful Pickups,");
+        labels.append(fieldPeriod + "Pickups,");
         data.append(successfulPickups + ",");
 
         //control panel data

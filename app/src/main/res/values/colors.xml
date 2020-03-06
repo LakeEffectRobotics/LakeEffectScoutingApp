@@ -7,4 +7,7 @@
 
     <color name="colorAutoDark">#018400</color>
     <color name="colorAutoLight">#01e800</color>
+
+    <color name="pickupColor">#fff45c</color>
+    <color name="shootingColor">#ffb53d</color>
 </resources>
