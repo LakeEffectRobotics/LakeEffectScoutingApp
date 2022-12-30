@@ -1,6 +1,6 @@
 # Lake Effect Scouting App
 
-This is a scouting app built for the FIRST Robotics Competition. This app communicates with bluetooth with the [compainion server app](https://github.com/LakeEffectRobotics/LakeEffectScoutingServerApp/).
+This is a scouting app built for the FIRST Robotics Competition. This app communicates with bluetooth with the [companion server app](https://github.com/LakeEffectRobotics/LakeEffectScoutingServerApp/).
 
 Scouts must download this app and record data about each match played. The data is then pulled from the server device. For the data to be pulled, the Server device must be paired with each client device.
 
